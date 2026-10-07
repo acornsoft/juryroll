@@ -31,6 +31,7 @@ export function toCSV(input: {
   rules: RulesFile;
   targets: Target[];
   county: string;
+  fips?: string;
   dateStr: string;
 }): string {
   if (!input.allowNamedExport) {
@@ -47,7 +48,7 @@ export function toCSV(input: {
     csvCell(`Cites: ${cites}`),
     csvCell(`Referral targets: ${targetLine}`),
     csvCell(SAVE_EXPORT_LINE),
-    csvCell(`County: ${input.county}. Date: ${input.dateStr}.`),
+    csvCell(`County: ${input.county}${input.fips ? ` (${input.fips})` : ''}. Date: ${input.dateStr}.`),
     '',
     COLS.map((col) => csvCell(col[1])).join(','),
   ];

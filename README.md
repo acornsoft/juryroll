@@ -8,7 +8,7 @@ Read the full guide before you act: [shared/GUIDE.md](shared/GUIDE.md). The buil
 
 ## What you do
 
-0. Choose your state. The rules for that state decide what the page is allowed to do.
+0. Choose your state, then your county. The rules for that state decide what the page is allowed to do.
 1. Sign the use statement, then load the jury file and the voter file. You can use CSV or Excel. You can also try the fictional sample.
 2. Check that the columns landed in the right fields.
 3. Keep the non-citizen reasons selected, then run the match.
@@ -53,6 +53,8 @@ A registration **before** the declaration keeps its tier. A missing, unparseable
 - Send referrals to your county board of elections. Do not publish names.
 
 JuryRoll never contacts voters. Do not publish names.
+
+County names and 5-digit FIPS codes come from the U.S. Census Bureau 2025 Gazetteer Files, National Counties Gazetteer File (`2025_Gaz_counties_national.txt`, dated 2025-09-08). That work is in the public domain. The file is stored at `shared/data/2025_Gaz_counties_national.txt`. Louisiana parishes, Alaska boroughs and census areas, Virginia independent cities, the District of Columbia, and Connecticut's nine planning regions are included as the Census Bureau publishes them.
 
 ## For developers
 

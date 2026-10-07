@@ -101,6 +101,10 @@ function requestHeaders(url) {
   });
 }
 
+async function pickCounty(page, fips = '37183') {
+  await page.selectOption('#county', fips);
+}
+
 (async () => {
   const built = fs.readFileSync(dist, 'utf8');
   assert.ok(built.includes("connect-src 'none'"), 'CSP connect-src');
@@ -208,7 +212,7 @@ function requestHeaders(url) {
   assert.ok((await main.page.locator('#oneAffidavit').innerText()).includes('Use one affidavit for one voter.'));
   pass('AT-31');
   pass('AT-32');
-  await main.page.fill('#county', 'Wake');
+  await pickCounty(main.page);
   await main.page.screenshot({ path: path.join(shots, '02-step-files.png'), fullPage: true });
   await main.page.setInputFiles('#fileJuror', sampleJ);
   await main.page.waitForSelector('#infoJuror');
@@ -243,6 +247,7 @@ function requestHeaders(url) {
   assert.ok((await main.page.locator('#cannotCompareLine').innerText()).includes('2 matches cannot compare: no registration date'));
   assert.ok((await main.page.locator('#regDateNote').innerText()).includes('latest registration change'));
   assert.ok((await main.page.locator('#templateDateNote').innerText()).includes('The registration date is needed for a named referral.'));
+  assert.match(await main.page.locator('#referralHeader').innerText(), /Wake County \(37183\)/);
   const rowsDefault = await main.page.locator('#results tr').count() - 1;
   assert.strictEqual(rowsDefault, 3, 'named leads are the pairs registered before the declaration');
   const namedText = await main.page.locator('#results').innerText();
@@ -271,7 +276,8 @@ function requestHeaders(url) {
   await download.saveAs(exportPath);
   const csv = fs.readFileSync(exportPath, 'utf8').replace(/^\uFEFF/, '');
   console.log('Export file name:', download.suggestedFilename());
-  assert.ok(download.suggestedFilename().startsWith('JuryRoll-referral-NC-Wake-'));
+  assert.ok(download.suggestedFilename().startsWith('JuryRoll-referral-NC-WakeCounty-'));
+  assert.ok(csv.includes('County: Wake County (37183).'));
   assert.ok(csv.startsWith('Referral for official verification'));
   assert.ok(csv.includes('2 matches excluded: registered after declaration'));
   assert.ok(csv.includes('2 matches cannot compare: no registration date'));
@@ -314,6 +320,9 @@ function requestHeaders(url) {
   const matchRun = entries.find((entry) => entry.type === 'match_run');
   assert.strictEqual(matchRun.data.excluded_registered_after, 2);
   assert.strictEqual(matchRun.data.cannot_compare_no_reg_date, 2);
+  assert.strictEqual(matchRun.data.county_name, 'Wake County');
+  assert.strictEqual(matchRun.data.county_fips, '37183');
+  assert.strictEqual(entries.find((entry) => entry.type === 'export').data.county_fips, '37183');
   const logText = fs.readFileSync(logPath, 'utf8');
   assert.ok(!logText.includes('Alpha'));
   assert.ok(!logText.includes('J-0001'));
@@ -354,6 +363,7 @@ function requestHeaders(url) {
   const dates = await openPage(browser);
   await dates.page.selectOption('#stateSel', 'NC');
   await attest(dates.page);
+  await pickCounty(dates.page);
   await dates.page.setInputFiles('#fileJuror', path.join(datesDir, 'juror.csv'));
   await dates.page.waitForSelector('#infoJuror');
   await dates.page.setInputFiles('#fileVoter', path.join(datesDir, 'voter.csv'));
@@ -401,6 +411,7 @@ function requestHeaders(url) {
   const xlsx = await openPage(browser);
   await xlsx.page.selectOption('#stateSel', 'NC');
   await attest(xlsx.page);
+  await pickCounty(xlsx.page);
   await xlsx.page.setInputFiles('#fileJuror', sampleJx);
   await xlsx.page.waitForSelector('#infoJuror');
   await xlsx.page.setInputFiles('#fileVoter', sampleVx);
@@ -426,6 +437,7 @@ function requestHeaders(url) {
   const timed = await openPage(browser, { time: '2026-10-07T15:00:00Z' });
   await timed.page.selectOption('#stateSel', 'NC');
   await attest(timed.page);
+  await pickCounty(timed.page);
   await timed.page.setInputFiles('#fileJuror', sampleJ);
   await timed.page.waitForSelector('#infoJuror');
   await timed.page.setInputFiles('#fileVoter', sampleV);
@@ -460,6 +472,7 @@ function requestHeaders(url) {
   async function runPair(page, jurorName, voterName) {
     await page.selectOption('#stateSel', 'NC');
     await attest(page);
+    await pickCounty(page);
     await page.setInputFiles('#fileJuror', path.join(fixtures, jurorName));
     await page.waitForSelector('#infoJuror');
     await page.setInputFiles('#fileVoter', path.join(fixtures, voterName));
@@ -665,6 +678,7 @@ function requestHeaders(url) {
         assert.strictEqual(await walk.page.locator('#infoJuror').count(), 1, `${code} kept the juror file`);
         assert.strictEqual(await walk.page.locator('#jurorCleared').count(), 0, code);
       }
+      await walk.page.selectOption('#county', { index: 1 });
       await walk.page.waitForFunction(() => {
         const button = document.getElementById('runBtn');
         return button && !button.disabled;
@@ -694,6 +708,66 @@ function requestHeaders(url) {
   assert.deepStrictEqual(ran, ['NC']);
   pass('AT-44-all-states');
   await walk.context.close();
+
+  const counties = await openPage(browser);
+  assert.strictEqual(await counties.page.locator('#county').isDisabled(), true);
+  assert.strictEqual(await counties.page.locator('#countyFilter').isDisabled(), true);
+  await counties.page.selectOption('#stateSel', 'NC');
+  await counties.page.waitForSelector('#county:not([disabled])');
+  assert.strictEqual(await counties.page.locator('#county option').count(), 101);
+  assert.strictEqual(await counties.page.locator('#county option').nth(1).innerText(), 'Alamance County (37001)');
+  assert.ok(await counties.page.locator('#countyRequired').isVisible());
+  await counties.page.evaluate(() => { document.getElementById('county').size = 12; });
+  await counties.page.locator('#placePicker').screenshot({ path: path.join(shots, 'county-picker-nc.png') });
+  await counties.page.evaluate(() => { document.getElementById('county').removeAttribute('size'); });
+  await counties.page.fill('#countyFilter', 'wake');
+  assert.strictEqual(await counties.page.locator('#county option').count(), 2);
+  assert.strictEqual(await counties.page.locator('#county option').nth(1).getAttribute('value'), '37183');
+  await counties.page.fill('#countyFilter', '');
+  await pickCounty(counties.page);
+  assert.strictEqual(await counties.page.locator('#countyRequired').count(), 0);
+  await counties.page.selectOption('#stateSel', 'NY');
+  assert.strictEqual(await counties.page.locator('#county').inputValue(), '');
+  assert.ok(await counties.page.locator('#countyRequired').isVisible());
+  assert.match(await counties.page.locator('#auditLetter').innerText(), /Choose a county/);
+  assert.strictEqual(await counties.page.locator('#auditLetterBtn').isDisabled(), true);
+  await counties.page.evaluate(() => { document.getElementById('auditLetterBtn').disabled = false; });
+  await counties.page.click('#auditLetterBtn');
+  assert.match(await counties.page.locator('#auditLetter').innerText(), /Choose a county/);
+  await counties.page.selectOption('#county', '36047');
+  const nyLetter = await counties.page.locator('#auditLetter').innerText();
+  assert.ok(nyLetter.includes('Kings County (36047)'));
+  assert.ok(nyLetter.includes('Kings County board of elections'));
+  assert.ok(nyLetter.includes('New York State Board of Elections'));
+  const [nyDownload] = await Promise.all([
+    counties.page.waitForEvent('download'),
+    counties.page.click('#auditLetterBtn'),
+  ]);
+  const nyPath = path.join(shots, 'ny-audit.txt');
+  await nyDownload.saveAs(nyPath);
+  const nyText = fs.readFileSync(nyPath, 'utf8');
+  assert.ok(nyText.includes('Kings County (36047)'));
+  assert.ok(nyText.includes('Kings County board of elections'));
+  await counties.page.selectOption('#stateSel', 'NC');
+  await counties.page.waitForSelector('#sampleBtn');
+  await attest(counties.page);
+  await counties.page.click('#sampleBtn');
+  await counties.page.waitForSelector('#infoJuror');
+  await counties.page.evaluate(() => {
+    document.getElementById('step3').disabled = false;
+    document.getElementById('runBtn').disabled = false;
+  });
+  await counties.page.click('#runBtn');
+  assert.strictEqual(await counties.page.locator('#countStrong').count(), 0);
+  assert.ok(await counties.page.locator('#countyRequired').isVisible());
+  await pickCounty(counties.page);
+  await counties.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await counties.page.click('#runBtn');
+  await counties.page.waitForSelector('#countStrong');
+  assert.match(await counties.page.locator('#referralHeader').innerText(), /Wake County \(37183\)/);
+  pass('AT-47-counties');
+  assert.deepStrictEqual(counties.requests, [], 'county page network: ' + counties.requests.join('; '));
+  await counties.context.close();
 
   const preview = await startPreview();
   const origin = `http://127.0.0.1:${preview.address().port}`;

@@ -74,11 +74,11 @@ legend { font-weight: 700; padding: 0 6px; }
 
 label { display: flex; flex-direction: column; gap: 6px; font-weight: 650; margin: 8px 0; }
 label.inline { flex-direction: row; align-items: center; font-weight: 500; min-height: 44px; }
-input[type="text"], input[type="date"], input[type="number"], select, button, .file input {
+input[type="text"], input[type="search"], input[type="date"], input[type="number"], select, button, .file input {
   font: inherit;
   min-height: 44px;
 }
-input[type="text"], input[type="date"], input[type="number"], select {
+input[type="text"], input[type="search"], input[type="date"], input[type="number"], select {
   width: 100%;
   max-width: 36rem;
   padding: 8px 10px;

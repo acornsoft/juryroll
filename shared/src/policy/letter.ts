@@ -8,10 +8,20 @@ export type AuditInputs = {
   removals: string;
   removalSource: string;
   county: string;
+  fips?: string;
 };
 
 export function auditLetter(rules: RulesFile, targets: Target[], input: AuditInputs): string {
-  const office = targets.map((target) => target.name).join('; ') || 'the state election office and the county board';
+  const countyBoard = rules.referral_targets.county_board;
+  const office = targets.map((target) => {
+    const isCountyBoard = Boolean(
+      input.county
+      && countyBoard
+      && target.name === countyBoard.name
+      && target.url === countyBoard.url,
+    );
+    return isCountyBoard ? `${input.county} board of elections` : target.name;
+  }).join('; ') || 'the state election office and the county board';
   const pipeline = rules.jury_list.official_pipeline || 'the official jury-to-election process described in state law';
   return [
     'JuryRoll audit letter',
@@ -22,6 +32,7 @@ export function auditLetter(rules: RulesFile, targets: Target[], input: AuditInp
     '',
     `The law already describes an official path: ${pipeline}`,
     '',
+    `County: ${input.county || '—'}${input.fips ? ` (${input.fips})` : ''}`,
     `Is this process running in ${input.county || 'this county'}? How many records were received, reviewed, confirmed, and removed in the period?`,
     '',
     `Period: ${input.periodFrom || '—'} to ${input.periodTo || '—'}`,

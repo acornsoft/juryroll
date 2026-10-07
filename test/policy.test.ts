@@ -366,7 +366,23 @@ const letter = auditLetter(shipped.TX, referralTargets(shipped.TX, shipped.DEFAU
   county: 'Travis',
 });
 assert.ok(letter.includes('Is this process running in Travis? How many records were received, reviewed, confirmed, and removed in the period?'));
+assert.ok(letter.includes('Travis board of elections'));
+assert.ok(letter.includes('Texas Secretary of State - Elections Division'));
 assert.ok(!/Afterson|Keepson|John Smith/.test(letter));
+const wakeLetter = auditLetter(shipped.NC, referralTargets(shipped.NC, shipped.DEFAULT), {
+  periodFrom: '',
+  periodTo: '',
+  juryCount: '',
+  jurySource: '',
+  removals: '',
+  removalSource: '',
+  county: 'Wake County',
+  fips: '37183',
+});
+assert.ok(wakeLetter.includes('County: Wake County (37183)'));
+assert.ok(wakeLetter.includes('Wake County board of elections'));
+assert.ok(wakeLetter.includes('North Carolina State Board of Elections'));
+assert.ok(!wakeLetter.includes('County boards of elections (NCSBE directory)'));
 pass('AT-26-letter');
 
 const eac = referralTargets(shipped.DEFAULT, shipped.DEFAULT);
