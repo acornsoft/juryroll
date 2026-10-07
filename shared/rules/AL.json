@@ -4,8 +4,8 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": false,
-    "statute": "Ala. Code 12-16-59(a): 'Neither the names drawn nor any list thereof shall be disclosed to any person other than pursuant to this article or specific order of the court.' The jury commission certifies disqualified jurors to the court (12-16-60(b)).",
+    "public": null,
+    "statute": "Ala. Code 12-16-59(a): 'Neither the names drawn nor any list thereof shall be disclosed to any person other than pursuant to this article or specific order of the court.' The jury commission certifies disqualified jurors to the court (12-16-60(b)). But 12-16-60(c): 'the jury commission shall enter on the master list the ultimate determination of the qualification of each juror', and 12-16-57(c): 'The master list shall be open to the public for inspection at all reasonable times.' No reason is entered. Status: null (Optimus 2026-10-07; reopen candidate).",
     "holder": "County jury commission and circuit court.",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -16,6 +16,18 @@
       {
         "cite": "Ala. Code 12-16-60 (qualifications, including citizenship; certification of disqualified jurors)",
         "url": "https://law.justia.com/codes/alabama/title-12/chapter-16/article-2a/section-12-16-60/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ala. Code 12-16-59(a) (names drawn not disclosed except under the article or court order; form asks whether a citizen)",
+        "url": "https://law.justia.com/codes/alabama/title-12/chapter-16/article-2a/section-12-16-59/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ala. Code 12-16-57(c) (the master list is open to the public for inspection)",
+        "url": "https://law.justia.com/codes/alabama/title-12/chapter-16/article-2a/section-12-16-57/",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -49,7 +61,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://law.justia.com/codes/alabama/title-17/chapter-4/article-2/section-17-4-39/",
@@ -74,17 +86,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Ala. Code 36-12-40 (right to inspect public records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county board of registrars or the Secretary of State: per year, the number of AVID matches sent to boards of registrars (Ala. Code 17-4-39(b)) and the number of registrations removed because the registrant was not a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/alabama/title-36/chapter-12/article-3/section-36-12-40/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Alabama statute sends juror citizenship answers to election officials. Whether boards keep counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Names drawn for jury service and lists of them may not be disclosed without a court order (Ala. Code 12-16-59(a)). No private challenge found. Strict gates: counts only."
+    "basis": "Names drawn for jury service and lists of them may not be disclosed without a court order (Ala. Code 12-16-59(a)). The public master list carries a qualification determination but no reason (12-16-57(c), 12-16-60(c)); public is null by Optimus ruling (reopen candidate). No private challenge found. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute expanded (12-16-57(c), 12-16-60(c) added to 12-16-59(a)); jury sources; audit_path; federal_source_url moved to govinfo. jury_list.public stays false (HOLD, REQ-NOTE 56). official_pipeline stays null. No gate changes. Later 2026-10-07: Optimus ruled jury_list.public false -> null (reopen candidate; no gate change).",
+    "Reopen candidate (Optimus 2026-10-07; REQ-NOTE 56 closed): jury_list.public = null. The sources conflict. 12-16-59(a): 'Neither the names drawn nor any list thereof shall be disclosed to any person other than pursuant to this article or specific order of the court.' 12-16-57(c): 'The master list shall be open to the public for inspection at all reasonable times.' 12-16-60(c): 'In any event, the jury commission shall enter on the master list the ultimate determination of the qualification of each juror.' The master list is kept 'with their addresses and any other necessary identifying information' (12-16-57(a)). It shows a determination, not a reason. No date of birth is named. Null keeps counts only. See review/REOPEN.md.",
+    "official_pipeline is null: the NCSL table (updated Sept. 1, 2026) lists Alabama, but its entry quotes Rule 40 and Ala. Code 17-4-38(f) (the courts get the voter list to build the jury list) and 17-4-38.1(a) ('State agencies shall provide to the secretary of state ... any information and data that the secretary of state considers necessary'). None sends juror citizenship answers to election officials. LEGAL-REVIEW does not list Alabama. 17-4-4 sends deaths, incompetency, and felony convictions to registrars.",
+    "Cancelled-voter file: no published Alabama cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Duplication: the Secretary of State's Alabama Voter Integrity Database (AVID) compares the voter list to USCIS citizenship data and to foreign-national license data, and sends matches to boards of registrars (Ala. Code 17-4-39(b)).",
-    "Source note: the Code of Alabama was read from the Justia copy of the 2025 code. The official legislature site (alison.legislature.state.al.us) is a script-only application.",
-    "official_pipeline is null: 17-4-4 sends deaths, incompetency, and felony convictions to registrars, not jury citizenship answers.",
-    "dob_in_public_file and registration_date_in_public_file are null: not stated in 17-4-38."
+    "dob_in_public_file and registration_date_in_public_file are null: not stated in 17-4-38.",
+    "Source note: the Code of Alabama was read from the Justia copy of the 2025 code. The official legislature site (alison.legislature.state.al.us) is a script-only application."
   ]
 }
