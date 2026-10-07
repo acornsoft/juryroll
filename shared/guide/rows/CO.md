@@ -1,1 +1,1 @@
-| CO | Not known, so the app treats it as no | Yes, until day 60 (C.R.S. 1-9-101) | Counts only |
+| CO | Not known, so the app treats it as no. Juror questionnaires are not public records (C.R.S. 13-71-115). The public jury lists show names only, with no reasons (13-71-107, 13-71-136(3)) | Yes, until day 60 (C.R.S. 1-9-101) | Counts only |

@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "C.R.S. 13-71-115(1): 'A notice that the completed questionnaire is not a public record shall appear prominently on its face.' 13-71-115(2): 'With the exception of the names of qualified jurors and disclosures made during jury selection, information on the questionnaires shall be held in confidence by the court, the parties, trial counsel, and their agents.' The original completed questionnaires 'shall not constitute a public record.' 13-71-115(3): if a person's answers show the person is disqualified under 13-71-105, 'the person's name shall not be included in the juror pool'. No statute makes a list of persons excused as non-citizens public. Status of such a list outside the questionnaires: null.",
     "holder": "Jury commissioner / State Court Administrator.",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -20,24 +20,56 @@
         "kind": "statute"
       },
       {
-        "cite": "C.R.S. 13-71-105 (juror must be a U.S. citizen)",
+        "cite": "C.R.S. 13-71-105(1) (juror must be a U.S. citizen; 'Citizenship and residency status on the date that the jury service is to be performed shall control')",
         "url": "https://olls.info/crs/crs2025-title-13.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "C.R.S. 13-71-107(1) (master juror list from voter and driver lists; a copy without addresses 'shall be open to the public for examination as a public record')",
+        "url": "https://olls.info/crs/crs2025-title-13.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "C.R.S. 13-71-136(3) (public may inspect a list of prospective jurors 'containing only the jurors' name and juror number')",
+        "url": "https://olls.info/crs/crs2025-title-13.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SB25-057 (would have sent quarterly lists of persons who said they were not citizens to the Secretary of State; postponed indefinitely in committee, February 2025; not law)",
+        "url": "https://leg.colorado.gov/content/ssa2025a-02042025-020834-pm-committee-summary",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person. Registration records 'are public records subject to examination by any person' with the right to make copies (C.R.S. 1-2-227(1)(a)).",
-    "permitted_uses": "No purpose restriction found in 1-2-227.",
+    "who_may_get": "Any person. C.R.S. 1-2-227(1)(a): 'Such registration records, whether paper or digital, are public records subject to examination by any person, and such person has the right to make copies of the records during office hours.' Statewide lists are sold by the Secretary of State.",
+    "permitted_uses": "No purpose restriction found in 1-2-227. The Secretary of State says it must provide public record information 'to people who ask for it without regard to how these people might use the information.'",
     "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
-    "dob_in_public_file": null,
+    "dob_in_public_file": false,
     "registration_date_in_public_file": null,
     "attestation_required": null,
     "source_url": "https://olls.info/crs/crs2025-title-01.htm",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Colorado Secretary of State, Public Voter Data and Information Requests FAQs (confidential: 'month and day of birth'; public: 'birth year')",
+        "url": "https://www.sos.state.co.us/pubs/elections/FAQs/VoterRegistrationData.html",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "C.R.S. 1-2-302(2), (8) (statewide list holds date of birth and date of registration; SSN, license and ID numbers and signatures not released)",
+        "url": "https://olls.info/crs/crs2025-title-01.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": true,
@@ -55,7 +87,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -88,16 +120,30 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "C.R.S. 24-72-203 (Colorado Open Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county clerk and recorder or the Secretary of State: per county and per year, the number of registrations cancelled because the registrant was not a U.S. citizen, and the number of written challenges filed under C.R.S. 1-9-101 on citizenship grounds.",
+    "counts_only": true,
+    "source_url": "https://olls.info/crs/crs2025-title-24.htm",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Colorado statute sends juror citizenship answers to election officials (SB25-057 would have; it did not pass), so there is no jury count to ask for. Juror questionnaires are not public records (13-71-115)."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury record status unknown (null): counts only. Juror questionnaires are not public records (C.R.S. 13-71-115). A private challenge exists (1-9-101) but guidance stays off."
+    "basis": "Juror questionnaires are not public records (C.R.S. 13-71-115(1), (2)); no statute opens a list of non-citizen excusals (null). Strict gates: counts only. A private challenge exists (1-9-101) but guidance stays off."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (13-71-115(1)-(3)); jury sources 13-71-107, 13-71-136 and SB25-057 added; voter_file who_may_get quotes 1-2-227(1)(a); permitted_uses quotes the Secretary of State; dob_in_public_file null to false; voter_file sources; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null.",
+    "Behavior flag: dob_in_public_file is now false (Secretary of State FAQ: 'month and day of birth' confidential, 'birth year' public). The Probable cap already applied under null, so match results do not change.",
+    "PA-style check: Colorado's public jury lists are the master juror list without addresses (13-71-107(1)) and a list of prospective jurors with 'only the jurors' name and juror number' (13-71-136(3)). Neither carries a disqualification reason, and a disqualified person's name is kept out of the juror pool (13-71-115(3)). No statute makes a list of non-citizen excusals public. If a volunteer used either public list, every match would be name-only, and name-only matches are never exported.",
+    "jury_list.public stays null, not false: 13-71-115 closes the questionnaires, but no statute addresses other records of a non-citizen excusal (for example, documents a jury commissioner asks for before excusing a juror).",
+    "official_pipeline is null: no Colorado statute sends juror citizenship answers to election officials. SB25-057 would have required quarterly lists from the State Court Administrator to the Secretary of State; it was postponed indefinitely in February 2025.",
+    "Cancelled-voter file: no published Colorado cancelled-voter file with a jury or non-citizen reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "registration_date_in_public_file is null: 1-2-302(2) puts the date of registration on the statewide list, but the Secretary of State's list of public fields does not name it.",
     "Caution: 1-9-101(3) says that on appeal no lawful registration is cancelled unless non-residence is proven. A citizenship challenge may fail on appeal on that text.",
-    "Source note: CRS text read from the Office of Legislative Legal Services 2025 CRS HTML (olls.info), 'uncertified printout'.",
-    "dob_in_public_file and registration_date_in_public_file are null: the statewide list holds DOB and registration date (1-2-302(2)), but public release of those fields was not confirmed."
+    "Source note: CRS text read from the Office of Legislative Legal Services 2025 CRS HTML (olls.info), 'uncertified printout'."
   ]
 }
