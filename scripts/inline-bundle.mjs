@@ -12,6 +12,17 @@ function sha256(text) {
   return crypto.createHash('sha256').update(text).digest('base64');
 }
 
+function rewriteChunkImports(code) {
+  return code.replace(/import\(\s*(['"])([^'"]+\.js)\1\s*\)/g, (full, quote, spec) => {
+    const cleaned = spec.replace(/^\.\//, '').replace(/^assets\//, '');
+    const inAssets = path.join(dist, 'assets', cleaned);
+    const atRoot = path.join(dist, cleaned);
+    if (fs.existsSync(inAssets)) return `import(${quote}./assets/${cleaned}${quote})`;
+    if (fs.existsSync(atRoot)) return `import(${quote}./${cleaned}${quote})`;
+    return full;
+  });
+}
+
 function rewriteAssetUrls(code) {
   const next = code.replace(
     /new URL\(\s*(['"])(?!assets\/)([^'"]+\.(?:xlsx|csv))\1\s*,\s*import\.meta\.url\s*\)/g,
@@ -32,6 +43,7 @@ for (const match of scriptHrefs) {
   const file = path.join(dist, rel);
   let code = fs.readFileSync(file, 'utf8');
   code = rewriteAssetUrls(code);
+  code = rewriteChunkImports(code);
   code = code.replace(/<\/script/gi, '<\\/script');
   scripts.push(code);
   fs.unlinkSync(file);

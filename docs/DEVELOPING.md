@@ -28,6 +28,12 @@ A missing, unparseable, or equal registration date, or a missing jury declaratio
 
 The UI uses the strict setting. Tests also cover a lenient setting, which is not offered in the UI. The wrongful-removal flag can still use a registration-after-declaration fact for a removed or inactive voter. An excluded person is counted, not named.
 
+## Map
+
+`shared/map` is generated. `npm run geography` downloads the Census Bureau 2024 1:5,000,000 cartographic boundary files and the newest county population estimates vintage that includes Connecticut planning regions, simplifies the shapes to TopoJSON, and checks that every Gazetteer county has a shape and a population. Install `mapshaper` first (`npm install -D mapshaper`). The raw downloads stay in `tools/.cache`.
+
+The built page keeps that geometry out of the inline script. On a hosted page the browser loads `assets/us-map.js` with `import()`. Opening `app/dist/index.html` from disk uses `assets/us-map-global.js`, because Chrome blocks module `import()` on `file://`. Neither path uses `fetch`. `connect-src 'none'` stays in place.
+
 North Carolina and Pennsylvania are the states whose effective gates allow a named referral. No current state file turns on challenge guidance. Connecticut and the District of Columbia stay counts only, with a banner that the counts are not evidence of unlawful registration. North Dakota has no voter registration, so a last-voted date is not treated as a registration date.
 
 ## Tests
