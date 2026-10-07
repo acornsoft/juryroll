@@ -1,4 +1,5 @@
 const { chromium } = require('playwright-core');
+const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert');
@@ -46,6 +47,60 @@ async function attest(page) {
   await page.fill('#initials', 'AB');
 }
 
+function startPreview() {
+  const distDir = path.join(root, 'app', 'dist');
+  const config = JSON.parse(fs.readFileSync(path.join(distDir, 'staticwebapp.config.json'), 'utf8'));
+  const types = {
+    '.html': 'text/html; charset=utf-8',
+    '.css': 'text/css; charset=utf-8',
+    '.js': 'text/javascript',
+    '.svg': 'image/svg+xml',
+    '.png': 'image/png',
+    ...config.mimeTypes,
+  };
+  const server = http.createServer((req, res) => {
+    const pathname = decodeURIComponent(new URL(req.url, 'http://127.0.0.1').pathname);
+    const rel = pathname === '/' ? '/index.html' : pathname;
+    const excluded = (config.navigationFallback.exclude || []).some((pattern) => {
+      if (pattern.endsWith('/*')) return rel.startsWith(pattern.slice(0, -1));
+      if (pattern.startsWith('*.')) return rel.endsWith(pattern.slice(1));
+      return rel === pattern;
+    });
+    let file = path.normalize(path.join(distDir, rel));
+    const escaped = path.relative(distDir, file).startsWith('..') || path.isAbsolute(path.relative(distDir, file));
+    if (escaped) {
+      res.writeHead(400);
+      res.end();
+      return;
+    }
+    if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+      if (excluded) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('not found');
+        return;
+      }
+      file = path.join(distDir, 'index.html');
+    }
+    const ext = path.extname(file);
+    res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream' });
+    fs.createReadStream(file).pipe(res);
+  });
+  return new Promise((resolve) => {
+    server.listen(0, '127.0.0.1', () => resolve(server));
+  });
+}
+
+function requestHeaders(url) {
+  return new Promise((resolve, reject) => {
+    http.get(url, (res) => {
+      res.resume();
+      const headers = {};
+      Object.entries(res.headers).forEach(([key, value]) => { headers[key] = String(value); });
+      resolve({ status: res.statusCode, ...headers });
+    }).on('error', reject);
+  });
+}
+
 (async () => {
   const built = fs.readFileSync(dist, 'utf8');
   assert.ok(built.includes("connect-src 'none'"), 'CSP connect-src');
@@ -65,12 +120,51 @@ async function attest(page) {
   assert.strictEqual(await first.page.locator('#exportBtn').count(), 0);
   pass('AT-07-banner');
 
+  for (const name of [
+    'juror-template.csv',
+    'voter-template.csv',
+    'juror-template.xlsx',
+    'voter-template.xlsx',
+    'sample_juror_disqualifications.csv',
+    'sample_juror_disqualifications.xlsx',
+    'sample_voter_roll.csv',
+    'sample_voter_roll.xlsx',
+  ]) {
+    assert.strictEqual(await first.page.locator(`a[download="${name}"]`).count(), 1, name);
+  }
+  const templateHref = await first.page.locator('a[download="juror-template.xlsx"]').getAttribute('href');
+  assert.ok(templateHref && templateHref.includes('/assets/') && templateHref.endsWith('.xlsx'), templateHref);
+  const [csvDownload] = await Promise.all([
+    first.page.waitForEvent('download'),
+    first.page.click('a[download="juror-template.csv"]'),
+  ]);
+  assert.strictEqual(csvDownload.suggestedFilename(), 'juror-template.csv');
+  const [xlsxDownload] = await Promise.all([
+    first.page.waitForEvent('download'),
+    first.page.click('a[download="juror-template.xlsx"]'),
+  ]);
+  assert.strictEqual(await first.page.locator('a[download="juror-template.xlsx"]').getAttribute('download'), 'juror-template.xlsx');
+  assert.match(xlsxDownload.suggestedFilename(), /\.xlsx$/);
+  const xlsxSaved = path.join(shots, 'juror-template-download.xlsx');
+  await xlsxDownload.saveAs(xlsxSaved);
+  const xlsxBytes = fs.readFileSync(xlsxSaved);
+  assert.strictEqual(xlsxBytes[0], 0x50);
+  assert.strictEqual(xlsxBytes[1], 0x4b);
+  pass('AT-41-downloads');
+
   await first.page.selectOption('#stateSel', 'NY');
   await first.page.screenshot({ path: path.join(shots, '07-blackout-aggregate.png'), fullPage: true });
   assert.strictEqual(await first.page.locator('#fileJuror').count(), 0);
+  assert.strictEqual(await first.page.locator('#fileVoter').count(), 0);
+  assert.strictEqual(await first.page.locator('#sampleBtn').count(), 0);
+  assert.strictEqual(await first.page.locator('#runBtn').count(), 0);
   assert.strictEqual(await first.page.locator('#exportBtn').count(), 0);
   assert.strictEqual(await first.page.locator('#results tr').count(), 0);
   assert.ok(await first.page.isVisible('#auditMode'));
+  assert.ok(await first.page.isVisible('#auditLetter'));
+  const nyRules = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/NY.json'), 'utf8'));
+  const nyRefuse = await first.page.locator('#juryRefuse').innerText();
+  assert.ok(nyRefuse.includes(nyRules.gates.basis), nyRefuse);
   assert.ok((await first.page.locator('#federalBanner').innerText()).includes('Federal 90-day window'));
   pass('AT-06');
 
@@ -120,6 +214,21 @@ async function attest(page) {
   await main.page.waitForSelector('#infoJuror');
   await main.page.setInputFiles('#fileVoter', sampleV);
   await main.page.waitForSelector('#infoVoter');
+  assert.strictEqual(await main.page.locator('#mapJuror-declDate').count(), 1);
+  assert.strictEqual(await main.page.locator('#mapJuror-regDate').count(), 1);
+  assert.strictEqual(await main.page.locator('#mapVoter-declDate').count(), 1);
+  assert.strictEqual(await main.page.locator('#mapVoter-regDate').count(), 1);
+  const jurorDecl = await main.page.locator('#mapJuror-declDate').inputValue();
+  const voterReg = await main.page.locator('#mapVoter-regDate').inputValue();
+  assert.notStrictEqual(jurorDecl, '-1');
+  assert.match(await main.page.locator('#mapJuror-declDate option:checked').innerText(), /disqualification/i);
+  assert.match(await main.page.locator('#mapVoter-regDate option:checked').innerText(), /registration/i);
+  await main.page.selectOption('#mapJuror-declDate', '-1');
+  assert.strictEqual(await main.page.locator('#mapJuror-declDate').inputValue(), '-1');
+  await main.page.selectOption('#mapJuror-declDate', jurorDecl);
+  await main.page.selectOption('#mapVoter-regDate', '-1');
+  assert.strictEqual(await main.page.locator('#mapVoter-regDate').inputValue(), '-1');
+  await main.page.selectOption('#mapVoter-regDate', voterReg);
   await main.page.screenshot({ path: path.join(shots, '03-step-mapping.png'), fullPage: true });
   await main.page.screenshot({ path: path.join(shots, '04-step-reasons.png'), fullPage: true });
   await main.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
@@ -465,6 +574,153 @@ async function attest(page) {
   assert.strictEqual(await ca.page.locator('#challengePanel').count(), 0);
   pass('AT-36');
   await ca.context.close();
+
+  const gate = await openPage(browser);
+  await gate.page.selectOption('#stateSel', 'NC');
+  await gate.page.waitForSelector('#sampleBtn');
+  async function enableMatch() {
+    await gate.page.evaluate(() => {
+      for (const id of ['step1', 'step2', 'step3', 'sampleBtn', 'runBtn', 'fileJuror', 'fileVoter']) {
+        const node = document.getElementById(id);
+        if (node) node.disabled = false;
+      }
+    });
+  }
+  await enableMatch();
+  await gate.page.click('#sampleBtn');
+  await gate.page.waitForSelector('#fileError');
+  assert.match(await gate.page.locator('#fileError').innerText(), /initials/);
+  assert.strictEqual(await gate.page.locator('#infoJuror').count(), 0);
+  assert.strictEqual(await gate.page.locator('#infoVoter').count(), 0);
+  await enableMatch();
+  await gate.page.setInputFiles('#fileJuror', sampleJ);
+  await enableMatch();
+  await gate.page.setInputFiles('#fileVoter', sampleV);
+  await gate.page.waitForFunction(() => document.getElementById('fileJuror').files.length === 1);
+  assert.strictEqual(await gate.page.locator('#infoJuror').count(), 0);
+  assert.strictEqual(await gate.page.locator('#infoVoter').count(), 0);
+  await gate.page.evaluate(() => {
+    document.getElementById('step3').disabled = false;
+    document.getElementById('runBtn').disabled = false;
+  });
+  await gate.page.click('#runBtn');
+  assert.strictEqual(await gate.page.locator('#countStrong').count(), 0);
+  assert.match(await gate.page.locator('#fileError').innerText(), /initials/);
+  pass('AT-42-attest');
+  await gate.context.close();
+
+  const switched = await openPage(browser);
+  await switched.page.selectOption('#stateSel', 'NC');
+  await attest(switched.page);
+  await switched.page.click('#sampleBtn');
+  await switched.page.waitForSelector('#infoJuror');
+  const entriesBefore = await switched.page.locator('#logPanel').innerText();
+  await switched.page.evaluate(() => {
+    document.getElementById('stateSel').dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  await switched.page.waitForFunction((prev) => document.getElementById('logPanel').innerText !== prev, entriesBefore);
+  assert.strictEqual(await switched.page.locator('#infoJuror').count(), 1);
+  assert.strictEqual(await switched.page.locator('#jurorCleared').count(), 0);
+  await switched.page.selectOption('#stateSel', 'NY');
+  await switched.page.waitForSelector('#jurorCleared');
+  assert.strictEqual(await switched.page.locator('#infoJuror').count(), 0);
+  assert.strictEqual(await switched.page.locator('#sampleBtn').count(), 0);
+  assert.strictEqual(await switched.page.locator('#runBtn').count(), 0);
+  assert.strictEqual(await switched.page.locator('#fileVoter').count(), 0);
+  const switchedBasis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/NY.json'), 'utf8')).gates.basis;
+  assert.ok((await switched.page.locator('#juryRefuse').innerText()).includes(switchedBasis));
+  assert.ok((await switched.page.locator('#jurorCleared').innerText()).includes(switchedBasis));
+  assert.match(await switched.page.locator('#jurorCleared').innerText(), /cleared/i);
+  assert.ok(await switched.page.isVisible('#auditLetter'));
+  await switched.page.selectOption('#stateSel', 'NC');
+  await switched.page.waitForSelector('#fileJuror');
+  assert.strictEqual(await switched.page.locator('#jurorCleared').count(), 0);
+  assert.strictEqual(await switched.page.locator('#juryRefuse').count(), 0);
+  assert.strictEqual(await switched.page.locator('#infoJuror').count(), 0);
+  pass('AT-43-state-switch');
+  await switched.context.close();
+
+  const walk = await openPage(browser);
+  await attest(walk.page);
+  const codes = await walk.page.$$eval('#stateSel option', (opts) => opts.map((opt) => opt.value).filter(Boolean));
+  assert.strictEqual(codes.length, 51);
+  const ran = [];
+  let loaded = false;
+  for (const code of codes) {
+    await walk.page.selectOption('#stateSel', code);
+    await walk.page.waitForFunction((expected) => {
+      const sel = document.querySelector('#stateSel');
+      if (!sel || sel.value !== expected) return false;
+      return Boolean(document.querySelector('#sampleBtn') || document.querySelector('#juryRefuse'));
+    }, code);
+    const sampleCount = await walk.page.locator('#sampleBtn').count();
+    if (sampleCount > 0) {
+      assert.strictEqual(await walk.page.locator('#sampleBtn').isEnabled(), true, `${code} sample button disabled`);
+      assert.strictEqual(await walk.page.locator('#juryRefuse').count(), 0, code);
+      if (!loaded) {
+        await walk.page.click('#sampleBtn');
+        await walk.page.waitForSelector('#infoJuror');
+        await walk.page.waitForSelector('#infoVoter');
+      } else {
+        assert.strictEqual(await walk.page.locator('#infoJuror').count(), 1, `${code} kept the juror file`);
+        assert.strictEqual(await walk.page.locator('#jurorCleared').count(), 0, code);
+      }
+      await walk.page.waitForFunction(() => {
+        const button = document.getElementById('runBtn');
+        return button && !button.disabled;
+      });
+      await walk.page.click('#runBtn');
+      await walk.page.waitForSelector('#countStrong');
+      const strong = Number(await walk.page.locator('#countStrong .n').innerText());
+      assert.ok(Number.isFinite(strong), code);
+      loaded = true;
+      ran.push(code);
+    } else {
+      assert.strictEqual(await walk.page.locator('#runBtn').count(), 0, `${code} run button still present`);
+      assert.strictEqual(await walk.page.locator('#fileJuror').count(), 0, code);
+      assert.strictEqual(await walk.page.locator('#fileVoter').count(), 0, code);
+      const basis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates.basis;
+      const refuse = (await walk.page.locator('#juryRefuse').innerText()).trim();
+      assert.ok(refuse.includes(basis), `${code} missing explanation`);
+      assert.ok(await walk.page.locator('#auditLetterBtn').isVisible(), code);
+      if (loaded) {
+        const cleared = await walk.page.locator('#jurorCleared').innerText();
+        assert.match(cleared, /cleared/i, code);
+        assert.ok(cleared.includes(basis), `${code} did not explain the cleared jury file`);
+        loaded = false;
+      }
+    }
+  }
+  assert.deepStrictEqual(ran, ['NC']);
+  pass('AT-44-all-states');
+  await walk.context.close();
+
+  const preview = await startPreview();
+  const origin = `http://127.0.0.1:${preview.address().port}`;
+  const assetName = fs.readdirSync(path.join(root, 'app/dist/assets')).find((name) => name.startsWith('juror-template-') && name.endsWith('.xlsx'));
+  const assetUrl = `${origin}/assets/${assetName}`;
+  const headers = await requestHeaders(assetUrl);
+  assert.strictEqual(headers.status, 200);
+  assert.strictEqual(headers['content-type'], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  const rootHeaders = await requestHeaders(`${origin}/${assetName}`);
+  assert.strictEqual(rootHeaders.status, 404);
+  assert.notStrictEqual(rootHeaders['content-type'], 'text/html');
+  console.log('template xlsx', assetUrl, headers.status, headers['content-type']);
+  const sameOrigin = await openPage(browser);
+  await sameOrigin.page.goto(origin + '/');
+  const [namedXlsx] = await Promise.all([
+    sameOrigin.page.waitForEvent('download'),
+    sameOrigin.page.click('a[download="juror-template.xlsx"]'),
+  ]);
+  assert.strictEqual(namedXlsx.suggestedFilename(), 'juror-template.xlsx');
+  const [namedCsv] = await Promise.all([
+    sameOrigin.page.waitForEvent('download'),
+    sameOrigin.page.click('a[download="voter-template.csv"]'),
+  ]);
+  assert.strictEqual(namedCsv.suggestedFilename(), 'voter-template.csv');
+  pass('AT-45-same-origin-downloads');
+  await sameOrigin.context.close();
+  await new Promise((resolve) => preview.close(resolve));
 
   await browser.close();
   console.log('ALL UI TESTS PASSED');

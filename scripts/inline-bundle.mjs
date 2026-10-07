@@ -12,6 +12,18 @@ function sha256(text) {
   return crypto.createHash('sha256').update(text).digest('base64');
 }
 
+function rewriteAssetUrls(code) {
+  const next = code.replace(
+    /new URL\(\s*(['"])(?!assets\/)([^'"]+\.(?:xlsx|csv))\1\s*,\s*import\.meta\.url\s*\)/g,
+    (_, quote, name) => `new URL(${quote}assets/${name.replace(/^\.\//, '')}${quote}, import.meta.url)`,
+  );
+  const missed = next.match(/new URL\(\s*['"](?!assets\/)[^'"]+\.(?:xlsx|csv)['"]/g);
+  if (missed) {
+    throw new Error(`asset URL rewrite missed: ${missed.join(', ')}`);
+  }
+  return next;
+}
+
 const scriptHrefs = [...html.matchAll(/<script type="module"[^>]*src="([^"]+)"><\/script>/g)];
 if (!scriptHrefs.length) throw new Error('built index has no module script');
 const scripts = [];
@@ -19,6 +31,7 @@ for (const match of scriptHrefs) {
   const rel = match[1].replace(/^\.\//, '');
   const file = path.join(dist, rel);
   let code = fs.readFileSync(file, 'utf8');
+  code = rewriteAssetUrls(code);
   code = code.replace(/<\/script/gi, '<\\/script');
   scripts.push(code);
   fs.unlinkSync(file);
