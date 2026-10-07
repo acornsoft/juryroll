@@ -229,10 +229,25 @@ export function App() {
           db.close();
           return;
         }
-        idbRef.current = db;
-        const entries = await readAudit(db);
+        const stored = await readAudit(db);
         if (gone) return;
-        logRef.current = entries;
+        idbRef.current = db;
+        // A state choice can append session_start before IndexedDB opens.
+        // Those entries exist only in memory. Adopting the database snapshot
+        // would drop them, so keep the memory chain when it already covers
+        // everything that was stored and write back whatever the snapshot missed.
+        const pending = logRef.current;
+        const pendingHashes = new Set(pending.map((entry) => entry.hash));
+        const storedIsSubset = stored.every((entry) => pendingHashes.has(entry.hash));
+        if (pending.length > 0 && storedIsSubset) {
+          for (const entry of pending) {
+            if (!stored.some((item) => item.hash === entry.hash)) await writeAudit(db, entry);
+          }
+        } else {
+          logRef.current = stored;
+        }
+        if (gone) return;
+        const entries = logRef.current;
         setLogCount(entries.length);
         const check = chainStatus(entries);
         if (!check.ok) {
