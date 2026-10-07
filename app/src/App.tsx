@@ -17,6 +17,7 @@ import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './a
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
+import type { ExtraColumns } from '../../shared/src/policy/columns.ts';
 import { exportableRows, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
@@ -39,6 +40,9 @@ type Held = AnalyzedFile & {
 type Kind = 'juror' | 'voter';
 type PendingBook = { sha256: string; bytes: number; names: string[]; csvBySheet: Record<string, string> };
 type PurgeTrigger = 'button' | 'after_export' | 'timeout' | 'pagehide';
+type DateField = 'declDate' | 'regDate';
+
+const ATTEST_REFUSE = 'Sign the use statement and enter your initials before you load a file or run the match.';
 
 const GUIDE_START = '## 3. What you CAN do';
 const GUIDE_END = '## 5. The 90-day window';
@@ -109,6 +113,7 @@ export function App() {
   const [jurySource, setJurySource] = useState('');
   const [removals, setRemovals] = useState('');
   const [removalSource, setRemovalSource] = useState('');
+  const [clearedNote, setClearedNote] = useState('');
 
   const logRef = useRef<AuditEntry[]>([]);
   const idbRef = useRef<IDBDatabase | null>(null);
@@ -273,12 +278,23 @@ export function App() {
   }, [gates]);
 
   async function onState(next: string) {
+    const hadJuror = Boolean(jurorRef.current);
     setCode(next);
     const picked = resolveRules(next, bundle);
     setResolved(picked);
     setPolicy(null);
     setCoreResult(null);
-    if (!picked.rules || !uiGates(picked.rules).allow_jury_list) {
+    const nextAllows = Boolean(picked.rules && uiGates(picked.rules).allow_jury_list);
+    if (nextAllows) {
+      setClearedNote('');
+    } else {
+      if (hadJuror) {
+        const nextName = STATES.find((item) => item[0] === next)?.[1] ?? next;
+        const basis = picked.rules?.gates.basis ?? '';
+        setClearedNote(`The loaded jury file was cleared because ${nextName} does not allow JuryRoll to hold the jury list. ${basis}`);
+      } else {
+        setClearedNote('');
+      }
       setJuror(null);
       setPendingJ(null);
       jurorRef.current = null;
@@ -308,6 +324,14 @@ export function App() {
   }
 
   async function acceptText(kind: Kind, text: string, bytes: number, sha256: string, hasHeader: boolean) {
+    if (!attested) {
+      setFileError(ATTEST_REFUSE);
+      return;
+    }
+    if (!gates?.allow_jury_list) {
+      setFileError(rules?.gates.basis || confidential || 'JuryRoll does not load a jury list for this state.');
+      return;
+    }
     const analyzed = analyzeText(text, hasHeader, kind, bytes, sha256);
     if (!analyzed.ok) {
       if (kind === 'juror') setJuror(null);
@@ -335,6 +359,14 @@ export function App() {
   }
 
   async function takeFile(kind: Kind, file: File) {
+    if (!attested) {
+      setFileError(ATTEST_REFUSE);
+      return;
+    }
+    if (!gates?.allow_jury_list) {
+      setFileError(rules?.gates.basis || confidential || 'JuryRoll does not load a jury list for this state.');
+      return;
+    }
     const upload = await readUpload(file);
     const hasHeader = kind === 'juror' ? hdrJ : hdrV;
     if (upload.book && upload.book.names.length > 1) {
@@ -355,11 +387,23 @@ export function App() {
       void append('file_refused', { kind: 'juror', reason: 'jury_gate', headers: [] });
       return;
     }
+    if (!attested) {
+      setFileError(ATTEST_REFUSE);
+      return;
+    }
     const file = event.dataTransfer.files[0];
     if (file) void takeFile('juror', file);
   }
 
   async function loadSamples() {
+    if (!attested) {
+      setFileError(ATTEST_REFUSE);
+      return;
+    }
+    if (!rules || !gates?.allow_jury_list) {
+      setFileError(rules?.gates.basis || 'Choose a state that allows the jury list before loading sample data.');
+      return;
+    }
     const jurorBytes = new TextEncoder().encode(jurorSample);
     const voterBytes = new TextEncoder().encode(voterSample);
     await acceptText('juror', jurorSample, jurorBytes.byteLength, await sha256Hex(jurorBytes), true);
@@ -372,6 +416,14 @@ export function App() {
   }
 
   async function onRun() {
+    if (!attested) {
+      setFileError(ATTEST_REFUSE);
+      return;
+    }
+    if (!gates?.allow_jury_list) {
+      setFileError(rules?.gates.basis || confidential || 'JuryRoll does not run a match for this state.');
+      return;
+    }
     if (!juror || !voter || !rules) return;
     const matched = runMatch(
       {
@@ -629,10 +681,14 @@ export function App() {
           </section>
         )}
 
-        {code && gates && !gates.allow_jury_list && (
+        {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
+
+        {code && gates && !gates.allow_jury_list && rules && (
           <section className="panel" id="auditMode">
             <h2>Counts only</h2>
             <p className="banner" id="juryBlocked">{confidential}</p>
+            {clearedNote && <p className="banner" id="jurorCleared" role="status">{clearedNote}</p>}
+            <p className="banner" id="juryRefuse">JuryRoll cannot load the jury list or run a match in {stateName}. The rules say: {rules.gates.basis}</p>
             <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
               <p>No person file is loaded. Dropping a jury list here does nothing.</p>
             </div>
@@ -657,105 +713,130 @@ export function App() {
           </section>
         )}
 
-        <fieldset className="panel" id="step1" disabled={!ready || !gates?.allow_jury_list}>
-          <legend>Step 1. Load the files</legend>
-          {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
-          <div className="grid">
-            <div id={gates?.allow_jury_list ? 'jurorSlot' : undefined} onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
-              <h3>Jury disqualifications</h3>
-              {gates?.allow_jury_list && (
-                <input id="fileJuror" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('juror', file); }} />
-              )}
-              <label className="inline"><input id="hdrJuror" type="checkbox" checked={hdrJ} onChange={(event) => { setHdrJ(event.target.checked); if (juror) void acceptText('juror', juror.text, juror.bytes, juror.sha256, event.target.checked); }} /> First row has column names</label>
-              {pendingJ && (
-                <label>Choose a sheet
-                  <select id="jurorSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingJ) return; void acceptText('juror', pendingJ.csvBySheet[name], pendingJ.bytes, pendingJ.sha256, hdrJ); setPendingJ(null); }}>
-                    <option value="">Choose a sheet</option>
-                    {pendingJ.names.map((name) => <option key={name} value={name}>{name}</option>)}
-                  </select>
-                </label>
-              )}
-              {juror && <p className="small" id="infoJuror">{juror.rows} rows. {juror.sheetName ?? 'Table loaded.'}</p>}
-            </div>
-            <div id="voterSlot">
-              <h3>Voter file</h3>
-              <input id="fileVoter" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
-              <label className="inline"><input id="hdrVoter" type="checkbox" checked={hdrV} onChange={(event) => { setHdrV(event.target.checked); if (voter) void acceptText('voter', voter.text, voter.bytes, voter.sha256, event.target.checked); }} /> First row has column names</label>
-              {pendingV && (
-                <label>Choose a sheet
-                  <select id="voterSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingV) return; void acceptText('voter', pendingV.csvBySheet[name], pendingV.bytes, pendingV.sha256, hdrV); setPendingV(null); }}>
-                    <option value="">Choose a sheet</option>
-                    {pendingV.names.map((name) => <option key={name} value={name}>{name}</option>)}
-                  </select>
-                </label>
-              )}
-              {voter && <p className="small" id="infoVoter">{voter.rows} rows.</p>}
-            </div>
-          </div>
-          <p className="row">
-            <button id="sampleBtn" type="button" className="secondary" onClick={() => { void loadSamples(); }}>Try with sample data</button>
-            {(juror || voter) && <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge now</button>}
-            {(juror || voter) && <span className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</span>}
-          </p>
-          {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
+        {gates?.allow_jury_list && (
+          <>
+            <fieldset className="panel" id="step1" disabled={!ready}>
+              <legend>Step 1. Load the files</legend>
+              <div className="grid">
+                <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
+                  <h3>Jury disqualifications</h3>
+                  <input id="fileJuror" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('juror', file); }} />
+                  <label className="inline"><input id="hdrJuror" type="checkbox" checked={hdrJ} onChange={(event) => { setHdrJ(event.target.checked); if (juror) void acceptText('juror', juror.text, juror.bytes, juror.sha256, event.target.checked); }} /> First row has column names</label>
+                  {pendingJ && (
+                    <label>Choose a sheet
+                      <select id="jurorSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingJ) return; void acceptText('juror', pendingJ.csvBySheet[name], pendingJ.bytes, pendingJ.sha256, hdrJ); setPendingJ(null); }}>
+                        <option value="">Choose a sheet</option>
+                        {pendingJ.names.map((name) => <option key={name} value={name}>{name}</option>)}
+                      </select>
+                    </label>
+                  )}
+                  {juror && <p className="small" id="infoJuror">{juror.rows} rows. {juror.sheetName ?? 'Table loaded.'}</p>}
+                </div>
+                <div id="voterSlot">
+                  <h3>Voter file</h3>
+                  <input id="fileVoter" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
+                  <label className="inline"><input id="hdrVoter" type="checkbox" checked={hdrV} onChange={(event) => { setHdrV(event.target.checked); if (voter) void acceptText('voter', voter.text, voter.bytes, voter.sha256, event.target.checked); }} /> First row has column names</label>
+                  {pendingV && (
+                    <label>Choose a sheet
+                      <select id="voterSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingV) return; void acceptText('voter', pendingV.csvBySheet[name], pendingV.bytes, pendingV.sha256, hdrV); setPendingV(null); }}>
+                        <option value="">Choose a sheet</option>
+                        {pendingV.names.map((name) => <option key={name} value={name}>{name}</option>)}
+                      </select>
+                    </label>
+                  )}
+                  {voter && <p className="small" id="infoVoter">{voter.rows} rows.</p>}
+                </div>
+              </div>
+              <p className="row">
+                <button id="sampleBtn" type="button" className="secondary" onClick={() => { void loadSamples(); }}>Try with sample data</button>
+                {(juror || voter) && <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge now</button>}
+                {(juror || voter) && <span className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</span>}
+              </p>
+              {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
+            </fieldset>
+
+            <fieldset className="panel" id="step2" disabled={!ready}>
+              <legend>Step 2. Check columns</legend>
+              <div className="grid">
+                <div>
+                  <h3>Jury columns</h3>
+                  <label className="inline">Dates with slashes
+                    <select id="orderJuror" value={juror?.order ?? 'MDY'} onChange={(event) => patch('juror', (held) => ({ ...held, order: event.target.value }))}>
+                      <option value="MDY">MM/DD/YYYY (US)</option>
+                      <option value="DMY">DD/MM/YYYY</option>
+                    </select>
+                  </label>
+                  {juror && (
+                    <MapTable
+                      id="mapJuror"
+                      headers={juror.headers}
+                      map={juror.map}
+                      fields={core.JUROR_FIELDS}
+                      extra={juror.extra}
+                      onChange={(field, index) => patch('juror', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
+                      onExtra={(field, index) => patch('juror', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
+                    />
+                  )}
+                </div>
+                <div>
+                  <h3>Voter columns</h3>
+                  <label className="inline">Dates with slashes
+                    <select id="orderVoter" value={voter?.order ?? 'MDY'} onChange={(event) => patch('voter', (held) => ({ ...held, order: event.target.value }))}>
+                      <option value="MDY">MM/DD/YYYY (US)</option>
+                      <option value="DMY">DD/MM/YYYY</option>
+                    </select>
+                  </label>
+                  {voter && (
+                    <MapTable
+                      id="mapVoter"
+                      headers={voter.headers}
+                      map={voter.map}
+                      fields={core.VOTER_FIELDS}
+                      extra={voter.extra}
+                      onChange={(field, index) => patch('voter', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
+                      onExtra={(field, index) => patch('voter', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
+                    />
+                  )}
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset className="panel" id="step3" disabled={!ready}>
+              <legend>Step 3. Choose reasons</legend>
+              <div id="reasonBox">
+                {juror?.reasons.map((reason) => (
+                  <label className="inline" key={reason.value}>
+                    <input
+                      type="checkbox"
+                      checked={Boolean(juror.reasonFilter[reason.value])}
+                      onChange={(event) => patch('juror', (held) => ({ ...held, reasonFilter: { ...held.reasonFilter, [reason.value]: event.target.checked } }))}
+                    />
+                    <span>{reason.value || '(blank)'} ({reason.count})</span>
+                  </label>
+                ))}
+              </div>
+              <p className="row">
+                <button id="runBtn" type="button" disabled={!canRun} onClick={() => { void onRun(); }}>Run the match</button>
+                <span id="runMsg" className="small">{policy ? 'Match finished. Review Step 4.' : 'The match stays on this computer.'}</span>
+              </p>
+            </fieldset>
+          </>
+        )}
+
+        <section className="panel no-print" id="downloadsPanel">
+          <h2>Blank templates and fictional samples</h2>
           <p className="small" id="templateDateNote">The registration date is needed for a named referral.</p>
           <div className="downloads">
-            <a href={jurorTemplateUrl} download>Blank juror template (CSV)</a>
-            <a href={jurorTemplateXlsxUrl} download>Blank juror template (Excel)</a>
-            <a href={voterTemplateUrl} download>Blank voter template (CSV)</a>
-            <a href={voterTemplateXlsxUrl} download>Blank voter template (Excel)</a>
-            <a href={jurorSampleUrl} download>Fictional juror sample (CSV)</a>
-            <a href={jurorSampleXlsxUrl} download>Fictional juror sample (Excel)</a>
-            <a href={voterSampleUrl} download>Fictional voter sample (CSV)</a>
-            <a href={voterSampleXlsxUrl} download>Fictional voter sample (Excel)</a>
+            <a href={jurorTemplateUrl} download="juror-template.csv">Blank juror template (CSV)</a>
+            <a href={jurorTemplateXlsxUrl} download="juror-template.xlsx">Blank juror template (Excel)</a>
+            <a href={voterTemplateUrl} download="voter-template.csv">Blank voter template (CSV)</a>
+            <a href={voterTemplateXlsxUrl} download="voter-template.xlsx">Blank voter template (Excel)</a>
+            <a href={jurorSampleUrl} download="sample_juror_disqualifications.csv">Fictional juror sample (CSV)</a>
+            <a href={jurorSampleXlsxUrl} download="sample_juror_disqualifications.xlsx">Fictional juror sample (Excel)</a>
+            <a href={voterSampleUrl} download="sample_voter_roll.csv">Fictional voter sample (CSV)</a>
+            <a href={voterSampleXlsxUrl} download="sample_voter_roll.xlsx">Fictional voter sample (Excel)</a>
           </div>
-        </fieldset>
-
-        <fieldset className="panel" id="step2" disabled={!ready || !gates?.allow_jury_list}>
-          <legend>Step 2. Check columns</legend>
-          <div className="grid">
-            <div>
-              <h3>Jury columns</h3>
-              <label className="inline">Dates with slashes
-                <select id="orderJuror" value={juror?.order ?? 'MDY'} onChange={(event) => patch('juror', (held) => ({ ...held, order: event.target.value }))}>
-                  <option value="MDY">MM/DD/YYYY (US)</option>
-                  <option value="DMY">DD/MM/YYYY</option>
-                </select>
-              </label>
-              {juror && <MapTable id="mapJuror" headers={juror.headers} map={juror.map} fields={core.JUROR_FIELDS} onChange={(field, index) => patch('juror', (held) => ({ ...held, map: { ...held.map, [field]: index } }))} />}
-            </div>
-            <div>
-              <h3>Voter columns</h3>
-              <label className="inline">Dates with slashes
-                <select id="orderVoter" value={voter?.order ?? 'MDY'} onChange={(event) => patch('voter', (held) => ({ ...held, order: event.target.value }))}>
-                  <option value="MDY">MM/DD/YYYY (US)</option>
-                  <option value="DMY">DD/MM/YYYY</option>
-                </select>
-              </label>
-              {voter && <MapTable id="mapVoter" headers={voter.headers} map={voter.map} fields={core.VOTER_FIELDS} onChange={(field, index) => patch('voter', (held) => ({ ...held, map: { ...held.map, [field]: index } }))} />}
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset className="panel" id="step3" disabled={!ready || !gates?.allow_jury_list}>
-          <legend>Step 3. Choose reasons</legend>
-          <div id="reasonBox">
-            {juror?.reasons.map((reason) => (
-              <label className="inline" key={reason.value}>
-                <input
-                  type="checkbox"
-                  checked={Boolean(juror.reasonFilter[reason.value])}
-                  onChange={(event) => patch('juror', (held) => ({ ...held, reasonFilter: { ...held.reasonFilter, [reason.value]: event.target.checked } }))}
-                />
-                <span>{reason.value || '(blank)'} ({reason.count})</span>
-              </label>
-            ))}
-          </div>
-          <p className="row">
-            <button id="runBtn" type="button" disabled={!canRun} onClick={() => { void onRun(); }}>Run the match</button>
-            <span id="runMsg" className="small">{policy ? 'Match finished. Review Step 4.' : 'The match stays on this computer.'}</span>
-          </p>
-        </fieldset>
+        </section>
 
         <section className="panel" id="step4">
           <h2 className="print-title">Referral for official verification — {stateName || 'No state yet'} — {today}</h2>
@@ -832,7 +913,20 @@ export function App() {
   );
 }
 
-function MapTable({ id, headers, map, fields, onChange }: { id: string; headers: string[]; map: Record<string, number>; fields: string[]; onChange: (field: string, index: number) => void }) {
+const DATE_ROWS: readonly { field: DateField; label: string }[] = [
+  { field: 'declDate', label: 'Declaration date' },
+  { field: 'regDate', label: 'Registration date' },
+];
+
+function MapTable({ id, headers, map, fields, extra, onChange, onExtra }: {
+  id: string;
+  headers: string[];
+  map: Record<string, number>;
+  fields: string[];
+  extra: ExtraColumns;
+  onChange: (field: string, index: number) => void;
+  onExtra: (field: DateField, index: number) => void;
+}) {
   return (
     <table className="maptable" id={id}>
       <tbody>
@@ -850,6 +944,17 @@ function MapTable({ id, headers, map, fields, onChange }: { id: string; headers:
             </tr>
           );
         })}
+        {DATE_ROWS.map((row) => (
+          <tr key={row.field}>
+            <th>{row.label}</th>
+            <td>
+              <select id={`${id}-${row.field}`} aria-label={row.label} value={extra[row.field]} onChange={(event) => onExtra(row.field, Number(event.target.value))}>
+                <option value={-1}>Not in this file</option>
+                {headers.map((header, index) => <option key={`${header}-${index}`} value={index}>{header}</option>)}
+              </select>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

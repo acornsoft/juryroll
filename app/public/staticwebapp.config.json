@@ -1,7 +1,7 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "*.css", "*.js", "*.png", "*.svg", "/guide.html", "/guide.css"]
+    "exclude": ["/assets/*", "*.css", "*.js", "*.png", "*.svg", "*.xlsx", "*.csv", "/guide.html", "/guide.css"]
   },
   "globalHeaders": {
     "Content-Security-Policy": "default-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none'; img-src data:; script-src 'self'; style-src 'self'",
@@ -10,6 +10,7 @@
   },
   "mimeTypes": {
     ".jsonl": "application/jsonl",
-    ".csv": "text/csv"
+    ".csv": "text/csv",
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   }
 }
