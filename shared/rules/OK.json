@@ -4,13 +4,17 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
+    "public": false,
+    "statute": "38 O.S. 36(B): 'Names and personal information concerning prospective and sitting jurors shall not be disclosed to the public outside open court, except upon order of the court.' 38 O.S. 18.2(D): the clerk 'shall not disclose, copy or permit any person to copy any general panel jury list or any portion thereof except as provided in Section 36'. 51 O.S. 24A.5(1): the Open Records Act 'does not apply to records specifically required by law to be kept confidential'. No statute opens the 26 O.S. 4-120.5(B) list. Separate record: 26 O.S. 4-120(C) makes the list of voter registrations canceled in the last 24 months, with the reason, public. The State Election Board publishes it with reason code 'JD = Excused from Jury Duty (non-citizen)'.",
     "holder": "Court clerk of each county.",
-    "fields_withheld": null,
+    "fields_withheld": [
+      "Names and personal information of prospective and sitting jurors, outside open court, unless a judge orders disclosure (38 O.S. 36(B))",
+      "General panel jury lists: no disclosure or copying except under 38 O.S. 36 (38 O.S. 18.2(D))",
+      "Driver and ID jury source list: used only for jury selection; no copying for other purposes (38 O.S. 18(1))"
+    ],
     "official_pipeline": "26 O.S. 4-120.5(B): each month the court clerk lists all persons excused from jury duty for not being a U.S. citizen and gives it to the secretary of the county election board, who cancels each listed registration and reports the person to the district attorney and the U.S. attorney. 26 O.S. 4-120(A)(8) lists this as a cancellation ground.",
     "use_restriction": null,
-    "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78478",
+    "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78234",
     "verified_on": "2026-10-07",
     "sources": [
       {
@@ -24,6 +28,42 @@
         "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78473",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "38 O.S. 36 (juror names and personal information not disclosed outside open court except by court order)",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78234",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "38 O.S. 18.2(D) (no disclosure of general panel jury lists except under section 36)",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=476050",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "38 O.S. 18(1) (driver and ID source list used exclusively for jury selection)",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78213",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "38 O.S. 28(B) (jurors must be citizens of the United States)",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=439626",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "51 O.S. 24A.5(1) (Open Records Act does not apply to records required by law to be confidential)",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=80292",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Oklahoma State Election Board, OK Election Data Warehouse Information Packet, Basic Access (8/2025): 'Anyone may request basic access'; Deleted Voters file has name, address, party, voter history, deletion date and reason, including 'JD = Excused from Jury Duty (non-citizen)'",
+        "url": "https://oklahoma.gov/content/dam/ok/en/elections/ok-election-data-warehouse/readme-basic.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
@@ -48,14 +88,14 @@
     "deadlines": null,
     "deadline_days_before_election": null,
     "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": null,
     "verified_on": null
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78473",
@@ -80,6 +120,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "26 O.S. 4-120(C) (public list of registrations canceled in the previous 24 months, with the reason) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: the number of registrations canceled with reason code JD (excused from jury duty, non-citizen) by county and by month, from the 26 O.S. 4-120(C) canceled-registration list (State Election Board Data Warehouse, Deleted Voters file, Deletion_Reason = JD). JD counts show that the official 26 O.S. 4-120.5(B) pipeline is running. You may also ask the county election board for the monthly counts of 4-120.5(B) lists received and persons reported to the district attorney and U.S. attorney.",
+    "counts_only": true,
+    "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78473",
+    "verified_on": "2026-10-07",
+    "note": "No names in the app, the export or the logs. The source file names people; JuryRoll keeps only the counts by county and month and never pairs, shows or stores a canceled row (REQ-NOTE 27). Do not ask a court clerk for the monthly jury lists: juror names are confidential (38 O.S. 36(B))."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -88,8 +136,14 @@
     "basis": "The jury non-citizen list goes to the county election board (26 O.S. 4-120.5(B)); the list itself is not stated to be public (null). No private challenge statute found. Strict gates: counts only."
   },
   "notes": [
-    "26 O.S. 4-120(C) makes the list of cancellations in the last 24 months, with reasons, public. Those records are completed official actions, not leads. JuryRoll should not re-publish them.",
+    "CHANGED 2026-10-07: Optimus-approved with a change (2026-10-07 13:48). jury_list.public false (38 O.S. 36(B)); fields_withheld; juryroll_lead_sufficient false; audit_path set to JD cancellation counts by county and month from the 4-120(C) list (counts only) plus 20507(i); federal_source_url moved to govinfo. dob_in_public_file stays null. No gate loosens. LEGAL-REVIEW.md line 20 updated by Optimus.",
+    "26 O.S. 4-120(C) makes the list of registrations canceled in the last 24 months, with reasons, public. The State Election Board's Data Warehouse lets anyone get it, with reason code JD (excused from jury duty, non-citizen). These rows are completed official actions, not leads (LEGAL-REVIEW.md line 20). JuryRoll never pairs, shows, stores or re-publishes a canceled row. JD rows count only toward aggregate counters (REQ-NOTE 27) and the audit counts by county and month.",
     "Duplication: Oklahoma cancels monthly from the same jury data and refers to prosecutors (4-120.5(B)).",
-    "allowed is null: none found; the app shows no challenge guidance."
+    "allowed is null: none found; the app shows no challenge guidance.",
+    "2001 OK AG 24 said a clerk may give the public a general panel jury list. The 2015 amendments (38 O.S. 36 and 18.2(D)) now bar disclosure except by court order. This file follows the statutes.",
+    "Voter data: the Data Warehouse absentee-request file shows full date of birth (MM/DD/YYYY). Whether the 7-103.2 voter list has date of birth or registration date was not verified, so both stay null (Probable cap stays).",
+    "U.S. v. Ziriax (W.D. Okla., filed Feb. 26, 2026): DOJ sued for the unredacted voter list. Oklahoma settled; DOJ dismissed without prejudice on Mar. 24, 2026. No effect on rule values.",
+    "26 O.S. 4-122 (2025 SB 1086): the State Election Board may check voters against citizenship databases; a definite match gets a notice and 30 days to show proof before cancellation (4-120(A)(9)).",
+    "juryroll_lead_sufficient is false: no private challenge statute exists. This is the strict value; app behavior does not change from null."
   ]
 }
