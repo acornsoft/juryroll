@@ -4,20 +4,44 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
-    "holder": "Circuit court jury commissioners.",
+    "public": false,
+    "statute": "Md. Rule 16-913(a)(1): 'A custodian shall deny inspection of an administrative record used by a jury commissioner in the jury selection process, except (i) as otherwise ordered by a trial judge in connection with a challenge under Code, Courts Article, §§ 8-408 and 8-409; or (ii) as provided in subsections (a)(2) and (a)(3) of this Rule.' (a)(3) opens, after a pool is emptied and every juror from it has served, details of 'each person whose name was selected from that pool and placed on a jury list'; it does not cover persons found not qualified. The juror qualification form asks 'U.S. Citizen? _____Yes _____No' (Cts. & Jud. Proc. 8-302).",
+    "holder": "Circuit court jury commissioner (Md. Code, Cts. & Jud. Proc. 8-205).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gcj&section=8-103&enactments=false",
+    "source_url": "https://govt.westlaw.com/mdc/Document/N05AE8DA0EDE611EDA6E4CD20180F7EA9?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)",
     "verified_on": "2026-10-07",
     "sources": [
+      {
+        "cite": "Md. Rule 16-913(a) (custodian shall deny inspection of jury selection records; official text on the Maryland Code and Court Rules site, effective April 1, 2023)",
+        "url": "https://govt.westlaw.com/mdc/Document/N05AE8DA0EDE611EDA6E4CD20180F7EA9?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
       {
         "cite": "Md. Code, Cts. & Jud. Proc. 8-103 (jurors must be U.S. citizens)",
         "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gcj&section=8-103&enactments=false",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Md. Code, Cts. & Jud. Proc. 8-302 (juror qualification form asks 'U.S. Citizen?')",
+        "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gcj&section=8-302&enactments=false",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Md. Code, Cts. & Jud. Proc. 8-105(c) (rules shall provide for disclosure to the State Board of Elections as to individuals who have died, have moved, or are not citizens)",
+        "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gcj&section=8-105&enactments=false",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Md. Rule 16-913(a) (commercial copy, same wording)",
+        "url": "https://www.courtrules.net/maryland/maryland-court-administration/rule-16-913",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
       }
     ]
   },
@@ -49,7 +73,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gel&section=3-602&enactments=false",
@@ -73,16 +97,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Md. Code, Gen. Provisions 4-201 (Public Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the local board of elections or the State Board of Elections: per year, the number of registrations cancelled because the registrant was not a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=ggp&section=4-201&enactments=false",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. Cts. & Jud. Proc. 8-105(c) calls for rules on disclosure to the State Board of Elections about jurors who are not citizens; whether data flows under Rule 16-913(a)(5) is not confirmed (REQ-NOTE 55). Whether boards keep counts by cancellation reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. No direct private challenge found. Voter lists are for electoral-process uses only, under oath (Elec. Law 3-506)."
+    "basis": "Jury records: 'A custodian shall deny inspection of an administrative record used by a jury commissioner in the jury selection process' (Md. Rule 16-913(a)(1)), so public is false and the app shows counts only. No direct private challenge found. Voter lists are for electoral-process uses only, under oath (Elec. Law 3-506). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false and statute quoted (Md. Rule 16-913(a)(1)); holder; jury sources 8-302 and Rule 16-913 added; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file value changes. 2026-10-07 later: Rule 16-913 URL moved to the official site; 8-105(c) added; official_pipeline HOLD (REQ-NOTE 55). 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads. Later 2026-10-07: Optimus ruled official_pipeline stays null (REQ-NOTE 55 closed).",
+    "Source quality (REQ-NOTE 52 closed 2026-10-07): Rule 16-913 was read on the official Maryland Code and Court Rules site (govt.westlaw.com/mdc, 'Effective: April 1, 2023') in a browser. Subsection (a)(1) matches the quoted text word for word. courtrules.net (commercial) kept as a second source.",
+    "PA-style check: Rule 16-913(a)(3) opens, after a pool is used up, the name, zip code, age, gender, education, occupation, marital status and spouse's occupation of persons 'placed on a jury list'. Those are persons selected, not persons disqualified, and no reason is given. No Maryland list of non-citizen disqualifications is public.",
+    "official_pipeline = null (Optimus 2026-10-07; REQ-NOTE 55 closed). Md. Code, Cts. & Jud. Proc. 8-105(c): 'The rules shall provide for disclosure of information to the State Board of Elections as to individuals who have died, have moved, or are not citizens of the United States.' The implementing rule, Md. Rule 16-913(a)(5), says the AOC unit 'shall provide to the State Board of Elections and State Motor Vehicle Administration data about prospective, qualified, or sworn jurors needed to correct erroneous or obsolete information, such as that related to a death or change of address'. The rule does not name citizenship. LEGAL-REVIEW and the NCSL table (updated Sept. 1, 2026) do not list Maryland as a pipeline state. The earlier note saying no Maryland statute sends juror citizenship information to election officials was wrong and is replaced.",
+    "Cancelled-voter file: no published Maryland cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Use limit: whether JuryRoll matching is 'related to the electoral process' (3-506) is not settled. The app should warn Maryland users.",
-    "Judicial review of eligibility determinations must be filed no later than the third Tuesday before the next election (3-602(c)(2)).",
-    "official_pipeline is null: none found in Elec. Law 3-504 or Cts. & Jud. Proc. title 8 sections read."
+    "Judicial review of eligibility determinations must be filed no later than the third Tuesday before the next election (3-602(c)(2))."
   ]
 }
