@@ -1,0 +1,16 @@
+node_modules/
+app/dist/
+dist/
+.env
+.env.*
+*.csv
+*.xlsx
+*.xls
+!shared/samples/
+!shared/samples/**
+!shared/templates/
+!shared/templates/**
+shared/src/rulesBundle.json
+app/public/guide.html
+screenshot.png
+test/export_default.csv

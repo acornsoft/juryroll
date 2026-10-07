@@ -1,0 +1,29 @@
+{
+  "name": "juryroll",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "prebuild": "node tools/bundle-rules.mjs && node tools/render-guide.mjs && node tools/write-fixtures.mjs",
+    "build": "vite build --config app/vite.config.ts && node scripts/inline-bundle.mjs",
+    "pretest": "node tools/bundle-rules.mjs && node tools/render-guide.mjs && node tools/write-fixtures.mjs",
+    "test": "node test/core.test.mjs && node --experimental-strip-types test/policy.test.ts && node --experimental-strip-types test/xlsx.test.ts && node scripts/check-content.mjs && node scripts/check-gitignore.mjs && tsc --noEmit -p tsconfig.json && npm run build && node test/ui.test.cjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "playwright-core": "1.63.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}
