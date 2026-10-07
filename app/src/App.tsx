@@ -14,6 +14,7 @@ import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url
 import { ATTEST_LINES, CAVEATS, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
+import { COUNTIES, type County } from '../../shared/src/counties.ts';
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
@@ -90,7 +91,8 @@ export function App() {
   const [checks, setChecks] = useState([false, false, false, false, false]);
   const [initials, setInitials] = useState('');
   const [election, setElection] = useState(() => nextFederalElection(new Date()));
-  const [county, setCounty] = useState('');
+  const [countyFips, setCountyFips] = useState('');
+  const [countyFilter, setCountyFilter] = useState('');
   const [juror, setJuror] = useState<Held | null>(null);
   const [voter, setVoter] = useState<Held | null>(null);
   const [pendingJ, setPendingJ] = useState<PendingBook | null>(null);
@@ -268,6 +270,15 @@ export function App() {
   const deadlineDate = typeof deadlineDays === 'number' ? addDays(election, -deadlineDays) : null;
   const deadlinePassed = Boolean(deadlineDate && today > deadlineDate);
   const windows = rules ? stateWindowDates(election, rules.blackout.state_windows, today) : [];
+  const stateCounties = code ? (COUNTIES[code] ?? []) : [];
+  const countyQuery = countyFilter.trim().toLowerCase();
+  const filteredCounties = countyQuery
+    ? stateCounties.filter((item) => item.name.toLowerCase().includes(countyQuery) || item.fips.includes(countyQuery))
+    : stateCounties;
+  const selectedCounty = stateCounties.find((item) => item.fips === countyFips) ?? null;
+  const countyOptions: County[] = selectedCounty && !filteredCounties.some((item) => item.fips === selectedCounty.fips)
+    ? [selectedCounty, ...filteredCounties]
+    : filteredCounties;
 
   useEffect(() => {
     if (!gates) {
@@ -280,6 +291,8 @@ export function App() {
   async function onState(next: string) {
     const hadJuror = Boolean(jurorRef.current);
     setCode(next);
+    setCountyFips('');
+    setCountyFilter('');
     const picked = resolveRules(next, bundle);
     setResolved(picked);
     setPolicy(null);
@@ -426,6 +439,7 @@ export function App() {
       setFileError(rules?.gates.basis || confidential || 'JuryRoll does not run a match for this state.');
       return;
     }
+    if (!selectedCounty) return;
     if (!juror || !voter || !rules) return;
     const matched = runMatch(
       {
@@ -468,21 +482,24 @@ export function App() {
       cap_applied: matched.policy.capApplied,
       excluded_registered_after: matched.policy.excludedAfterCount,
       cannot_compare_no_reg_date: matched.policy.cannotCompareCount,
+      county_name: selectedCounty.name,
+      county_fips: selectedCounty.fips,
     });
   }
 
   async function onExport() {
-    if (!policy || !rules || !gates?.allow_named_export) return;
+    if (!policy || !rules || !gates?.allow_named_export || !selectedCounty) return;
     const dateStr = localISO(new Date());
     const csv = toCSV({
       allowNamedExport: true,
       result: policy,
       rules,
       targets,
-      county,
+      county: selectedCounty.name,
+      fips: selectedCounty.fips,
       dateStr,
     });
-    downloadText(referralFileName(rules.state, county, dateStr), csv, 'text/csv;charset=utf-8');
+    downloadText(referralFileName(rules.state, selectedCounty.name, dateStr), csv, 'text/csv;charset=utf-8');
     const { main, removed } = exportableRows(policy);
     const tiers = { Strong: 0, Probable: 0, Weak: 0 };
     [...main, ...removed].forEach((row) => { tiers[row.tier] += 1; });
@@ -490,6 +507,8 @@ export function App() {
       rows: main.length + removed.length,
       tiers,
       sha256: await sha256Hex(csv),
+      county_name: selectedCounty.name,
+      county_fips: selectedCounty.fips,
     };
     if (includeIds) data.voter_ids = [...main, ...removed].map((row) => row.voterId);
     await append('export', data);
@@ -499,7 +518,7 @@ export function App() {
   }
 
   function letterText(): string {
-    if (!rules) return '';
+    if (!rules || !selectedCounty) return 'Choose a county before you export. The letter will name that county.';
     return auditLetter(rules, targets, {
       periodFrom,
       periodTo,
@@ -507,11 +526,13 @@ export function App() {
       jurySource,
       removals,
       removalSource,
-      county,
+      county: selectedCounty.name,
+      fips: selectedCounty.fips,
     });
   }
 
   async function onLetter() {
+    if (!rules || !selectedCounty) return;
     const text = letterText();
     downloadText(`JuryRoll-audit-${code || 'state'}-${localISO(new Date())}.txt`, text, 'text/plain');
     await append('audit_letter_exported', {
@@ -519,6 +540,8 @@ export function App() {
       removals,
       period_from: periodFrom,
       period_to: periodTo,
+      county_name: selectedCounty.name,
+      county_fips: selectedCounty.fips,
     });
   }
 
@@ -528,7 +551,7 @@ export function App() {
   }
 
   const canRun = Boolean(
-    ready && juror && voter
+    ready && selectedCounty && juror && voter
     && juror.map.last >= 0 && juror.map.first >= 0
     && voter.map.last >= 0 && voter.map.first >= 0,
   );
@@ -573,20 +596,27 @@ export function App() {
 
         <section className="panel" id="step0">
           <h2>Your state</h2>
-          <label>
-            State
-            <select id="stateSel" value={code} onChange={(event) => { void onState(event.target.value); }}>
-              <option value="">Choose a state</option>
-              {STATES.map(([abbr, name]) => <option key={abbr} value={abbr}>{name}</option>)}
-            </select>
-          </label>
+          <div id="placePicker">
+            <label>
+              State
+              <select id="stateSel" value={code} onChange={(event) => { void onState(event.target.value); }}>
+                <option value="">Choose a state</option>
+                {STATES.map(([abbr, name]) => <option key={abbr} value={abbr}>{name}</option>)}
+              </select>
+            </label>
+            <label id="countyPicker">
+              County
+              <input id="countyFilter" type="search" value={countyFilter} disabled={!code} placeholder="Type to filter" autoComplete="off" onChange={(event) => setCountyFilter(event.target.value)} />
+              <select id="county" value={countyFips} disabled={!code} onChange={(event) => setCountyFips(event.target.value)}>
+                <option value="">Choose a county</option>
+                {countyOptions.map((item) => <option key={item.fips} value={item.fips}>{item.name} ({item.fips})</option>)}
+              </select>
+            </label>
+          </div>
+          {code && !selectedCounty && <p id="countyRequired" className="note">Choose a county before you run a match or export.</p>}
           <label>
             Federal election date
             <input id="electionDate" type="date" value={election} onChange={(event) => setElection(event.target.value)} />
-          </label>
-          <label>
-            County
-            <input id="county" type="text" value={county} autoComplete="off" onChange={(event) => setCounty(event.target.value)} />
           </label>
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
           {rules && NON_SIGNAL[rules.state] && (
@@ -703,7 +733,7 @@ export function App() {
             <label>Voter registrations cancelled for non-citizenship<input id="auditRemovals" type="text" value={removals} onChange={(event) => setRemovals(event.target.value)} /></label>
             <label>Source of that number<input id="auditRemovalSource" type="text" value={removalSource} onChange={(event) => setRemovalSource(event.target.value)} /></label>
             <pre id="auditLetter">{letterText()}</pre>
-            <p className="row no-print"><button id="auditLetterBtn" type="button" onClick={() => { void onLetter(); }}>Download the audit letter</button></p>
+            <p className="row no-print"><button id="auditLetterBtn" type="button" disabled={!selectedCounty} onClick={() => { void onLetter(); }}>Download the audit letter</button></p>
           </section>
         )}
 
@@ -841,7 +871,7 @@ export function App() {
         </section>
 
         <section className="panel" id="step4">
-          <h2 className="print-title">Referral for official verification — {stateName || 'No state yet'} — {today}</h2>
+          <h2 className="print-title" id="referralHeader">Referral for official verification — {stateName || 'No state yet'}{selectedCounty ? ` — ${selectedCounty.name} (${selectedCounty.fips})` : ''} — {today}</h2>
           {policy && coreResult && (
             <>
               <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
@@ -879,7 +909,7 @@ export function App() {
                     {showWeak && <ResultsTable rows={weakRows} />}
                   </details>
                   <p className="row no-print">
-                    <button id="exportBtn" type="button" onClick={() => { void onExport(); }}>Export CSV: Referral for official verification</button>
+                    <button id="exportBtn" type="button" disabled={!selectedCounty} onClick={() => { void onExport(); }}>Export CSV: Referral for official verification</button>
                   </p>
                 </>
               )}
