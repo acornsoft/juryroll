@@ -1003,6 +1003,8 @@ button.rail-btn:disabled { opacity: 1; }
 .basis-why { margin: 6px 0 0; }
 .basis-why summary { cursor: pointer; font-weight: 700; color: var(--main-color-two); }
 .basis-why p { margin: 6px 0 0; }
+.coming-later #comingLaterPlan,
+.coming-later #comingReason { margin: 6px 0 0; font-size: 14px; }
 .choose-file {
   display: inline-flex;
   flex: 0 0 auto;
@@ -1591,6 +1593,10 @@ select option.is-available { color: #04072E; }
     height: min(400px, calc(100vh - 400px));
     max-height: none;
     margin: 0;
+  }
+  .mode-later .workflow-split > .step-card {
+    max-height: none;
+    overflow: visible;
   }
   .workflow-split .grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
