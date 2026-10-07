@@ -1,2 +1,2 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county
+V1,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01,Wake

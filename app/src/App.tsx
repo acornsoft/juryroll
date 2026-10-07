@@ -43,9 +43,11 @@ import { exportableRows, flagLabel, type PolicyResult, type PolicyRow } from '..
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
 import { allCancelledRefusal, cancelledSummary, filterCancelledVoters } from '../../shared/src/policy/cancelled.ts';
+import { COUNTY_UNCHECKED_BANNER } from '../../shared/src/policy/place.ts';
+import { summarizeReasons } from '../../shared/src/policy/reasons.ts';
 import { CSV_CONVERT_MESSAGE, looksFixedWidth } from '../../shared/src/policy/refusal.ts';
+import { namedExportAllowed, runMatch, type RunNotes } from '../../shared/src/policy/runMatch.ts';
 import { stateCopy } from '../../shared/src/policy/stateCopy/index.ts';
-import { runMatch } from '../../shared/src/policy/runMatch.ts';
 import { sha256Hex, sha256HexSync } from '../../shared/src/policy/sha256.ts';
 import { VOTER_USE_REFUSE, voterUseRestriction, voterUseShownText } from '../../shared/src/policy/voterUse.ts';
 import { addDays, federalWindow, inRange, localISO, nextFederalElection, stateWindowDates } from '../../shared/src/policy/windows.ts';
@@ -54,7 +56,7 @@ import type { MatchResult } from '../../shared/src/core.js';
 type Bundle = Record<string, { raw: string; rules: RulesFile }>;
 const bundle = rulesBundle as Bundle;
 
-type Reason = { value: string; count: number; auto: boolean };
+type Reason = { value: string; display: string; count: number; auto: boolean; formula: boolean };
 type Held = AnalyzedFile & {
   hasHeader: boolean;
   order: string;
@@ -119,6 +121,7 @@ export function App() {
   const [csvGuideHref, setCsvGuideHref] = useState<string | null>(null);
   const [protectedCount, setProtectedCount] = useState(0);
   const [policy, setPolicy] = useState<PolicyResult | null>(null);
+  const [runNotes, setRunNotes] = useState<RunNotes | null>(null);
   const [coreResult, setCoreResult] = useState<MatchResult | null>(null);
   const [showWeak, setShowWeak] = useState(false);
   const [modal, setModal] = useState(false);
@@ -185,6 +188,7 @@ export function App() {
     setPendingJ(null);
     setPendingV(null);
     setPolicy(null);
+    setRunNotes(null);
     setCoreResult(null);
     setShowWeak(false);
     setFileError('');
@@ -355,6 +359,7 @@ export function App() {
   useEffect(() => {
     if (attested || !policyRef.current) return;
     setPolicy(null);
+    setRunNotes(null);
     setCoreResult(null);
     setInvalidateNote('The use statement changed. The match was cleared and has to be run again.');
   }, [attested]);
@@ -375,6 +380,7 @@ export function App() {
     setInvalidateNote(hadResult ? 'The state changed. The match was cleared and has to be run again.' : '');
     setCountyFips('');
     setPolicy(null);
+    setRunNotes(null);
     setCoreResult(null);
     if (!next) {
       setResolved(null);
@@ -421,6 +427,7 @@ export function App() {
       return;
     }
     setPolicy(null);
+    setRunNotes(null);
     setCoreResult(null);
     setShowWeak(false);
     setInvalidateNote('The county changed. The match was cleared and has to be run again.');
@@ -508,7 +515,7 @@ export function App() {
     setFileError('');
     setCsvGuideHref(null);
     const reasons = kind === 'juror' && analyzed.file.map.reason >= 0
-      ? core.reasonValues(analyzed.file.text, analyzed.file.delim, hasHeader, analyzed.file.map.reason)
+      ? summarizeReasons(analyzed.file.text, analyzed.file.delim, hasHeader, analyzed.file.map.reason, rules?.state ?? code)
       : [];
     const nextMap = paPresetRef.current ? applyPaPreset(mapFromReasons(reasons)) : mapFromReasons(reasons);
     if (kind === 'juror') setReasonMap(nextMap);
@@ -623,8 +630,9 @@ export function App() {
     window.print();
   }
 
-  function onReasonCategory(code: string, choice: ReasonChoice) {
-    const next = { ...reasonMap, [code]: choice };
+  function onReasonCategory(reasonCode: string, choice: ReasonChoice) {
+    if (juror?.reasons.some((reason) => reason.value === reasonCode && reason.formula)) return;
+    const next = { ...reasonMap, [reasonCode]: choice };
     setReasonMap(next);
     setJuror((held) => (held ? { ...held, reasonFilter: filterFromMap(next) } : held));
   }
@@ -680,6 +688,7 @@ export function App() {
         reasonFilter: null,
       },
       rules,
+      { place: { countyName: selectedCounty.name, countyFips: selectedCounty.fips } },
     );
     if (matched.cancelled.allCancelled) {
       setVoter(null);
@@ -690,6 +699,7 @@ export function App() {
     }
     setCoreResult(matched.coreResult);
     setPolicy(matched.policy);
+    setRunNotes(matched.notes);
     setInvalidateNote('');
     setActiveStep('triage');
     const cells = reasonCells(juror.text, juror.delim, juror.hasHeader, juror.map.reason ?? -1, juror.rows);
@@ -729,11 +739,16 @@ export function App() {
       jury_related: voter.cancelledJury,
       county_name: selectedCounty.name,
       county_fips: selectedCounty.fips,
+      different_county: matched.notes.differentCountyCount,
+      formula_reasons: matched.notes.formulaReasonCount,
+      unrecognized_reasons: matched.notes.unrecognizedReasonCount,
+      state_dropped: matched.notes.stateDropped,
+      county_checked: matched.notes.countyChecked,
     });
   }
 
   async function onExport() {
-    if (!policy || !rules || !gates?.allow_named_export || !selectedCounty) return;
+    if (!policy || !rules || !gates?.allow_named_export || !selectedCounty || !runNotes?.countyChecked) return;
     const dateStr = localISO(new Date());
     const csv = toCSV({
       allowNamedExport: true,
@@ -778,7 +793,8 @@ export function App() {
   const confidential = rules
     ? `The jury list is confidential in ${stateName}${rules.jury_list.statute ? ` (${rules.jury_list.statute})` : ''}. JuryRoll does not load it.`
     : '';
-  const named = Boolean(gates?.allow_named_export && policy);
+  const countyChecked = runNotes ? runNotes.countyChecked : true;
+  const named = namedExportAllowed(Boolean(gates?.allow_named_export && policy), countyChecked);
   const mainRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'named') : [];
   const weakRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'weak') : [];
   const removedRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'removed') : [];
@@ -787,12 +803,14 @@ export function App() {
     ? historyByVoterId(voter.text, voter.delim, voter.hasHeader, voter.headers, voter.map.voter_id ?? -1)
     : {};
   const reasonRows = (() => {
-    const seen = new Map<string, number>();
-    for (const reason of juror?.reasons ?? []) seen.set(reason.value, reason.count);
-    for (const code of Object.keys(reasonMap)) {
-      if (!seen.has(code)) seen.set(code, 0);
+    const seen = new Map<string, { count: number; display: string; formula: boolean }>();
+    for (const reason of juror?.reasons ?? []) {
+      seen.set(reason.value, { count: reason.count, display: reason.display, formula: reason.formula });
     }
-    return [...seen.entries()].map(([value, count]) => ({ value, count }));
+    for (const reasonCode of Object.keys(reasonMap)) {
+      if (!seen.has(reasonCode)) seen.set(reasonCode, { count: 0, display: reasonCode, formula: false });
+    }
+    return [...seen.entries()].map(([value, row]) => ({ value, ...row }));
   })();
   const facts: FlowFacts = {
     stateCode: code,
@@ -805,7 +823,7 @@ export function App() {
     jurorLoaded: Boolean(juror),
     voterLoaded: Boolean(voter),
     hasResult: Boolean(policy),
-    namedExport: Boolean(gates?.allow_named_export),
+    namedExport: namedExportAllowed(Boolean(gates?.allow_named_export), countyChecked),
   };
   const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
   const section = route.name === 'state' ? 'states' : route.name;
@@ -1127,6 +1145,10 @@ export function App() {
                     {policy.capBadge && <p className="note" id="tierCapBadge">{policy.capBadge}</p>}
                     <p id="excludedLine"><b>{policy.excludedLine}</b></p>
                     <p id="cannotCompareLine"><b>{policy.cannotCompareLine}</b></p>
+                    {runNotes && !runNotes.countyChecked && <p className="banner" id="countyUnchecked" role="status">{COUNTY_UNCHECKED_BANNER}</p>}
+                    {runNotes && runNotes.differentCountyCount > 0 && <p className="note" id="differentCounty">{runNotes.differentCountyLine}</p>}
+                    {runNotes && runNotes.formulaReasonCount > 0 && <p className="note" id="formulaReasons">{runNotes.formulaReasonLine}</p>}
+                    {runNotes && runNotes.unrecognizedReasonCount > 0 && <p className="note" id="unrecognizedReasons">{runNotes.unrecognizedReasonLine}</p>}
                     <details className="bucket sen-acc">
                       <summary><i className="icon-star" aria-hidden="true" /> Excluded: registered after declaration ({policy.excludedAfterCount})</summary>
                       <p>These pairs stay out of the to-explore pile. The voter registered after the jury declaration.</p>

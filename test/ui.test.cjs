@@ -539,7 +539,7 @@ function readAuditDownload(file) {
   const datesDir = path.join(shots, 'fixtures');
   fs.mkdirSync(datesDir, { recursive: true });
   fs.writeFileSync(path.join(datesDir, 'juror.csv'), 'Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date\nJ1,Afterson,Ann,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15\nJ2,Keepson,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-06-01\nJ3,Missingson,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,\n');
-  fs.writeFileSync(path.join(datesDir, 'voter.csv'), 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Afterson,Ann,1980-03-14,1 Main St,00001,ACTIVE,2021-05-01\nV2,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01\nV3,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,\n');
+  fs.writeFileSync(path.join(datesDir, 'voter.csv'), 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county\nV1,Afterson,Ann,1980-03-14,1 Main St,00001,ACTIVE,2021-05-01,Wake\nV2,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01,Wake\nV3,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,,Wake\n');
   const dates = await openPage(browser);
   await selectState(dates.page, 'NC');
   await attest(dates.page);
@@ -1146,16 +1146,9 @@ function readAuditDownload(file) {
   assert.strictEqual(await pa.page.locator('#results tbody tr').count(), 0);
   assert.strictEqual(await pa.page.locator('#challengePanel').count(), 0);
   assert.strictEqual(await pa.page.locator('#paNamesNote').innerText(), paNote);
-  await openStep(pa.page, 'export');
-  const [paDownload] = await Promise.all([
-    pa.page.waitForEvent('download'),
-    pa.page.click('#exportBtn'),
-  ]);
-  const paCsvPath = path.join(paDir, 'export.csv');
-  await paDownload.saveAs(paCsvPath);
-  const paCsv = fs.readFileSync(paCsvPath, 'utf8');
-  assert.ok(!paCsv.includes('Namesonly'));
-  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paCsv));
+  assert.strictEqual(await pa.page.locator('#countyUnchecked').innerText(), 'The county could not be checked.');
+  assert.strictEqual(await pa.page.locator('#exportBtn').count(), 0);
+  assert.ok(!(await pa.page.locator('body').innerText()).includes('Namesonly'));
   pass('AT-41');
   assert.deepStrictEqual(pa.requests, [], 'PA page network: ' + pa.requests.join('; '));
   await pa.context.close();

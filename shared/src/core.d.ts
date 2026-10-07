@@ -45,7 +45,7 @@ declare const JuryRollCore: {
     delim: string,
     hasHeader: boolean,
     map: Record<string, number>,
-    opts?: { order?: string; reasonFilter?: Record<string, boolean> | null },
+    opts?: { order?: string; reasonFilter?: Record<string, boolean> | ((value: string) => boolean) | null },
   ) => { records: unknown[]; total: number; kept: number; skipped: number };
   match: (jurors: unknown[], voters: unknown[]) => MatchResult;
   toCSV: (pairs: MatchPair[], includeWeak: boolean, dateStr: string) => string;

@@ -1,2 +1,2 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Equalson,Quin,1974-12-12,11 Main St,00001,ACTIVE,2020-03-03
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county
+V1,Equalson,Quin,1974-12-12,11 Main St,00001,ACTIVE,2020-03-03,Wake

@@ -6,7 +6,7 @@ export function ReasonMap({
   onChange,
   onPreset,
 }: {
-  rows: readonly { value: string; count: number }[];
+  rows: readonly { value: string; display: string; count: number; formula: boolean }[];
   value: Record<string, ReasonChoice>;
   onChange: (code: string, choice: ReasonChoice) => void;
   onPreset: () => void;
@@ -21,10 +21,11 @@ export function ReasonMap({
       {rows.length === 0 && <p className="small">Load or type a jury list to see its codes.</p>}
       {rows.map((row) => (
         <label key={row.value || '(blank)'} className="inline">
-          <span>{row.value || '(blank)'} ({row.count})</span>
+          <span>{row.formula ? `${row.display || '(blank)'} (formula prefix)` : (row.display || '(blank)')} ({row.count})</span>
           <select
-            aria-label={`Reason for ${row.value || 'blank'}`}
-            value={value[row.value] ?? ''}
+            aria-label={`Reason for ${row.display || 'blank'}`}
+            value={row.formula ? '' : (value[row.value] ?? '')}
+            disabled={row.formula}
             onChange={(event) => onChange(row.value, parseChoice(event.target.value))}
           >
             <option value="">Not sent to the match</option>
