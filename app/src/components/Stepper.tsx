@@ -92,12 +92,29 @@ export function Stepper({
     onActivate(id);
   }
 
+  const nextInOrder = showNext ? RUN_STEPS[stepIndex(activeId) + 1] : undefined;
+  const nextLabel = mode === 'run' && nextInOrder ? `Next: ${nextInOrder.title}` : 'Next';
+
   const stepCard = (
       <article className="step-card" aria-labelledby="stepHeading">
-        <p className="kicker">{active.kicker}</p>
+        <p className="kicker">{mode === 'run' ? `Step ${stepIndex(activeId) + 1} of ${RUN_STEPS.length}` : active.kicker}</p>
         <h2 id="stepHeading" tabIndex={-1} ref={headingRef}>{active.title}</h2>
         <p className="step-job">{active.job}</p>
         <p className="step-question">{active.question}</p>
+        {mode === 'run' && (
+          <ul className="done-rows">
+            {RUN_STEPS.filter((step) => stepIndex(step.id) < stepIndex(activeId) && step.complete(facts)).map((step) => (
+              <li key={step.id}>
+                <button type="button" className="done-row" onClick={() => go(step.id)}>
+                  <span className="done-check" aria-hidden="true">✓</span>
+                  <span className="done-name">{step.title}</span>
+                  <span className="done-sum">{step.summary(facts)}</span>
+                  <span className="done-edit">{step.id === 'where' ? 'Edit' : 'View'}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
         {blockedReason && (
           <p className="banner" id="stepBlocked">
             This step is blocked. {blockedReason} The counts-only branch is on this step.
@@ -124,7 +141,7 @@ export function Stepper({
                 if (id) go(id);
               }}
             >
-              Next
+              {nextLabel}
             </button>
           )}
           {showStart && guideStartHref && (
@@ -137,6 +154,12 @@ export function Stepper({
   return (
     <div className={`stepper-block mode-${mode}${companion ? ' has-map' : ''}`}>
       <ol className="rail" id="stepper" aria-label="Check progress">
+        {mode === 'run' && (
+          <li className="rail-phone">
+            <span className="rail-phone-now">{stepIndex(activeId) + 1} · {active.title}</span>
+            <span className="rail-phone-of">Step {stepIndex(activeId) + 1} of {RUN_STEPS.length}</span>
+          </li>
+        )}
         {RUN_STEPS.map((step, index) => {
           const status = railStatus(step, facts, activeId, mode);
           const open = canActivate(step, facts, mode);
@@ -146,7 +169,7 @@ export function Stepper({
               ? step.unlockHint
               : status === 'done'
                 ? (mode === 'guide' ? step.guideSummary : step.summary(facts))
-                : null;
+                : (mode === 'run' ? 'Current step' : null);
           return (
             <li key={step.id} className={`rail-item action-single-items is-${status}`}>
               <button
@@ -159,7 +182,7 @@ export function Stepper({
                 onClick={() => go(step.id)}
               >
                 <span className="action-shape" aria-hidden="true">
-                  <span className="rail-index">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="rail-index">{mode === 'run' && status === 'done' ? '✓' : String(index + 1)}</span>
                 </span>
                 <span className="rail-copy">
                   <span className="rail-title">{step.title}</span>
