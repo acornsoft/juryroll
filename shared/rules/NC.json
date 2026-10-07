@@ -5,37 +5,86 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": true,
-    "statute": "N.C.G.S. 9-6.2(b): 'The list of persons requesting to be disqualified from jury duty due to lack of being a citizen of the United States shall be a public record, subject to G.S. 163-82.10(a1).' Also G.S. 163-82.14(c1)(3).",
-    "holder": "North Carolina State Board of Elections. The clerk of superior court's own records are NOT public records (G.S. 9-6.2(a)).",
+    "statute": "N.C.G.S. 9-6.2(b): 'The list of persons requesting to be disqualified from jury duty due to lack of being a citizen of the United States shall be a public record, subject to G.S. 163-82.10(a1).' N.C.G.S. 163-82.14(c1)(3): 'Except as provided by State and federal law, the records retained pursuant to this subsection are public records under G.S. 132-1, notwithstanding the requirements of G.S. 20-43.4(c).' Citizenship is a juror qualification (9-3(a)(1)).",
+    "holder": "North Carolina State Board of Elections (9-6.2(b); 163-82.14(c1)(3)). The State Board posts redacted county reports in its public file library, folder 'Legal/Jury List Program' (batches dated 2024-08-05, 2024-12-06, 2025-07-11 and 2026-04-02). The clerk's own excusal records are not public: 'The records retained by the clerk are not public records under G.S. 132-1' (9-6.2(a)).",
     "fields_withheld": [
       "date of birth",
       "full or partial Social Security number",
       "drivers license number",
       "email address",
-      "agency where the voter registered"
+      "identity of the public agency at which the voter registered",
+      "photographs and photocopies of identification"
     ],
-    "official_pipeline": "G.S. 9-6.2(b): clerks send name, address, date of birth, reason and date of disqualification to the State Board. G.S. 163-82.14(c1): within 30 days the State Board reviews registration and citizenship status, drops anyone who became a citizen after the disqualification date, and sends county reports; counties give 30 days' notice before removal; an objection triggers a challenge under 163-85(c)(7).",
+    "official_pipeline": "9-6.2(b): clerks send 'the person's name, address, date of birth, and other personal information from the master jury list, along with the reasons for the person's disqualification and the date of disqualification' to the State Board, on the State Board's schedule (next transmission 2026-12-04 for 2026-03-01 to 2026-10-31). 163-82.14(c1)(1): within 30 days the State Board reviews registration and citizenship 'including the matching of available information in State and federal databases', leaves out anyone who 'became a citizen of the United States after the date of that person's jury disqualification', and reports to county boards. 163-82.14(c1)(2): the county board gives 30 days' written notice; an objection triggers a 163-85(c)(7) challenge with a rebuttable presumption.",
     "use_restriction": null,
     "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-6.2.html",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "N.C.G.S. 163-82.14(c1) (noncitizen list maintenance)",
+        "cite": "N.C.G.S. 163-82.14(c1) (noncitizen list maintenance; (c1)(3) public records)",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-82.14.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "N.C.G.S. 163-82.10(a1) (dates of birth and other PII confidential)",
+        "cite": "N.C.G.S. 163-82.10(a1) (dates of birth, SSN, drivers license numbers, email, registration agency, ID photos confidential)",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-82.10.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 9-3(a)(1) (juror must be a U.S. citizen)",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-3.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 9-4(b) ('Public access to juror information shall be limited to the alphabetized list of the names. The addresses and dates of birth of prospective jurors are confidential')",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-4.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 9-6(a1), (e) (AOC excusal form lets jurors state lack of citizenship; clerk keeps excusals separate from the master list per 9-6.2)",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-6.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 9-2(b) (master list built from voter registration and DMV records)",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-2.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 20-43.4(b)-(c) (DMV list to jury commissions; 'used solely for jury selection and election records purposes'; confidential)",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_20/GS_20-43.4.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 7A-109(a) (clerk records open 'Except as prohibited by law') and 132-1 (public records defined)",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_7A/GS_7A-109.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "NCSBE public file library, Legal/Jury List Program (posted county 'NotUSCitizenReport' files; columns First Name, Last Name, Middle Name, Address 1, Address 2, City, Date Of Birth, Date Of Excusal; Date Of Birth blank in all 451 rows of the 111 posted CSV files)",
+        "url": "https://s3.amazonaws.com/dl.ncsbe.gov?prefix=Legal/Jury%20List%20Program/",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "NCSBE letter to the Conference of Clerks, June 28, 2024 (rev. 07/18/2024): transmission schedule through 2028; schedule set so removals finish before the NVRA 90-day cutoff",
+        "url": "https://s3.amazonaws.com/dl.ncsbe.gov/Legal/Jury%20List%20Program/Ltr%20Schedule%20of%20Clerk%20Submissions%20rev07182024.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person, from the county board of elections at cost (G.S. 163-82.10(c)). The State Board also publishes statewide voter registration files for download.",
-    "permitted_uses": "G.S. 163-82.10 states no purpose restriction for these lists. Lists may not contain date of birth (163-82.10(c)). Signatures may be viewed but not copied (163-82.10(a2)).",
+    "who_may_get": "163-82.10(c): 'Upon request by that person, the county board of elections shall provide to any person a list of the registered voters of the county', at actual cost. The State Board also posts statewide and county voter registration files, updated weekly (NCSBE Voter Registration Data page).",
+    "permitted_uses": "No purpose limit is stated in 163-82.10. 163-82.10(c): 'No list produced under this section shall contain a voter's date of birth. However, lists may be produced according to voters' ages.' 163-82.10(a2): signatures 'may be viewed by the public but may not be copied or traced'.",
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,
@@ -45,13 +94,13 @@
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "NCSBE - Voter Registration Data (statewide downloadable files)",
+        "cite": "NCSBE Voter Registration Data page ('Voter birthdate, Social Security number, and driver's license number are confidential under state law and are not included')",
         "url": "https://www.ncsbe.gov/results-data/voter-registration-data",
         "verified_on": "2026-10-07",
         "kind": "official_page"
       },
       {
-        "cite": "NCSBE voter file layout (birth_year, age_at_year_end, registr_dt, voter_status_desc, voter_status_reason_desc; no birth date)",
+        "cite": "NCSBE voter file layout (updated 02/02/2026): registr_dt, birth_year, age_at_year_end; no birth date; registr_dt 'xx/xx/xxxx' marks records under county review",
         "url": "https://s3.amazonaws.com/dl.ncsbe.gov/data/layout_ncvoter.txt",
         "verified_on": "2026-10-07",
         "kind": "official_page"
@@ -60,26 +109,44 @@
   },
   "private_challenge": {
     "allowed": true,
-    "who": "Any registered voter of the county (G.S. 163-85(a)).",
-    "form_or_statute": "G.S. 163-85: written challenge, under oath, on the State Board form, filed with the county board of elections; ground (c)(7): 'not a citizen of the United States'.",
+    "who": "163-85(a): 'Any registered voter of the county may challenge the right of any person to register, remain registered or vote in such county.'",
+    "form_or_statute": "163-85(b): 'Each challenge shall be made separately, in writing, under oath and on forms prescribed by the State Board of Elections'. Ground 163-85(c)(7): 'That a person is not a citizen of the United States'. The State Board form requires the challenger to swear that they 'have attached evidence to support the voter challenge' and, 'if filed within 90 days before a federal election, this challenge is based on individualized evidence specific to the voter'.",
     "form_url": "https://www.ncsbe.gov/about-elections/legal-resources/challenge-protest-appeal-and-complaint-forms",
     "one_per_affidavit": true,
-    "deadlines": "No challenge under 163-85 after the 25th day before each primary, general, or special election (163-85(a)). For the November 3, 2026 general election that is October 9, 2026. The board hears it before the election unless volume prevents it (163-86(a)); the voter gets at least 10 days' mailed notice (163-86(b)).",
+    "deadlines": "163-85(a): 'No such challenge may be made after the twenty-fifth day before each primary, general, or special election.' For November 3, 2026 that is October 9, 2026. The federal 90-day window has been open since August 5, 2026: under N.C. State Conf. of NAACP v. Bipartisan Bd. (M.D.N.C. 2018), as applied in the State Board guide, challenges on 'generic, non-individualized evidence cannot be brought within 90 days before a federal election'. 163-86(a)-(b): heard before the election unless volume prevents it; at least 10 days' mailed notice to the voter.",
     "deadline_days_before_election": 25,
-    "evidence_standard": "Burden of proof on the challenger; with no testimony the board dismisses; a full hearing only on probable cause (163-85(d)). Challenges 'shall not be made indiscriminately' and only if the challenger 'knows, suspects or reasonably believes' the person is not qualified (163-90.1(a)). No challenge is sustained without 'affirmative proof'; the presumption is that the voter is properly registered (163-90.1(b)).",
-    "juryroll_lead_sufficient": null,
-    "false_statement_penalty": "Knowingly false affidavit or oath under this Article is a Class I felony (G.S. 163-90.3).",
+    "evidence_standard": "163-85(d): 'The burden of proof shall be on the challenger, and if no testimony is presented, the board shall dismiss the challenge.' 163-90.1(a): challenges 'shall not be made indiscriminately' and only if the challenger 'knows, suspects or reasonably believes' the person is not qualified. 163-90.1(b): 'No challenge shall be sustained unless the challenge is substantiated by affirmative proof.' State Board form: 'Database matches do not constitute individualized evidence.'",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": "163-90.3: 'Any person who shall knowingly make any false affidavit or shall knowingly swear or affirm falsely to any matter or thing required by the terms of this Article to be sworn or affirmed shall be guilty of a Class I felony.' The State Board form repeats this.",
     "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-85.html",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "N.C.G.S. 163-86 (hearing on challenge)",
+        "cite": "NCSBE Voter Challenge Form (oath; individualized-evidence certification; 'Database matches do not constitute individualized evidence')",
+        "url": "https://s3.amazonaws.com/dl.ncsbe.gov/Forms/2020_10_Voter_Challenge_Form.docx",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      },
+      {
+        "cite": "NCSBE Voter Challenge Procedures Guide (last updated Dec 18, 2023): separate form per voter; 25-day deadline; no non-individualized challenges within 90 days (NAACP, M.D.N.C. 2018); challenge materials are public records",
+        "url": "https://s3.amazonaws.com/dl.ncsbe.gov/Legal/Voter%20Challenge%20Guide.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "N.C.G.S. 163-86 (hearing; 10 days' notice; oaths)",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-86.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "N.C.G.S. 163-90.1 (burden of proof)",
+        "cite": "N.C.G.S. 163-87 (challenges at early voting and on election day; never a JuryRoll path)",
+        "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-87.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.C.G.S. 163-90.1 (burden of proof; affirmative proof)",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-90.1.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
@@ -110,6 +177,14 @@
         "statute": "N.C.G.S. 163-85(a)",
         "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-85.html",
         "verified_on": "2026-10-07"
+      },
+      {
+        "days_before_election": 90,
+        "applies_to": "Private challenges under G.S. 163-85 based on non-individualized evidence (database matches)",
+        "effect": "Not permitted within 90 days before a federal election; the county board holds no hearing (State Board guide, applying N.C. State Conf. of NAACP v. Bipartisan Bd., M.D.N.C. 2018).",
+        "statute": "52 U.S.C. 20507(c)(2)(A) as applied by N.C. State Conf. of NAACP v. Bipartisan Bd. of Elections & Ethics Enf't, No. 1:16-CV-01274 (M.D.N.C. Aug. 7, 2018)",
+        "source_url": "https://s3.amazonaws.com/dl.ncsbe.gov/Legal/Voter%20Challenge%20Guide.pdf",
+        "verified_on": "2026-10-07"
       }
     ],
     "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-85.html",
@@ -138,16 +213,24 @@
     "allow_jury_list": true,
     "aggregate_only": false,
     "allow_named_export": true,
-    "show_challenge_guidance": true,
-    "basis": "The State Board's noncitizen jury-excusal list is a public record (G.S. 9-6.2(b)). The voter file is public (163-82.10(c)). Private sworn challenges are allowed (163-85). Named export goes only to the referral targets in this file. Challenge guidance shows with the warning that a match alone is not 'affirmative proof' (juryroll_lead_sufficient is null, so the app treats it as false)."
+    "show_challenge_guidance": false,
+    "basis": "allow_jury_list: the State Board's list is a public record by statute (9-6.2(b); 163-82.14(c1)(3)). aggregate_only false and allow_named_export: named rows may go only in a confidential referral to the county board, the State Board, or the AG. In practice the posted list has no date of birth (163-82.10(a1)), so every pair is Weak and the export has no rows. show_challenge_guidance is false, stricter than derived (flag for Optimus): the 163-85 deadline for Nov 3, 2026 is Oct 9, 2026; inside the federal 90-day window the State Board says 'Database matches do not constitute individualized evidence'; 163-90.1(b) needs 'affirmative proof'; and a false oath is a Class I felony (163-90.3). Refer leads instead."
   },
   "notes": [
-    "Matching limit: the public jury list has date of birth withheld (163-82.10(a1)) and the public voter file has birth year only. No pair can reach the 'full DOB' tier. The app must cap NC matches at Probable (LOGIC-CHANGES.md A.4).",
-    "Duplication: the State Board already receives the same list with dates of birth and must review it within 30 days (163-82.14(c1)). A private referral should ask whether that review happened, not re-assert the match.",
-    "The State Board excludes people who became citizens after the disqualification date (163-82.14(c1)(1)b). JuryRoll's registration-date check (LOGIC-CHANGES.md B) mirrors this.",
-    "The 163-85 deadline for the November 3, 2026 election is October 9, 2026, two days after verified_on.",
-    "no_online_posting is null: the State Board itself posts the voter file publicly, and no bar on re-posting was found in 163-82.10. The app treats null as barred. JuryRoll never posts data.",
-    "penalty is null: no misuse penalty for voter lists was found in 163-82.10.",
-    "Majority Forward v. Ben Hill County (M.D. Ga. 2021) and Fair Fight v. True the Vote (N.D. Ga. 2024) (LEGAL-REVIEW.md) are federal cases from Georgia, not North Carolina; they show how courts treat mass private challenges in the 90-day window."
+    "CHANGED 2026-10-07 (re-verify, Optimus-reviewed 2026-10-07): show_challenge_guidance true -> false and juryroll_lead_sufficient null -> false. Both are stricter; no gate was loosened. Optimus confirmed both.",
+    "Matching limit (corrects the old 'cap at Probable' note). The posted county reports carry a 'Date Of Birth' column, but it was blank in all 451 rows of the 111 posted CSV files (4 batches, 2024-08-05 to 2026-04-02; xlsx and pdf files not checked; counts only, no names viewed). With no juror DOB or birth year, no pair can reach Strong or Probable under the current tiers. Every pair is Weak, and Weak is never exported. NC named export is empty in practice.",
+    "Fill rates in the posted rows (counts only): address present in 374 of 451; 'Date Of Excusal' present in 383 of 451. There is no reason column; every row is a non-citizen excusal by definition.",
+    "B.4 effect. The juror date column is named 'Date Of Excusal'. Its normalized key 'dateofexcusal' is not in the decl_date aliases (LOGIC-CHANGES B.1), so users must map it by hand. Rows without it, and voter rows with registr_dt 'xx/xx/xxxx', go to 'cannot compare: no registration date'. Requirement for Kyle: add the alias.",
+    "Duplication. The State Board already gets the same list with dates of birth, checks it against State and federal databases (SAVE per the NCSBE page) within 30 days, and reports to county boards (163-82.14(c1)). A referral should ask whether that review happened, not re-assert a match.",
+    "The State Board leaves out people who became citizens after the disqualification date (163-82.14(c1)(1)b). JuryRoll's registration-date rule (LOGIC-CHANGES B) mirrors this.",
+    "Challenges. For Nov 3, 2026 the 163-85 deadline is Oct 9, 2026, and the federal 90-day window has been open since Aug 5, 2026. A JuryRoll match is a database match, so it cannot support a challenge now. 163-87 challenges at early voting or the polls confront the voter and are never a JuryRoll path. Challenge filings are public records (State Board guide), so a challenge would make the voter's name public.",
+    "VRA 11(b), 52 U.S.C. 10307(b): 'No person, whether acting under color of law or otherwise, shall intimidate, threaten, or coerce, or attempt to intimidate, threaten, or coerce any person for voting or attempting to vote'. JuryRoll never contacts voters. 163-82.14(a1) also requires list maintenance to comply with the VRA and NVRA.",
+    "DPPA: 18 U.S.C. 2721(c) stays null (jury_list.use_restriction is null, so the strict default applies). Optimus 2026-10-07: it is unresolved whether the redisclosure limit reaches a private recipient of a court-held, DMV-derived list that is public by statute (9-6.2(b); 163-82.14(c1)(3), which keeps 'Except as provided by State and federal law'). The master list draws on DMV records (9-2(b); 20-43.4(b)-(c)). JuryRoll takes no DMV data directly (LOGIC-CHANGES F). No gate depends on this question. 9-6.2 and 163-82.14(c1) state no use limit of their own.",
+    "Master jury list (9-4): public access is limited to 'the alphabetized list of the names'; addresses and dates of birth are confidential. It lists qualified persons, not non-citizens. Volunteer advice to use NC master jury lists (Presler post, 2026-07-20, https://x.com/ScottPresler/status/2079236777987203230) does not fit JuryRoll: the list has no reasons and names only. Not a JuryRoll input.",
+    "Official source, notes only; no gate depends on it: RNC v. NCSBE, Wake Co. Sup. Ct. No. 24CV026820-910, Consent Judgment and Dismissal, June 15, 2026, posted by the State Board at https://s3.amazonaws.com/dl.ncsbe.gov/Legal/Jury%20List%20Program/RNC%20v%20SBE%20Consent%20Judgment.pdf (verified 2026-10-07). Decretal para. 1: the list 'shall be a public record and subject to disclosure in response to a request pursuant to the N.C. Public Records Act'. Para. 2: the State Board 'will make the list ... publicly available on the State Board's FTP website, with appropriate redactions to comply with state and federal law.' The dismissal is without prejudice. The rule rests on 9-6.2(b).",
+    "Pending bills: none found that amend 9-6.2, 163-82.14(c1) or 163-85 in the 2025-2026 session (web search only; ncleg.gov bill search not run). Pending cases: none found that challenge the jury list program. Treat both as not verified.",
+    "no_online_posting is null: no bar on re-posting was found in 163-82.10, and the State Board posts the file itself. The app treats null as barred. JuryRoll never posts data.",
+    "penalty and attestation_required are null: no misuse penalty or signed statement for voter lists was found in 163-82.10.",
+    "Majority Forward v. Ben Hill County (M.D. Ga. 2021) and Fair Fight v. True the Vote (N.D. Ga. 2024) (LEGAL-REVIEW.md) are Georgia cases, not NC law. They show how courts treat mass private challenges in the 90-day window."
   ]
 }
