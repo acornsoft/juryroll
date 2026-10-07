@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "10 Del. C. 4513(b): 'Records used in the selection process shall not be disclosed, except in accordance with the jury selection plan or as necessary in the preparation or presentation of a motion challenging compliance with this chapter.' Qualification form contents go to the parties in a case (4513(a)).",
+    "statute": "10 Del. C. 4513(b): 'Records used in the selection process shall not be disclosed, except in accordance with the jury selection plan or as necessary in the preparation or presentation of a motion challenging compliance with this chapter.' 4513(a): 'The names of persons summoned for jury service shall be disclosed to the public and the contents of jury qualification forms completed by them shall be made available to the parties unless the Court determines that any or all of this information should be kept confidential or its use limited in whole or in part in any case or cases.'",
     "holder": "Superior Court (jury administration).",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -15,6 +15,12 @@
     "sources": [
       {
         "cite": "10 Del. C. 4509 (non-citizens disqualified; court decides from the qualification form)",
+        "url": "https://delcode.delaware.gov/title10/c045/index.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "10 Del. C. 4513 (names of persons summoned disclosed to the public; selection records not disclosed)",
         "url": "https://delcode.delaware.gov/title10/c045/index.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
@@ -57,7 +63,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://delcode.delaware.gov/title15/c017/index.html",
@@ -81,16 +87,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "29 Del. C. 10003 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the Department of Elections: per year, the number of registrations cancelled under 15 Del. C. 1302(c) after a registrant indicated non-citizenship and did not affirm citizenship within 15 days, and the number of State Board removals under 1702.",
+    "counts_only": true,
+    "source_url": "https://delcode.delaware.gov/title29/c100/index.html",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Delaware statute sends juror citizenship answers to election officials. Whether the Department keeps counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury selection records may not be disclosed (10 Del. C. 4513(b)). No direct private challenge found. Strict gates: counts only."
+    "basis": "Jury selection records 'shall not be disclosed' (10 Del. C. 4513(b)); only names of persons summoned are public (4513(a)), with no reasons. No direct private challenge found. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted in full (4513(a) and (b)); jury source 4513; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file value changes.",
+    "PA-style check: 4513(a) opens 'The names of persons summoned for jury service', not who was disqualified or why. Selection records stay closed (4513(b)). Hint copy as in REQ-42 (REQ-NOTE 59).",
+    "official_pipeline is null: 15 Del. C. 1703 covers felony convictions only. The Superior Court's public jury FAQ asks non-citizens to notify election officials, but no statute requires it. The NCSL table (updated Sept. 1, 2026) does not list Delaware.",
+    "Cancelled-voter file: no published Delaware cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Inspection files exclude Social Security number, date of birth, driver's license number, and phone number (15 Del. C. 1305(a)), so dob_in_public_file is false.",
     "15 Del. C. 1302(c): a registered person who says on a form that they are not a citizen gets 15 days to affirm citizenship in writing or is canceled.",
-    "official_pipeline is null: 15 Del. C. 1703 covers felony convictions only. The Superior Court's public jury FAQ asks non-citizens to notify election officials, but no statute requires it."
+    "Source note: delcode.delaware.gov read with curl on 2026-10-07."
   ]
 }
