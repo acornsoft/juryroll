@@ -5,13 +5,21 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "Minn. Gen. R. Prac. 814: 'The jury source list, the names of prospective jurors summoned, records regarding prospective jurors, and the contents of juror qualification questionnaires shall not be disclosed except as provided by this rule.' Other access needs a written request to the chief judge (814(a)(4)).",
+    "statute": "Minn. Gen. R. Prac. 814: 'The jury source list, the names of prospective jurors summoned, records regarding prospective jurors, and the contents of juror qualification questionnaires shall not be disclosed except as provided by this rule.' Other access needs a written request to the chief judge (814(a)(4)). 814(a)(3): 'Juror statistics and data that do not identify specific jurors may be disclosed to the public as authorized or required by the Rules of Public Access to Records of the Judicial Branch.'",
     "holder": "State court administrator and district court jury offices.",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
     "source_url": "https://www.revisor.mn.gov/court_rules/gp/id/814/",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Minn. Gen. R. Prac. 814 (jury records not disclosed; juror statistics that do not identify jurors may be disclosed; amended effective Nov. 22, 2023)",
+        "url": "https://www.revisor.mn.gov/court_rules/gp/id/814/",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any individual may inspect or obtain the public information list (name, address, year of birth, voting history, phone if given) after showing ID and signing a written statement on use (Minn. Stat. 201.091, subd. 4).",
@@ -41,7 +49,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -75,6 +83,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Minn. Stat. 13.03 (Government Data Practices Act), Minn. Gen. R. Prac. 814(a)(3) (juror statistics that do not identify jurors) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only. From the county auditor or the Secretary of State: per year, the number of registrations challenged or made inactive because the voter was not a U.S. citizen. From the district court: juror statistics that do not identify jurors, such as the number of prospective jurors disqualified as non-citizens, if the Rules of Public Access allow.",
+    "counts_only": true,
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/13.03",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Minnesota statute sends juror citizenship answers to election officials. Whether the court reports disqualifications by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -83,6 +99,10 @@
     "basis": "Jury records are confidential (Minn. Gen. R. Prac. 814). Strict gates: counts only. A challenge needs personal knowledge, due diligence, and clear and convincing evidence (201.195)."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute extended with 814(a)(3) (exact quote); jury source; audit_path (adds court statistics under 814(a)(3)); federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file or private_challenge value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "PA-style check: Rule 814 closes 'records regarding prospective jurors'. Only statistics that do not identify jurors may be public (814(a)(3)). No Minnesota list of non-citizen disqualifications is public.",
+    "official_pipeline is null: no Minnesota statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list Minnesota.",
+    "Cancelled-voter file: no published Minnesota cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Use limit: the public information list may be used only for elections, political activities, or law enforcement, after a signed statement (201.091, subd. 4). The app should warn Minnesota users.",
     "juryroll_lead_sufficient is false: 201.195 requires personal knowledge and personal verification, and the filer bears a clear and convincing burden.",
     "jury_list.public cites a court rule (Minn. Gen. R. Prac. 814), read on the Revisor's official site.",
