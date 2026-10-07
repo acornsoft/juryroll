@@ -5,10 +5,14 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "Code Civ. Proc. 203(a)(1): 'Persons who are not citizens of the United States' are not eligible jurors. No statute creates or opens a list of persons disqualified for non-citizenship. CCP 237(a)(1) opens only 'The names of qualified jurors drawn from the qualified juror list'. Jury commissioner records (CCP 196(c), 207) are judicial administrative records under Cal. Rules of Court 10.500; the Public Records Act does not reach the courts (Gov. Code 7920.540(a)). Public status of disqualification records: null.",
     "holder": "Superior court jury commissioners (Code Civ. Proc. 195-196).",
-    "fields_withheld": null,
-    "official_pipeline": null,
+    "fields_withheld": [
+      "DMV-furnished names, addresses and identifying data: 'The jury commissioner shall not disclose the information furnished by the Department of Motor Vehicles' (CCP 197(c))",
+      "Personal juror identifying information of trial jurors, sealed after a criminal verdict (CCP 237(a)(2))",
+      "Personal information whose disclosure 'would constitute an unwarranted invasion of personal privacy' (Cal. Rules of Court 10.500(f)(3)); records exempt under state law (10.500(f)(5))"
+    ],
+    "official_pipeline": "None in force. Counties cancel a registration 'Upon proof that the person is otherwise ineligible to vote' (Elec. Code 2201(a)(8)). SB 1310 (2026) would have required jury commissioners to notify the Secretary of State and county elections official when a juror attests to ineligibility; it failed in Senate Judiciary on April 21, 2026 (Ayes 2, Noes 9; reconsideration granted). The 2025-2026 session has ended.",
     "use_restriction": null,
     "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=196",
     "verified_on": "2026-10-07",
@@ -18,6 +22,48 @@
         "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=196",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Code Civ. Proc. 203(a)(1) (non-citizens not eligible as jurors)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=203",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Code Civ. Proc. 197 (source lists: voters, DMV, state tax filers; DMV data not disclosed)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=197",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Code Civ. Proc. 207 (jury commissioner records kept at least three years)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=207",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Code Civ. Proc. 237 (qualified juror names public on request; trial juror identifying data sealed after criminal verdict)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=237",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Cal. Rules of Court, rule 10.500 (public access to judicial administrative records; (f) exemptions)",
+        "url": "https://courts.ca.gov/cms/rules/index/ten/rule10_500",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Gov. Code 7920.540(a) ('state agency' excludes Article VI (judicial) bodies)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=7920.540",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SB 1310 (2025-2026), Voter registration: prospective jurors; failed in Senate Judiciary April 21, 2026",
+        "url": "https://leginfo.legislature.ca.gov/faces/billHistoryClient.xhtml?bill_id=202520260SB1310",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
@@ -26,9 +72,9 @@
     "permitted_uses": "Election, scholarly, journalistic, political, or governmental purposes. Not for any personal, private, or commercial purpose, and not for reproduction or display on the internet (2194(a)(2)).",
     "use_restriction": "Elec. Code 2194(a): the affidavit of voter registration information '(2) Shall not be used for any personal, private, or commercial purpose, including, but not limited to: (A) The harassment of any voter or voter’s household. (B) The advertising, solicitation, sale, or marketing of products or services to any voter or voter’s household. (C) Reproduction in print, broadcast visual or audio, or display on the internet or any computer terminal unless pursuant to paragraph (3). (3) Shall be provided with respect to any voter, subject to the provisions of Sections 2166, 2166.5, 2166.7, 2166.8, 2166.9, and 2188, to any candidate for federal, state, or local office, to any committee for or against any initiative or referendum measure for which legal publication is made, and to any person for election, scholarly, journalistic, or political purposes, or for governmental purposes, as determined by the Secretary of State.'",
     "no_online_posting": true,
-    "penalty": null,
-    "dob_in_public_file": null,
-    "registration_date_in_public_file": null,
+    "penalty": "Elec. Code 18109(a): 'It is a misdemeanor for a person in possession of information ... knowingly to use or permit the use of all or any part of that information for any purpose other than as permitted by law.' 18109(b): misdemeanor to acquire voter data without first complying with 2188. The 2188 application is certified under penalty of perjury.",
+    "dob_in_public_file": true,
+    "registration_date_in_public_file": true,
     "attestation_required": "Application with name, addresses, phone, ID number, the information requested, and a statement of intended use, certified under penalty of perjury (Elec. Code 2188(b), (e)).",
     "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=2194",
     "verified_on": "2026-10-07",
@@ -36,6 +82,24 @@
       {
         "cite": "Elec. Code 2188 (application; statement of intended use; penalty of perjury)",
         "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=2188",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Secretary of State, Voter Registration Information File Request: the voter file contains 'the voter' name, date of birth, registration date, residential and mailing address, precinct, contact information, and political party preference'",
+        "url": "https://www.sos.ca.gov/elections/voter-registration/voter-registration-information-file-request",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Cal. Code Regs., tit. 2, 19001 et seq. (Access to Voter Registration Information): 'Voter registration information' includes date of birth, registration date and place of birth",
+        "url": "https://www.sos.ca.gov/administration/regulations/current-regulations/elections/access-voter-registration-information",
+        "verified_on": "2026-10-07",
+        "kind": "regulation"
+      },
+      {
+        "cite": "Elec. Code 18109 (misuse of voter data; acquisition without 2188 application)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=18109",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -49,15 +113,23 @@
     "one_per_affidavit": null,
     "deadlines": null,
     "deadline_days_before_election": null,
-    "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "evidence_standard": "Only precinct board members may challenge. A board member who receives a list suggesting challenges must first find 'probable cause' and contact the elections official before 'making any use whatever' of it (14240(c)).",
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=14240",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Elec. Code 18540 (voter intimidation; felony)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=18540",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=2201",
@@ -82,17 +154,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Gov. Code 7922.525; 52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the county elections official for existing records that count registrations canceled under Elec. Code 2201(a)(8) ('otherwise ineligible') because of non-citizenship. County elections offices are local agencies, and 'every person has a right to inspect any public record' (Gov. Code 7922.525(a)). 52 U.S.C. 20507(i) is the federal counterpart. Ask for counts only. Do not ask for names.",
+    "counts_only": true,
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=7922.525",
+    "verified_on": "2026-10-07",
+    "note": "No statute requires a non-citizen cancellation report, so an office may hold no such count. Courts are not covered by the Public Records Act (Gov. Code 7920.540(a)); jury records fall under Cal. Rules of Court 10.500. The scope of 20507(i) for jury-derived records is contested."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. California bars private persons from challenging voters (Elec. Code 14240(b)). Voter data use is limited and may not be put online (2194)."
+    "basis": "jury_list.public is null: no statute opens records of non-citizen jury disqualifications, and Rule 10.500(f)(3) and (f)(5) may exempt them. allow_jury_list false, aggregate_only true, allow_named_export false. California bars private persons from challenging voters (Elec. Code 14240(b)), so show_challenge_guidance is false. Voter data use is limited and may not be put online (2194). Gates F/T/F/F, unchanged."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute, fields_withheld and official_pipeline filled. voter_file: penalty (18109), dob_in_public_file true and registration_date_in_public_file true (SOS file page and 2 CCR 19001). juryroll_lead_sufficient false. audit_path added. federal_source_url moved to govinfo. Open questions are in review/NULLS-SUMMARY.md. 2026-10-07 13:47: DOB note reworded with the 2194 and 2188 guards (Optimus). 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
     "private_challenge.allowed is false: Elec. Code 14240(b) forbids anyone except precinct board members and election officials from challenging or questioning a voter's qualifications.",
-    "Use limit: JuryRoll matching must fit an election, scholarly, journalistic, political, or governmental purpose stated under penalty of perjury (2188, 2194). The app should warn California users.",
-    "Source note: leginfo.legislature.ca.gov shows a bot-check page to plain HTTP clients; sections were read in a browser.",
-    "penalty, dob_in_public_file, and registration_date_in_public_file are null: not stated in the sections read."
+    "Use limit: the voter file goes only to candidates, measure committees and persons with an 'election, scholarly, journalistic, or political' or governmental purpose 'as determined by the Secretary of State' (2194(a)(3)), on a 2188 application under penalty of perjury. Whether JuryRoll matching qualifies is the Secretary of State's call. No internet display (2194(a)(2)(C)). Misuse is a misdemeanor (18109).",
+    "DOB and registration date: true as facts about the file (Optimus confirmed 2026-10-07). The statewide voter file includes full date of birth and registration date (SOS file page; 2 CCR 19001). 'Has DOB' does not mean 'usable for JuryRoll'. Elections Code 2194(a)(3) releases the file only for 'election, scholarly, journalistic, or political' or governmental purposes 'as determined by the Secretary of State'. 2194(a)(2) bars personal, private or commercial use and internet display. Elections Code 2188 requires a written application with a statement of intended use, certified under penalty of perjury. Misuse, or getting the data without a 2188 application, is a misdemeanor (18109). The CA jury list is refused before matching (jury_list.public null; allow_jury_list false), so no strong-tier match is available in CA. No gate changes. See REQ-NOTE 29.",
+    "Jury records: CCP 237(a)(1) opens the names of qualified jurors drawn, not disqualified persons. Jury commissioner records of qualification inquiries (CCP 196(c), 207) are judicial administrative records. Rule 10.500 opens them unless exempt; (f)(3) privacy and (f)(5) state-law exemptions (for example CCP 197(c) for DMV data) likely apply. No case was found on non-citizen disqualification records. Public status stays null.",
+    "No pipeline: no California statute sends juror non-citizen answers to election officials. SB 1310 (2026) failed in Senate Judiciary (2-9) on April 21, 2026.",
+    "Volunteer claim: a user post (https://x.com/hydrogentechguy/status/2093360845527171401, 2026-08-28) says California 'recently released' non-juror lists with over 5 million rejections and asks DHS to review them. No release of a named list was found. Counts of jury disqualifications are not names and do not show registration. A secondary fact check (AZCIR, March 14, 2025) says about 450,000 yearly non-citizen disqualifications do not show the persons were registered. DHS is not a JuryRoll referral target.",
+    "Source note: leginfo.legislature.ca.gov shows a bot-check page to plain HTTP clients; sections were read in a browser on 2026-10-07."
   ]
 }
