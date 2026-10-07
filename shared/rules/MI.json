@@ -5,10 +5,10 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "MCL 600.1315: answers to juror qualification questionnaires 'shall not be disclosed' except by order of the chief circuit judge.",
+    "statute": "MCL 600.1315: 'The answers to the qualifications questionnaires shall not be disclosed except that the chief circuit judge may order that access be given to the questionnaires and the answers.' No statute creates a separate list of persons disqualified as non-citizens, and none makes such a list public.",
     "holder": "County jury board / circuit court.",
     "fields_withheld": null,
-    "official_pipeline": null,
+    "official_pipeline": "No statute. Bureau of Elections memo to county clerks, March 11, 2026: clerks who find possible non-citizens in the Qualified Voter File from jury list questionnaires 'should share this information with BOE.' After review, 'BOE will mail that individual a notice. If the person does not respond confirming eligibility, the registration will be cancelled.' 'Cases with apparent voting history will be referred to law enforcement for further investigation.' The memo says clerks should consult legal counsel first and that 'There is no Michigan Election Law prohibition on using jury list information.'",
     "use_restriction": null,
     "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-600-1315",
     "verified_on": "2026-10-07",
@@ -24,6 +24,24 @@
         "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-600-1313",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Michigan Bureau of Elections, 'Recommendations on using jury list questionnaires' (memo to county clerks, March 11, 2026)",
+        "url": "https://content.govdelivery.com/attachments/MISOS/2026/03/12/file_attachments/3581831/Jury%20List%20Procedure.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "MCL 600.1375 (Department of State sends each county clerk the combined driver's license and ID card list)",
+        "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-600-1375",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "MCL 15.232(h)(iv) (FOIA 'public body' excludes the judiciary, including the county clerk acting as clerk to the circuit court)",
+        "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-15-232",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
@@ -34,7 +52,7 @@
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,
-    "registration_date_in_public_file": null,
+    "registration_date_in_public_file": true,
     "attestation_required": null,
     "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-522",
     "verified_on": "2026-10-07",
@@ -44,6 +62,18 @@
         "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-509gg",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Michigan Department of State, Qualified Voter File Data Request Form (Rev. 03/26): 'Each list will include complete name, residential address, mailing address (if available), year of birth, registration date, voter status, voter ID and voter history'",
+        "url": "https://www.michigan.gov/sos/-/media/Project/Websites/sos/02lehman/FOIA_FORM.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      },
+      {
+        "cite": "Michigan Bureau of Elections, Statewide Records Summaries Available by a FOIA Request (weekly Voter Cancellation File: voter name, year of birth, gender, address, voter status)",
+        "url": "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Resources/Transparency-and-Freedom-of-Information-Act/Statewide-Records-Summaries-Available-by-a-FOIA-Request.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
@@ -56,7 +86,7 @@
     "deadlines": "No deadline in MCL 168.512. The federal 90-day rule still limits systematic removals.",
     "deadline_days_before_election": null,
     "evidence_standard": "The affidavit must state the grounds. A challenge made 'indiscriminately and without good cause or for the purpose of harassment' is a misdemeanor (MCL 168.512).",
-    "juryroll_lead_sufficient": null,
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": "Misdemeanor for indiscriminate, baseless, or harassing challenges (MCL 168.512).",
     "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-512",
     "verified_on": "2026-10-07",
@@ -71,7 +101,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-512",
@@ -96,17 +126,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "MCL 15.233 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the Michigan Department of State, Bureau of Elections: per county and per month, the number of possible non-citizen records that county clerks shared with BOE from jury list questionnaires, the number of notices BOE mailed on that basis, the number of registrations cancelled, and the number of cases referred to law enforcement.",
+    "counts_only": true,
+    "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-15-233",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. The circuit court and the county clerk acting as clerk of the circuit court are not FOIA public bodies (MCL 15.232(h)(iv)), so ask BOE, not the court. Juror questionnaire answers are not disclosed without the chief circuit judge's order (MCL 600.1315). Some county clerks publish their own counts: Macomb County, January 12, 2026: '239 non-citizens were found in the jury pool over a four-month period' and 'it appears that 14 of these prospective jurors were registered to vote at some point in time' (https://www.macombgov.org/departments/clerk-register-deeds/news/macomb-county-clerk-alarmed-about-citizenship-affecting-jury)."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror questionnaire answers are not disclosed without a judge's order (MCL 600.1315), so the jury list is not available. Strict gates: counts only. A private affidavit challenge exists (MCL 168.512) but guidance stays off without a jury list."
+    "basis": "Juror questionnaire answers are not disclosed without the chief circuit judge's order (MCL 600.1315), so the jury list is not available. Strict gates: counts only. A private affidavit challenge exists (MCL 168.512) but guidance stays off without a jury list."
   },
   "notes": [
-    "official_pipeline is null: no Michigan statute that sends juror non-citizen answers to election officials was found.",
-    "MCL 168.512 makes a baseless or harassing challenge a misdemeanor. A JuryRoll match alone is not 'good cause' under that text (juryroll_lead_sufficient null).",
-    "registration_date_in_public_file is null: not confirmed for the clerk list.",
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly; official_pipeline set to the Bureau of Elections memo of March 11, 2026 (no statute); registration_date_in_public_file null to true (QVF request form); juryroll_lead_sufficient false; audit_path; federal_source_url moved to govinfo. jury_list.public stays false. dob_in_public_file stays false (month and day of birth exempt, MCL 168.509gg).",
+    "Behavior flags: official_pipeline is now non-null, so the A.5 audit letter quotes the BOE memo. The memo is guidance, not law. registration_date_in_public_file is now true, so the registration-date comparison (LOGIC-CHANGES.md B) runs for Michigan files that carry the field.",
+    "PA-style check: no Michigan statute or court rule makes a list of jurors disqualified as non-citizens public. The jury source is the driver's license and ID card list (MCL 600.1375), which includes lawful non-citizens, as the BOE memo says.",
+    "MCL 168.512 makes a baseless or harassing challenge a misdemeanor. A JuryRoll match alone is not 'good cause' under that text (juryroll_lead_sufficient false). The BOE memo lists alternate explanations for a jury non-citizen answer, including a similar name, later naturalization, and a wrong answer.",
+    "Cancelled-voter file: BOE offers a weekly 'Voter Cancellation File' by FOIA request (voter name, year of birth, gender, address, voter status). No cancellation reason code is listed, so no jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "Pending bill: HB 4765 (proof of citizenship to register) passed the House on April 14, 2026 (58-46) and was referred to the Senate Committee on Government Operations on April 16, 2026. No later action is shown. https://www.legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-4765",
     "state_extra_days is 0: MCL 168.512 sets no state window."
   ]
 }

@@ -1,1 +1,1 @@
-| MI | No (MCL 600.1315) | Yes (MCL 168.512) | Counts only |
+| MI | No (MCL 600.1315). Clerks may send possible non-citizens from jury forms to the Bureau of Elections (BOE memo, March 11, 2026; guidance, not a law) | Yes (MCL 168.512) | Counts only. See 6.15 |
