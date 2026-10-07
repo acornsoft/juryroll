@@ -4,14 +4,28 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
+    "public": false,
+    "statute": "N.J. Court Rule 1:38-5(g): 'Records used to compile juror source lists, and the list prepared pursuant to N.J.S.A. 2B:20-2; jury qualification questionnaires completed pursuant to N.J.S.A. 2B:20-3, any other questionnaires completed by prospective jurors, and individual juror information maintained by the Judiciary; and lists prepared pursuant to N.J.S.A. 2B:20-4 of persons summoned for possible service as grand or petit jurors, which shall remain confidential, except as provided in Rule 1:8-5, unless otherwise ordered by the Administrative Director of the Courts'.",
     "holder": "New Jersey Judiciary (jury management).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://www.njcourts.gov/sites/default/files/courts/supreme/part3of4-orderamendingrules1-8-31-8-51-38-5andadoptingnewrule1-8-3a-07-12-22.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "N.J. Court Rule 1:38-5(g) (juror source lists, qualification questionnaires and individual juror information excluded from public access; text read in the Supreme Court order of July 12, 2022, effective Sept. 1, 2022, on njcourts.gov)",
+        "url": "https://www.njcourts.gov/sites/default/files/courts/supreme/part3of4-orderamendingrules1-8-31-8-51-38-5andadoptingnewrule1-8-3a-07-12-22.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "N.J. Court Rule 1:38-5(g) (commercial copy of the current rule, same wording)",
+        "url": "https://www.courtrules.net/new_jersey/nj-general/rule-1-38-5",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any voter, from the county clerk (printed registry lists) or the commissioner of registration (electronic list, at reproduction cost, max $375) (N.J.S.A. 19:31-18.1(a)-(b)).",
@@ -41,7 +55,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://nj.gov/state/dos-statutes-elections-19-10-19.shtml",
@@ -65,17 +79,27 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "N.J.S.A. 47:1A-1 et seq. (Open Public Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county commissioner of registration or the Division of Elections: per year, the number of registrations cancelled because the registrant was not a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://www.nj.gov/grc/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No New Jersey statute sends juror citizenship answers to election officials. Whether the Division keeps counts by cancellation reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. Challenges exist only at the polls. Strict gates."
+    "basis": "Jury records: juror source lists, qualification questionnaires and individual juror information 'shall remain confidential' (N.J. Court Rule 1:38-5(g)), so public is false and the app shows counts only. Challenges exist only at the polls. Strict gates."
   },
   "notes": [
-    "UNVERIFIED: N.J. Court Rule 1:38-5(g). Secondary sources say it excludes juror qualification questionnaires from public access. The official text on njcourts.gov could not be fetched (bot wall), so jury_list.public and jury_list.statute stay null and the strict default applies.",
-    "Source note: election statutes were read from the Division of Elections statute pages on nj.gov.",
-    "A pending bill (A509, 2026 session) would match juror records against the voter system. It is not law and is not relied on.",
-    "official_pipeline is null: no enacted jury-to-election-official non-citizen statute was found."
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false and statute quoted (R. 1:38-5(g)); the earlier 'UNVERIFIED' note is replaced; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes (null and false give the same strict gates). No voter_file value changes.",
+    "Source quality (REQ-NOTE 52 closed 2026-10-07): the official text was read in the Supreme Court order amending R. 1:38-5 (July 12, 2022, effective Sept. 1, 2022) on njcourts.gov. With the order's bracketed deletions removed, paragraph (g) matches the quoted text word for word. The order's note lists no later amendment to (g). courtrules.net (commercial) kept as a second source.",
+    "PA-style check: R. 1:38-5(g) closes the questionnaires and 'individual juror information'. No New Jersey rule or statute makes a list of persons disqualified as non-citizens public.",
+    "official_pipeline is null: no New Jersey statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list New Jersey. A pending bill (A509, 2026 session) would match juror records against the voter system. It is not law and is not relied on.",
+    "Cancelled-voter file: no published New Jersey cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "Source note: election statutes were read from the Division of Elections statute pages on nj.gov."
   ]
 }
