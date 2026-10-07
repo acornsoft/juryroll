@@ -9,8 +9,53 @@ import {
   stepIndex,
   type FlowFacts,
   type FlowMode,
+  type RailStatus,
+  type StepDef,
   type StepId,
 } from '../lib/flow.ts';
+
+function blockLine(facts: FlowFacts): string {
+  if (facts.allowJuryList) return `${facts.stateName}: jury list allowed. Matches go to a confidential referral.`;
+  return `${facts.stateName}: counts only. JuryRoll can't load the jury list here.`;
+}
+
+function lockedHint(id: StepId): string {
+  switch (id) {
+    case 'where':
+      return 'Always open';
+    case 'sign':
+      return 'Choose a state';
+    case 'files':
+      return 'Sign first';
+    case 'run':
+      return 'Needs both files';
+    case 'triage':
+      return 'After the match';
+    case 'export':
+      return 'Finish triage';
+    default: {
+      const missing: never = id;
+      return missing;
+    }
+  }
+}
+
+function runRailHint(step: StepDef, status: RailStatus, facts: FlowFacts): string {
+  switch (status) {
+    case 'blocked':
+      return 'Counts only';
+    case 'locked':
+      return lockedHint(step.id);
+    case 'done':
+      return step.summary(facts);
+    case 'active':
+      return 'Current step';
+    default: {
+      const neverStatus: never = status;
+      return neverStatus;
+    }
+  }
+}
 
 export function StepPanel({ id, hidden, children }: { id: StepId; hidden?: boolean; children: ReactNode }) {
   return (
@@ -52,8 +97,8 @@ export function Stepper({
     : active.advance === 'next' && !blockedReason;
   const showStart = mode === 'guide' && stepIndex(activeId) === RUN_STEPS.length - 1 && Boolean(guideStartHref);
   const prev = previousStepId(activeId);
-  const announcement = blockedReason && activeId === 'files' && mode === 'run' && activeId === active.id && blockedReason
-    ? `Step ${stepIndex(activeId) + 1} of ${RUN_STEPS.length}, ${active.title}, is blocked. ${blockedReason}`
+  const announcement = blockedReason && mode === 'run'
+    ? `Step ${stepIndex(activeId) + 1} of ${RUN_STEPS.length}, ${active.title}. ${blockLine(facts)}`
     : `Step ${stepIndex(activeId) + 1} of ${RUN_STEPS.length}, ${active.title}. ${active.question}`;
 
   useEffect(() => {
@@ -97,6 +142,7 @@ export function Stepper({
 
   const stepCard = (
       <article className="step-card" aria-labelledby="stepHeading">
+        <div className="step-scroll">
         <p className="kicker">{mode === 'run' ? `Step ${stepIndex(activeId) + 1} of ${RUN_STEPS.length}` : active.kicker}</p>
         <h2 id="stepHeading" tabIndex={-1} ref={headingRef}>{active.title}</h2>
         <p className="step-job">{active.job}</p>
@@ -115,10 +161,14 @@ export function Stepper({
             ))}
           </ul>
         )}
-        {blockedReason && (
-          <p className="banner" id="stepBlocked">
-            This step is blocked. {blockedReason} The counts-only branch is on this step.
-          </p>
+        {mode === 'run' && blockedReason && (
+          <div className="banner" id="stepBlocked">
+            <p>{blockLine(facts)}</p>
+            <details className="basis-why">
+              <summary>Why?</summary>
+              <p id="stepBasis">{blockedReason}</p>
+            </details>
+          </div>
         )}
         {Children.map(children, (child) => {
           if (!isValidElement(child)) return child;
@@ -126,6 +176,7 @@ export function Stepper({
           if (panel.props.id === undefined) return child;
           return cloneElement(panel, { hidden: panel.props.id !== activeId });
         })}
+        </div>
         <div className="step-actions">
           {prev && (
             <button type="button" id="stepBack" className="quiet" onClick={() => go(prev)}>Back</button>
@@ -163,13 +214,15 @@ export function Stepper({
         {RUN_STEPS.map((step, index) => {
           const status = railStatus(step, facts, activeId, mode);
           const open = canActivate(step, facts, mode);
-          const hint = status === 'blocked'
-            ? step.blocked(facts)
-            : status === 'locked'
-              ? step.unlockHint
-              : status === 'done'
-                ? (mode === 'guide' ? step.guideSummary : step.summary(facts))
-                : (mode === 'run' ? 'Current step' : null);
+          const hint = mode === 'run'
+            ? runRailHint(step, status, facts)
+            : status === 'blocked'
+              ? 'Counts only'
+              : status === 'locked'
+                ? step.unlockHint
+                : status === 'done'
+                  ? step.guideSummary
+                  : null;
           return (
             <li key={step.id} className={`rail-item action-single-items is-${status}`}>
               <button

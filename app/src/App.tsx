@@ -848,7 +848,7 @@ export function App() {
                   <h3>Counts only</h3>
                   <p className="banner" id="juryBlocked">{confidential}</p>
                   {clearedNote && <p className="banner" id="jurorCleared" role="status">{clearedNote}</p>}
-                  <p className="banner" id="juryRefuse">JuryRoll cannot load the jury list or run a match in {stateName}. The rules say: {rules.gates.basis}</p>
+                  <p className="banner" id="juryRefuse">JuryRoll cannot load the jury list or run a match in {stateName}.</p>
                   <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
                     <p>No person file is loaded. Dropping a jury list here does nothing.</p>
                   </div>
@@ -876,7 +876,9 @@ export function App() {
                       </div>
                       <div className="drop-body">
                         <span className="drop-copy"><b>Drop the jury disqualifications file</b><br />CSV or Excel</span>
-                        <input id="fileJuror" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('juror', file); }} />
+                        <label className="choose-file">
+                          <input id="fileJuror" type="file" aria-label="Choose file, jury disqualifications" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('juror', file); }} />
+                        </label>
                       </div>
                       {pendingJ && (
                         <label>Choose a sheet
@@ -896,7 +898,9 @@ export function App() {
                       </div>
                       <div className="drop-body">
                         <span className="drop-copy"><b>Drop the county voter file</b><br />CSV or Excel</span>
-                        <input id="fileVoter" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
+                        <label className="choose-file">
+                          <input id="fileVoter" type="file" aria-label="Choose file, county voter roll" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
+                        </label>
                       </div>
                       {pendingV && (
                         <label>Choose a sheet

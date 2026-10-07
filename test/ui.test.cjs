@@ -273,7 +273,11 @@ function readAuditDownload(file) {
   assert.ok(await first.page.isVisible('#auditLetter'));
   const nyRules = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/NY.json'), 'utf8'));
   const nyRefuse = await first.page.locator('#juryRefuse').innerText();
-  assert.ok(nyRefuse.includes(nyRules.gates.basis), nyRefuse);
+  assert.match(nyRefuse, /cannot load the jury list/);
+  assert.ok(!nyRefuse.includes(nyRules.gates.basis), nyRefuse);
+  assert.strictEqual(await first.page.locator('#step-tab-files .rail-hint').innerText(), 'Counts only');
+  await first.page.locator('#stepBlocked details').evaluate((node) => { node.open = true; });
+  assert.strictEqual((await first.page.locator('#stepBasis').innerText()).trim(), nyRules.gates.basis);
   assert.ok((await first.page.locator('#federalBanner').innerText()).includes('Federal 90-day window'));
   pass('AT-06');
 
@@ -826,7 +830,9 @@ function readAuditDownload(file) {
   assert.strictEqual(await switched.page.locator('#runBtn').count(), 0);
   assert.strictEqual(await switched.page.locator('#fileVoter').count(), 0);
   const switchedBasis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/NY.json'), 'utf8')).gates.basis;
-  assert.ok((await switched.page.locator('#juryRefuse').innerText()).includes(switchedBasis));
+  assert.ok(!(await switched.page.locator('#juryRefuse').innerText()).includes(switchedBasis));
+  await switched.page.locator('#stepBlocked details').evaluate((node) => { node.open = true; });
+  assert.strictEqual((await switched.page.locator('#stepBasis').innerText()).trim(), switchedBasis);
   assert.ok((await switched.page.locator('#jurorCleared').innerText()).includes(switchedBasis));
   assert.match(await switched.page.locator('#jurorCleared').innerText(), /cleared/i);
   assert.ok(await switched.page.isVisible('#auditLetter'));
@@ -890,7 +896,10 @@ function readAuditDownload(file) {
       assert.strictEqual(await walk.page.locator('#fileVoter').count(), 0, code);
       const basis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates.basis;
       const refuse = (await walk.page.locator('#juryRefuse').innerText()).trim();
-      assert.ok(refuse.includes(basis), `${code} missing explanation`);
+      assert.match(refuse, /cannot load the jury list/, code);
+      assert.ok(!refuse.includes(basis), `${code} repeated the basis`);
+      await walk.page.locator('#stepBlocked details').evaluate((node) => { node.open = true; });
+      assert.strictEqual((await walk.page.locator('#stepBasis').innerText()).trim(), basis, `${code} missing explanation`);
       assert.ok(await walk.page.locator('#auditLetterBtn').isVisible(), code);
       assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
       if (loaded) {
@@ -1203,7 +1212,17 @@ function readAuditDownload(file) {
     await mapShots.page.locator('#usMap').evaluate((node) => node.scrollIntoView({ block: 'start' }));
     await mapShots.page.screenshot({ path: path.join(shots, name) });
   }
-  await mapShots.page.waitForSelector('#usMap path[data-code="PA"]');
+  await mapShots.page.waitForSelector('#usMap path.is-available[data-code="PA"]');
+  await mapShots.page.waitForSelector('#usMap path.is-later[data-code="GA"]');
+  const legend = await mapShots.page.locator('.map-legend').innerText();
+  assert.match(legend, /Available/);
+  assert.match(legend, /Coming later/);
+  const optionText = await mapShots.page.$$eval('#stateSel option', (opts) => opts.map((opt) => opt.textContent || ''));
+  const pennsylvania = optionText.indexOf('Pennsylvania');
+  const georgia = optionText.findIndex((text) => text.startsWith('Georgia'));
+  assert.ok(pennsylvania > 0 && georgia > pennsylvania, optionText.join(' | '));
+  assert.match(optionText[georgia], /\(coming later\)/);
+  assert.strictEqual(await mapShots.page.locator('#stateSel option[value="GA"]').isEnabled(), true);
   await mapShots.page.waitForTimeout(200);
   await shootMap('map-us-1280.png');
   await mapShots.page.locator('#usMap path[data-code="PA"]').click();
@@ -1223,6 +1242,11 @@ function readAuditDownload(file) {
   await mapShots.page.waitForFunction(() => document.querySelector('#county').value === '' && document.querySelector('#stateSel').value === 'PA');
   await mapShots.page.click('#mapBackUs');
   await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === '');
+  await mapShots.page.locator('#usMap path[data-code="GA"]').click();
+  await mapShots.page.waitForSelector('#usMap[data-level="state"] path.is-later');
+  assert.strictEqual(await mapShots.page.locator('#usMap path.is-available').count(), 0);
+  await mapShots.page.click('#mapBackUs');
+  await mapShots.page.waitForSelector('#usMap[data-level="us"] path.is-available[data-code="PA"]');
   await mapShots.page.locator('#usMap path[data-code="DE"]').focus();
   await mapShots.page.keyboard.press('Enter');
   await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === 'DE');
