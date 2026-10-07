@@ -1,1 +1,1 @@
-| VT | Not known, so the app treats it as no | Only at the polls, and not on citizenship (17 V.S.A. 2564) | Counts only |
+| VT | Not known, so the app treats it as no. Names and towns of potential jurors are public; other questionnaire answers are not (Vermont Jury Rules 4(c), 10(a)) | Only at the polls, and not on citizenship (17 V.S.A. 2564) | Counts only. No commercial use of the statewide checklist, under oath (17 V.S.A. 2154(c)) |
