@@ -1,6 +1,18 @@
-import { useEffect, useRef, useState, type DragEvent } from 'react';
+import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import core from '../../shared/src/core.js';
-import guideMd from '../../shared/GUIDE.md?raw';
+import { CountySummary } from './components/CountySummary.tsx';
+import { ReasonMap } from './components/ReasonMap.tsx';
+import { StepPanel, Stepper } from './components/Stepper.tsx';
+import { TranscriptionSheet } from './components/TranscriptionSheet.tsx';
+import { TypeGrid } from './components/TypeGrid.tsx';
+import { applyPaPreset, filterFromMap, mapFromReasons, reasonCells, tallyReasons, type ReasonChoice, type ReasonMap as ReasonMapState } from './lib/reasons.ts';
+import { summaryCopy, upsertCountyRun, type CountyRun } from './lib/summary.ts';
+import { blankGrid, gridToCsv } from './lib/transcribe.ts';
+import { historyByVoterId } from './lib/voterContext.ts';
+import { FaqPage, LawPage } from './pages/Background.tsx';
+import { StateIndex, StatePage } from './pages/StateGuide.tsx';
+import { stepById, type FlowFacts, type StepId } from './lib/flow.ts';
+import { parseRoute } from './route.ts';
 import jurorSample from '../../shared/samples/sample_juror_disqualifications.csv?raw';
 import voterSample from '../../shared/samples/sample_voter_roll.csv?raw';
 import jurorSampleUrl from '../../shared/samples/sample_juror_disqualifications.csv?url';
@@ -44,15 +56,6 @@ type PurgeTrigger = 'button' | 'after_export' | 'timeout' | 'pagehide';
 type DateField = 'declDate' | 'regDate';
 
 const ATTEST_REFUSE = 'Sign the use statement and enter your initials before you load a file or run the match.';
-
-const GUIDE_START = '## 3. What you CAN do';
-const GUIDE_END = '## 5. The 90-day window';
-const guideSlice = (() => {
-  const start = guideMd.indexOf(GUIDE_START);
-  const end = guideMd.indexOf(GUIDE_END);
-  if (start < 0) return guideMd;
-  return guideMd.slice(start, end > start ? end : undefined).trim();
-})();
 
 function rowDestination(section: PolicyRow['section']): 'named' | 'weak' | 'removed' | 'hidden' {
   switch (section) {
@@ -116,6 +119,14 @@ export function App() {
   const [removals, setRemovals] = useState('');
   const [removalSource, setRemovalSource] = useState('');
   const [clearedNote, setClearedNote] = useState('');
+  const [route, setRoute] = useState(() => parseRoute(window.location.hash));
+  const [activeStep, setActiveStep] = useState<StepId>('where');
+  const [invalidateNote, setInvalidateNote] = useState('');
+  const [stateQuery, setStateQuery] = useState('');
+  const [typedRows, setTypedRows] = useState<string[][]>(() => blankGrid());
+  const [reasonMap, setReasonMap] = useState<ReasonMapState>({});
+  const [rollup, setRollup] = useState<CountyRun[]>([]);
+  const [copyNote, setCopyNote] = useState('');
 
   const logRef = useRef<AuditEntry[]>([]);
   const idbRef = useRef<IDBDatabase | null>(null);
@@ -125,6 +136,9 @@ export function App() {
   const jurorRef = useRef<Held | null>(null);
   const voterRef = useRef<Held | null>(null);
   const policyRef = useRef<PolicyResult | null>(null);
+  const appliedPreset = useRef('');
+  const paPresetRef = useRef(false);
+  const reasonMapRef = useRef<ReasonMapState>({});
   const exportTimer = useRef(0);
   const warnTimer = useRef(0);
   const idleTimer = useRef(0);
@@ -134,6 +148,7 @@ export function App() {
   jurorRef.current = juror;
   voterRef.current = voter;
   policyRef.current = policy;
+  reasonMapRef.current = reasonMap;
 
   async function append(type: AuditType, data: Record<string, unknown>) {
     const next = appendEntry(logRef.current, type, data);
@@ -162,6 +177,11 @@ export function App() {
     setCoreResult(null);
     setShowWeak(false);
     setFileError('');
+    setTypedRows(blankGrid());
+    setReasonMap({});
+    setRollup([]);
+    setCopyNote('');
+    paPresetRef.current = false;
     document.body.dataset.purged = '1';
     delete document.body.dataset.hasFiles;
   }
@@ -257,6 +277,12 @@ export function App() {
     if (modal) document.getElementById('purgeNow')?.focus();
   }, [modal]);
 
+  useEffect(() => {
+    const onHash = () => setRoute(parseRoute(window.location.hash));
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
   const rules = resolved?.rules ?? null;
   const gates = rules ? uiGates(rules) : null;
   const attested = checks.every(Boolean) && initials.trim().length >= 1;
@@ -276,6 +302,21 @@ export function App() {
     ? stateCounties.filter((item) => item.name.toLowerCase().includes(countyQuery) || item.fips.includes(countyQuery))
     : stateCounties;
   const selectedCounty = stateCounties.find((item) => item.fips === countyFips) ?? null;
+
+  useEffect(() => {
+    if (route.name !== 'home' || !route.preset) return;
+    if (appliedPreset.current === route.preset) return;
+    appliedPreset.current = route.preset;
+    if (code === route.preset) return;
+    void onState(route.preset);
+  }, [route, code]);
+
+  useEffect(() => {
+    if (attested || !policyRef.current) return;
+    setPolicy(null);
+    setCoreResult(null);
+    setInvalidateNote('The use statement changed. The match was cleared and has to be run again.');
+  }, [attested]);
   const countyOptions: County[] = selectedCounty && !filteredCounties.some((item) => item.fips === selectedCounty.fips)
     ? [selectedCounty, ...filteredCounties]
     : filteredCounties;
@@ -290,7 +331,9 @@ export function App() {
 
   async function onState(next: string) {
     const hadJuror = Boolean(jurorRef.current);
+    const hadResult = Boolean(policyRef.current);
     setCode(next);
+    setInvalidateNote(hadResult ? 'The state changed. The match was cleared and has to be run again.' : '');
     setCountyFips('');
     setCountyFilter('');
     const picked = resolveRules(next, bundle);
@@ -310,6 +353,7 @@ export function App() {
       }
       setJuror(null);
       setPendingJ(null);
+      setTypedRows(blankGrid());
       jurorRef.current = null;
     }
     if (!started.current) {
@@ -324,6 +368,20 @@ export function App() {
       sha256: sha256HexSync(bundle[sourceKey].raw),
       fallback_to_default: picked.fallback,
     });
+  }
+
+  function onCounty(fips: string) {
+    const hadResult = Boolean(policyRef.current);
+    setCountyFips(fips);
+    if (!hadResult) {
+      setInvalidateNote('');
+      return;
+    }
+    setPolicy(null);
+    setCoreResult(null);
+    setShowWeak(false);
+    setInvalidateNote('The county changed. The match was cleared and has to be run again.');
+    setActiveStep('where');
   }
 
   function markAttestation(nextChecks: boolean[], nextInitials: string) {
@@ -357,12 +415,14 @@ export function App() {
     const reasons = kind === 'juror' && analyzed.file.map.reason >= 0
       ? core.reasonValues(analyzed.file.text, analyzed.file.delim, hasHeader, analyzed.file.map.reason)
       : [];
+    const nextMap = paPresetRef.current ? applyPaPreset(mapFromReasons(reasons)) : mapFromReasons(reasons);
+    if (kind === 'juror') setReasonMap(nextMap);
     const held: Held = {
       ...analyzed.file,
       hasHeader,
       order: 'MDY',
       reasons,
-      reasonFilter: Object.fromEntries(reasons.map((reason) => [reason.value, reason.auto])),
+      reasonFilter: kind === 'juror' ? filterFromMap(nextMap) : {},
     };
     if (kind === 'juror') setJuror(held);
     else setVoter(held);
@@ -430,6 +490,45 @@ export function App() {
     else setVoter((held) => (held ? update(held) : held));
   }
 
+  async function commitTyped() {
+    const csv = gridToCsv(typedRows);
+    if (csv.trim().split('\n').length < 2) {
+      setFileError('Type at least one juror row before using the list.');
+      return;
+    }
+    const bytes = new TextEncoder().encode(csv);
+    await acceptText('juror', csv, bytes.byteLength, await sha256Hex(bytes), true);
+  }
+
+  function printBlankSheet() {
+    document.body.dataset.printSheet = '1';
+    window.addEventListener('afterprint', () => { delete document.body.dataset.printSheet; }, { once: true });
+    window.print();
+  }
+
+  function onReasonCategory(code: string, choice: ReasonChoice) {
+    const next = { ...reasonMap, [code]: choice };
+    setReasonMap(next);
+    setJuror((held) => (held ? { ...held, reasonFilter: filterFromMap(next) } : held));
+  }
+
+  function onPaPreset() {
+    paPresetRef.current = true;
+    const next = applyPaPreset(reasonMap);
+    setReasonMap(next);
+    setJuror((held) => (held ? { ...held, reasonFilter: filterFromMap(next) } : held));
+  }
+
+  async function onCopySummary() {
+    const text = summaryCopy(rollup);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyNote('Copied on this computer.');
+    } catch {
+      setCopyNote(text);
+    }
+  }
+
   async function onRun() {
     if (!attested) {
       setFileError(ATTEST_REFUSE);
@@ -440,7 +539,8 @@ export function App() {
       return;
     }
     if (!selectedCounty) return;
-    if (!juror || !voter || !rules) return;
+    if (!juror || !voter || !rules || !selectedCounty) return;
+    const activeMap = reasonMapRef.current;
     const matched = runMatch(
       {
         text: juror.text,
@@ -450,7 +550,7 @@ export function App() {
         map: juror.map,
         extra: juror.extra,
         order: juror.order,
-        reasonFilter: juror.reasonFilter,
+        reasonFilter: filterFromMap(activeMap),
       },
       {
         text: voter.text,
@@ -466,6 +566,25 @@ export function App() {
     );
     setCoreResult(matched.coreResult);
     setPolicy(matched.policy);
+    setInvalidateNote('');
+    setActiveStep('triage');
+    const cells = reasonCells(juror.text, juror.delim, juror.hasHeader, juror.map.reason ?? -1, juror.rows);
+    const tallies = tallyReasons(cells, activeMap);
+    setRollup((rows) => upsertCountyRun(rows, {
+      stateCode: code,
+      stateName,
+      countyName: selectedCounty.name,
+      countyFips: selectedCounty.fips,
+      entered: tallies.entered,
+      nonCitizen: tallies.nonCitizen,
+      language: tallies.language,
+      nonResident: tallies.nonResident,
+      strong: matched.policy.counts.Strong,
+      probable: matched.policy.counts.Probable,
+      weak: matched.policy.counts.Weak,
+      excluded: matched.policy.excludedAfterCount,
+      cannotCompare: matched.policy.cannotCompareCount,
+    }));
     const mapping: Record<string, string> = {};
     const add = (prefix: string, held: Held, fields: string[]) => {
       fields.forEach((field) => {
@@ -566,362 +685,434 @@ export function App() {
   const weakRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'weak') : [];
   const removedRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'removed') : [];
   const columnNote = [juror?.note, voter?.note].filter(Boolean).join(' ');
+  const voterHistory = voter
+    ? historyByVoterId(voter.text, voter.delim, voter.hasHeader, voter.headers, voter.map.voter_id ?? -1)
+    : {};
+  const reasonRows = (() => {
+    const seen = new Map<string, number>();
+    for (const reason of juror?.reasons ?? []) seen.set(reason.value, reason.count);
+    for (const code of Object.keys(reasonMap)) {
+      if (!seen.has(code)) seen.set(code, 0);
+    }
+    return [...seen.entries()].map(([value, count]) => ({ value, count }));
+  })();
+  const facts: FlowFacts = {
+    stateCode: code,
+    stateName,
+    countyName: selectedCounty?.name ?? '',
+    countyFips,
+    attested,
+    allowJuryList: Boolean(gates?.allow_jury_list),
+    blockReason: rules?.gates.basis ?? '',
+    jurorLoaded: Boolean(juror),
+    voterLoaded: Boolean(voter),
+    hasResult: Boolean(policy),
+    namedExport: Boolean(gates?.allow_named_export),
+  };
+  const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
+  const section = route.name === 'state' ? 'states' : route.name;
 
-  return (
-    <>
-      <a className="skip" href="#step0">Skip to your state</a>
-      <div className="wrap">
-        <header className="top">
-          <div>
-            <h1>JuryRoll</h1>
-            <p className="lede">A match is a referral for official verification. It is not proof. JuryRoll never contacts voters. Do not publish names.</p>
-          </div>
-          <a className="guide-link" href="./guide.html">What you can and cannot do</a>
-        </header>
-
-        <p className="privacy" id="privacy"><b>{PRIVACY_LEAD}</b> {PRIVACY_BODY}</p>
-        {inFederal && (
-          <div className="banner" id="federalBanner" role="status">
-            <b>Federal 90-day window. Do not file bulk challenges. Refer leads instead.</b>
-            <span> The window for {election} is {window90.start} through {window90.end}. Today is {today}. </span>
-            <a className="guide-link" href="./guide.html">What you can and cannot do</a>
-          </div>
-        )}
-        {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
-
-        <ol className="stepper no-print" id="stepper">
-          <li aria-current={code ? undefined : 'step'}>Step 0. Your state</li>
-          <li aria-current={ready && !juror ? 'step' : undefined}>Step 1. Load files</li>
-          <li>Step 2. Check columns</li>
-          <li>Step 3. Choose reasons</li>
-          <li aria-current={policy ? 'step' : undefined}>Step 4. Review and refer</li>
-        </ol>
-
-        <section className="panel" id="step0">
-          <h2>Your state</h2>
-          <div id="placePicker">
-            <label>
-              State
-              <select id="stateSel" value={code} onChange={(event) => { void onState(event.target.value); }}>
-                <option value="">Choose a state</option>
-                {STATES.map(([abbr, name]) => <option key={abbr} value={abbr}>{name}</option>)}
-              </select>
-            </label>
-            <label id="countyPicker">
-              County
-              <input id="countyFilter" type="search" value={countyFilter} disabled={!code} placeholder="Type to filter" autoComplete="off" onChange={(event) => setCountyFilter(event.target.value)} />
-              <select id="county" value={countyFips} disabled={!code} onChange={(event) => setCountyFips(event.target.value)}>
-                <option value="">Choose a county</option>
-                {countyOptions.map((item) => <option key={item.fips} value={item.fips}>{item.name} ({item.fips})</option>)}
-              </select>
-            </label>
-          </div>
-          {code && !selectedCounty && <p id="countyRequired" className="note">Choose a county before you run a match or export.</p>}
-          <label>
-            Federal election date
-            <input id="electionDate" type="date" value={election} onChange={(event) => setElection(event.target.value)} />
-          </label>
+  let page: ReactNode;
+  switch (route.name) {
+    case 'states':
+      page = <StateIndex query={stateQuery} onQuery={setStateQuery} />;
+      break;
+    case 'state':
+      page = <StatePage code={route.code} />;
+      break;
+    case 'law':
+      page = <LawPage topic={route.topic} />;
+      break;
+    case 'faq':
+      page = <FaqPage />;
+      break;
+    case 'home':
+      page = (
+        <>
+          <p className="kicker">Run a check</p>
+          <h1>Check a jury list</h1>
+          <p className="lede">A match is a referral for official verification. It is not proof. JuryRoll never contacts voters. Do not publish names.</p>
+          <p className="privacy" id="privacy"><b>{PRIVACY_LEAD}</b> {PRIVACY_BODY}</p>
+          {inFederal && (
+            <div className="banner" id="federalBanner" role="status">
+              <b>Federal 90-day window. Do not file bulk challenges. Refer leads instead.</b>
+              <span> The window for {election} is {window90.start} through {window90.end}. Today is {today}. </span>
+              <a className="why" href="#/law/blackout">Why?</a>
+            </div>
+          )}
+          {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
           {rules && NON_SIGNAL[rules.state] && (
             <p className="banner" id="nonSignalBanner" role="status">
-              {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="guide-link" href="./guide.html">What you can and cannot do</a>
+              {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="why" href="#/law/blackout">Why?</a>
             </p>
           )}
           {rules?.state === 'ND' && <p className="banner" id="ndBanner" role="status">{ND_REGISTRATION_NOTE}</p>}
-          {rules && rules.blackout.state_extra_days === null && <p className="note" id="stateLimits">State time limits not verified</p>}
-          {rules && (
-            <ul className="small" id="rulesNotes">
-              {rules.notes.map((note) => <li key={note}>{note}</li>)}
-            </ul>
+          {rules && useLimitApplies(rules) && (
+            <section className="panel" id="useLimitBanner">
+              <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="why" href="#/law/use">Why?</a></p>
+              {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
+              {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url}>{rules.voter_file.source_url}</a></p>}
+            </section>
           )}
-          {windows.length > 0 && (
-            <ul className="small" id="stateWindows">
-              {windows.map((item) => (
-                <li key={item.statute}>{item.label}: {item.effect} ({item.statute}) Date: {item.date}.{item.passed ? ' Passed.' : ''}</li>
+          {gates?.show_challenge_guidance && rules && (
+            <section className="panel" id="challengePanel">
+              <h2>Private challenge</h2>
+              {rules.private_challenge.juryroll_lead_sufficient !== true && (
+                <p className="banner" id="leadBanner">A JuryRoll match alone does not meet this standard. Referral is the recommended path. <a className="why" href="#/law/challenge">Why?</a></p>
+              )}
+              {deadlinePassed && deadlineDate && (
+                <p className="banner" id="deadlineBanner">The state deadline for this election has passed ({deadlineDate}).</p>
+              )}
+              {strict(rules.private_challenge.one_per_affidavit, true) && <p id="oneAffidavit">Use one affidavit for one voter.</p>}
+              {rules.private_challenge.who && <p>{rules.private_challenge.who}</p>}
+              {rules.private_challenge.form_or_statute && <p>{rules.private_challenge.form_or_statute}</p>}
+              {rules.private_challenge.evidence_standard && <p>{rules.private_challenge.evidence_standard}</p>}
+              {rules.private_challenge.deadlines && <p>{rules.private_challenge.deadlines}</p>}
+              {rules.private_challenge.false_statement_penalty && <p>{rules.private_challenge.false_statement_penalty}</p>}
+              {rules.private_challenge.form_url && !deadlinePassed && (
+                <p><a id="challengeFormLink" href={rules.private_challenge.form_url}>Official challenge form</a></p>
+              )}
+            </section>
+          )}
+          {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
+          {code && !selectedCounty && <p id="countyRequired" className="note">Choose a county before you run a match or export.</p>}
+
+          <Stepper facts={facts} activeId={activeStep} notice={invalidateNote} nextEnabled={nextEnabled} onActivate={setActiveStep}>
+            <StepPanel id="where">
+              <section id="step0">
+                <div id="placePicker">
+                  <label>
+                    State
+                    <select id="stateSel" value={code} onChange={(event) => { void onState(event.target.value); }}>
+                      <option value="">Choose a state</option>
+                      {STATES.map(([abbr, name]) => <option key={abbr} value={abbr}>{name}</option>)}
+                    </select>
+                  </label>
+                  <label id="countyPicker">
+                    County
+                    <input id="countyFilter" type="search" value={countyFilter} disabled={!code} placeholder="Type to filter" autoComplete="off" onChange={(event) => setCountyFilter(event.target.value)} />
+                    <select id="county" value={countyFips} disabled={!code} onChange={(event) => onCounty(event.target.value)}>
+                      <option value="">Choose a county</option>
+                      {countyOptions.map((item) => <option key={item.fips} value={item.fips}>{item.name} ({item.fips})</option>)}
+                    </select>
+                  </label>
+                </div>
+                <label>
+                  Federal election date
+                  <input id="electionDate" type="date" value={election} onChange={(event) => setElection(event.target.value)} />
+                </label>
+                <p className="small">The date sets the federal window. <a className="why" href="#/law/blackout">Why?</a></p>
+                {rules && rules.blackout.state_extra_days === null && <p className="note" id="stateLimits">State time limits not verified</p>}
+                {rules && (
+                  <ul className="small" id="rulesNotes">
+                    {rules.notes.map((note) => <li key={note}>{note}</li>)}
+                  </ul>
+                )}
+                {windows.length > 0 && (
+                  <ul className="small" id="stateWindows">
+                    {windows.map((item) => (
+                      <li key={item.statute}>{item.label}: {item.effect} ({item.statute}) Date: {item.date}.{item.passed ? ' Passed.' : ''}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            </StepPanel>
+            <StepPanel id="sign">
+              {rules?.voter_file.permitted_uses && <p className="small" id="permittedUses">{rules.voter_file.permitted_uses}</p>}
+              {ATTEST_LINES.map((line, index) => (
+                <label className="inline" key={line}>
+                  <input
+                    id={`attest${index + 1}`}
+                    type="checkbox"
+                    checked={checks[index]}
+                    onChange={(event) => {
+                      const next = checks.slice();
+                      next[index] = event.target.checked;
+                      setChecks(next);
+                      markAttestation(next, initials);
+                    }}
+                  />
+                  <span>{line}</span>
+                </label>
               ))}
-            </ul>
-          )}
+              <label>
+                Initials
+                <input
+                  id="initials"
+                  type="text"
+                  value={initials}
+                  autoComplete="off"
+                  onChange={(event) => {
+                    setInitials(event.target.value);
+                    markAttestation(checks, event.target.value);
+                  }}
+                />
+              </label>
+              <p className="small">The five statements are the use rules. <a className="why" href="#/law/use">Why?</a></p>
+            </StepPanel>
+            <StepPanel id="files">
+              {code && gates && !gates.allow_jury_list && rules && (
+                <section className="panel" id="auditMode">
+                  <h3>Counts only</h3>
+                  <p className="banner" id="juryBlocked">{confidential}</p>
+                  {clearedNote && <p className="banner" id="jurorCleared" role="status">{clearedNote}</p>}
+                  <p className="banner" id="juryRefuse">JuryRoll cannot load the jury list or run a match in {stateName}. The rules say: {rules.gates.basis}</p>
+                  <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
+                    <p>No person file is loaded. Dropping a jury list here does nothing.</p>
+                  </div>
+                  <div className="grid" id="auditPeriod">
+                    <label>Period from<input id="auditFrom" type="date" value={periodFrom} onChange={(event) => setPeriodFrom(event.target.value)} /></label>
+                    <label>Period to<input id="auditTo" type="date" value={periodTo} onChange={(event) => setPeriodTo(event.target.value)} /></label>
+                  </div>
+                  <label>Jurors disqualified or excused for non-citizenship<input id="auditJuryCount" type="text" value={juryCount} onChange={(event) => setJuryCount(event.target.value)} /></label>
+                  <label>Source of that number<input id="auditJurySource" type="text" value={jurySource} onChange={(event) => setJurySource(event.target.value)} /></label>
+                  <label>Voter registrations cancelled for non-citizenship<input id="auditRemovals" type="text" value={removals} onChange={(event) => setRemovals(event.target.value)} /></label>
+                  <label>Source of that number<input id="auditRemovalSource" type="text" value={removalSource} onChange={(event) => setRemovalSource(event.target.value)} /></label>
+                  <pre id="auditLetter">{letterText()}</pre>
+                  <p className="row no-print"><button id="auditLetterBtn" className="btn-primary" type="button" disabled={!selectedCounty} onClick={() => { void onLetter(); }}>Download the audit letter</button></p>
+                </section>
+              )}
+              {gates?.allow_jury_list && (
+                <fieldset className="panel" id="step1" disabled={!ready}>
+                  <legend>Jury list and voter roll</legend>
+                  <p className="small">Blank templates and fictional samples stay on this page, under the steps.</p>
+                  <div className="grid">
+                    <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
+                      <h3>Jury disqualifications</h3>
+                      <input id="fileJuror" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('juror', file); }} />
+                      <label className="inline"><input id="hdrJuror" type="checkbox" checked={hdrJ} onChange={(event) => { setHdrJ(event.target.checked); if (juror) void acceptText('juror', juror.text, juror.bytes, juror.sha256, event.target.checked); }} /> First row has column names</label>
+                      {pendingJ && (
+                        <label>Choose a sheet
+                          <select id="jurorSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingJ) return; void acceptText('juror', pendingJ.csvBySheet[name], pendingJ.bytes, pendingJ.sha256, hdrJ); setPendingJ(null); }}>
+                            <option value="">Choose a sheet</option>
+                            {pendingJ.names.map((name) => <option key={name} value={name}>{name}</option>)}
+                          </select>
+                        </label>
+                      )}
+                      {juror && <p className="small" id="infoJuror">{juror.rows} rows. {juror.sheetName ?? 'Table loaded.'}</p>}
+                    </div>
+                    <div id="voterSlot">
+                      <h3>Voter file</h3>
+                      <input id="fileVoter" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
+                      <label className="inline"><input id="hdrVoter" type="checkbox" checked={hdrV} onChange={(event) => { setHdrV(event.target.checked); if (voter) void acceptText('voter', voter.text, voter.bytes, voter.sha256, event.target.checked); }} /> First row has column names</label>
+                      {pendingV && (
+                        <label>Choose a sheet
+                          <select id="voterSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingV) return; void acceptText('voter', pendingV.csvBySheet[name], pendingV.bytes, pendingV.sha256, hdrV); setPendingV(null); }}>
+                            <option value="">Choose a sheet</option>
+                            {pendingV.names.map((name) => <option key={name} value={name}>{name}</option>)}
+                          </select>
+                        </label>
+                      )}
+                      {voter && <p className="small" id="infoVoter">{voter.rows} rows.</p>}
+                    </div>
+                  </div>
+                  <p className="row">
+                    <button id="sampleBtn" type="button" className="secondary" onClick={() => { void loadSamples(); }}>Try with sample data</button>
+                    {(juror || voter) && <span className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</span>}
+                  </p>
+                  {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
+                  <div id="typePath">
+                    <h3>Type it in</h3>
+                    <p className="small">For a printed non-juror list. Enter moves to the next row. Paste from a spreadsheet. Rows stay in memory on this computer and are cleared by Purge.</p>
+                    <TypeGrid rows={typedRows} onChange={setTypedRows} />
+                    <p className="row">
+                      <button id="useTypedBtn" type="button" className="secondary" onClick={() => { void commitTyped(); }}>Use typed list</button>
+                      <button id="printSheetBtn" type="button" className="quiet" onClick={printBlankSheet}>Print blank transcription sheet</button>
+                    </p>
+                  </div>
+                </fieldset>
+              )}
+              {!code && <p className="small">Choose a state first. This step opens after you sign, or it becomes the counts-only branch.</p>}
+            </StepPanel>
+            <StepPanel id="run">
+              {gates?.allow_jury_list ? (
+                <>
+                  <fieldset className="panel" id="step2" disabled={!ready}>
+                    <legend>Check columns</legend>
+                    <div className="grid">
+                      <div>
+                        <h3>Jury columns</h3>
+                        <label className="inline">Dates with slashes
+                          <select id="orderJuror" value={juror?.order ?? 'MDY'} onChange={(event) => patch('juror', (held) => ({ ...held, order: event.target.value }))}>
+                            <option value="MDY">MM/DD/YYYY (US)</option>
+                            <option value="DMY">DD/MM/YYYY</option>
+                          </select>
+                        </label>
+                        {juror && (
+                          <MapTable
+                            id="mapJuror"
+                            headers={juror.headers}
+                            map={juror.map}
+                            fields={core.JUROR_FIELDS}
+                            extra={juror.extra}
+                            onChange={(field, index) => patch('juror', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
+                            onExtra={(field, index) => patch('juror', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <h3>Voter columns</h3>
+                        <label className="inline">Dates with slashes
+                          <select id="orderVoter" value={voter?.order ?? 'MDY'} onChange={(event) => patch('voter', (held) => ({ ...held, order: event.target.value }))}>
+                            <option value="MDY">MM/DD/YYYY (US)</option>
+                            <option value="DMY">DD/MM/YYYY</option>
+                          </select>
+                        </label>
+                        {voter && (
+                          <MapTable
+                            id="mapVoter"
+                            headers={voter.headers}
+                            map={voter.map}
+                            fields={core.VOTER_FIELDS}
+                            extra={voter.extra}
+                            onChange={(field, index) => patch('voter', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
+                            onExtra={(field, index) => patch('voter', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset className="panel" id="step3" disabled={!ready}>
+                    <legend>Map reason codes</legend>
+                    <ReasonMap rows={reasonRows} value={reasonMap} onChange={onReasonCategory} onPreset={onPaPreset} />
+                    <p className="row">
+                      <button id="runBtn" className="btn-primary" type="button" disabled={!canRun} onClick={() => { void onRun(); }}>Run the match</button>
+                      <span id="runMsg" className="small">{policy ? 'Match finished. Review the to-explore pile.' : 'The match stays on this computer.'}</span>
+                    </p>
+                  </fieldset>
+                </>
+              ) : (
+                <p className="small">This state has no person match. Use the counts-only branch on Add files.</p>
+              )}
+            </StepPanel>
+            <StepPanel id="triage">
+              <section id="step4">
+                {gates?.allow_jury_list && policy && selectedCounty && (
+                  <CountySummary rows={rollup} currentFips={selectedCounty.fips} note={copyNote} onCopy={() => { void onCopySummary(); }} />
+                )}
+                <h3 className="print-title" id="referralHeader">Referral for official verification — {stateName || 'No state yet'}{selectedCounty ? ` — ${selectedCounty.name} (${selectedCounty.fips})` : ''} — {today}</h3>
+                {policy && coreResult && (
+                  <>
+                    <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
+                    <div className="cards">
+                      <div id="countStrong" className="card"><span className="n">{policy.counts.Strong}</span> Strong</div>
+                      <div id="countProbable" className="card"><span className="n">{policy.counts.Probable}</span> Probable</div>
+                      <div id="countWeak" className="card"><span className="n">{policy.counts.Weak}</span> Weak</div>
+                    </div>
+                    {policy.capBadge && <p className="note" id="tierCapBadge">{policy.capBadge}</p>}
+                    <p id="excludedLine"><b>{policy.excludedLine}</b></p>
+                    <p id="cannotCompareLine"><b>{policy.cannotCompareLine}</b></p>
+                    <details className="bucket">
+                      <summary>Excluded: registered after declaration ({policy.excludedAfterCount})</summary>
+                      <p>These pairs stay out of the to-explore pile. The voter registered after the jury declaration.</p>
+                    </details>
+                    <details className="bucket">
+                      <summary>Cannot compare: no registration date ({policy.cannotCompareCount})</summary>
+                      <p>These pairs stay out of the to-explore pile. One of the dates is missing, so the order cannot be checked.</p>
+                    </details>
+                    <p className="small" id="regDateNote">Some voter files show the date of the latest registration change, not the first registration. That excludes more matches, which is the safe direction.</p>
+                    {rules && NON_SIGNAL[rules.state] && <p id="nonSignalCounts">These counts are {NON_SIGNAL_LABEL}.</p>}
+                    <p id="symmetricCount">Non-citizen removal reasons on the voter file: {policy.symmetric.noncitizenRemovals}. Without a Strong jury match: {policy.symmetric.withoutStrongMatch}.</p>
+                    <p className="small">Possible wrongful removals, count only: {policy.wrongfulCount}. Official SAVE / naturalization check required.</p>
+                    {targets.length > 0 && (
+                      <div id="referralTargets">
+                        <h3>Send a referral only to these offices</h3>
+                        <ul>{targets.map((target) => <li key={target.url}><a href={target.url}>{target.name}</a></li>)}</ul>
+                      </div>
+                    )}
+                    {named && (
+                      <>
+                        <div className="to-explore" id="toExplore">
+                          <h3>To explore</h3>
+                          <LeadPile tier="Strong" rows={mainRows} history={voterHistory} />
+                          <LeadPile tier="Probable" rows={mainRows} history={voterHistory} />
+                        </div>
+                        <div className="scroll"><ResultsTable id="results" rows={mainRows} /></div>
+                        {removedRows.length > 0 && (
+                          <div id="alreadyRemoved">
+                            <h3>Already removed: confirm the removal was correct</h3>
+                            <ResultsTable rows={removedRows} />
+                          </div>
+                        )}
+                        <details id="weakDetails">
+                          <summary>Weak matches ({policy.counts.Weak})</summary>
+                          <label className="inline"><input id="showWeak" type="checkbox" checked={showWeak} onChange={(event) => setShowWeak(event.target.checked)} /> Show weak matches (name only)</label>
+                          {showWeak && <p className="warn" id="weakWarn">{WEAK_CAUTION}</p>}
+                          {showWeak && <LeadPile tier="Weak" rows={weakRows} history={voterHistory} />}
+                          {showWeak && <ResultsTable rows={weakRows} />}
+                        </details>
+                      </>
+                    )}
+                    {!gates?.allow_named_export && <p id="aggregateOnly">This state shows counts only. No names are on this page and none can be exported.</p>}
+                  </>
+                )}
+                {!policy && <p className="small">Results appear here after a match. Counts-only states use the audit letter instead of a person list.</p>}
+              </section>
+            </StepPanel>
+            <StepPanel id="export">
+              <p>Export names only the offices in the rules file, for the county on step 1.</p>
+              {named && (
+                <p className="row no-print">
+                  <button id="exportBtn" className="btn-primary" type="button" disabled={!selectedCounty} onClick={() => { void onExport(); }}>Export CSV: Referral for official verification</button>
+                </p>
+              )}
+              {!policy && <p className="small">Run the match before you export.</p>}
+              {policy && !gates?.allow_named_export && <p id="aggregateExport">This state shows counts only. Download the counts-only letter from Add files.</p>}
+            </StepPanel>
+          </Stepper>
 
-          <h3>Use statement</h3>
-          {rules?.voter_file.permitted_uses && <p className="small" id="permittedUses">{rules.voter_file.permitted_uses}</p>}
-          {ATTEST_LINES.map((line, index) => (
-            <label className="inline" key={line}>
-              <input
-                id={`attest${index + 1}`}
-                type="checkbox"
-                checked={checks[index]}
-                onChange={(event) => {
-                  const next = checks.slice();
-                  next[index] = event.target.checked;
-                  setChecks(next);
-                  markAttestation(next, initials);
-                }}
-              />
-              <span>{line}</span>
-            </label>
-          ))}
-          <label>
-            Initials
-            <input
-              id="initials"
-              type="text"
-              value={initials}
-              autoComplete="off"
-              onChange={(event) => {
-                setInitials(event.target.value);
-                markAttestation(checks, event.target.value);
-              }}
-            />
-          </label>
-        </section>
+          <section className="panel no-print" id="downloadsPanel">
+            <h2>Blank templates and fictional samples</h2>
+            <p className="small" id="templateDateNote">The registration date is needed for a named referral.</p>
+            <div className="downloads">
+              <a href={jurorTemplateUrl} download="juror-template.csv">Blank juror template (CSV)</a>
+              <a href={jurorTemplateXlsxUrl} download="juror-template.xlsx">Blank juror template (Excel)</a>
+              <a href={voterTemplateUrl} download="voter-template.csv">Blank voter template (CSV)</a>
+              <a href={voterTemplateXlsxUrl} download="voter-template.xlsx">Blank voter template (Excel)</a>
+              <a href={jurorSampleUrl} download="sample_juror_disqualifications.csv">Fictional juror sample (CSV)</a>
+              <a href={jurorSampleXlsxUrl} download="sample_juror_disqualifications.xlsx">Fictional juror sample (Excel)</a>
+              <a href={voterSampleUrl} download="sample_voter_roll.csv">Fictional voter sample (CSV)</a>
+              <a href={voterSampleXlsxUrl} download="sample_voter_roll.xlsx">Fictional voter sample (Excel)</a>
+            </div>
+          </section>
+        </>
+      );
+      break;
+    default: {
+      const neverRoute: never = route;
+      page = neverRoute;
+      break;
+    }
+  }
 
-        <section className="panel" id="caveats">
+  return (
+    <>
+      <a className="skip" href="#main">Skip to content</a>
+      <div className="wrap">
+        <header className="topbar">
+          <a className="brand" href="#/run">JuryRoll</a>
+          <nav className="nav" aria-label="Sections">
+            <a href="#/run" aria-current={section === 'home' ? 'page' : undefined}>Run a check</a>
+            <a href="#/states" aria-current={section === 'states' ? 'page' : undefined}>State walkthroughs</a>
+            <a href="#/law" aria-current={section === 'law' ? 'page' : undefined}>Law &amp; guidance</a>
+            <a href="#/faq" aria-current={section === 'faq' ? 'page' : undefined}>FAQ</a>
+            <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge data</button>
+          </nav>
+        </header>
+        <main id="main">{page}</main>
+        <section className="print-only" id="caveats">
           <h2>Read this before you use a result</h2>
           <ul className="caveats">
             {CAVEATS.map((item) => <li key={item.html} dangerouslySetInnerHTML={{ __html: item.html }} />)}
           </ul>
         </section>
-
-        <section className="panel" id="tierRules">
+        <section className="print-only" id="tierRules">
           <h2>How a tier is chosen</h2>
           <ul>
             {TIER_RULES.map((tier) => <li key={tier.name}><b>{tier.name}.</b> {tier.text}</li>)}
           </ul>
         </section>
-
-        <section className="panel no-print" id="guidePanel">
-          <h2>What you can and cannot do</h2>
-          <p><a className="guide-link" href="./guide.html">Open the full guide</a></p>
-          <pre className="guide-pre">{guideSlice}</pre>
-        </section>
-
-        {gates?.show_challenge_guidance && rules && (
-          <section className="panel" id="challengePanel">
-            <h2>Private challenge</h2>
-            {rules.private_challenge.juryroll_lead_sufficient !== true && (
-              <p className="banner" id="leadBanner">A JuryRoll match alone does not meet this standard. Referral is the recommended path. <a className="guide-link" href="./guide.html">What you can and cannot do</a></p>
-            )}
-            {deadlinePassed && deadlineDate && (
-              <p className="banner" id="deadlineBanner">The state deadline for this election has passed ({deadlineDate}).</p>
-            )}
-            {strict(rules.private_challenge.one_per_affidavit, true) && <p id="oneAffidavit">Use one affidavit for one voter.</p>}
-            {rules.private_challenge.who && <p>{rules.private_challenge.who}</p>}
-            {rules.private_challenge.form_or_statute && <p>{rules.private_challenge.form_or_statute}</p>}
-            {rules.private_challenge.evidence_standard && <p>{rules.private_challenge.evidence_standard}</p>}
-            {rules.private_challenge.deadlines && <p>{rules.private_challenge.deadlines}</p>}
-            {rules.private_challenge.false_statement_penalty && <p>{rules.private_challenge.false_statement_penalty}</p>}
-            {rules.private_challenge.form_url && !deadlinePassed && (
-              <p><a id="challengeFormLink" href={rules.private_challenge.form_url}>Official challenge form</a></p>
-            )}
-          </section>
-        )}
-
-        {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
-
-        {code && gates && !gates.allow_jury_list && rules && (
-          <section className="panel" id="auditMode">
-            <h2>Counts only</h2>
-            <p className="banner" id="juryBlocked">{confidential}</p>
-            {clearedNote && <p className="banner" id="jurorCleared" role="status">{clearedNote}</p>}
-            <p className="banner" id="juryRefuse">JuryRoll cannot load the jury list or run a match in {stateName}. The rules say: {rules.gates.basis}</p>
-            <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
-              <p>No person file is loaded. Dropping a jury list here does nothing.</p>
-            </div>
-            <div className="grid" id="auditPeriod">
-              <label>Period from<input id="auditFrom" type="date" value={periodFrom} onChange={(event) => setPeriodFrom(event.target.value)} /></label>
-              <label>Period to<input id="auditTo" type="date" value={periodTo} onChange={(event) => setPeriodTo(event.target.value)} /></label>
-            </div>
-            <label>Jurors disqualified or excused for non-citizenship<input id="auditJuryCount" type="text" value={juryCount} onChange={(event) => setJuryCount(event.target.value)} /></label>
-            <label>Source of that number<input id="auditJurySource" type="text" value={jurySource} onChange={(event) => setJurySource(event.target.value)} /></label>
-            <label>Voter registrations cancelled for non-citizenship<input id="auditRemovals" type="text" value={removals} onChange={(event) => setRemovals(event.target.value)} /></label>
-            <label>Source of that number<input id="auditRemovalSource" type="text" value={removalSource} onChange={(event) => setRemovalSource(event.target.value)} /></label>
-            <pre id="auditLetter">{letterText()}</pre>
-            <p className="row no-print"><button id="auditLetterBtn" type="button" disabled={!selectedCounty} onClick={() => { void onLetter(); }}>Download the audit letter</button></p>
-          </section>
-        )}
-
-        {rules && useLimitApplies(rules) && (
-          <section className="panel" id="useLimitBanner">
-            <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="guide-link" href="./guide.html">What you can and cannot do</a></p>
-            {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
-            {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url}>{rules.voter_file.source_url}</a></p>}
-          </section>
-        )}
-
-        {gates?.allow_jury_list && (
-          <>
-            <fieldset className="panel" id="step1" disabled={!ready}>
-              <legend>Step 1. Load the files</legend>
-              <div className="grid">
-                <div id="jurorSlot" onDragOver={(event) => event.preventDefault()} onDrop={onJurorDrop}>
-                  <h3>Jury disqualifications</h3>
-                  <input id="fileJuror" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('juror', file); }} />
-                  <label className="inline"><input id="hdrJuror" type="checkbox" checked={hdrJ} onChange={(event) => { setHdrJ(event.target.checked); if (juror) void acceptText('juror', juror.text, juror.bytes, juror.sha256, event.target.checked); }} /> First row has column names</label>
-                  {pendingJ && (
-                    <label>Choose a sheet
-                      <select id="jurorSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingJ) return; void acceptText('juror', pendingJ.csvBySheet[name], pendingJ.bytes, pendingJ.sha256, hdrJ); setPendingJ(null); }}>
-                        <option value="">Choose a sheet</option>
-                        {pendingJ.names.map((name) => <option key={name} value={name}>{name}</option>)}
-                      </select>
-                    </label>
-                  )}
-                  {juror && <p className="small" id="infoJuror">{juror.rows} rows. {juror.sheetName ?? 'Table loaded.'}</p>}
-                </div>
-                <div id="voterSlot">
-                  <h3>Voter file</h3>
-                  <input id="fileVoter" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
-                  <label className="inline"><input id="hdrVoter" type="checkbox" checked={hdrV} onChange={(event) => { setHdrV(event.target.checked); if (voter) void acceptText('voter', voter.text, voter.bytes, voter.sha256, event.target.checked); }} /> First row has column names</label>
-                  {pendingV && (
-                    <label>Choose a sheet
-                      <select id="voterSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingV) return; void acceptText('voter', pendingV.csvBySheet[name], pendingV.bytes, pendingV.sha256, hdrV); setPendingV(null); }}>
-                        <option value="">Choose a sheet</option>
-                        {pendingV.names.map((name) => <option key={name} value={name}>{name}</option>)}
-                      </select>
-                    </label>
-                  )}
-                  {voter && <p className="small" id="infoVoter">{voter.rows} rows.</p>}
-                </div>
-              </div>
-              <p className="row">
-                <button id="sampleBtn" type="button" className="secondary" onClick={() => { void loadSamples(); }}>Try with sample data</button>
-                {(juror || voter) && <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge now</button>}
-                {(juror || voter) && <span className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</span>}
-              </p>
-              {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
-            </fieldset>
-
-            <fieldset className="panel" id="step2" disabled={!ready}>
-              <legend>Step 2. Check columns</legend>
-              <div className="grid">
-                <div>
-                  <h3>Jury columns</h3>
-                  <label className="inline">Dates with slashes
-                    <select id="orderJuror" value={juror?.order ?? 'MDY'} onChange={(event) => patch('juror', (held) => ({ ...held, order: event.target.value }))}>
-                      <option value="MDY">MM/DD/YYYY (US)</option>
-                      <option value="DMY">DD/MM/YYYY</option>
-                    </select>
-                  </label>
-                  {juror && (
-                    <MapTable
-                      id="mapJuror"
-                      headers={juror.headers}
-                      map={juror.map}
-                      fields={core.JUROR_FIELDS}
-                      extra={juror.extra}
-                      onChange={(field, index) => patch('juror', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
-                      onExtra={(field, index) => patch('juror', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
-                    />
-                  )}
-                </div>
-                <div>
-                  <h3>Voter columns</h3>
-                  <label className="inline">Dates with slashes
-                    <select id="orderVoter" value={voter?.order ?? 'MDY'} onChange={(event) => patch('voter', (held) => ({ ...held, order: event.target.value }))}>
-                      <option value="MDY">MM/DD/YYYY (US)</option>
-                      <option value="DMY">DD/MM/YYYY</option>
-                    </select>
-                  </label>
-                  {voter && (
-                    <MapTable
-                      id="mapVoter"
-                      headers={voter.headers}
-                      map={voter.map}
-                      fields={core.VOTER_FIELDS}
-                      extra={voter.extra}
-                      onChange={(field, index) => patch('voter', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
-                      onExtra={(field, index) => patch('voter', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
-                    />
-                  )}
-                </div>
-              </div>
-            </fieldset>
-
-            <fieldset className="panel" id="step3" disabled={!ready}>
-              <legend>Step 3. Choose reasons</legend>
-              <div id="reasonBox">
-                {juror?.reasons.map((reason) => (
-                  <label className="inline" key={reason.value}>
-                    <input
-                      type="checkbox"
-                      checked={Boolean(juror.reasonFilter[reason.value])}
-                      onChange={(event) => patch('juror', (held) => ({ ...held, reasonFilter: { ...held.reasonFilter, [reason.value]: event.target.checked } }))}
-                    />
-                    <span>{reason.value || '(blank)'} ({reason.count})</span>
-                  </label>
-                ))}
-              </div>
-              <p className="row">
-                <button id="runBtn" type="button" disabled={!canRun} onClick={() => { void onRun(); }}>Run the match</button>
-                <span id="runMsg" className="small">{policy ? 'Match finished. Review Step 4.' : 'The match stays on this computer.'}</span>
-              </p>
-            </fieldset>
-          </>
-        )}
-
-        <section className="panel no-print" id="downloadsPanel">
-          <h2>Blank templates and fictional samples</h2>
-          <p className="small" id="templateDateNote">The registration date is needed for a named referral.</p>
-          <div className="downloads">
-            <a href={jurorTemplateUrl} download="juror-template.csv">Blank juror template (CSV)</a>
-            <a href={jurorTemplateXlsxUrl} download="juror-template.xlsx">Blank juror template (Excel)</a>
-            <a href={voterTemplateUrl} download="voter-template.csv">Blank voter template (CSV)</a>
-            <a href={voterTemplateXlsxUrl} download="voter-template.xlsx">Blank voter template (Excel)</a>
-            <a href={jurorSampleUrl} download="sample_juror_disqualifications.csv">Fictional juror sample (CSV)</a>
-            <a href={jurorSampleXlsxUrl} download="sample_juror_disqualifications.xlsx">Fictional juror sample (Excel)</a>
-            <a href={voterSampleUrl} download="sample_voter_roll.csv">Fictional voter sample (CSV)</a>
-            <a href={voterSampleXlsxUrl} download="sample_voter_roll.xlsx">Fictional voter sample (Excel)</a>
-          </div>
-        </section>
-
-        <section className="panel" id="step4">
-          <h2 className="print-title" id="referralHeader">Referral for official verification — {stateName || 'No state yet'}{selectedCounty ? ` — ${selectedCounty.name} (${selectedCounty.fips})` : ''} — {today}</h2>
-          {policy && coreResult && (
-            <>
-              <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
-              <div className="cards">
-                <div id="countStrong" className="card"><span className="n">{policy.counts.Strong}</span> Strong</div>
-                <div id="countProbable" className="card"><span className="n">{policy.counts.Probable}</span> Probable</div>
-                <div id="countWeak" className="card"><span className="n">{policy.counts.Weak}</span> Weak</div>
-              </div>
-              {policy.capBadge && <p className="note" id="tierCapBadge">{policy.capBadge}</p>}
-              <p id="excludedLine"><b>{policy.excludedLine}</b></p>
-              <p id="cannotCompareLine"><b>{policy.cannotCompareLine}</b></p>
-              <p className="small" id="regDateNote">Some voter files show the date of the latest registration change, not the first registration. That excludes more matches, which is the safe direction.</p>
-              {rules && NON_SIGNAL[rules.state] && <p id="nonSignalCounts">These counts are {NON_SIGNAL_LABEL}.</p>}
-              <p id="symmetricCount">Non-citizen removal reasons on the voter file: {policy.symmetric.noncitizenRemovals}. Without a Strong jury match: {policy.symmetric.withoutStrongMatch}.</p>
-              <p className="small">Possible wrongful removals, count only: {policy.wrongfulCount}. Official SAVE / naturalization check required.</p>
-              {targets.length > 0 && (
-                <div id="referralTargets">
-                  <h3>Send a referral only to these offices</h3>
-                  <ul>{targets.map((target) => <li key={target.url}><a href={target.url}>{target.name}</a></li>)}</ul>
-                </div>
-              )}
-              {named && (
-                <>
-                  <div className="scroll"><ResultsTable id="results" rows={mainRows} /></div>
-                  {removedRows.length > 0 && (
-                    <div id="alreadyRemoved">
-                      <h3>Already removed: confirm the removal was correct</h3>
-                      <ResultsTable rows={removedRows} />
-                    </div>
-                  )}
-                  <details id="weakDetails">
-                    <summary>Weak matches ({policy.counts.Weak})</summary>
-                    <label className="inline"><input id="showWeak" type="checkbox" checked={showWeak} onChange={(event) => setShowWeak(event.target.checked)} /> Show weak matches (name only)</label>
-                    {showWeak && <p className="warn" id="weakWarn">{WEAK_CAUTION}</p>}
-                    {showWeak && <ResultsTable rows={weakRows} />}
-                  </details>
-                  <p className="row no-print">
-                    <button id="exportBtn" type="button" disabled={!selectedCounty} onClick={() => { void onExport(); }}>Export CSV: Referral for official verification</button>
-                  </p>
-                </>
-              )}
-              {!gates?.allow_named_export && <p id="aggregateOnly">This state shows counts only. No names are on this page and none can be exported.</p>}
-            </>
-          )}
-          {!policy && <p className="small">Results appear here after a match. Counts-only states use the audit letter instead of a person list.</p>}
-        </section>
-
         <section className="panel no-print" id="logPanel">
           <h2>Audit log</h2>
           <p className="small">{logCount} entries on this computer. The log does not contain the files or the results.</p>
@@ -933,6 +1124,7 @@ export function App() {
         </section>
         <p className="foot" id="appFooter">JuryRoll {APP_VERSION} · build {__BUILD_ID__}. A match is a lead for officials. It is not proof.</p>
       </div>
+      <TranscriptionSheet />
       {modal && (
         <div className="modal-back">
           <div className="modal" role="dialog" aria-modal="true" aria-labelledby="purgeTitle">
@@ -948,6 +1140,28 @@ export function App() {
     </>
   );
 }
+
+function LeadPile({ tier, rows, history }: { tier: 'Strong' | 'Probable' | 'Weak'; rows: PolicyRow[]; history: Record<string, string> }) {
+  const rule = TIER_RULES.find((item) => item.name === tier);
+  const mine = rows.filter((row) => row.tier === tier);
+  return (
+    <section className="tier-pile">
+      <h3>{tier}</h3>
+      {rule && <p className="small">{rule.text} <a className="why" href="#/law/tiers">Why?</a></p>}
+      {mine.length === 0 && <p className="small">None in this tier.</p>}
+      {mine.map((row) => (
+        <article className="lead-card" key={`${row.jurorId}-${row.voterId}-${row.tier}`}>
+          <h4>{row.voterName}</h4>
+          <p>Matched: {row.matched}</p>
+          <p>Jury reason: {row.reason}</p>
+          <p>{row.notes.join(' ')}</p>
+          {history[row.voterId] && <p className="context-note">Voting history: {history[row.voterId]}. Context only, not evidence.</p>}
+        </article>
+      ))}
+    </section>
+  );
+}
+
 
 const DATE_ROWS: readonly { field: DateField; label: string }[] = [
   { field: 'declDate', label: 'Declaration date' },

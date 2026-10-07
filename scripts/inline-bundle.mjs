@@ -45,7 +45,10 @@ for (const match of styleHrefs) {
   const rel = match[1].replace(/^\.\//, '');
   const file = path.join(dist, rel);
   if (!fs.existsSync(file)) continue;
-  styles.push(fs.readFileSync(file, 'utf8').replace(/<\/style/gi, '<\\/style'));
+  const css = fs.readFileSync(file, 'utf8')
+    .replace(/url\(\s*(['"]?)(?:\.\.\/|\/)fonts\//g, 'url($1fonts/')
+    .replace(/<\/style/gi, '<\\/style');
+  styles.push(css);
   fs.unlinkSync(file);
   html = html.replace(match[0], '');
 }
@@ -62,7 +65,8 @@ const csp = [
   "default-src 'none'",
   `script-src 'self' ${scriptHashes.join(' ')}`.trim(),
   `style-src 'self' ${styleHashes.join(' ')}`.trim(),
-  "img-src data:",
+  "img-src 'self' data:",
+  "font-src 'self'",
   "connect-src 'none'",
   "form-action 'none'",
   "base-uri 'none'",
