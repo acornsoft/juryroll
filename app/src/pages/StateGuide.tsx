@@ -3,6 +3,7 @@ import { StepPanel, Stepper } from '../components/Stepper.tsx';
 import { COUNTIES } from '../../../shared/src/counties.ts';
 import { buildGuide, guideFacts } from '../lib/guide.ts';
 import { RUN_STEPS, type StepId } from '../lib/flow.ts';
+import { NC_LIST_NOTE, PA_NAMES_ONLY_NOTE } from '../../../shared/src/content/copy.ts';
 import { referralTargets, resolveRules, uiGates, type RulesFile } from '../../../shared/src/policy/gates.ts';
 import { federalWindow, nextFederalElection } from '../../../shared/src/policy/windows.ts';
 import { STATES } from '../states.ts';
@@ -96,6 +97,8 @@ export function StatePage({ code }: { code: string }) {
       <p className={`badge ${gates.allow_named_export ? 'badge-named' : 'badge-counts'}`}>
         {gates.allow_named_export ? 'Named leads allowed' : 'Counts-only'}
       </p>
+      {rules.state === 'PA' && <p id="paWalkthrough">{PA_NAMES_ONLY_NOTE}</p>}
+      {rules.state === 'NC' && <p id="ncWalkthrough">{NC_LIST_NOTE}</p>}
       <section className="panel" id={sectionId('Walk through it')}>
         <h2>Walk through it</h2>
         <ol className="walk-steps">
@@ -127,6 +130,8 @@ export function StatePage({ code }: { code: string }) {
           </StepPanel>
           <StepPanel id="triage">
             <p>{named ? 'Strong, Probable, and Weak leads, plus the excluded and cannot-compare counts.' : 'Counts only. No names are shown.'}</p>
+            {rules.state === 'PA' && <p>{PA_NAMES_ONLY_NOTE}</p>}
+            {rules.state === 'NC' && <p>{NC_LIST_NOTE}</p>}
           </StepPanel>
           <StepPanel id="export">
             <p>{named ? 'Export the referral CSV. It names the county you selected.' : 'Download the counts-only letter. It names the county you selected.'}</p>

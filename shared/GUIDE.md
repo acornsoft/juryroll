@@ -77,7 +77,7 @@ Do this only if all of these conditions are true:
 
 A match from JuryRoll alone is usually not enough evidence.
 In Texas, the law requires personal knowledge. A match is not personal knowledge.
-In North Carolina, the law requires "affirmative proof". A match alone does not give that proof.
+In North Carolina, the law requires "affirmative proof". A match alone does not give that proof. JuryRoll does not show challenge steps for North Carolina. Refer the lead.
 
 If you file, obey these rules:
 
@@ -132,10 +132,10 @@ Read the full file for each state. This table is a summary only.
 | State | Jury list available to you | Private challenge in law | App mode |
 |---|---|---|---|
 | NY | No (Judiciary Law 509(a)) | Yes, one voter per affidavit (Election Law 5-220) | Counts only |
-| NC | Yes, the State Board list (G.S. 9-6.2(b)) | Yes, one voter per challenge (G.S. 163-85) | Named referral |
+| NC | Yes, the State Board list (G.S. 9-6.2(b)). It has no date of birth | Not through JuryRoll. A database match is not individualized evidence (State Board form) | Referral only. The list gives no named rows |
 | GA | Not known, so the app treats it as no | Yes (O.C.G.A. 21-2-229, 21-2-230) | Counts only |
 | TX | No (Gov't Code 62.0132, 62.113) | Yes, but personal knowledge is necessary (Elec. Code 16.092) | Counts only |
-| PA | No (Pa.R.Crim.P. 625) | Yes (25 Pa.C.S. 1329) | Counts only |
+| PA | Yes. You can inspect the list of disqualified jurors and reasons on site (42 Pa.C.S. 4523(a)). Copies are at the county's discretion | Not through JuryRoll. A 1329 challenge must name one registrant under oath. The list has names and reasons only | Referral only. A list with names only gives no named rows |
 | AZ | No (A.R.S. 21-312) | Only at the polls (A.R.S. 16-591); not supported | Counts only |
 | FL | Not known, so the app treats it as no | Yes, at one election only (Fla. Stat. 101.111) | Counts only |
 | MI | No (MCL 600.1315) | Yes (MCL 168.512) | Counts only |
@@ -182,6 +182,10 @@ Read the full file for each state. This table is a summary only.
 | ND | Not known, so the app treats it as no | None found | Counts only. No voter registration; private users cannot get the file (16.1-02-15) |
 | OR | No (ORS 10.215) | No; the county clerk inquires (ORS 247.195) | Counts only. No commercial use of voter lists (247.955) |
 | SC | Not known, so the app treats it as no | Yes, written challenge to the county board (S.C. Code 7-5-230) | Counts only |
+
+Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.
+
+The North Carolina State Board's posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.
 
 ## 7. When a field is null
 

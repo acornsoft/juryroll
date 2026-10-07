@@ -99,10 +99,12 @@ assert.deepStrictEqual(effective(shipped.DEFAULT), { allow_jury_list: false, agg
 assert.deepStrictEqual(effective(shipped.NY), { allow_jury_list: false, aggregate_only: true, allow_named_export: false, show_challenge_guidance: false });
 assert.deepStrictEqual(effective(shipped.GA), { allow_jury_list: false, aggregate_only: true, allow_named_export: false, show_challenge_guidance: false });
 assert.deepStrictEqual(effective(shipped.TX), { allow_jury_list: false, aggregate_only: true, allow_named_export: false, show_challenge_guidance: false });
-assert.deepStrictEqual(effective(shipped.PA), { allow_jury_list: false, aggregate_only: true, allow_named_export: false, show_challenge_guidance: false });
+assert.deepStrictEqual(effective(shipped.PA), { allow_jury_list: true, aggregate_only: false, allow_named_export: true, show_challenge_guidance: false });
 pass('AT-01');
 
-assert.deepStrictEqual(effective(shipped.NC), { allow_jury_list: true, aggregate_only: false, allow_named_export: true, show_challenge_guidance: true });
+assert.deepStrictEqual(effective(shipped.NC), { allow_jury_list: true, aggregate_only: false, allow_named_export: true, show_challenge_guidance: false });
+assert.strictEqual(shipped.NC.private_challenge.juryroll_lead_sufficient, false);
+assert.strictEqual(uiGates(shipped.NC).show_challenge_guidance, false);
 pass('AT-02');
 
 assert.strictEqual(strict(null, false), false);
@@ -586,12 +588,43 @@ assert.strictEqual(stateWindowDates('2026-11-03', nmRules.blackout.state_windows
 pass('AT-NM-window');
 
 const namedStates: string[] = [];
+const challengeStates: string[] = [];
 for (const name of ruleFiles) {
   const rules = loadRules(name);
-  if (effective(rules).allow_named_export) namedStates.push(rules.state);
+  const shown = uiGates(rules);
+  if (rules.state !== 'DEFAULT' && shown.allow_named_export) namedStates.push(rules.state);
+  if (shown.show_challenge_guidance) challengeStates.push(rules.state);
 }
-assert.deepStrictEqual(namedStates, ['NC']);
+namedStates.sort();
+challengeStates.sort();
+assert.deepStrictEqual(namedStates, ['NC', 'PA']);
+assert.deepStrictEqual(challengeStates, []);
 pass('AT-NC-only');
+
+const paNames = runMatch(
+  table('juror', 'Last,First,Reason\nNamesonly,Ada,Not a U.S. citizen\n'),
+  table('voter', 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Namesonly,Ada,1980-01-02,1 Main St,00001,ACTIVE,2019-01-01\n'),
+  shipped.PA,
+);
+assert.strictEqual(paNames.policy.counts.Strong, 0);
+assert.strictEqual(paNames.policy.counts.Probable, 0);
+assert.strictEqual(paNames.policy.counts.Weak + paNames.policy.cannotCompareCount, paNames.coreResult.pairs.length);
+assert.ok(paNames.coreResult.pairs.length > 0);
+assert.ok(paNames.policy.rows.every((row) => row.section === 'weak' || row.section === 'excluded'));
+assert.ok(paNames.policy.rows.every((row) => row.section !== 'weak' || row.tier === 'Weak'));
+assert.ok(paNames.policy.rows.filter((row) => row.section === 'excluded').every((row) => row.flags.includes('DATES_NOT_COMPARABLE')));
+const paCsv = toCSV({
+  allowNamedExport: true,
+  result: paNames.policy,
+  rules: shipped.PA,
+  targets: referralTargets(shipped.PA, shipped.DEFAULT),
+  county: 'Adams',
+  dateStr: '2026-10-07',
+});
+assert.ok(!paCsv.includes('Namesonly'));
+assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paCsv));
+assert.strictEqual(effective(shipped.PA).show_challenge_guidance, false);
+pass('AT-41');
 
 const bundled = JSON.parse(fs.readFileSync(path.join(root, 'shared/src/rulesBundle.json'), 'utf8')) as Record<string, unknown>;
 const expectedKeys = ruleFiles.map((name) => (name === 'default.json' ? 'DEFAULT' : name.replace(/\.json$/, ''))).sort();

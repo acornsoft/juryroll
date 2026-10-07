@@ -66,10 +66,10 @@ Current effective gates (from the validator run on 2026-10-07):
 |---|---|---|---|---|
 | default | false | true | false | false |
 | NY | false | true | false | false |
-| NC | **true** | false | **true** | **true** |
+| NC | **true** | false | **true** | false |
 | GA | false | true | false | false |
 | TX | false | true | false | false |
-| PA | false | true | false | false |
+| PA | **true** | false | **true** | false |
 
 ### A.4 What each gate controls
 
@@ -121,7 +121,7 @@ Visible only when `eff.show_challenge_guidance` is true. Content comes from `pri
 
 Banners, in this order of priority:
 
-1. `juryroll_lead_sufficient !== true`: "A JuryRoll match alone does not meet this standard. Referral is the recommended path." (Always shown for NC today.)
+1. `juryroll_lead_sufficient !== true`: "A JuryRoll match alone does not meet this standard. Referral is the recommended path."
 2. Inside the federal 90-day window (A.8): "Federal 90-day window. Do not file bulk challenges. Refer leads instead."
 3. Past the state deadline (`deadline_days_before_election`): "The state deadline for this election has passed (<date>)." Hide the form link.
 4. One voter per affidavit: "One affidavit per voter. State the true source: a jury record and a software match."
@@ -375,8 +375,8 @@ Add to `test/core.test.js` (pure) and `test/ui.test.js` (headless Chrome). Fixtu
 | AT-27 | `pagehide` event | `purgeAll("pagehide")` called |
 | AT-28 | After any session | `localStorage`, `sessionStorage` empty; IndexedDB holds only `juryroll-audit` |
 | AT-29 | Network | Playwright request log has zero requests other than the page itself (keep the v1 check) |
-| AT-30 | Election date 2026-11-03, state NC, today 2026-10-07 | Banners: federal window active; NC cutoff 2026-10-09 shown; challenge panel shows "match alone does not meet this standard" |
-| AT-31 | Same with today 2026-10-10 | NC deadline passed; form link hidden |
+| AT-30 | Election date 2026-11-03, state NC, today 2026-10-07 | Federal window active; NC blackout date 2026-10-09 is computed; challenge panel is hidden |
+| AT-31 | Same with today 2026-10-10 | NC blackout date is passed; challenge panel, deadline banner, and form link stay hidden |
 | AT-32 | Attestation | Steps 1-4 disabled until all boxes and initials are given |
 | AT-33 | Export header | Contains "Official SAVE or naturalization check required", state code, rules `verified_on`, referral target URLs |
 | AT-34 | Select DC with a fixture that has a Strong pair | Aggregate only; challenge panel absent although `private_challenge.allowed` is true; NON_SIGNAL banner shown |

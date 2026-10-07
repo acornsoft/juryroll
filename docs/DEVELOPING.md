@@ -34,7 +34,7 @@ The UI uses the strict setting. Tests also cover a lenient setting, which is not
 
 The built page keeps that geometry out of the inline script. On a hosted page the browser loads `assets/us-map.js` with `import()`. Opening `app/dist/index.html` from disk uses `assets/us-map-global.js`, because Chrome blocks module `import()` on `file://`. Neither path uses `fetch`. `connect-src 'none'` stays in place.
 
-North Carolina is the only state whose effective gates allow a named referral. Connecticut and the District of Columbia stay counts only, with a banner that the counts are not evidence of unlawful registration. North Dakota has no voter registration, so a last-voted date is not treated as a registration date.
+North Carolina and Pennsylvania are the states whose effective gates allow a named referral. No current state file turns on challenge guidance. Connecticut and the District of Columbia stay counts only, with a banner that the counts are not evidence of unlawful registration. North Dakota has no voter registration, so a last-voted date is not treated as a registration date.
 
 ## Tests
 

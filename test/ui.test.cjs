@@ -313,11 +313,12 @@ function readAuditDownload(file) {
   assert.strictEqual(await main.page.locator('#fileJuror').count(), 1);
   assert.strictEqual(await main.page.locator('#runBtn').isDisabled(), true);
   await attest(main.page);
+  const ncNote = 'The North Carolina State Board\'s posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.';
   await openStateNotices(main.page);
-  assert.strictEqual(await main.page.locator('#challengeFormLink').count(), 1);
+  assert.strictEqual(await main.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await main.page.locator('#challengeFormLink').count(), 0);
   assert.strictEqual(await main.page.locator('#deadlineBanner').count(), 0);
-  assert.ok((await main.page.locator('#leadBanner').innerText()).includes('A JuryRoll match alone does not meet this standard'));
-  assert.ok((await main.page.locator('#oneAffidavit').innerText()).includes('Use one affidavit for one voter.'));
+  assert.strictEqual(await main.page.locator('#leadBanner').count(), 0);
   pass('AT-31');
   pass('AT-32');
   await pickCounty(main.page);
@@ -349,6 +350,7 @@ function readAuditDownload(file) {
   await main.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
   await main.page.click('#runBtn');
   await main.page.waitForSelector('#countStrong');
+  assert.strictEqual(await main.page.locator('#ncNamesNote').innerText(), ncNote);
   const counts = await main.page.evaluate(() => ['Strong', 'Probable', 'Weak'].map((tier) => Number(document.querySelector(`#count${tier} .n`).textContent)));
   console.log('UI tier counts [Strong, Probable, Weak]:', counts);
   assert.deepStrictEqual(counts, [0, 3, 2]);
@@ -562,7 +564,8 @@ function readAuditDownload(file) {
   await selectState(later.page, 'NC');
   await attest(later.page);
   await openStateNotices(later.page);
-  assert.ok((await later.page.locator('#deadlineBanner').innerText()).includes('The state deadline for this election has passed (2026-10-09).'));
+  assert.strictEqual(await later.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await later.page.locator('#deadlineBanner').count(), 0);
   assert.strictEqual(await later.page.locator('#challengeFormLink').count(), 0);
   pass('AT-31-passed');
   await later.context.close();
@@ -857,6 +860,7 @@ function readAuditDownload(file) {
       }
       await openStep(walk.page, 'files');
       assert.strictEqual(await walk.page.locator('#sampleBtn').isEnabled(), true, `${code} sample button disabled`);
+      assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
       assert.strictEqual(await walk.page.locator('#juryRefuse').count(), 0, code);
       if (!loaded) {
         await walk.page.click('#sampleBtn');
@@ -888,6 +892,7 @@ function readAuditDownload(file) {
       const refuse = (await walk.page.locator('#juryRefuse').innerText()).trim();
       assert.ok(refuse.includes(basis), `${code} missing explanation`);
       assert.ok(await walk.page.locator('#auditLetterBtn').isVisible(), code);
+      assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
       if (loaded) {
         const cleared = await walk.page.locator('#jurorCleared').innerText();
         assert.match(cleared, /cleared/i, code);
@@ -896,7 +901,18 @@ function readAuditDownload(file) {
       }
     }
   }
-  assert.deepStrictEqual(ran, ['NC']);
+  const expectedRan = codes.filter((code) => {
+    const gates = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates;
+    return gates.allow_jury_list === true;
+  });
+  assert.deepStrictEqual(ran, expectedRan);
+  const ruleNames = fs.readdirSync(path.join(root, 'shared/rules')).filter((name) => name.endsWith('.json') && name !== 'schema.json');
+  const challengeCodes = ruleNames.filter((name) => {
+    const gates = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', name), 'utf8')).gates;
+    return gates.show_challenge_guidance === true;
+  });
+  assert.strictEqual(ruleNames.length, 52);
+  assert.deepStrictEqual(challengeCodes, []);
   pass('AT-44-all-states');
   await walk.context.close();
 
@@ -1046,6 +1062,64 @@ function readAuditDownload(file) {
   ]);
   assert.strictEqual(namedCsv.suggestedFilename(), 'voter-template.csv');
   pass('AT-45-same-origin-downloads');
+
+  const paNote = 'Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.';
+  const guideMd = fs.readFileSync(path.join(root, 'shared/GUIDE.md'), 'utf8');
+  assert.ok(guideMd.includes(paNote));
+  assert.ok(guideMd.includes('| NC | Yes, the State Board list (G.S. 9-6.2(b)). It has no date of birth | Not through JuryRoll. A database match is not individualized evidence (State Board form) | Referral only. The list gives no named rows |'));
+  assert.ok(guideMd.includes("| PA | Yes. You can inspect the list of disqualified jurors and reasons on site (42 Pa.C.S. 4523(a)). Copies are at the county's discretion | Not through JuryRoll. A 1329 challenge must name one registrant under oath. The list has names and reasons only | Referral only. A list with names only gives no named rows |"));
+  assert.ok(guideMd.includes("| TX | No (Gov't Code 62.0132, 62.113) | Yes, but personal knowledge is necessary (Elec. Code 16.092) | Counts only |"));
+  const pa = await openPage(browser);
+  const paBase = pa.page.url().split('#')[0];
+  await pa.page.goto(`${paBase}#/state/pa`);
+  await pa.page.waitForSelector('#paWalkthrough');
+  assert.strictEqual(await pa.page.locator('#paWalkthrough').innerText(), paNote);
+  assert.strictEqual(await pa.page.locator('#challengePanel').count(), 0);
+  await pa.page.goto(`${paBase}#/run/pa`);
+  await pa.page.waitForFunction(() => document.querySelector('#stateSel') && document.querySelector('#stateSel').value === 'PA');
+  await openStep(pa.page, 'where');
+  await openStateNotices(pa.page);
+  assert.strictEqual(await pa.page.locator('#challengePanel').count(), 0);
+  await openStep(pa.page, 'sign');
+  await attest(pa.page);
+  await openStep(pa.page, 'where');
+  await pa.page.selectOption('#county', { index: 1 });
+  const paDir = path.join(shots, 'pa');
+  fs.mkdirSync(paDir, { recursive: true });
+  const paJuror = path.join(paDir, 'juror.csv');
+  const paVoter = path.join(paDir, 'voter.csv');
+  fs.writeFileSync(paJuror, 'Last,First,Reason\nNamesonly,Ada,Not a U.S. citizen\n');
+  fs.writeFileSync(paVoter, 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Namesonly,Ada,1980-01-02,1 Main St,00001,ACTIVE,2019-01-01\n');
+  await openStep(pa.page, 'files');
+  await pa.page.setInputFiles('#fileJuror', paJuror);
+  await pa.page.waitForSelector('#infoJuror');
+  await pa.page.setInputFiles('#fileVoter', paVoter);
+  await pa.page.waitForSelector('#infoVoter');
+  await openStep(pa.page, 'run');
+  await pa.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await pa.page.click('#runBtn');
+  await pa.page.waitForSelector('#countStrong');
+  assert.strictEqual(await pa.page.locator('#countStrong .n').innerText(), '0');
+  assert.strictEqual(await pa.page.locator('#countProbable .n').innerText(), '0');
+  const paWeak = Number(await pa.page.locator('#countWeak .n').innerText());
+  const paCannot = await pa.page.locator('#cannotCompareLine').innerText();
+  assert.ok(paWeak + (Number(paCannot.match(/^(\d+)/)?.[1]) || 0) >= 1);
+  assert.strictEqual(await pa.page.locator('#results tbody tr').count(), 0);
+  assert.strictEqual(await pa.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await pa.page.locator('#paNamesNote').innerText(), paNote);
+  await openStep(pa.page, 'export');
+  const [paDownload] = await Promise.all([
+    pa.page.waitForEvent('download'),
+    pa.page.click('#exportBtn'),
+  ]);
+  const paCsvPath = path.join(paDir, 'export.csv');
+  await paDownload.saveAs(paCsvPath);
+  const paCsv = fs.readFileSync(paCsvPath, 'utf8');
+  assert.ok(!paCsv.includes('Namesonly'));
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paCsv));
+  pass('AT-41');
+  assert.deepStrictEqual(pa.requests, [], 'PA page network: ' + pa.requests.join('; '));
+  await pa.context.close();
   await sameOrigin.context.close();
   await new Promise((resolve) => preview.close(resolve));
 
@@ -1095,6 +1169,8 @@ function readAuditDownload(file) {
   await design.page.setViewportSize({ width: 1280, height: 800 });
   await design.page.goto(`${base}#/state/nc`);
   await design.page.waitForSelector('#walkthrough');
+  assert.strictEqual(await design.page.locator('#ncWalkthrough').innerText(), ncNote);
+  assert.strictEqual(await design.page.locator('#challengePanel').count(), 0);
   const headings = await design.page.locator('#walkthrough h2').allInnerTexts();
   assert.ok(headings.indexOf('Walk through it') === 0, headings.join(' | '));
   assert.ok(headings.indexOf('Walk through it') < headings.indexOf('At a glance'));
@@ -1113,6 +1189,7 @@ function readAuditDownload(file) {
   await design.page.setViewportSize({ width: 390, height: 844 });
   await design.page.goto(`${base}#/state/pa`);
   await design.page.waitForSelector('#walkthrough');
+  assert.strictEqual(await design.page.locator('#paWalkthrough').innerText(), paNote);
   await assertFits(design.page, 390, 'state PA');
   await design.context.close();
 

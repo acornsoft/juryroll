@@ -24,7 +24,7 @@ import jurorTemplateUrl from '../../shared/templates/juror-template.csv?url';
 import voterTemplateUrl from '../../shared/templates/voter-template.csv?url';
 import jurorTemplateXlsxUrl from '../../shared/templates/juror-template.xlsx?url';
 import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url';
-import { ATTEST_LINES, CAVEATS, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
+import { ATTEST_LINES, CAVEATS, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
 import { COUNTIES } from '../../shared/src/counties.ts';
@@ -985,6 +985,8 @@ export function App() {
                   <CountySummary rows={rollup} currentFips={selectedCounty.fips} note={copyNote} onCopy={() => { void onCopySummary(); }} />
                 )}
                 <h3 className="print-title" id="referralHeader">Referral for official verification — {stateName || 'No state yet'}{selectedCounty ? ` — ${selectedCounty.name} (${selectedCounty.fips})` : ''} — {today}</h3>
+                {rules?.state === 'PA' && <p id="paNamesNote">{PA_NAMES_ONLY_NOTE}</p>}
+                {rules?.state === 'NC' && <p id="ncNamesNote">{NC_LIST_NOTE}</p>}
                 {policy && coreResult && (
                   <>
                     <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
