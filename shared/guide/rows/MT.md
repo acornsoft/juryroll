@@ -1,1 +1,1 @@
-| MT | Not known, so the app treats it as no | Yes, at any time, with an affidavit and evidence (MCA 13-13-301) | Counts only |
+| MT | Not known, so the app treats it as no. The public jury excerpt lists names, addresses and birth years, with no reasons (MCA 3-15-403(2)) | Yes, at any time, with an affidavit and evidence (MCA 13-13-301) | Counts only |

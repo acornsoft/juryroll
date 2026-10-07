@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "MCA 3-15-403(2): 'An excerpt, listing the name, address, and birth year of all jurors, must be made available for public inspection during normal business hours.' Uniform District Court Rule 9(a) (MCA 25-19-101): completed juror questionnaires 'will only be available to the parties, the attorneys for the parties, judges and court employees. Others requesting the completed forms must file a Request for Privacy Information with the court.' No section opens or closes records of persons found not qualified as non-citizens. Status: null.",
     "holder": "Clerk of the district court (jury commissioner, MCA 3-15-404).",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -16,6 +16,18 @@
       {
         "cite": "MCA 3-15-403(2) (public excerpt of jury lists: name, address, birth year; disqualification records not addressed)",
         "url": "https://mca.legmt.gov/bills/mca/title_0030/chapter_0150/part_0040/section_0030/0030-0150-0040-0030.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Uniform District Court Rule 9(a), MCA 25-19-101 (completed juror questionnaires available only to parties, attorneys, judges and court employees; others must file a Request for Privacy Information; destroyed after the jury term)",
+        "url": "https://mca.legmt.gov/bills/mca/title_0250/chapter_0190/part_0010/section_0090/0250-0190-0010-0090.html",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "MCA 3-15-301(3) (a juror must be 'a citizen of the United States')",
+        "url": "https://mca.legmt.gov/bills/mca/title_0030/chapter_0150/part_0030/section_0010/0030-0150-0030-0010.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -57,7 +69,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://mca.legmt.gov/bills/mca/title_0130/chapter_0130/part_0030/section_0010/0130-0130-0030-0010.html",
@@ -82,16 +94,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "MCA 2-6-1003 (right to inspect public information; Mont. Const. art. II, sec. 9) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county election administrator or the Secretary of State: per year, the number of registrations cancelled under MCA 13-2-402(8) because the elector failed to meet the citizenship qualification in 13-1-111, and the number of challenge affidavits filed under 13-13-301 on that ground.",
+    "counts_only": true,
+    "source_url": "https://mca.legmt.gov/bills/mca/title_0020/chapter_0060/part_0100/section_0030/0020-0060-0100-0030.html",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Montana statute sends juror citizenship answers to election officials. Whether the Secretary of State keeps counts by cancellation reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury disqualification records: status unknown (null), so counts only. Montana lets any registered elector file a challenge affidavit with evidence at any time (MCA 13-13-301). Guidance stays off while the jury list is not available."
+    "basis": "Jury disqualification records: no statute opens or closes them (null), so counts only. The public excerpt (3-15-403(2)) lists jurors, not persons found not qualified; questionnaires are limited by Rule 9. Any registered elector may file a challenge affidavit with evidence at any time (MCA 13-13-301). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (3-15-403(2), Uniform District Court Rule 9(a)); jury sources Rule 9 and 3-15-301 added; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No voter_file value changes.",
+    "PA-style check: 3-15-403(2) makes public an excerpt with 'the name, address, and birth year of all jurors'. That is a list of jurors, with no disqualification reason. Rule 9 limits completed questionnaires to the parties, attorneys, judges and court employees. No section creates a public list of non-citizen excusals.",
+    "official_pipeline is null: no Montana statute sends juror citizenship answers to election officials. MCA 13-2-402(8) requires cancellation if 'the elector fails to meet any voter qualification that is listed in 13-1-111', but names no jury source. The Secretary of State announced SAVE checks of the whole roll (KTVH, 2025); that is practice, not a jury pipeline.",
+    "Cancelled-voter file: no published Montana cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "The challenger's name, affidavit, and evidence are given to the challenged elector (13-13-301(4)).",
-    "The jury list excerpt under 3-15-403(2) is public, but it shows qualified jurors, not non-citizen disqualifications. jury_list.public stays null.",
-    "one_per_affidavit, false_statement_penalty, dob_in_public_file, and registration_date_in_public_file are null: not stated in the sections read."
+    "one_per_affidavit, false_statement_penalty, dob_in_public_file, and registration_date_in_public_file are null: not stated in the sections read.",
+    "Source note: mca.legmt.gov (MCA 2025) read with curl on 2026-10-07. 3-15-405 was amended in 2025 (ch. 428); the current text only covers mailed notice and the optional questionnaire."
   ]
 }
