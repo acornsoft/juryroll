@@ -47,6 +47,25 @@ async function attest(page) {
   await page.fill('#initials', 'AB');
 }
 
+async function chooseFileIfValueChanges(page, id, filePath) {
+  const payload = fs.readFileSync(filePath).toString('base64');
+  const name = path.basename(filePath);
+  return page.evaluate(({ inputId, fileName, filePayload }) => {
+    const input = document.getElementById(inputId);
+    const binary = atob(filePayload);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    const file = new File([bytes], fileName, { type: 'text/csv' });
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    const previous = input.value;
+    input.files = transfer.files;
+    const dispatched = input.value !== previous;
+    if (dispatched) input.dispatchEvent(new Event('change', { bubbles: true }));
+    return { dispatched, value: input.value };
+  }, { inputId: id, fileName: name, filePayload: payload });
+}
+
 function startPreview() {
   const distDir = path.join(root, 'app', 'dist');
   const config = JSON.parse(fs.readFileSync(path.join(distDir, 'staticwebapp.config.json'), 'utf8'));
@@ -596,7 +615,9 @@ function requestHeaders(url) {
   await gate.page.setInputFiles('#fileJuror', sampleJ);
   await enableMatch();
   await gate.page.setInputFiles('#fileVoter', sampleV);
-  await gate.page.waitForFunction(() => document.getElementById('fileJuror').files.length === 1);
+  await gate.page.waitForFunction(() => document.getElementById('fileJuror').files.length === 0 && document.getElementById('fileVoter').files.length === 0);
+  assert.strictEqual(await gate.page.locator('#fileJuror').inputValue(), '');
+  assert.strictEqual(await gate.page.locator('#fileVoter').inputValue(), '');
   assert.strictEqual(await gate.page.locator('#infoJuror').count(), 0);
   assert.strictEqual(await gate.page.locator('#infoVoter').count(), 0);
   await gate.page.evaluate(() => {
@@ -608,6 +629,29 @@ function requestHeaders(url) {
   assert.match(await gate.page.locator('#fileError').innerText(), /initials/);
   pass('AT-42-attest');
   await gate.context.close();
+
+  const reselect = await openPage(browser);
+  await reselect.page.selectOption('#stateSel', 'NC');
+  await reselect.page.waitForSelector('#fileJuror');
+  await reselect.page.evaluate(() => {
+    document.getElementById('step1').disabled = false;
+    document.getElementById('fileJuror').disabled = false;
+    document.getElementById('fileVoter').disabled = false;
+  });
+  const firstChoice = await chooseFileIfValueChanges(reselect.page, 'fileJuror', sampleJ);
+  assert.strictEqual(firstChoice.dispatched, true);
+  await reselect.page.waitForSelector('#fileError');
+  assert.strictEqual(await reselect.page.locator('#fileJuror').inputValue(), '');
+  assert.strictEqual(await reselect.page.locator('#infoJuror').count(), 0);
+  await attest(reselect.page);
+  const secondChoice = await chooseFileIfValueChanges(reselect.page, 'fileJuror', sampleJ);
+  assert.strictEqual(secondChoice.dispatched, true);
+  await reselect.page.waitForSelector('#infoJuror');
+  const voterChoice = await chooseFileIfValueChanges(reselect.page, 'fileVoter', sampleV);
+  assert.strictEqual(voterChoice.dispatched, true);
+  await reselect.page.waitForSelector('#infoVoter');
+  pass('AT-46-reselect');
+  await reselect.context.close();
 
   const switched = await openPage(browser);
   await switched.page.selectOption('#stateSel', 'NC');
