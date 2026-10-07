@@ -4,18 +4,30 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
+    "public": false,
+    "statute": "Neb. Rev. Stat. 25-1673(1): 'It shall be unlawful for a jury commissioner, any clerk or deputy thereof, or any person who may obtain access to any record showing the names of persons drawn to serve as grand or petit jurors to disclose to any person, except to other officers in carrying out official duties or as provided in the Jury Selection Act, the name of any person so drawn or to permit any person to examine such record or to make a list of such names, except under order of the court.' A violation is a Class IV felony. 25-1673(2): the Supreme Court's research access to juror qualification forms is confidential.",
     "holder": "Jury commissioner of each county (Jury Selection Act, Neb. Rev. Stat. 25-1625 et seq.).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1650",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1673",
     "verified_on": "2026-10-07",
     "sources": [
       {
+        "cite": "Neb. Rev. Stat. 25-1673 (names of persons drawn may not be disclosed except by court order; Class IV felony)",
+        "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1673",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
         "cite": "Neb. Rev. Stat. 25-1650 (jurors must be U.S. citizens; disability documents are not public records)",
         "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1650",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Neb. Rev. Stat. 25-1658 (juror qualification form; answers noted on the form)",
+        "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1658",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -52,12 +64,18 @@
         "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-928",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Neb. Rev. Stat. 32-328(1) (election commissioner or county clerk corrects register errors 'upon the personal application of any registered voter'; may summon witnesses on 'qualifications')",
+        "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-328",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-926",
@@ -81,16 +99,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Neb. Rev. Stat. 84-712 (public records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the election commissioner or county clerk: per year, the number of registrations cancelled because the registrant was not a U.S. citizen, and the number of 32-328 corrections made on a voter's application on that ground.",
+    "counts_only": true,
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=84-712",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Nebraska statute sends juror citizenship answers to election officials. Whether counts are kept by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury disqualification records: status unknown (null), so counts only. Challenges exist only at the polls. The voter list may be used only for listed purposes, under oath (32-330)."
+    "basis": "Jury records: disclosing the names of persons drawn, or letting anyone examine the record, is unlawful except by court order (Neb. Rev. Stat. 25-1673), so public is false and the app shows counts only. Challenges exist only at the polls; a voter may apply to correct register errors (32-328). The voter list may be used only for listed purposes, under oath (32-330). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false (25-1673, quoted exactly); jury sources 25-1673 and 25-1658 added; challenge source 32-328; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. private_challenge.allowed stays null. No gate changes. No voter_file value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "PA-style check: 25-1673 makes it a Class IV felony to disclose drawn names or let anyone examine the record without a court order. No Nebraska list of non-citizen disqualifications is public.",
+    "Challenge note: 32-328(1) lets 'any registered voter' apply in person to correct an error in the register, and the official may take testimony on 'qualifications'. It is a correction request, not a challenge procedure with notice and hearing. private_challenge.allowed stays null. See REQ-NOTE 51.",
+    "official_pipeline is null: no Nebraska statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list Nebraska.",
+    "Cancelled-voter file: no published Nebraska cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Use limit: the 32-330 oath limits use to election, political, voter registration, law enforcement, or jury selection purposes, under penalty of a Class IV felony. The app should warn Nebraska users and show the 32-330 text before they load a voter file.",
     "The public voter list shows birth year only (32-330(3)(b)(vii)), so dob_in_public_file is false. Date of registration is included ((3)(b)(viii)).",
-    "official_pipeline is null: no jury-to-election-official non-citizen statute was found in the Jury Selection Act sections read (25-1649 to 25-1660)."
+    "Source note: nebraskalegislature.gov read with curl on 2026-10-07 (25-1645 to 25-1680 searched for 'public record', 'confidential', 'public inspection')."
   ]
 }
