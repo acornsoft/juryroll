@@ -85,6 +85,7 @@
   "voter_file": {
     "who_may_get": "163-82.10(c): 'Upon request by that person, the county board of elections shall provide to any person a list of the registered voters of the county', at actual cost. The State Board also posts statewide and county voter registration files, updated weekly (NCSBE Voter Registration Data page).",
     "permitted_uses": "No purpose limit is stated in 163-82.10. 163-82.10(c): 'No list produced under this section shall contain a voter's date of birth. However, lists may be produced according to voters' ages.' 163-82.10(a2): signatures 'may be viewed by the public but may not be copied or traced'.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

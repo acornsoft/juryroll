@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Utah Code 20A-2-607(3) (2026): a person may only obtain or use the voter list for a political purpose, a purpose expressly permitted by Part 6, or a purpose permitted by other law or court order.",
     "permitted_uses": "Political purpose or another expressly permitted purpose (20A-2-607(3)). Obtaining it under false pretenses or using it for another purpose is unlawful (20A-2-607(4)).",
+    "use_restriction": "Utah Code 20A-2-607(3): 'A person may only obtain or use information from the list of registered voters for: (a) a political purpose; (b) another purpose for which the person is, under this part, expressly permitted to obtain or use the information; or (c) another purpose for which the person is permitted to obtain or use the information: (i) under a provision of state or federal law; or (ii) by order of a court with jurisdiction.'",
     "no_online_posting": true,
     "penalty": "Class A misdemeanor (20A-2-607(5)), including knowingly posting the list or its information on the internet or disclosing it to the public (20A-2-607(4)(c)).",
     "dob_in_public_file": null,

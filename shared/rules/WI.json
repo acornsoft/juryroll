@@ -19,6 +19,7 @@
   "voter_file": {
     "who_may_get": "Any person (Wis. Stat. 6.36(1)(b)1: the official registration list is open to public inspection and electronically accessible). The Elections Commission sells list extracts.",
     "permitted_uses": "No purpose restriction was found in 6.36.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

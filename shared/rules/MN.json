@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Any individual may inspect or obtain the public information list (name, address, year of birth, voting history, phone if given) after showing ID and signing a written statement on use (Minn. Stat. 201.091, subd. 4).",
     "permitted_uses": "Only purposes related to elections, political activities, or law enforcement (201.091, subd. 4(b)).",
+    "use_restriction": "Minn. Stat. 201.091, subd. 4(b): 'No individual who inspects the public information list or who acquires a list of registered voters prepared from the public information list may use any information contained in the list for purposes unrelated to elections, political activities, or law enforcement.'",
     "no_online_posting": true,
     "penalty": null,
     "dob_in_public_file": false,

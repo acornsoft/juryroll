@@ -1,6 +1,6 @@
 # JuryRoll logic changes: spec for Kyle
 
-Version 1.3.0, 2026-10-07 (B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
+Version 1.3.4, 2026-10-07 (G.1 and AT-45 to AT-47: voter-file use attestation where `voter_file.use_restriction` is non-null, per Optimus; REQ-NOTE 65. 1.3.3: AT-42 to AT-44: canceled-voter rows skipped before matching in every state, per Optimus; REQ-NOTE 27. 1.3.2: PA referral only per Optimus: show_challenge_guidance false, AT-41 expects no challenge panel. 1.3.1: PA re-check: PA jury list open for inspection under 42 Pa.C.S. 4523(a), so PA gates now match NC; AT-41 added. 1.3.0: B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
 Source of the requirements: `LEGAL-REVIEW.md` (Optimus, 2026-10-07), "Required changes (ranked)".
 Rules data: `rules/schema.json`, `rules/default.json`, `rules/<XX>.json`. Validator: `rules/validate.py`.
 
@@ -326,6 +326,22 @@ Before Step 1, a modal with checkboxes. All must be ticked, plus typed initials:
 
 Log `attestation_signed` with hashes only.
 
+### G.1 Voter-file use attestation (REQ-NOTE 65; Optimus 2026-10-07)
+
+Applies when the selected state's `voter_file.use_restriction` is non-null. Today 18 files: AZ, CA, HI, IA, IL, IN, MD, ME, MN, ND, NE, NM, NY, PA, TN, UT, VA, WY.
+
+1. JuryRoll never decides for the user whether their use qualifies.
+2. Before the voter file slot accepts a file, show a panel with:
+   - the heading "Your state limits how its voter list may be used";
+   - the full `voter_file.use_restriction` text, verbatim (no shortening, no paraphrase), and a link to `voter_file.source_url`;
+   - the line "JuryRoll supports one use only: counting matches and referring them to election officials.";
+   - the line "JuryRoll does not decide whether your use is allowed. Read the law. If you are not sure, do not load the file.";
+   - one checkbox: "I have read this law. My use of this voter file is allowed under it."
+3. The voter file input stays disabled until the box is checked. A file dropped before that is refused before it is read.
+4. Log `voter_use_attested` with the state code and a hash of the shown text only.
+5. Changing the state, or a purge, unchecks the box.
+6. Where `use_restriction` is null or absent, show no panel and no extra checkbox. The G attestation and the H.5 banner still apply.
+
 ---
 
 ## H. Other UI changes
@@ -386,6 +402,9 @@ Add to `test/core.test.js` (pure) and `test/ui.test.js` (headless Chrome). Fixtu
 | AT-38 | Core, run for every code in the bundle (51 states + `DEFAULT`): `applyDateRule` on one fixture with before, after, equal, missing-reg and missing-decl pairs | Same buckets for every code: 1 lead, 1 registered-after, 3 cannot-compare; leads + registeredAfter + cannotCompare = pairs (nothing dropped) |
 | AT-39 | NC; all pairs registered before declaration | Both counters visible with value 0 ("0 matches excluded: registered after declaration", "0 matches cannot compare: no registration date") |
 | AT-40 | NC; juror fixture with an empty `decl_date` on a Strong pair | Pair absent from named output; counted in "cannot compare: no registration date" |
+| AT-45 | Select MN (non-null `voter_file.use_restriction`) | G.1 panel shown before the voter slot; the panel text equals `rules/MN.json` `voter_file.use_restriction` character for character; link to `voter_file.source_url`; the line "JuryRoll supports one use only: counting matches and referring them to election officials." shown; checkbox unchecked by default |
+| AT-46 | MN; drop a voter CSV before the G.1 box is checked; then check it and drop the file again; then switch to NE and back to MN | First drop refused before read (spy on `FileReader.readAsText` = 0 calls; voter input disabled). After the box is checked the file loads; `voter_use_attested` logged with state code and text hash only. After the state switch the box is unchecked and the input disabled again |
+| AT-47 | Core, run for every code in the bundle; UI: select GA (`use_restriction` null) | Core: the G.1 panel is required for exactly the 18 codes with non-null `use_restriction` and for no other code (DEFAULT included). UI GA: no G.1 panel or checkbox; the voter input is enabled once the G attestation is done |
 
 ---
 

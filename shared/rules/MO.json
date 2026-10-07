@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Any member of the public: electronic media or printouts showing only voter ID number, name, year of birth, address, township or ward, and precinct (RSMo 115.157.1).",
     "permitted_uses": "Not stated for the basic list. Lists of who voted in an election may not be used for commercial purposes (115.157.3).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

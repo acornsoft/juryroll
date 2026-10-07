@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import core from '../../shared/src/core.js';
 import { bannerFor, CheckTitle, IconBox, PageBanner } from './components/Chrome.tsx';
+import { VoterFileSlot } from './components/VoterFileSlot.tsx';
 import { CountySummary } from './components/CountySummary.tsx';
 import { ComingLater } from './components/ComingLater.tsx';
 import { PlacePicker } from './components/PlacePicker.tsx';
@@ -41,6 +42,7 @@ import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
 import { runMatch } from '../../shared/src/policy/runMatch.ts';
 import { sha256Hex, sha256HexSync } from '../../shared/src/policy/sha256.ts';
+import { VOTER_USE_REFUSE, voterUseRestriction, voterUseShownText } from '../../shared/src/policy/voterUse.ts';
 import { addDays, federalWindow, inRange, localISO, nextFederalElection, stateWindowDates } from '../../shared/src/policy/windows.ts';
 import type { MatchResult } from '../../shared/src/core.js';
 
@@ -96,6 +98,7 @@ export function App() {
   const [code, setCode] = useState('');
   const [resolved, setResolved] = useState<ResolvedRules | null>(null);
   const [checks, setChecks] = useState([false, false, false, false, false]);
+  const [voterUseChecked, setVoterUseChecked] = useState(false);
   const [initials, setInitials] = useState('');
   const [election, setElection] = useState(() => nextFederalElection(new Date()));
   const [countyFips, setCountyFips] = useState('');
@@ -130,6 +133,8 @@ export function App() {
   const memOnly = useRef(false);
   const started = useRef(false);
   const signed = useRef(false);
+  const voterUseCheckedRef = useRef(false);
+  const voterUseTextRef = useRef<string | null>(null);
   const jurorRef = useRef<Held | null>(null);
   const voterRef = useRef<Held | null>(null);
   const policyRef = useRef<PolicyResult | null>(null);
@@ -191,6 +196,8 @@ export function App() {
     const voterInput = document.getElementById('fileVoter');
     if (jurorInput instanceof HTMLInputElement) jurorInput.value = '';
     if (voterInput instanceof HTMLInputElement) voterInput.value = '';
+    voterUseCheckedRef.current = false;
+    setVoterUseChecked(false);
     setModal(false);
     window.clearTimeout(exportTimer.current);
     const clearsLog = trigger === 'button' || trigger === 'after_export' || trigger === 'timeout';
@@ -299,6 +306,23 @@ export function App() {
   const gates = rules ? uiGates(rules) : null;
   const attested = checks.every(Boolean) && initials.trim().length >= 1;
   const ready = Boolean(code) && attested;
+  const voterUseText = rules ? voterUseRestriction(rules) : null;
+  voterUseTextRef.current = voterUseText;
+  voterUseCheckedRef.current = voterUseChecked;
+
+  function voterUseBlocked(): boolean {
+    return voterUseTextRef.current !== null && !voterUseCheckedRef.current;
+  }
+
+  function setVoterUse(checked: boolean) {
+    voterUseCheckedRef.current = checked;
+    setVoterUseChecked(checked);
+    if (!checked || voterUseTextRef.current === null) return;
+    void append('voter_use_attested', {
+      state: code,
+      text_sha256: sha256HexSync(voterUseShownText(voterUseTextRef.current)),
+    });
+  }
   const today = localISO(new Date());
   const window90 = federalWindow(election);
   const inFederal = inRange(today, window90.start, window90.end);
@@ -334,6 +358,8 @@ export function App() {
   }, [gates]);
 
   async function onState(next: string) {
+    voterUseCheckedRef.current = false;
+    setVoterUseChecked(false);
     const hadJuror = Boolean(jurorRef.current);
     const hadResult = Boolean(policyRef.current);
     setCode(next);
@@ -403,11 +429,15 @@ export function App() {
   }
 
   async function acceptText(kind: Kind, text: string, bytes: number, sha256: string, hasHeader: boolean) {
+    if (kind === 'voter' && voterUseBlocked()) {
+      setFileError(VOTER_USE_REFUSE);
+      return;
+    }
     if (!attested) {
       setFileError(ATTEST_REFUSE);
       return;
     }
-    if (!gates?.allow_jury_list) {
+    if (kind === 'juror' && !gates?.allow_jury_list) {
       setFileError(rules?.gates.basis || confidential || 'JuryRoll does not load a jury list for this state.');
       return;
     }
@@ -440,13 +470,19 @@ export function App() {
   }
 
   async function takeFile(kind: Kind, file: File) {
+    if (kind === 'voter' && voterUseBlocked()) {
+      setFileError(VOTER_USE_REFUSE);
+      const voterInput = document.getElementById('fileVoter');
+      if (voterInput instanceof HTMLInputElement) voterInput.value = '';
+      return;
+    }
     if (!attested) {
       setFileError(ATTEST_REFUSE);
       const input = document.getElementById(kind === 'juror' ? 'fileJuror' : 'fileVoter');
       if (input instanceof HTMLInputElement) input.value = '';
       return;
     }
-    if (!gates?.allow_jury_list) {
+    if (kind === 'juror' && !gates?.allow_jury_list) {
       setFileError(rules?.gates.basis || confidential || 'JuryRoll does not load a jury list for this state.');
       return;
     }
@@ -476,6 +512,20 @@ export function App() {
     }
     const file = event.dataTransfer.files[0];
     if (file) void takeFile('juror', file);
+  }
+
+  function onVoterDrop(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    if (voterUseBlocked()) {
+      setFileError(VOTER_USE_REFUSE);
+      return;
+    }
+    if (!attested) {
+      setFileError(ATTEST_REFUSE);
+      return;
+    }
+    const file = event.dataTransfer.files[0];
+    if (file) void takeFile('voter', file);
   }
 
   async function loadSamples() {
@@ -690,11 +740,32 @@ export function App() {
     namedExport: Boolean(gates?.allow_named_export),
   };
   const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
-  const section = route.name === 'state' ? 'states' : route.name;
   const bannerState = route.name === 'state'
     ? (STATES.find((item) => item[0] === route.code)?.[1] ?? route.code)
     : '';
   const banner = bannerFor(route, bannerState);
+  const voterSlot = (
+    <VoterFileSlot
+      key={code || 'none'}
+      restriction={voterUseText}
+      sourceUrl={typeof rules?.voter_file.source_url === 'string' ? rules.voter_file.source_url : null}
+      useChecked={voterUseChecked}
+      onUseChecked={setVoterUse}
+      inputDisabled={voterUseText !== null && !voterUseChecked}
+      onDrop={onVoterDrop}
+      onFile={(file) => { void takeFile('voter', file); }}
+      hasHeader={hdrV}
+      onHeader={(checked) => { setHdrV(checked); if (voter) void acceptText('voter', voter.text, voter.bytes, voter.sha256, checked); }}
+      pendingNames={pendingV ? pendingV.names : null}
+      onSheet={(name) => {
+        if (!pendingV) return;
+        void acceptText('voter', pendingV.csvBySheet[name], pendingV.bytes, pendingV.sha256, hdrV);
+        setPendingV(null);
+      }}
+      info={voter ? `${voter.rows} rows.` : null}
+    />
+  );
+
   let page: ReactNode;
   switch (route.name) {
     case 'states':
@@ -860,28 +931,7 @@ export function App() {
                       )}
                       {juror && <p className="small" id="infoJuror">{juror.rows} rows. {juror.sheetName ?? 'Table loaded.'}</p>}
                     </div>
-                    <div id="voterSlot" className="drop-card">
-                      <div className="drop-head">
-                        <span className="drop-num idle">b</span>
-                        <span className="drop-name">Add the voter roll</span>
-                        <label className="inline"><input id="hdrVoter" type="checkbox" checked={hdrV} onChange={(event) => { setHdrV(event.target.checked); if (voter) void acceptText('voter', voter.text, voter.bytes, voter.sha256, event.target.checked); }} /> First row has column names</label>
-                      </div>
-                      <div className="drop-body">
-                        <span className="drop-copy"><b>Drop the county voter file</b><br />CSV or Excel</span>
-                        <label className="choose-file">
-                          <input id="fileVoter" type="file" aria-label="Choose file, county voter roll" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv" onChange={(event) => { const file = event.target.files?.[0]; if (file) void takeFile('voter', file); }} />
-                        </label>
-                      </div>
-                      {pendingV && (
-                        <label>Choose a sheet
-                          <select id="voterSheet" defaultValue="" onChange={(event) => { const name = event.target.value; if (!name || !pendingV) return; void acceptText('voter', pendingV.csvBySheet[name], pendingV.bytes, pendingV.sha256, hdrV); setPendingV(null); }}>
-                            <option value="">Choose a sheet</option>
-                            {pendingV.names.map((name) => <option key={name} value={name}>{name}</option>)}
-                          </select>
-                        </label>
-                      )}
-                      {voter && <p className="small" id="infoVoter">{voter.rows} rows.</p>}
-                    </div>
+                    {voterSlot}
                   </div>
                   <p className="file-alt">
                     <a href="#typePath">or type a printed list</a>

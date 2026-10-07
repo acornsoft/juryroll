@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any individual, for noncommercial use, from the Secretary of State or the local election administrator, at actual cost (MCA 13-2-122(1)). Protected addresses are withheld (13-2-122(2)).",
     "permitted_uses": "Noncommercial use only (13-2-122(1)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

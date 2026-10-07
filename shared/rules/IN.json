@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Full list only to listed entities (parties, independent candidates on the ballot, media for publication, courts for jury systems, legislative leaders) (IC 3-7-26.4-6). Any other person gets a redacted compilation after signing an agreement (IC 3-7-26.4-8, -9).",
     "permitted_uses": "The agreement bars using the list to solicit sales, and bars selling, loaning, giving away or delivering it to another person for a purpose other than political activities or political fundraising (IC 3-7-26.4-10).",
+    "use_restriction": "IC 3-7-26.4-10: 'The form described by section 9 of this chapter must state that the person receiving a compilation of information under this chapter may not: (1) use the compilation to solicit for the sale of merchandise, goods, services, or subscriptions; or (2) sell, loan, give away, or otherwise deliver the information obtained by the request to any other person (as defined in IC 5-14-3-2); for a purpose other than political activities or political fundraising activities.'",
     "no_online_posting": true,
     "penalty": null,
     "dob_in_public_file": false,

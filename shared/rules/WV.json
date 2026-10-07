@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any person may examine registration records at the county clerk's office (W. Va. Code 3-2-30(a)). Lists may be obtained for noncommercial purposes from the county clerk at one cent per name, or bought from the Secretary of State (3-2-30(c), (e)).",
     "permitted_uses": "Noncommercial purposes. Not for commercial or charitable solicitation or advertising, and not sold or reproduced for resale (3-2-30(c), (f)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

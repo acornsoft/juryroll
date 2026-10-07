@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Any person. The Division of Elections provides the statewide voter extract on request (Fla. Stat. 98.0981; Division voter extract page).",
     "permitted_uses": "No purpose restriction was found in Florida statute for the public extract. Exempt records (Fla. Stat. 97.0585, e.g. protected addresses) are removed.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": true,

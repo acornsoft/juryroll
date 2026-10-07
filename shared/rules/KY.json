@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Qualified candidates, political party committees or officials, and committees for or against a ballot question; other persons at the State Board's discretion (KRS 117.025(3)(i)).",
     "permitted_uses": "Not for commercial use (KRS 117.025(3)(i)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

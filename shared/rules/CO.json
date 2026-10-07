@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Any person. Registration records 'are public records subject to examination by any person' with the right to make copies (C.R.S. 1-2-227(1)(a)).",
     "permitted_uses": "No purpose restriction found in 1-2-227.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

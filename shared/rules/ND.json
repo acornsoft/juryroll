@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Only candidates, political parties, and political committees, for election-related purposes. Other central voter file information is an exempt record (N.D.C.C. 16.1-02-15).",
     "permitted_uses": "Election-related purposes only; may not be sold or distributed for other purposes (16.1-02-15).",
+    "use_restriction": "N.D.C.C. 16.1-02-15: 'Except as otherwise provided by law, a voter list or a report generated from the central voter file may be made available to a candidate, political party, or a political committee for election-related purposes. Any information obtained by a candidate, political party, or political committee for election-related purposes from a list or report generated from the central voter file may not be sold or distributed for a purpose that is not election-related.'",
     "no_online_posting": null,
     "penalty": "Class A misdemeanor for intentional violation of the chapter (16.1-02-16(3)).",
     "dob_in_public_file": false,

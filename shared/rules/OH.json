@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Any person. Registration forms and the statewide database are public records (R.C. 3503.13(A)); the Secretary of State posts weekly voter files for download.",
     "permitted_uses": "No purpose restriction found in R.C. 3503.13 or 3503.26.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": true,

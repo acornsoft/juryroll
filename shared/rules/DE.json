@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Anyone may inspect registration records during business hours and make copies (15 Del. C. 1305(a)).",
     "permitted_uses": "No purpose restriction stated in 1305.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

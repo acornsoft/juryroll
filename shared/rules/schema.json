@@ -40,6 +40,7 @@
       "properties": {
         "who_may_get": { "type": ["string", "null"] },
         "permitted_uses": { "type": ["string", "null"] },
+        "use_restriction": { "type": ["string", "null"], "description": "Exact statutory text, quoted, where the state limits voter-file use to election, political, law-enforcement or similar listed purposes. Non-null: the app shows this text and requires the user's attestation before the voter file loads (REQ-NOTE 65). null or absent: no such purpose limit found; no extra attestation. Optional (Optimus 2026-10-07)." },
         "no_online_posting": { "type": ["boolean", "null"], "description": "true = law bars a private recipient from posting the file online. false = no such bar (cite). null = unknown, treat as barred." },
         "penalty": { "type": ["string", "null"] },
         "dob_in_public_file": { "type": ["boolean", "null"], "description": "Whether the file a private person can get includes full date of birth. Drives match-tier caps (LOGIC-CHANGES A.4)." },

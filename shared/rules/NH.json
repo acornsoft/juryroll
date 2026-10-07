@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Any person may get a copy of the public checklist of a town or city from the supervisors of the checklist or the town or city clerk, for a fee (RSA 654:31, II). The full statewide list goes only to parties, political committees, and candidates (654:31, IV). Anyone may view statewide data at the state archives but may not print, duplicate, or transmit it (654:31, III).",
     "permitted_uses": "No commercial purposes (sale of property or services unrelated to an election or campaign) (654:31, I(b), VI).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": "Misdemeanor for a natural person, felony for any other person (654:31, VI).",
     "dob_in_public_file": null,

@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": null,
     "permitted_uses": null,
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

@@ -12,6 +12,7 @@ export type RulesFile = {
   jury_list: { public: boolean | null; statute: string | null; official_pipeline?: string | null; source_url?: string | null; verified_on?: string | null };
   voter_file: {
     permitted_uses?: string | null;
+    use_restriction?: string | null;
     attestation_required?: string | null;
     no_online_posting?: boolean | null;
     dob_in_public_file?: boolean | null;

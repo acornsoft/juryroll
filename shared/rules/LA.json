@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "A person who obtains the consent of the Secretary of State or the registrar and pays actual cost (R.S. 18:175(C)). Registrar records are public for inspection (R.S. 18:154(A)).",
     "permitted_uses": "No purpose restriction found in 18:175. Officials and agencies may not disclose SSN, license number, day and month of birth, mother's maiden name, or assistance status (R.S. 18:154(C)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

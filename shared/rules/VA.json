@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Not a private citizen. Lists go only to candidates, party committees, PACs, incumbents, voter-participation nonprofits, tax officials, and courts for jury selection (Va. Code 24.2-405(A)). 'The lists shall be furnished to no one else and used for no other purpose.'",
     "permitted_uses": "Only the purposes listed in 24.2-405 and 24.2-406.",
+    "use_restriction": "Va. Code 24.2-405(A): 'The Department of Elections shall provide, at a reasonable price, lists of registered voters for their districts to (i) candidates for election or political party nomination to further their candidacy, (ii) political party committees or officials thereof for political purposes only, (iii) political action committees that have filed a current statement of organization with the Department of Elections pursuant to § 24.2-949.2, or with the Federal Elections Commission pursuant to federal law, for political purposes only, (iv) incumbent officeholders to report to their constituents, (v) nonprofit organizations that promote voter participation and registration for that purpose only, and (vi) commissioners of the revenue, as defined in § 58.1-3100, and treasurers, as defined in § 58.1-3123, for tax assessment, collection, and enforcement purposes.' 24.2-405(A): 'The lists shall be furnished to no one else and used for no other purpose.'",
     "no_online_posting": true,
     "penalty": "False statement on the required purchaser statement is a felony (Va. Code 24.2-407, citing 24.2-1016).",
     "dob_in_public_file": null,
