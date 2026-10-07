@@ -5,10 +5,13 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
-    "holder": "Jury coordinator (court).",
-    "fields_withheld": null,
-    "official_pipeline": "T.C.A. 2-2-113: voter lists go to federal courts for jury selection on condition that the jury coordinator sends the Coordinator of Elections a list of persons disqualified or potentially disqualified as non-citizens (name, addresses, phone, DOB, reason). The Coordinator verifies registration and forwards to the county administrator, who follows 2-2-106 or 2-2-141 (notice; 30 days to prove citizenship; purge).",
+    "statute": "No statute makes the T.C.A. 2-2-113 non-citizen disqualification list public. It goes to the coordinator of elections (2-2-113(b)-(c)). 22-2-308 posts the jury pool list 'for public inspection', but that list names summoned jurors only and carries no citizenship data. 22-1-103(c) opens only the list of jurors excused for hardship, illness or age. Public status of the 2-2-113 list: null.",
+    "holder": "Jury coordinator: the circuit court clerk unless the judges appoint another person (T.C.A. 22-2-201(a)(1)). The 2-2-113 list goes to the state coordinator of elections, then to the county administrator of elections.",
+    "fields_withheld": [
+      "Documents submitted for a hardship, illness or age excuse: 'not public records and shall not be disclosed, except pursuant to a court order' (T.C.A. 22-1-103(c))",
+      "Proof-of-citizenship documents and the Department of Safety, federal, state agency and county records used for citizenship checks: 'confidential and shall not be available for inspection by the public' (2-2-141(e))"
+    ],
+    "official_pipeline": "T.C.A. 2-2-113 (Acts 2022, ch. 939, s. 2; 2025, ch. 94, s. 11): voter lists may go to federal courts for jury selection on condition that the jury coordinator reports ineligible jurors. The jury coordinator 'shall prepare or cause to be prepared a list of each person disqualified or potentially disqualified as a prospective juror from jury service due to being a non-United States citizen' (and felons, deceased, non-residents), sent to the coordinator of elections 'according to the jury summons cycle used by the court clerk', with full name, current and prior addresses, phone, date of birth and reason (2-2-113(b)-(c)). The coordinator verifies registration and forwards to the county administrator of elections, who follows 2-2-106 or 2-2-141 (2-2-113(d)-(e)). 2-2-141(b)-(c): notice; proof of citizenship within 30 days, or the administrator purges. Appeal to the state election commission (2-2-141(d)).",
     "use_restriction": null,
     "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-113/",
     "verified_on": "2026-10-07",
@@ -24,38 +27,96 @@
         "url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-141/",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 22-1-101 (jurors must be 'a citizen of the United States')",
+        "url": "https://law.justia.com/codes/tennessee/title-22/chapter-1/section-22-1-101/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 22-2-301(a) (state jury list from driver, tax and other records; voter records barred as a source)",
+        "url": "https://law.justia.com/codes/tennessee/title-22/chapter-2/part-3/section-22-2-301/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 22-2-308 (jury pool list posted in the clerk's office 'for public inspection'; copies for 'all other interested persons')",
+        "url": "https://law.justia.com/codes/tennessee/title-22/chapter-2/part-3/section-22-2-308/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 22-1-103(c) (excuse documents not public; list of excused jurors available on request)",
+        "url": "https://law.justia.com/codes/tennessee/title-22/chapter-1/section-22-1-103/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 22-2-201(a)(1) (circuit court clerk is the jury coordinator unless the judges appoint another)",
+        "url": "https://law.justia.com/codes/tennessee/title-22/chapter-2/part-2/section-22-2-201/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 10-7-503(a)(2)(A) (state, county and municipal records open to 'any citizen of this state' unless state law provides otherwise)",
+        "url": "https://law.justia.com/codes/tennessee/title-10/chapter-7/part-5/section-10-7-503/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person who certifies on a state form that the list will be used for political purposes (T.C.A. 2-2-138(b)(1)); in large counties, any interested citizen (2-2-138(c)).",
+    "who_may_get": "Any person who certifies on a State Election Commission form that the list will be used for political purposes (T.C.A. 2-2-138(b)(1), (d)(1), (e)). In large counties, any interested citizen may buy lists (2-2-138(c)). Permanent registration records are public and open to inspection, with SSNs redacted (2-2-127(a)).",
     "permitted_uses": "Political purposes (2-2-138(b)(1)).",
     "use_restriction": "T.C.A. 2-2-138(b)(1): 'This list shall be available to any person who certifies on a form provided by the state election commission that such list will be used for political purposes.' 2-2-138(e): 'This list shall be available for purchase to any person who certifies on a form provided by the state election commission that such list will be used for political purposes only.'",
     "no_online_posting": null,
-    "penalty": null,
+    "penalty": "T.C.A. 2-2-138(d)(2): 'A false certification made pursuant to this subsection (d) is a Class B misdemeanor, punishable only by a fine of five hundred dollars ($500).' (Computerized counties.)",
     "dob_in_public_file": null,
     "registration_date_in_public_file": null,
     "attestation_required": "Certification on the State Election Commission form that the list will be used for political purposes (T.C.A. 2-2-138(b)(1)).",
     "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-138/",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "T.C.A. 2-2-127(a) (permanent registration records are public; SSN redacted)",
+        "url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-127/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": null,
-    "who": "At the polls: any person present may challenge; the judges decide after an oath (T.C.A. 2-7-123). No pre-election written challenge by a private voter was found.",
-    "form_or_statute": "T.C.A. 2-7-123. Not supported by JuryRoll.",
+    "who": "At the polls only: 'If any person's right to vote is challenged by any other person present at the polling place, the judges shall present the challenge' (T.C.A. 2-7-123). Grounds include that the person 'Has become ineligible to vote' since registering (2-7-124(a)(5)). No pre-election written challenge by a private voter was found. That is contact with the voter at a polling place. JuryRoll does not support it.",
+    "form_or_statute": "T.C.A. 2-7-123, 2-7-124, 2-7-125. Not supported by JuryRoll.",
     "form_url": null,
     "one_per_affidavit": null,
     "deadlines": null,
     "deadline_days_before_election": null,
-    "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "evidence_standard": "No stated standard. The judges question the voter under oath; the ballot is rejected only if the judges 'determine unanimously that the person is not entitled to vote' (2-7-125(a)); otherwise the person votes as if unchallenged (2-7-125(b)).",
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-7/section-2-7-123/",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "T.C.A. 2-7-124 (grounds for challenge)",
+        "url": "https://law.justia.com/codes/tennessee/title-2/chapter-7/section-2-7-124/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 2-7-125 (unanimous judges to reject)",
+        "url": "https://law.justia.com/codes/tennessee/title-2/chapter-7/section-2-7-125/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-106/",
@@ -79,16 +140,30 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "T.C.A. 10-7-503(a)(2)(A); 52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the county election commission or the coordinator of elections for existing records that count non-citizen notices sent under T.C.A. 2-2-141(b), purges under 2-2-141(c), and jury-coordinator reports received under 2-2-113. Tennessee records are open to 'any citizen of this state' (10-7-503(a)(2)(A)). 52 U.S.C. 20507(i) is the federal counterpart. Ask for counts only. Do not ask for names.",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/tennessee/title-10/chapter-7/part-5/section-10-7-503/",
+    "verified_on": "2026-10-07",
+    "note": "No statute requires a non-citizen count report. The office does not have to create a new record (10-7-503(a)(4)). Citizenship documents and agency records are confidential (2-2-141(e)). The scope of 20507(i) for jury-derived records is contested."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury non-citizen lists go to the Coordinator of Elections (T.C.A. 2-2-113); public status unknown (null). No private pre-election challenge found. Strict gates: counts only."
+    "basis": "jury_list.public is null: no statute opens the 2-2-113 non-citizen list. The public jury pool list (22-2-308) has no citizenship data, so it gives no lead. allow_jury_list false, aggregate_only true, allow_named_export false. The only private challenge is at the polls (2-7-123), so allowed stays null and show_challenge_guidance is false. Gates F/T/F/F, unchanged."
   },
   "notes": [
-    "Source note: Tennessee's official code is published through a commercial host. Text was read from the Justia copy of the 2025 Tennessee Code, the reprint LEGAL-REVIEW steering allowed for GA. Re-verify against 2026 session laws.",
-    "2-2-113 applies to lists given to federal courts for jury selection.",
-    "dob_in_public_file and registration_date_in_public_file are null: not confirmed."
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute, holder, fields_withheld and official_pipeline filled from the 2025 code text. voter_file penalty filled (2-2-138(d)(2)). juryroll_lead_sufficient false (stricter). audit_path added. federal_source_url moved to govinfo. Open questions are in review/NULLS-SUMMARY.md. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "Source note: Tennessee's official code is published through a commercial host. Text was read from the Justia copy of the 2025 Tennessee Code on 2026-10-07. 2026 changes were checked through the General Assembly bill pages.",
+    "2-2-113 scope: subsection (a) conditions voter lists given to federal courts. Subsection (b) says 'The jury coordinator' (the county officer under 22-2-201) must prepare the list 'according to the jury summons cycle used by the court clerk'. Whether (b) binds state-court jury coordinators is open (review/NULLS-SUMMARY.md). State jury lists are not drawn from voter records (22-2-301(a)).",
+    "Public jury pool list: 22-2-308 posts the list of summoned jurors for public inspection. It has names only and no citizenship data. A match against it is not a non-citizen lead. JuryRoll does not load it as a jury list.",
+    "dob_in_public_file and registration_date_in_public_file are null: 2-2-127 makes permanent registration records public, but no official layout of the purchased list was found. A county form (Knox) lets buyers select voters by registration-date range. The app treats null as no DOB.",
+    "Use limit: lists are sold for 'political purposes' (2-2-138). Whether JuryRoll matching is a political purpose is open (review/NULLS-SUMMARY.md). A false certification is a Class B misdemeanor in computerized counties (2-2-138(d)(2)). A Knox County form says Class C; the statute controls.",
+    "Removal process: 2-2-141 notice and 30-day proof of citizenship, then purge; appeal to the state election commission. In June 2024 the coordinator sent 14,375 letters, then said non-response would not cause removal (AP; secondary). A June 27, 2024 ACLU demand letter alleged NVRA 90-day and other violations. No court ruling on the letters was found.",
+    "2026 law: Pub. Ch. 775 (HB 2185/SB 2204) has the coordinator create, before January 1, 2028, a portal for counties to check citizenship before processing an application. It does not amend 2-2-113. HB 1897 (county SAVE checks of every applicant and quarterly roll checks): enactment status null (not verified).",
+    "2-2-106(b): county address verification must finish 'no later than ninety (90) days before a federal election'."
   ]
 }
