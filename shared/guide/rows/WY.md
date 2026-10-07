@@ -1,1 +1,1 @@
-| WY | Not known, so the app treats it as no | No private challenge found (W.S. 22-3-105) | Counts only |
+| WY | Not known, so the app treats it as no. No statute or court rule found on juror records | No private challenge found (W.S. 22-3-105) | Counts only. Voter lists only for listed political requesters, political use only (W.S. 22-2-113(a)) |

@@ -5,25 +5,65 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "No Wyoming statute or court rule found opens or closes juror qualification records. W.S. 1-11-109(c): 'If any person selected is not qualified to serve as a trial juror, the name of the person shall be stricken from the base jury list from which summoned.' 1-11-101(a)(i): a juror must be 'An adult citizen of the United States'. Status: null.",
     "holder": "District courts (jury management).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://wyoleg.gov/statutes/compress/title01.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "W.S. 1-11-101(a)(i) (juror must be an adult U.S. citizen)",
+        "url": "https://wyoleg.gov/statutes/compress/title01.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W.S. 1-11-109(c) (names of persons not qualified are stricken from the base jury list)",
+        "url": "https://wyoleg.gov/statutes/compress/title01.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Wyoming Rules Governing Access to Case Records (effective Feb. 5, 2024; the rule text does not mention jurors; the Access Security Matrix was not read)",
+        "url": "https://www.wyocourts.gov/app/uploads/2025/01/Wyo-Rules-Governing-Access-to-Case-Records-eff.-Sept-2026.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      }
+    ]
   },
   "voter_file": {
-    "who_may_get": null,
-    "permitted_uses": null,
+    "who_may_get": "Candidates, campaign committees, party central committees and officials, elected officials, political action committees, 'individuals promoting or opposing a ballot issue or candidate' and 'organizations which promote voter participation' (W.S. 22-2-113(a)). The Secretary of State's form requires proof of the category.",
+    "permitted_uses": "'All lists are for political purposes only and are not available for commercial use.' (W.S. 22-2-113(a)).",
     "use_restriction": "W.S. 22-2-113(a): 'All lists are for political purposes only and are not available for commercial use.'",
     "no_online_posting": null,
-    "penalty": null,
-    "dob_in_public_file": null,
-    "registration_date_in_public_file": null,
-    "attestation_required": null,
-    "source_url": null,
-    "verified_on": null
+    "penalty": "The Secretary of State's order form says 'violations of W.S. 22-2-113(a) will be referred for prosecution as a misdemeanor under W.S. 22-26-112'. 22-26-112 sets up to six months in jail or a $1,000 fine for listed acts 'if knowingly and willfully committed'; whether its list covers 22-2-113(a) was not confirmed.",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": true,
+    "attestation_required": "Signed oath on the Secretary of State's form: 'I affirm under penalty of perjury that I will use the above voter registration data for political purposes only and that I will not use it for commercial purposes.'",
+    "source_url": "https://wyoleg.gov/statutes/compress/title22.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "W.S. 22-1-102(a)(xxix) (the registry list includes 'registration dates')",
+        "url": "https://wyoleg.gov/statutes/compress/title22.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W.S. 22-2-113(d) (birth dates and other identifiers are not public records)",
+        "url": "https://wyoleg.gov/statutes/compress/title22.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Wyoming Secretary of State, Voter Registry List Request Form (oath; political purposes only; fields include Registration Date)",
+        "url": "https://sos.wyo.gov/Forms/Elections/General/VoterProductOrderForm.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": null,
@@ -41,7 +81,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://law.justia.com/codes/wyoming/title-22/chapter-3/section-22-3-105/",
@@ -66,16 +106,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "W.S. 16-4-203 (Public Records Act), 22-2-113(d) ('all election records of the county clerk are public', subject to the Public Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county clerk: per year, the number of names struck from the registration lists under W.S. 22-3-105 because the person was not qualified as a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://wyoleg.gov/statutes/compress/title16.pdf",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Wyoming statute sends juror citizenship answers to election officials. Whether clerks keep counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. No private challenge; the county clerk investigates on reasonable cause (W.S. 22-3-105). Strict gates."
+    "basis": "Jury records: no Wyoming statute or court rule found opens or closes them, so public stays null and the app shows counts only. No private challenge; the county clerk investigates on reasonable cause (W.S. 22-3-105). Strict gates."
   },
   "notes": [
-    "Source note: Wyoming Statutes read from the Justia copy of the 2025 statutes.",
-    "voter_file is all null and jury_list is null: the Wyoming voter-list and jury-records statutes were not confirmed in this batch.",
-    "official_pipeline is null: none found."
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute and sources (1-11-101, 1-11-109(c)); voter_file filled from 22-2-113 and the Secretary of State form (it was all null); audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No gate changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (copied from permitted_uses); the app shows it and requires the user's attestation before the voter file loads.",
+    "Registration date (approved by Optimus 2026-10-07; REQ-NOTE 62 closed): voter_file.registration_date_in_public_file null -> true. The registry list is defined to include 'registration dates' (W.S. 22-1-102(a)(xxix)) and the form lists 'Registration Date'. This turns on the date rule for Wyoming files. dob_in_public_file null -> false: 'birth dates' are 'not public records and shall be kept confidential' (22-2-113(d)).",
+    "Use limit: only the listed political categories may get the registry list (22-2-113(a)). A JuryRoll user outside those categories cannot lawfully get it. The app should warn Wyoming users before loading a voter file.",
+    "PA-style check: names of persons not qualified are 'stricken' (1-11-109(c)). No statute keeps a list of reasons. The former Rules Governing Access to Court Records (repealed 2024) listed 'Trial juror addresses, qualification forms, and questionnaires' as confidential; the current rules' matrix was not read. A secondary source (Reporters Committee) says juror questionnaires are confidential by court rule; not relied on.",
+    "official_pipeline is null: no Wyoming statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list Wyoming.",
+    "Cancelled-voter file: no published Wyoming cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "Source note: Wyoming Statutes read from the official wyoleg.gov title PDFs on 2026-10-07."
   ]
 }
