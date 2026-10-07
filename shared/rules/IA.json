@@ -5,25 +5,71 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "Iowa Code 607A.48: public access to juror information is limited to year of birth and city/zip; other details are confidential without a court order.",
+    "statute": "Iowa Code 607A.48(1): 'Public access to juror and prospective juror information shall be limited. Information on the year of birth and address information identifying the city and zip code of prospective jurors shall be available to the public. However, more specific address information, phone numbers, and the date and month of birth of prospective jurors are confidential and not subject to disclosure without an order of the court.' No statute makes a record of jury disqualifications, or the documentation filed under 607A.4(5), public.",
     "holder": "Clerk of district court / jury manager.",
     "fields_withheld": null,
-    "official_pipeline": null,
+    "official_pipeline": "Iowa Code 48A.30(1)(f): a registration 'shall be canceled' if 'the registered voter submits documentation under section 607A.4, subsection 5, that indicates that the voter is not a citizen of the United States.' 607A.4(5): 'A person who claims disqualification for any of the grounds identified in this section may, upon the person's own volition, or shall, upon the court's volition, submit in writing to the court's satisfaction, documentation that verifies disqualification from jury service.' (2023 Acts, ch 98.) No statute found says how the court sends that documentation to the county commissioner of registration.",
     "use_restriction": null,
     "source_url": "https://www.legis.iowa.gov/docs/code/2026/607A.pdf",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Iowa Code 607A.4 (juror must be a U.S. citizen; documentation of disqualification, subsection 5)",
+        "url": "https://www.legis.iowa.gov/docs/code/2026/607A.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Iowa Code 48A.30(1)(f), (h) (cancellation of registration)",
+        "url": "https://www.legis.iowa.gov/docs/code/2026/48A.30.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Iowa Code 47.7(2)(f) (annual first-quarter verification; report of cancellations to the general assembly by April 30, published on the state registrar's site)",
+        "url": "https://www.legis.iowa.gov/docs/code/2026/47.7.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
-    "who_may_get": "Any person, on payment of cost (Iowa Code 48A.38(1)).",
-    "permitted_uses": "No purpose restriction in 48A.38. The registrar logs every recipient; the log is public (48A.38(3)).",
+    "who_may_get": "Any person, on payment of the cost of preparation (Iowa Code 48A.38(1)). Statewide lists come from the Secretary of State; county lists also from the county auditor.",
+    "permitted_uses": "Iowa Code 48A.39: information about individual registrants 'shall be used only to request the registrant's vote at an election, or for another genuine political purpose, or for a bona fide official purpose by an elected official, or for bona fide political research, but shall not be used for any commercial purposes.' The registrar logs every recipient; the log is public (48A.38(3)).",
     "use_restriction": "Iowa Code 48A.39: 'Information about individual registrants obtained from voter registration records shall be used only to request the registrant’s vote at an election, or for another genuine political purpose, or for a bona fide official purpose by an elected official, or for bona fide political research, but shall not be used for any commercial purposes.'",
     "no_online_posting": null,
-    "penalty": null,
+    "penalty": "Election misconduct in the second degree, an aggravated misdemeanor: using voter registration information, 'including resale or redistribution of the voter registration list without written permission of the state registrar, for purposes other than those permitted by section 48A.39' (Iowa Code 39A.3(1)(c), (2)).",
     "dob_in_public_file": null,
     "registration_date_in_public_file": null,
     "attestation_required": null,
     "source_url": "https://www.legis.iowa.gov/docs/code/2026/48A.38.pdf",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Iowa Code 48A.39 (use of registration information)",
+        "url": "https://www.legis.iowa.gov/docs/code/2026/48A.39.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Iowa Code 39A.3 (election misconduct in the second degree)",
+        "url": "https://www.legis.iowa.gov/docs/code/2026/39A.3.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Iowa Secretary of State, Voter Registration List Requests (voter status choices: Active; Active, Inactive, Pending)",
+        "url": "https://sos.iowa.gov/voter-registration-list-requests",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Iowa Code 48A.39 (use of registration information)",
+        "url": "https://www.legis.iowa.gov/docs/code/2026/48A.39.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": true,
@@ -41,7 +87,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -74,16 +120,30 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Iowa Code 22.2 (right to examine public records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: per county and per year, the number of registrations cancelled under Iowa Code 48A.30(1)(f) on the basis of jury documentation under 607A.4(5), and the number cancelled under 48A.30(1)(h). Also the state registrar's annual report of cancellations under 47.7(2)(f), which must be published on the state registrar's site.",
+    "counts_only": true,
+    "source_url": "https://www.legis.iowa.gov/docs/code/2026/22.2.pdf",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. Ask the county auditor (commissioner of registration) or the Secretary of State, not the court. Juror information beyond year of birth and city and zip code is not public (607A.48(1))."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror information is confidential beyond year of birth and city (Iowa Code 607A.48), so the jury list is not available. Strict gates: counts only."
+    "basis": "Public access to juror information is limited to year of birth and city and zip code (Iowa Code 607A.48(1)), so the jury list is not available. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly; official_pipeline null to 48A.30(1)(f) and 607A.4(5); jury sources; voter_file permitted_uses corrected to quote 48A.39; penalty null to 39A.3; audit_path; federal_source_url moved to govinfo. jury_list.public stays false. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (copied from permitted_uses); the app shows it and requires the user's attestation before the voter file loads.",
+    "Behavior flags: official_pipeline is now non-null, so the A.5 audit letter quotes 48A.30(1)(f). permitted_uses and penalty already showed the use-limit banner (permitted_uses was non-null); the text now quotes 48A.39.",
+    "Correction: the old file said 'No purpose restriction in 48A.38.' 48A.39 limits use to vote requests, genuine political purposes, official purposes of elected officials, and bona fide political research, and bars commercial use. The Secretary of State page calls commercial use 'a serious misdemeanor'; the statute (39A.3(2)) says aggravated misdemeanor. The file follows the statute.",
+    "PA-style check: 607A.48(1) makes only year of birth and city and zip code public and says public access 'shall be limited'. No Iowa statute or rule makes a list of non-citizen jury disqualifications public.",
     "state_extra_days is 0: the 70-day processing rule starts inside the federal 90-day window.",
-    "official_pipeline is null: no Iowa statute sending juror non-citizen answers to election officials was found.",
-    "dob_in_public_file and registration_date_in_public_file are null: 48A.38 lets the purchaser choose fields 'within the capability' of the system but does not list them."
+    "dob_in_public_file and registration_date_in_public_file stay null: 48A.38(1)(c) lets the purchaser choose fields 'within the capability' of the system, but no statute or official page lists date of birth or registration date as list fields.",
+    "Cancelled-voter file: 48A.37(2) gives every record a status code, including 'canceled'. The Secretary of State list page offers only Active, or Active, Inactive, Pending. No cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "Lawsuit closed: on February 11, 2026 the Secretary of State and Attorney General announced that the suit by five individuals and LULAC over the 2024 driver's-license challenge list 'was dropped', and that the 2024 list 'has been rescinded'. https://sos.iowa.gov/news-resources/attorney-general-brenna-bird-and-secretary-state-pate-secure-election-integrity-win",
+    "2025 Acts, ch 123 added 48A.30(1)(h): cancellation when the voter submits documentation, or reports to a state or federal agency, that the voter is not a citizen."
   ]
 }
