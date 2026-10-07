@@ -5,17 +5,23 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "N.Y. Judiciary Law 509(a): records of persons found not qualified or excused, and the reasons, 'shall be considered confidential and shall not be disclosed except to the county jury board or as permitted by the appellate division.'",
-    "holder": null,
+    "statute": "N.Y. Judiciary Law 509(a): 'A record of the persons who are found not qualified or who are excused, and the reasons therefor, shall be maintained by the commissioner of jurors. ... Such questionnaires and records shall be considered confidential and shall not be disclosed except to the county jury board or as permitted by the appellate division.'",
+    "holder": "Commissioner of jurors (Judiciary Law 509(a)); the county jury board reviews determinations.",
     "fields_withheld": null,
     "official_pipeline": null,
-    "use_restriction": "Disclosure only to the county jury board or as the Appellate Division permits (Judiciary Law 509(a)).",
+    "use_restriction": "'Such questionnaires and records shall be considered confidential and shall not be disclosed except to the county jury board or as permitted by the appellate division.' (Judiciary Law 509(a)).",
     "source_url": "https://www.nysenate.gov/legislation/laws/JUD/509",
     "verified_on": "2026-10-07",
     "sources": [
       {
         "cite": "N.Y. Judiciary Law 510(1) (juror must be a U.S. citizen)",
         "url": "https://www.nysenate.gov/legislation/laws/JUD/510",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.Y. Judiciary Law 509(a) (record of persons not qualified or excused, with reasons; confidential)",
+        "url": "https://www.nysenate.gov/legislation/laws/JUD/509",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -77,7 +83,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.nysenate.gov/legislation/laws/ELN/5-220",
@@ -108,6 +114,14 @@
       }
     ]
   },
+  "audit_path": {
+    "statute": "N.Y. Public Officers Law 87 (Freedom of Information Law) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county board of elections or the State Board of Elections: per year, the number of registrations cancelled because the registrant was not a U.S. citizen, and the number of Election Law 5-220 challenges filed on citizenship grounds and their outcomes.",
+    "counts_only": true,
+    "source_url": "https://www.nysenate.gov/legislation/laws/PBO/87",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. FOIL does not reach the courts: an 'agency' excludes 'the judiciary' (Public Officers Law 86(3)), so jury counts cannot be requested under FOIL. No New York statute sends juror citizenship answers to election officials."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -116,9 +130,12 @@
     "basis": "Judiciary Law 509(a) makes the non-qualified juror records and reasons confidential. A private person cannot lawfully hold them, so no named leads exist and no challenge affidavit can rest on them. LEGAL-REVIEW.md item 4: NY primary mode is an audit of the official system with aggregate counts, not individuals."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (Judiciary Law 509(a)); holder; use_restriction quoted exactly (same meaning); jury source 509 added; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file or private_challenge value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (copied from permitted_uses); the app shows it and requires the user's attestation before the voter file loads.",
+    "PA-style check: New York keeps the same kind of list as Pennsylvania ('A record of the persons who are found not qualified or who are excused, and the reasons therefor'), but 509(a) makes it confidential. public stays false.",
     "NY primary mode (LEGAL-REVIEW.md item 4): aggregate audit of the official process. Example question for officials: how many jurors were disqualified for non-citizenship, and does any process compare them with the voter list?",
-    "NY FOIL (Public Officers Law 86) excludes the courts; the Commissioner of Jurors is a court function (Committee on Open Government advisory, cited in LEGAL-REVIEW.md). Not re-verified in this pass.",
-    "NY is not on the NCSL list of states with a jury-to-election-official pipeline (LEGAL-REVIEW.md). Not independently verified here; the field official_pipeline stays null.",
+    "FOIL: 'Agency' means a governmental entity 'except the judiciary or the state legislature' (Public Officers Law 86(3)); 'Judiciary' means 'the courts of the state' (86(1)). Verified 2026-10-07.",
+    "official_pipeline is null: no New York statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list New York.",
+    "Cancelled-voter file: no published New York cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "no_online_posting is null: no explicit posting ban was found; 3-103(5) bars non-election use. The app treats null as barred. JuryRoll never posts data in any state.",
     "dob_in_public_file and registration_date_in_public_file are null: the file layout was not checked against an official source in this pass. In NY mode the voter file is not loaded for matching, so this has no effect.",
     "state_extra_days 0 means Election Law 5-220 has no window that starts before the federal 90-day window. Other Election Law sections were not exhaustively reviewed.",
