@@ -1,1 +1,1 @@
-| SC | Not known, so the app treats it as no | Yes, written challenge to the county board (S.C. Code 7-5-230) | Counts only |
+| SC | Not known, so the app treats it as no. The clerk keeps a list of excused or disqualified jurors with reasons, but no law says it is public (S.C. Code 14-7-1530) | Yes, written challenge to the county board (S.C. Code 7-5-230) | Counts only |

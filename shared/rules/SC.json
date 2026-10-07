@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "S.C. Code 14-7-1530: 'The clerk of court shall maintain a list of all jurors who are excused or disqualified by the presiding judge and state the reasons given by the presiding judge for excusing or disqualifying the jurors.' 14-7-1010 has the same duty for each term. No section opens or closes that list. Status: null.",
     "holder": "Clerk of court (S.C. Code 14-7-1530).",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -14,7 +14,7 @@
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "S.C. Code 14-7-130 (jury list built from DMV citizens and registered voters)",
+        "cite": "S.C. Code 14-7-130 (jury list built from DMV records of 'citizens of the United States' merged with registered voters)",
         "url": "https://www.scstatehouse.gov/code/t14c007.php",
         "verified_on": "2026-10-07",
         "kind": "statute"
@@ -24,6 +24,24 @@
         "url": "https://www.scstatehouse.gov/code/t14c007.php",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "S.C. Code 14-7-1010 (clerk keeps a list of jurors excused or disqualified, with reasons, signed by the presiding judge)",
+        "url": "https://www.scstatehouse.gov/code/t14c007.php",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "S.C. Code 14-7-810 (listed disqualifications; no citizenship item)",
+        "url": "https://www.scstatehouse.gov/code/t14c007.php",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "S.C. Att'y Gen. Op. to Robert L. McCurdy (Aug. 4, 2014) ('it is not at all clear that the court system is included within the reach of FOIA'; grand juror names likely exempt)",
+        "url": "https://www.scag.gov/wp-content/uploads/2014/08/McCurdy-Robert-OS-9804-08-04-2014-Cook-00397692xD2C78.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
@@ -42,6 +60,12 @@
       {
         "cite": "S.C. Code 7-3-20(D)(13) (precinct lists to a qualified elector at reasonable price)",
         "url": "https://www.scstatehouse.gov/code/t07c003.php",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "S.C. Code 7-5-410 (official registration records are public records open to inspection by any citizen)",
+        "url": "https://www.scstatehouse.gov/code/t07c005.php",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -63,7 +87,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.scstatehouse.gov/code/t07c005.php",
@@ -88,16 +112,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "S.C. Code 30-4-30 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the State Election Commission or the county board of voter registration and elections: per year, the number of registrants matched to the DMV monthly report of non-U.S. citizens issued a license or ID (7-3-70(c)), and the number of those registrations cancelled; and the number of written challenges under 7-5-230 on citizenship grounds and their outcomes.",
+    "counts_only": true,
+    "source_url": "https://www.scstatehouse.gov/code/t30c004.php",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No South Carolina statute sends the 14-7-1530 list to election officials. The Attorney General said in 2014 that FOIA's reach to the courts is 'not at all clear', so do not ask the clerk of court for jury records."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. A written challenge to the county board is allowed, with a hearing within 10 days (S.C. Code 7-5-230). Strict gates."
+    "basis": "Jury records: the clerk keeps a list of excused or disqualified jurors with reasons (14-7-1530), but no statute says whether it is public (null), so counts only. A written challenge to the county board is allowed, with a hearing within 10 days (S.C. Code 7-5-230). Strict gates."
   },
   "notes": [
-    "The jury list merges registered voters with DMV records of U.S. citizens (14-7-130).",
-    "jury_list.public is null: 14-7-1530 requires a list of disqualified jurors with reasons but does not say whether it is public.",
-    "dob_in_public_file and registration_date_in_public_file are null: the sections read do not list public fields."
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (14-7-1530); jury sources 14-7-1010, 14-7-810 and the 2014 AG opinion added; voter_file source 7-5-410; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No voter_file value changes.",
+    "Flag (PA-style suspect): 14-7-1530 and 14-7-1010 require a written list of every juror excused or disqualified, with the judge's reasons. This is like Pennsylvania's list (42 Pa.C.S. 4523(a)), but no South Carolina section opens it for inspection. The Attorney General wrote on Aug. 4, 2014 that 'it is not at all clear that the court system is included within the reach of FOIA'. public stays null (treated as confidential). Reopen only on a statute or ruling that opens the list. See REQ-NOTE 46. Reopen candidate (Optimus 2026-10-07: null stays). See review/REOPEN.md.",
+    "Qualification wording: 14-7-810 lists disqualifications (felony, English, infirmity, education) but no citizenship item. Citizenship enters through the source list: 14-7-130 uses DMV records of persons who are 'citizens of the United States' merged with registered voters.",
+    "official_pipeline is null: no South Carolina statute sends juror citizenship information to election officials. The DMV sends the State Election Commission 'a monthly report of all non-United States citizens who are issued a driver's license or identification card' (7-3-70(c)). That is a DMV pipeline, kept in audit_path.",
+    "Cancelled-voter file: no published South Carolina cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "dob_in_public_file and registration_date_in_public_file are null: the sections read do not list public fields.",
+    "Source note: scstatehouse.gov chapter pages and the AG opinion PDF read with curl on 2026-10-07."
   ]
 }
