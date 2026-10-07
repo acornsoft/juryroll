@@ -15,6 +15,7 @@ import { summaryCopy, upsertCountyRun, type CountyRun } from './lib/summary.ts';
 import { blankGrid, gridToCsv } from './lib/transcribe.ts';
 import { historyByVoterId } from './lib/voterContext.ts';
 import { FaqPage, LawPage } from './pages/Background.tsx';
+import { RecordsAudit } from './pages/RecordsAudit.tsx';
 import { StateIndex, StatePage } from './pages/StateGuide.tsx';
 import { juryListAllowed } from './lib/availability.ts';
 import { stepById, type FlowFacts, type StepId } from './lib/flow.ts';
@@ -763,8 +764,9 @@ export function App() {
   };
   const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
   const section = route.name === 'state' ? 'states' : route.name;
-  const bannerState = route.name === 'state'
-    ? (STATES.find((item) => item[0] === route.code)?.[1] ?? route.code)
+  const bannerCode = route.name === 'state' || route.name === 'records-audit' ? route.code : '';
+  const bannerState = bannerCode
+    ? (STATES.find((item) => item[0] === bannerCode)?.[1] ?? bannerCode)
     : '';
   const banner = bannerFor(route, bannerState);
   const voterSlot = (
@@ -803,6 +805,9 @@ export function App() {
       break;
     case 'faq':
       page = <FaqPage />;
+      break;
+    case 'records-audit':
+      page = <RecordsAudit code={route.code} />;
       break;
     case 'home':
       page = (
@@ -1206,6 +1211,7 @@ export function App() {
           <nav className="nav" aria-label="Sections">
             <a href="#/run" aria-current={section === 'home' ? 'page' : undefined}>Run a check</a>
             <a href="#/states" aria-current={section === 'states' ? 'page' : undefined}>State walkthroughs</a>
+            <a href="#/records-audit" aria-current={section === 'records-audit' ? 'page' : undefined}>Records audit</a>
             <a href="#/law" aria-current={section === 'law' ? 'page' : undefined}>Law &amp; guidance</a>
             <a href="#/faq" aria-current={section === 'faq' ? 'page' : undefined}>FAQ</a>
           </nav>
