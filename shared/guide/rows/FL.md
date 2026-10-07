@@ -1,1 +1,1 @@
-| FL | Not known, so the app treats it as no | Yes, at one election only (Fla. Stat. 101.111) | Counts only |
+| FL | No list exists. The jury source list holds only citizens (Fla. Stat. 40.011(2)) | Yes, at one election only, from day 30 (Fla. Stat. 101.111). A JuryRoll match is not enough | Counts only. See 6.3 |
