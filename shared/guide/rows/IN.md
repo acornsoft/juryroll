@@ -1,1 +1,1 @@
-| IN | Not known, so the app treats it as no | Only at the polls (IC 3-11-8); not supported | Counts only |
+| IN | Not known, so the app treats it as no. Federal courts send jury citizenship data to counties every even year (IC 3-7-38.2-16) | Only at the polls (IC 3-11-8); not supported | Counts only. See 6.13 |

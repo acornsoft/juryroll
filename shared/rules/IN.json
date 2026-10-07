@@ -5,12 +5,14 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "IC 33-28-5-13(d): 'The master list of names is open to the public for examination as a public record. However, all other information other than the names contained in the master list is confidential.' IC 33-28-5-18(a): 'The jury administrator shall make a record of all disqualifications.' No statute says whether that record, or the federal court citizenship data under IC 3-7-38.2-16, is public. Status unknown, so the strict default applies.",
     "holder": "Jury administrator / clerk (IC 33-28-5). The master list of names is public; 'all other information other than the names contained in the master list is confidential' (IC 33-28-5-13(d)).",
-    "fields_withheld": null,
-    "official_pipeline": "IC 3-7-38.2-16: each even-numbered year the NVRA official requests from the two federal district courts the names of persons disqualified from jury service for citizenship; the state sends them to county voter registration offices within 28 days after the primary; counties act within 42 days (address confirmation or IC 3-7-38.2-7.3). No state-court jury pipeline was found.",
+    "fields_withheld": [
+      "All information other than the names in the master list (IC 33-28-5-13(d))"
+    ],
+    "official_pipeline": "IC 3-7-38.2-16: by January 31 of each even-numbered year, the NVRA official requests from the two federal district courts information on 'individuals disqualified from jury service due to citizenship status'. Within 28 days after the primary, the state gives each county voter registration office the registered voters who are 'disqualified or potentially disqualified' as jurors for not being citizens. Within 42 days after the primary, the county sends an address confirmation notice or follows IC 3-7-38.2-7.3. IC 3-7-38.2-7.3 (P.L.65-2024; P.L.70-2025): the NVRA official compares the voter list with the BMV temporary-credential list; the county asks the voter for proof of citizenship; no proof within 30 days means cancellation; appeal to the county election board. No state-court jury pipeline was found.",
     "use_restriction": null,
-    "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_38.2.pdf",
+    "source_url": "https://law.justia.com/codes/indiana/title-3/article-7/chapter-38-2/section-3-7-38-2-16/",
     "verified_on": "2026-10-07",
     "sources": [
       {
@@ -24,12 +26,42 @@
         "url": "https://iga.in.gov/ic/2026/Title_33/Article_28/Chapter_5.pdf",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "IC 3-7-38.2-16 (Justia copy, 2025 code; last amended P.L.65-2024)",
+        "url": "https://law.justia.com/codes/indiana/title-3/article-7/chapter-38-2/section-3-7-38-2-16/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "IC 3-7-38.2-7.3 (proof of citizenship; 30 days; cancellation; appeal) (Justia copy, 2025 code)",
+        "url": "https://law.justia.com/codes/indiana/title-3/article-7/chapter-38-2/section-3-7-38-2-7-3/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "IC 33-28-5-13(d) (master list names public; other information confidential) (Justia copy)",
+        "url": "https://law.justia.com/codes/indiana/title-33/article-28/chapter-5/section-33-28-5-13/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "IC 33-28-5-18 (non-citizen disqualified; record of all disqualifications) (Justia copy)",
+        "url": "https://law.justia.com/codes/indiana/title-33/article-28/chapter-5/section-33-28-5-18/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "League of Women Voters of Indiana v. Morales, No. 1:25-cv-02150, Doc. 118 (S.D. Ind. Sept. 10, 2026) (order granting motion to dismiss)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.insd.225195/gov.uscourts.insd.225195.118.0_1.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Full list only to listed entities (parties, independent candidates on the ballot, media for publication, courts for jury systems, legislative leaders) (IC 3-7-26.4-6). Any other person gets a redacted compilation after signing an agreement (IC 3-7-26.4-8, -9).",
-    "permitted_uses": "The agreement bars using the list to solicit sales, and bars selling, loaning, giving away or delivering it to another person for a purpose other than political activities or political fundraising (IC 3-7-26.4-10).",
+    "who_may_get": "Complete list only to listed entities: major party state committees; other parties with at least two candidates on the ballot; committees of independent federal or state candidates on the ballot; 'A member of the media for publication in a news broadcast or newspaper'; the chief justice and the two federal district court clerks for jury management; and four legislative leaders (IC 3-7-26.4-6). Any other person gets a redacted compilation after signing the agreement (IC 3-7-26.4-8, -9).",
+    "permitted_uses": "The agreement says the person may not '(1) use the compilation to solicit for the sale of merchandise, goods, services, or subscriptions; or (2) sell, loan, give away, or otherwise deliver the information obtained by the request to any other person ... for a purpose other than political activities or political fundraising activities' (IC 3-7-26.4-10).",
     "use_restriction": "IC 3-7-26.4-10: 'The form described by section 9 of this chapter must state that the person receiving a compilation of information under this chapter may not: (1) use the compilation to solicit for the sale of merchandise, goods, services, or subscriptions; or (2) sell, loan, give away, or otherwise deliver the information obtained by the request to any other person (as defined in IC 5-14-3-2); for a purpose other than political activities or political fundraising activities.'",
     "no_online_posting": true,
     "penalty": null,
@@ -37,7 +69,39 @@
     "registration_date_in_public_file": false,
     "attestation_required": "Agreement on the Election Division form (IC 3-7-26.4-9, -10): no commercial solicitation; no sale, loan, gift or delivery to another person except for political activities or political fundraising.",
     "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_26.4.pdf",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "IC 3-7-26.4-6 (complete list recipients) (Justia copy)",
+        "url": "https://law.justia.com/codes/indiana/title-3/article-7/chapter-26-4/section-3-7-26-4-6/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "IC 3-7-26.4-8 (redaction: date of birth, gender, phone/email, voting history, voter ID number, date of registration) (Justia copy)",
+        "url": "https://law.justia.com/codes/indiana/title-3/article-7/chapter-26-4/section-3-7-26-4-8/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "IC 3-7-26.4-10 (agreement terms) (Justia copy)",
+        "url": "https://law.justia.com/codes/indiana/title-3/article-7/chapter-26-4/section-3-7-26-4-10/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Indiana Election Division, 2026 Indiana Election Legislation Summary",
+        "url": "https://www.in.gov/dA/d13ecb1f55/2026-Indiana-Election-Legislation-Summary.FINAL.pdf?language_id=1",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Indiana Election Division, Voter List Maintenance Information (records flagged active, inactive or cancelled)",
+        "url": "https://www.in.gov/sos/elections/voter-information/voter-list-maintenance-information/",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": null,
@@ -48,14 +112,14 @@
     "deadlines": null,
     "deadline_days_before_election": null,
     "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
-    "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_48.pdf",
+    "source_url": "https://law.justia.com/codes/indiana/title-3/article-11/chapter-8/",
     "verified_on": "2026-10-07"
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_38.2.pdf",
@@ -79,6 +143,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "IC 5-14-3-3 (Access to Public Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: per county, for each even-year cycle, the number of registered voters the state reported under IC 3-7-38.2-16(b)(2) (jury non-citizen data from the federal courts), the number of address confirmation notices or IC 3-7-38.2-7.3 notices the county sent on that basis, and the number of cancellations. Also, per county and per month, the number of IC 3-7-38.2-7.3 citizenship notices sent after the BMV comparison and the number of cancellations under 7.3(d).",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/indiana/title-5/article-14/chapter-3/section-5-14-3-3/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. Proof-of-citizenship documents are confidential (IC 3-7-38.2-7.3(f)). Since July 1, 2026 (HEA 1360, P.L.97-2026), an agency may use a request portal that checks the requester's address and residency, may charge non-residents a supplemental fee, and may give priority to Indiana residents and to civic, journalistic, academic or personal requests."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -87,8 +159,13 @@
     "basis": "Jury qualification information other than names is confidential (IC 33-28-5-13(d)); the status of non-citizen excusal records is not confirmed (null). No private pre-election challenge was found. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute (33-28-5-13(d), -18(a)) and fields_withheld; official_pipeline adds IC 3-7-38.2-7.3; voter_file recipients and agreement quoted; juryroll_lead_sufficient false; private_challenge source_url now IC 3-11-8; audit_path; federal_source_url moved to govinfo. dob_in_public_file and registration_date_in_public_file stay false (IC 3-7-26.4-8(c)(1), (6)). use_restriction stays null: no penalty found for the jury record. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (copied from permitted_uses); the app shows it and requires the user's attestation before the voter file loads.",
     "A private requester gets a voter list without date of birth or registration date (IC 3-7-26.4-8). Matching is capped below the full-DOB tier and the registration-date check (LOGIC-CHANGES.md B) cannot run, so every match is excluded by default under B.2 'missing'.",
     "no_online_posting is true because the required agreement bars delivering the list to any other person except for political activities (IC 3-7-26.4-10).",
-    "The official pipeline covers federal court jury data only (IC 3-7-38.2-16)."
+    "The official pipeline covers federal court jury data only (IC 3-7-38.2-16).",
+    "Pending lawsuit: League of Women Voters of Indiana v. Morales, No. 1:25-cv-02150 (S.D. Ind.), challenges IC 3-7-26.3-37 and 3-7-38.2-7.3 under 52 U.S.C. 10101 and the NVRA. On September 10, 2026 the court dismissed for lack of standing, without prejudice, with 28 days to amend, and denied the preliminary injunction as moot. The jury pipeline (3-7-38.2-16) is not challenged. Status after October 8, 2026: unknown.",
+    "The 2026 Indiana Election Legislation Summary (Election Division) lists no 2026 change to IC 3-7-38.2-16, 3-7-38.2-7.3 or 3-7-26.4.",
+    "No published canceled-voter file with a jury or non-citizen reason code was found. The Election Division says a record is never removed; it is flagged active, inactive or cancelled. REQ-NOTE 27 drops cancelled rows before matching.",
+    "juryroll_lead_sufficient is false: no private pre-election challenge exists. This is the strict value; app behavior does not change from null."
   ]
 }
