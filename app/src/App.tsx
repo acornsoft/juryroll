@@ -17,7 +17,7 @@ import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './a
 import { COUNTIES, type County } from '../../shared/src/counties.ts';
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
-import { appendEntry, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
+import { appendEntry, auditLogFile, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
 import type { ExtraColumns } from '../../shared/src/policy/columns.ts';
 import { exportableRows, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
@@ -546,8 +546,11 @@ export function App() {
   }
 
   function onDownloadLog() {
-    const lines = logRef.current.map((entry) => JSON.stringify(entry)).join('\n');
-    downloadText(`juryroll-audit-${localISO(new Date())}.jsonl`, `${lines}\n`, 'application/jsonl');
+    const text = auditLogFile(
+      logRef.current,
+      selectedCounty ? { name: selectedCounty.name, fips: selectedCounty.fips } : null,
+    );
+    downloadText(`juryroll-audit-${localISO(new Date())}.jsonl`, text, 'application/jsonl');
   }
 
   const canRun = Boolean(
@@ -922,12 +925,13 @@ export function App() {
         <section className="panel no-print" id="logPanel">
           <h2>Audit log</h2>
           <p className="small">{logCount} entries on this computer. The log does not contain the files or the results.</p>
+          <p className="small" id="auditLogNote">You can download this audit log before you choose a county. It is your own accountability record, and it has to be available before a purge. Referral and letter exports still require a county.</p>
           {integrity && <p id="logIntegrity" role="status">{integrity}</p>}
           {memWarn && <p className="warn" id="auditWarn">The log will be lost when you close the page. Download it.</p>}
           <label className="inline"><input id="includeIdsInLog" type="checkbox" checked={includeIds} onChange={(event) => setIncludeIds(event.target.checked)} /> Include voter IDs in the export log entry</label>
           <button id="downloadLog" type="button" className="quiet" onClick={onDownloadLog}>Download audit log</button>
         </section>
-        <p className="foot">JuryRoll {APP_VERSION}. A match is a lead for officials. It is not proof.</p>
+        <p className="foot" id="appFooter">JuryRoll {APP_VERSION} · build {__BUILD_ID__}. A match is a lead for officials. It is not proof.</p>
       </div>
       {modal && (
         <div className="modal-back">
