@@ -456,8 +456,9 @@ assert.ok(lenientEqual.flags.includes('REGISTERED_BEFORE_DECLARATION'));
 const lenientTx = runMatch(table('juror', jurorDates), table('voter', voterDates), shipped.TX, { dateStrictness: 'lenient' });
 const lenientTxRow = lenientTx.policy.rows.find((row) => row.voterId === 'V1');
 assert.ok(lenientTxRow);
-assert.strictEqual(lenientTxRow.excluded, false);
-assert.ok(lenientTxRow.notes.includes('cannot compare'));
+assert.strictEqual(shipped.TX.voter_file.registration_date_in_public_file, true);
+assert.strictEqual(lenientTxRow.excluded, true);
+assert.ok(lenientTxRow.flags.includes('REGISTERED_AFTER_DECLARATION'));
 pass('AT-lenient');
 
 const ndVoter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,last_voted
