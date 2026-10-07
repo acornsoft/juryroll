@@ -1,1 +1,1 @@
-| KY | Not known, so the app treats it as no | Only at the polls (KRS 117.245); not supported | Counts only |
+| KY | Not known, so the app treats it as no. The AOC sends a monthly non-citizen juror list to the State Board of Elections (KRS 30A.145(2)) | Only at the polls (KRS 117.245); not supported | Counts only. See 6.9 |
