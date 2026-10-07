@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "M.G.L. c. 234A, s. 23: 'These completed questionnaires shall not constitute a public record.' Except for voir dire disclosures or a court order, 'the information inserted by jurors in the questionnaires shall be held in confidence'. No section of c. 234A opens or closes records of persons disqualified as non-citizens. Status: null.",
     "holder": "Office of Jury Commissioner.",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -14,20 +14,32 @@
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "M.G.L. c. 234A, sec. 23 (completed juror questionnaires 'shall not constitute a public record')",
+        "cite": "M.G.L. c. 234A, s. 23 (completed juror questionnaires 'shall not constitute a public record')",
         "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section23",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "M.G.L. c. 234A, sec. 15 (prospective juror lists open for inspection only to insure the integrity of the selection process)",
+        "cite": "M.G.L. c. 234A, s. 15 (prospective juror list with names, addresses and dates of birth open to the public, 'only to insure the integrity of the juror selection process and the accountability of the office of jury commissioner')",
         "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section15",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "M.G.L. c. 234A, sec. 4 (jurors must be U.S. citizens)",
+        "cite": "M.G.L. c. 234A, s. 67 (list of jurors expected to appear, with name, address and date of birth, open to the public unless the court orders otherwise)",
+        "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section67",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "M.G.L. c. 234A, s. 4 (juror must be a 'citizen of the United States', 'whether or not he is registered to vote')",
         "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section4",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "M.G.L. c. 234A, s. 72 (jury commissioner records kept three years)",
+        "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section72",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -69,7 +81,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -103,17 +115,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "M.G.L. c. 66, s. 10 (public records requests) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the local board of registrars: per year, the number of names struck from the voter list after a hearing under M.G.L. c. 51, s. 49 on citizenship grounds.",
+    "counts_only": true,
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleX/Chapter66/Section10",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Massachusetts statute sends juror citizenship answers to the registrars, so there is no jury count to ask for. Whether c. 66 reaches the Office of Jury Commissioner was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury non-citizen records: status not settled by statute (null), so counts only. A registered voter may file a sworn complaint with the registrars (c. 51, sec. 48). Guidance stays off while the jury list is not available."
+    "basis": "Juror questionnaires are not public records (M.G.L. c. 234A, s. 23); no section opens records of non-citizen disqualifications (null). Strict gates: counts only. A registered voter may file a sworn complaint with the registrars (c. 51, s. 48). Guidance stays off while the jury list is not available."
   },
   "notes": [
-    "jury_list.public is null, not false: the confidential questionnaire (c. 234A, secs. 22-23) does not ask about citizenship, and no section addresses records of non-citizen disqualifications.",
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (c. 234A, s. 23); jury sources s. 67 and s. 72 added and s. 15 and s. 4 cites quoted; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No voter_file value changes.",
+    "PA-style check: Massachusetts has two public jury lists, the prospective juror list (s. 15) and the list of jurors expected to appear (s. 67). Both carry name, address and date of birth, but neither carries a disqualification reason. No section makes a list of persons disqualified as non-citizens public.",
+    "jury_list.public is null, not false: the confidential questionnaire (s. 22) does not ask about citizenship, and no section addresses records of non-citizen disqualifications. The Office of Jury Commissioner asks for proof (alien card number, visa status or passport) before it disqualifies a non-citizen (mass.gov, 'Learn about juror eligibility and disqualification').",
+    "official_pipeline is null: no section of c. 234A or c. 51 sends juror citizenship answers to the registrars. No 2025-26 bill to add one was found.",
+    "Cancelled-voter file: no published Massachusetts cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "The statewide voter registry is not a public record (c. 51, sec. 47C). Most private users cannot lawfully get a statewide voter file.",
     "The complainant must be ready to prove a prima facie case at a hearing with cross-examination (sec. 49). A data match alone is unlikely to meet this.",
-    "The mass.gov site refuses plain HTTP clients; the AG page was checked in a browser."
+    "The mass.gov site refuses plain HTTP clients; the AG page was checked in a browser. malegislature.gov sections were read with curl on 2026-10-07."
   ]
 }
