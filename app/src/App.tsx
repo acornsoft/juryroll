@@ -15,6 +15,7 @@ import { summaryCopy, upsertCountyRun, type CountyRun } from './lib/summary.ts';
 import { blankGrid, gridToCsv } from './lib/transcribe.ts';
 import { historyByVoterId } from './lib/voterContext.ts';
 import { FaqPage, LawPage } from './pages/Background.tsx';
+import { JuryHandoff } from './pages/JuryHandoff.tsx';
 import { RecordsAudit } from './pages/RecordsAudit.tsx';
 import { StateIndex, StatePage } from './pages/StateGuide.tsx';
 import { juryListAllowed } from './lib/availability.ts';
@@ -764,7 +765,7 @@ export function App() {
   };
   const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
   const section = route.name === 'state' ? 'states' : route.name;
-  const bannerCode = route.name === 'state' || route.name === 'records-audit' ? route.code : '';
+  const bannerCode = route.name === 'state' || route.name === 'records-audit' || route.name === 'jury-handoff' ? route.code : '';
   const bannerState = bannerCode
     ? (STATES.find((item) => item[0] === bannerCode)?.[1] ?? bannerCode)
     : '';
@@ -808,6 +809,9 @@ export function App() {
       break;
     case 'records-audit':
       page = <RecordsAudit code={route.code} />;
+      break;
+    case 'jury-handoff':
+      page = <JuryHandoff code={route.code} />;
       break;
     case 'home':
       page = (
@@ -1212,6 +1216,7 @@ export function App() {
             <a href="#/run" aria-current={section === 'home' ? 'page' : undefined}>Run a check</a>
             <a href="#/states" aria-current={section === 'states' ? 'page' : undefined}>State walkthroughs</a>
             <a href="#/records-audit" aria-current={section === 'records-audit' ? 'page' : undefined}>Records audit</a>
+            <a href="#/jury-handoff-letter" aria-current={section === 'jury-handoff' ? 'page' : undefined}>Jury handoff</a>
             <a href="#/law" aria-current={section === 'law' ? 'page' : undefined}>Law &amp; guidance</a>
             <a href="#/faq" aria-current={section === 'faq' ? 'page' : undefined}>FAQ</a>
           </nav>

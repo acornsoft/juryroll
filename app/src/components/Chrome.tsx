@@ -130,6 +130,13 @@ export function bannerFor(route: AppRoute, stateLabel: string): { title: string;
           ? [{ href: '#/run', label: 'Home' }, { href: '#/records-audit', label: 'Records audit' }, { label: stateLabel }]
           : [{ href: '#/run', label: 'Home' }, { label: 'Records audit' }],
       };
+    case 'jury-handoff':
+      return {
+        title: 'Jury handoff',
+        crumbs: stateLabel
+          ? [{ href: '#/run', label: 'Home' }, { href: '#/jury-handoff-letter', label: 'Jury handoff' }, { label: stateLabel }]
+          : [{ href: '#/run', label: 'Home' }, { label: 'Jury handoff' }],
+      };
     default: {
       const neverRoute: never = route;
       return neverRoute;

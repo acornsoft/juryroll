@@ -115,6 +115,7 @@ export function StatePage({ code }: { code: string }) {
       {rules.state === 'PA' && <p id="paWalkthrough">{PA_NAMES_ONLY_NOTE}</p>}
       {rules.state === 'NC' && <p id="ncWalkthrough">{NC_LIST_NOTE}</p>}
       <p><a id="recordsAuditLink" href={`#/records-audit/${rules.state.toLowerCase()}`}>List-maintenance records request</a></p>
+      {!named && <p><a id="juryHandoffLink" href={`#/jury-handoff-letter/${rules.state.toLowerCase()}`}>Jury handoff counts letter</a></p>}
       <section className="panel" id={sectionId('Walk through it')}>
         <h2>Walk through it</h2>
         <p><a className="btn-primary" id="startCheck" href={startHref}>Start a check in {rules.name}</a></p>

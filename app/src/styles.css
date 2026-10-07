@@ -1346,6 +1346,7 @@ pre, #auditLetter {
   color: var(--heading-color);
 }
 #recordsLetter, #recordsSummary { max-height: 16rem; overflow: auto; }
+#handoffLetter { max-height: 18rem; overflow: auto; }
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1703,8 +1704,8 @@ select option.is-available { color: #04072E; }
   #step0, #step1, #step2, #step3, #typePath, #logPanel {
     display: none !important;
   }
-  .print-only, #caveats, #tierRules, #auditLetter, #recordsLetter, #recordsSummary, .print-title { display: block !important; }
-  #recordsLetter, #recordsSummary { max-height: none; overflow: visible; }
+  .print-only, #caveats, #tierRules, #auditLetter, #recordsLetter, #recordsSummary, #handoffLetter, .print-title { display: block !important; }
+  #recordsLetter, #recordsSummary, #handoffLetter { max-height: none; overflow: visible; }
   body { background: #fff; color: #000; }
   .panel, fieldset.panel, .step-card { border: 0; background: #fff; box-shadow: none; }
   a { color: #000; text-decoration: none; }
