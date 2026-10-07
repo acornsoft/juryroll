@@ -5,10 +5,10 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "K.S.A. 43-174(a): information a jury commissioner sends the Secretary of State 'shall be limited to the information regarding citizenship and the full name, current and prior addresses, age and telephone number of the prospective juror, and, if available, the date of birth' and 'shall be used for the purpose of maintaining voter registrations as required by law'. No statute makes this information public or expressly confidential. KORA (K.S.A. 45-221(a)(1), (30)) lets an agency withhold records restricted by statute or Supreme Court rule, or whose disclosure would be a clearly unwarranted invasion of personal privacy. Status unknown, so the strict default applies.",
     "holder": "Jury commissioner (district court).",
     "fields_withheld": null,
-    "official_pipeline": "K.S.A. 43-174: a jury commissioner who receives citizenship information that disqualifies or may disqualify a prospective juror sends it to the Secretary of State, for voter registration maintenance only. K.S.A. 25-2324 (2025): DMV non-citizen license lists go to the Secretary of State, who directs removal after investigation.",
+    "official_pipeline": "K.S.A. 43-174: a jury commissioner who receives citizenship information that disqualifies or may disqualify a prospective juror sends it to the Secretary of State, for voter registration maintenance only. The statute sets no schedule and no next step. K.S.A. 25-2324(a) (as amended by 2026 ch. 141): quarterly DMV non-citizen license lists go to the Secretary of State, who directs removal within 5 business days after investigation; the person may be reinstated with proof of citizenship. 2026 ch. 141 secs. 1-6 (SAVE Kansas act): two SAVE checks a year; notice before cancellation.",
     "use_restriction": null,
     "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch43/043_001_0074.html",
     "verified_on": "2026-10-07",
@@ -18,20 +18,52 @@
         "url": "https://www.ksrevisor.gov/statutes/chapters/ch43/043_001_0074.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "K.S.A. 43-156 (every juror 'shall be a citizen of the state' with the qualifications of an elector)",
+        "url": "https://www.ksrevisor.gov/statutes/chapters/ch43/043_001_0056.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "K.S.A. 45-221(a)(1), (30) (KORA exemptions)",
+        "url": "https://www.ksrevisor.gov/statutes/chapters/ch45/045_002_0021.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "2026 Session Laws of Kansas ch. 141 (HB 2437, veto overridden April 9, 2026): SAVE Kansas act; amended K.S.A. 25-2324",
+        "url": "https://www.sos.ks.gov/publications/sessionlaws/2026/Chapter-141-HB-2437.html",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person may examine and get copies of the registration books from the county election officer, at cost (K.S.A. 25-2320(a)).",
-    "permitted_uses": "No purpose restriction in 25-2320. SSN and license numbers are removed (25-2320(b)).",
+    "who_may_get": "Any person may examine and get copies of the registration books from the county election officer, at cost (K.S.A. 25-2320(a)). The Secretary of State sells the statewide file on Form CVR; the requester certifies a right of access.",
+    "permitted_uses": "Any use except commercial: knowingly selling, giving or receiving voter list information 'with the intent to use such list or information for any commercial purpose' (K.S.A. 25-2320a). Political campaign or election use is not commercial. SSN and license numbers are removed (25-2320(b)).",
     "use_restriction": null,
     "no_online_posting": null,
-    "penalty": null,
+    "penalty": "Class C misdemeanor for commercial use of voter registration lists (K.S.A. 25-2320a).",
     "dob_in_public_file": null,
     "registration_date_in_public_file": null,
-    "attestation_required": null,
+    "attestation_required": "Form CVR: the requester signs, 'certifies that the undersigned has a right of access to the records', and acknowledges the 25-2320a notice.",
     "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_023_0020.html",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "K.S.A. 25-2320a (commercial use; class C misdemeanor)",
+        "url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_023_0020a.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Kansas Secretary of State Form CVR, Voter Registration Data Request (Rev. 3/2/26)",
+        "url": "https://www.sos.ks.gov/forms/elections/CVR.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": null,
@@ -42,14 +74,14 @@
     "deadlines": null,
     "deadline_days_before_election": null,
     "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_004_0014.html",
     "verified_on": "2026-10-07"
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_004_0014.html",
@@ -74,6 +106,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "K.S.A. 45-218 (Kansas Open Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: per county and per month, the number of persons in K.S.A. 43-174 citizenship reports the Secretary of State received from jury commissioners, and the number of registrations removed on that basis. Also read the annual SAVE Kansas report (2026 ch. 141 sec. 3, due January 31): records checked, voters flagged as potential non-citizens, and voters removed.",
+    "counts_only": true,
+    "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch45/045_002_0018.html",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. 2026 ch. 141 sec. 4: SAVE personally identifiable information 'shall not be disclosed publicly, except as required by law'."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -82,7 +122,12 @@
     "basis": "Jury citizenship information goes only to the Secretary of State for list maintenance (K.S.A. 43-174); public status is unknown (null). No private challenge statute found. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute and sources (43-156, KORA); official_pipeline updated for 2026 ch. 141; voter_file use limit, penalty and CVR attestation; juryroll_lead_sufficient false; audit_path; federal_source_url moved to govinfo. use_restriction stays null: 43-174 limits use but sets no penalty.",
     "K.S.A. 43-174 limits use of the jury data it sends to 'maintaining voter registrations as required by law'.",
-    "allowed is null: no statute lets a private voter file a registration challenge in Kansas."
+    "allowed is null: no statute lets a private voter file a registration challenge in Kansas.",
+    "2026 ch. 141 (HB 2437, SAVE Kansas act): veto overridden April 9, 2026; in force on publication in the statute book. It does not amend 43-174. A July 1, 2026 NVRA notice letter (League of Women Voters of Kansas) says parts of it may violate NVRA sections 6 and 8. No suit was found.",
+    "dob_in_public_file and registration_date_in_public_file stay null. Secondary sources (a GitHub field list and the Voter Reference Foundation) say the statewide file has date of birth and registration date. No official layout was found. Setting DOB true would lift the Probable cap; get the Secretary of State's field definitions first.",
+    "No published canceled-voter file with a jury or non-citizen reason code was found. Secondary sources say the statewide file can carry a Canceled status; REQ-NOTE 27 drops such rows.",
+    "juryroll_lead_sufficient is false: no private challenge exists. This is the strict value; app behavior does not change from null."
   ]
 }
