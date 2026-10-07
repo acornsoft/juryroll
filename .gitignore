@@ -10,6 +10,8 @@ dist/
 !shared/samples/**
 !shared/templates/
 !shared/templates/**
+!test/fixtures/
+!test/fixtures/**
 shared/src/rulesBundle.json
 app/public/guide.html
 screenshot.png

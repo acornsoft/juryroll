@@ -1,0 +1,114 @@
+{
+  "state": "NV",
+  "name": "Nevada",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": null,
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": "Any person, at the county clerk's office, for 1 cent per name (NRS 293.440(1)). Lists include address, date of birth, phone, and application serial number (293.440(2)), except fields withheld under 293.558.",
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": true,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec440",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "NRS 293.558 (fields withheld: SSN, license number, email; address and phone on request)",
+        "url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec558",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any elector or other reliable person (NRS 293.535(1)).",
+    "form_or_statute": "NRS 293.535(1)(a), (3): affidavit to the county clerk that the registrant is not a U.S. citizen. The clerk notifies the registrant by certified mail; the registration is cancelled unless the registrant shows proof of citizenship within 15 days. A separate written challenge by a voter of the same precinct is allowed from day 30 to day 25 (293.547).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "A citizenship affidavit must be filed no later than 30 days before an election (293.535(3)). Written challenges under 293.547: after day 30 and no later than day 25. Withdrawal no later than day 25 (293.548).",
+    "deadline_days_before_election": 30,
+    "evidence_standard": "The affiant must state that he or she has personal knowledge of the facts (293.535(1)). 293.547 challenges must also rest on personal knowledge and be signed and verified.",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": null,
+    "source_url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec535",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "NRS 293.547 (written challenges; same precinct; personal knowledge; one name per challenge)",
+        "url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec547",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 30,
+        "applies_to": "Citizenship affidavits under NRS 293.535",
+        "effect": "Must be filed no later than 30 days before an election.",
+        "statute": "NRS 293.535(3)",
+        "source_url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec535",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "days_before_election": 25,
+        "applies_to": "Written challenges under NRS 293.547",
+        "effect": "Filed after day 30 and no later than day 25 before the election.",
+        "statute": "NRS 293.547(1)",
+        "source_url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec547",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec535",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Nevada Secretary of State - county clerk contact information",
+      "url": "https://www.nvsos.gov/elections/voters/county-clerk-contact-information",
+      "verified_on": "2026-10-07",
+      "note": "Affidavits under NRS 293.535 go to the county clerk."
+    },
+    "state_election_office": {
+      "name": "Nevada Secretary of State - Elections",
+      "url": "https://www.nvsos.gov/sos/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Nevada Attorney General",
+      "url": "https://ag.nv.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. Nevada has a citizenship affidavit procedure, but it needs personal knowledge (NRS 293.535). Strict gates."
+  },
+  "notes": [
+    "jury_list is all null: NRS chapter 6 was searched and no rule on public access to juror qualification records was found.",
+    "juryroll_lead_sufficient is false: NRS 293.535 requires the affiant to have personal knowledge; a data match is not personal knowledge.",
+    "registration_date_in_public_file is null: 293.440(2) requires the date of the most recent addition or revision, which is not always the registration date.",
+    "one_per_affidavit is null for 293.535; it is true for 293.547 challenges."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "state": "AZ",
+  "name": "Arizona",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "A.R.S. 21-312: juror records are closed (juror information and jury questionnaire answers are not public; release only as the statute or the court allows).",
+    "holder": "Jury commissioner / superior court. Juror non-citizen notices go to the Secretary of State and county recorder (A.R.S. 21-314(F)).",
+    "fields_withheld": null,
+    "official_pipeline": "A.R.S. 21-314(F): the jury commissioner reports persons who say they are not U.S. citizens to the Secretary of State and the county recorder. A.R.S. 16-165(A)(10): the county recorder sends notice; if no satisfactory proof of citizenship within 35 days, the recorder cancels the registration and notifies the county attorney and the attorney general.",
+    "use_restriction": null,
+    "source_url": "https://www.azleg.gov/ars/21/00312.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "A.R.S. 21-314 (jury commissioner reports non-citizens to SoS and county recorder)",
+        "url": "https://www.azleg.gov/ars/21/00314.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "A.R.S. 16-165(A)(10) (recorder notice, 35 days, cancellation, referral to county attorney and AG)",
+        "url": "https://www.azleg.gov/ars/16/00165.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person, on request to the county recorder or Secretary of State, but only for a use the statute allows (A.R.S. 16-168(E)).",
+    "permitted_uses": "Political, campaign, election and redistricting purposes, or other uses authorized by law. Commercial use is barred (A.R.S. 16-168(E)).",
+    "no_online_posting": true,
+    "penalty": "A.R.S. 16-168(F): a person who posts precinct lists or registration data on the internet, or who uses or allows use for a purpose not authorized, is guilty of a class 6 felony.",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": true,
+    "attestation_required": null,
+    "source_url": "https://www.azleg.gov/ars/16/00168.htm",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: any qualified elector of the county may orally challenge a person offering to vote (A.R.S. 16-591). That is contact with the voter at a polling place. JuryRoll does not support it.",
+    "form_or_statute": "A.R.S. 16-591, 16-592 (challenge at the polls); A.R.S. 16-121.01(B) (presumption of valid registration; clear and convincing evidence to overcome it).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": "A.R.S. 16-121.01(B): a registered person is presumed properly registered; a challenger must show clear and convincing evidence.",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.azleg.gov/ars/16/00591.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "A.R.S. 16-121.01 (presumption; clear and convincing evidence)",
+        "url": "https://www.azleg.gov/ars/16/00121-01.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "A.R.S. 16-592 (challenge procedure at the polls)",
+        "url": "https://www.azleg.gov/ars/16/00592.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.azleg.gov/ars/16/00591.htm",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "County recorders and election offices (Arizona Secretary of State directory)",
+      "url": "https://azsos.gov/elections/about-elections/county-election-contact-info",
+      "verified_on": "2026-10-07",
+      "note": "The county recorder receives jury non-citizen notices under A.R.S. 21-314(F)."
+    },
+    "state_election_office": {
+      "name": "Arizona Secretary of State - Elections",
+      "url": "https://azsos.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Arizona Attorney General",
+      "url": "https://www.azag.gov/",
+      "verified_on": "2026-10-07",
+      "note": "The recorder refers unresolved cases to the AG and county attorney (A.R.S. 16-165(A)(10))."
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror records are closed (A.R.S. 21-312), so the jury list is not available to a private person. No pre-election private registration challenge statute was found; the only private challenge is at the polls (A.R.S. 16-591), which JuryRoll does not support. Strict gates: counts only."
+  },
+  "notes": [
+    "allowed is null: Arizona law lets an elector challenge at the polls (A.R.S. 16-591). No written pre-election challenge by a private person was found. The app treats null as no challenge guidance.",
+    "Duplication: the official pipeline already exists (A.R.S. 21-314(F) and 16-165(A)(10)). Aggregate referral should ask whether it ran.",
+    "dob_in_public_file is null: 16-168 restricts some identifying data; the exact DOB rule for purchased lists was not confirmed. The app treats null as no DOB.",
+    "Posting registration data on the internet is a class 6 felony (A.R.S. 16-168(F)). JuryRoll never posts data.",
+    "state_extra_days is 0: no state window that starts before day 90 was found in the reviewed challenge statutes."
+  ]
+}

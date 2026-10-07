@@ -1,0 +1,102 @@
+{
+  "state": "CO",
+  "name": "Colorado",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Jury commissioner / State Court Administrator.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://olls.info/crs/crs2025-title-13.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "C.R.S. 13-71-115 (juror questionnaire 'is not a public record'; held in confidence) - CRS 2025, Office of Legislative Legal Services",
+        "url": "https://olls.info/crs/crs2025-title-13.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "C.R.S. 13-71-105 (juror must be a U.S. citizen)",
+        "url": "https://olls.info/crs/crs2025-title-13.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person. Registration records 'are public records subject to examination by any person' with the right to make copies (C.R.S. 1-2-227(1)(a)).",
+    "permitted_uses": "No purpose restriction found in 1-2-227.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://olls.info/crs/crs2025-title-01.htm",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any registered elector (C.R.S. 1-9-101(1)(a)).",
+    "form_or_statute": "C.R.S. 1-9-101: written challenge to the county clerk and recorder with the precinct, the registrant's name, the basis, supporting facts, and some documentary evidence. Hearing within 30 days; decision within 5 days; appeal to district court within 3 days.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No later than 60 days before any election (1-9-101(1)(a)).",
+    "deadline_days_before_election": 60,
+    "evidence_standard": "The challenger must appear and 'shall bear the burden of proof' (1-9-101(1)(a)). On appeal, 'no name registered in accordance with law shall be canceled ... unless it is proven that the challenged person does not reside at the address' (1-9-101(3)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://olls.info/crs/crs2025-title-01.htm",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 60,
+        "applies_to": "Private challenges under C.R.S. 1-9-101",
+        "effect": "No written challenge may be filed later than 60 days before an election.",
+        "statute": "C.R.S. 1-9-101(1)(a)",
+        "source_url": "https://olls.info/crs/crs2025-title-01.htm",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://olls.info/crs/crs2025-title-01.htm",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Colorado county election offices (Secretary of State directory)",
+      "url": "https://coloradosos.gov/pubs/elections/Resources/CountyElectionOffices.html",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Colorado Secretary of State - Elections and Voting",
+      "url": "https://www.coloradosos.gov/pubs/elections/main.html",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Colorado Attorney General",
+      "url": "https://coag.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury record status unknown (null): counts only. Juror questionnaires are not public records (C.R.S. 13-71-115). A private challenge exists (1-9-101) but guidance stays off."
+  },
+  "notes": [
+    "Caution: 1-9-101(3) says that on appeal no lawful registration is cancelled unless non-residence is proven. A citizenship challenge may fail on appeal on that text.",
+    "Source note: CRS text read from the Office of Legislative Legal Services 2025 CRS HTML (olls.info), 'uncertified printout'.",
+    "dob_in_public_file and registration_date_in_public_file are null: the statewide list holds DOB and registration date (1-2-302(2)), but public release of those fields was not confirmed."
+  ]
+}

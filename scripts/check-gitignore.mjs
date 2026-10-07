@@ -24,6 +24,7 @@ try {
   if (ignored('shared/samples/sample_juror_disqualifications.csv')) throw new Error('shared/samples CSV must stay trackable');
   if (ignored('shared/samples/sample_voter_roll.csv')) throw new Error('shared/samples voter CSV must stay trackable');
   if (ignored('shared/templates/juror-template.csv')) throw new Error('shared/templates CSV must stay trackable');
+  if (ignored('test/fixtures/voter_no_regdate.csv')) throw new Error('test/fixtures CSV must stay trackable');
   if (!ignored('node_modules')) throw new Error('node_modules must be ignored');
   console.log('GITIGNORE CHECK PASSED');
 } finally {

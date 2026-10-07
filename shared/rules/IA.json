@@ -1,0 +1,88 @@
+{
+  "state": "IA",
+  "name": "Iowa",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Iowa Code 607A.48: public access to juror information is limited to year of birth and city/zip; other details are confidential without a court order.",
+    "holder": "Clerk of district court / jury manager.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.legis.iowa.gov/docs/code/2026/607A.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "voter_file": {
+    "who_may_get": "Any person, on payment of cost (Iowa Code 48A.38(1)).",
+    "permitted_uses": "No purpose restriction in 48A.38. The registrar logs every recipient; the log is public (48A.38(3)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.legis.iowa.gov/docs/code/2026/48A.38.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Another registered voter of the same county (Iowa Code 48A.14(1)).",
+    "form_or_statute": "Iowa Code 48A.14: written challenge to the county commissioner of registration; ground (1)(a) 'not a citizen of the United States'; signed sworn statement in the statutory form.",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "A challenge may be filed at any time, but one filed less than 70 days before a regularly scheduled election is not processed until after that election (with a narrow exception for new registrations) (48A.14(4)).",
+    "deadline_days_before_election": 70,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": "Knowingly filing a challenge with false information is an aggravated misdemeanor (48A.14(3)).",
+    "source_url": "https://www.legis.iowa.gov/docs/code/2026/48A.14.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 70,
+        "applies_to": "Private challenges under Iowa Code 48A.14",
+        "effect": "A challenge filed less than 70 days before a regularly scheduled election waits until after that election.",
+        "statute": "Iowa Code 48A.14(4)",
+        "source_url": "https://www.legis.iowa.gov/docs/code/2026/48A.14.pdf",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://www.legis.iowa.gov/docs/code/2026/48A.14.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Iowa county auditors (county commissioners of registration)",
+      "url": "https://sos.iowa.gov/auditors",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Iowa Secretary of State - Elections and Voting",
+      "url": "https://sos.iowa.gov/elections-voting",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Iowa Attorney General",
+      "url": "https://www.iowaattorneygeneral.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror information is confidential beyond year of birth and city (Iowa Code 607A.48), so the jury list is not available. Strict gates: counts only."
+  },
+  "notes": [
+    "state_extra_days is 0: the 70-day processing rule starts inside the federal 90-day window.",
+    "official_pipeline is null: no Iowa statute sending juror non-citizen answers to election officials was found.",
+    "dob_in_public_file and registration_date_in_public_file are null: 48A.38 lets the purchaser choose fields 'within the capability' of the system but does not list them."
+  ]
+}

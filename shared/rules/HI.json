@@ -1,0 +1,103 @@
+{
+  "state": "HI",
+  "name": "Hawaii",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "HRS 612-13(a): the alphabetical list of names in the master jury wheel 'shall not be disclosed to any person other than pursuant to this chapter or specific order of the court.'",
+    "holder": "Clerk of each circuit court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://data.capitol.hawaii.gov/hrscurrent/Vol13_Ch0601-0676/HRS0612/HRS_0612-0013.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "HRS 612-4 (jurors must be U.S. citizens)",
+        "url": "https://data.capitol.hawaii.gov/hrscurrent/Vol13_Ch0601-0676/HRS0612/HRS_0612-0004.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Only a voter's full name, district/precinct, and voter status are public; all other registration information is confidential except for election or government purposes under the chief election officer's rules (HRS 11-97(a), 11-14(a)-(b)).",
+    "permitted_uses": "Election or government purposes only (HRS 11-14, 11-97).",
+    "no_online_posting": null,
+    "penalty": "Misdemeanor to use, print, publish, or distribute voter registration information unless authorized under 11-97 (HRS 11-14(d)).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": false,
+    "attestation_required": null,
+    "source_url": "https://data.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0014.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "HRS 11-97 (public fields: name, district/precinct, status)",
+        "url": "https://data.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0097.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any registered voter (HRS 11-25(a)).",
+    "form_or_statute": "HRS 11-25(a): written challenge, stating the grounds and signed, delivered to the county clerk, who serves notice on the person, investigates, and rules. Appeal to the county board of registration within 10 days (HRS 11-26(b)).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No pre-election deadline stated in 11-25(a).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "Written grounds, signed (11-25(a)). No higher standard stated.",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://data.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0025.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "HRS 11-26 (appeal to board of registration)",
+        "url": "https://data.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0026.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://data.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0025.htm",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Hawaii county elections divisions (Office of Elections)",
+      "url": "https://elections.hawaii.gov/resources/county-election-divisions/",
+      "verified_on": "2026-10-07",
+      "note": "Challenges under HRS 11-25 go to the county clerk."
+    },
+    "state_election_office": {
+      "name": "Hawaii Office of Elections",
+      "url": "https://elections.hawaii.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Hawaii Department of the Attorney General",
+      "url": "https://ag.hawaii.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "The jury wheel list may not be disclosed without a court order (HRS 612-13(a)). Only names, precincts, and status of voters are public (HRS 11-97). Strict gates: counts only."
+  },
+  "notes": [
+    "Hawaii voter data beyond name, precinct, and status is confidential except for election or government purposes; misuse is a misdemeanor (HRS 11-14(d)). A private user cannot lawfully get a matchable voter file.",
+    "Source note: HRS read from data.capitol.hawaii.gov (the legislature's own data host); www.capitol.hawaii.gov blocks plain HTTP clients."
+  ]
+}

@@ -145,7 +145,6 @@
     "Matching limit: the public jury list has date of birth withheld (163-82.10(a1)) and the public voter file has birth year only. No pair can reach the 'full DOB' tier. The app must cap NC matches at Probable (LOGIC-CHANGES.md A.4).",
     "Duplication: the State Board already receives the same list with dates of birth and must review it within 30 days (163-82.14(c1)). A private referral should ask whether that review happened, not re-assert the match.",
     "The State Board excludes people who became citizens after the disqualification date (163-82.14(c1)(1)b). JuryRoll's registration-date check (LOGIC-CHANGES.md B) mirrors this.",
-    "A June 2026 consent judgment in a state-court case (reported by Carolina Journal, not checked against the court docket) has the State Board post the list on its FTP site with redactions. Not used as a rule source.",
     "The 163-85 deadline for the November 3, 2026 election is October 9, 2026, two days after verified_on.",
     "no_online_posting is null: the State Board itself posts the voter file publicly, and no bar on re-posting was found in 163-82.10. The app treats null as barred. JuryRoll never posts data.",
     "penalty is null: no misuse penalty for voter lists was found in 163-82.10.",

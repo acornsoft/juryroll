@@ -4,16 +4,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dir = path.join(root, 'shared', 'rules');
-const files = {
-  DEFAULT: 'default.json',
-  NY: 'NY.json',
-  NC: 'NC.json',
-  GA: 'GA.json',
-  TX: 'TX.json',
-  PA: 'PA.json',
-};
+const names = fs.readdirSync(dir).filter((name) => name.endsWith('.json') && name !== 'schema.json').sort();
 const bundle = {};
-for (const [code, name] of Object.entries(files)) {
+for (const name of names) {
+  const code = name === 'default.json' ? 'DEFAULT' : name.replace(/\.json$/, '');
   const raw = fs.readFileSync(path.join(dir, name), 'utf8');
   bundle[code] = { raw, rules: JSON.parse(raw) };
 }

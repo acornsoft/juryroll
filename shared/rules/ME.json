@@ -1,0 +1,88 @@
+{
+  "state": "ME",
+  "name": "Maine",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "14 M.R.S. 1254-A(1): 'The list of questionnaire recipients and the names drawn are confidential and may not be disclosed to any person, except as provided in this chapter.'",
+    "holder": "Clerks of court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://legislature.maine.gov/statutes/14/title14sec1254-A.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "14 M.R.S. 1211 (non-citizens disqualified)",
+        "url": "https://legislature.maine.gov/statutes/14/title14sec1211.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Central voter registration data is confidential. Lists go only to political parties, people doing campaign-related or get-out-the-vote work, and current office holders (21-A M.R.S. 196-A(1)(B)).",
+    "permitted_uses": "Campaign-related or office-holder purposes listed in 196-A(1).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": true,
+    "attestation_required": null,
+    "source_url": "https://legislature.maine.gov/statutes/21-A/title21-Asec196-A.html",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: a voter of the municipality may challenge at an election, by signed affidavit under oath to the warden, on personal knowledge or a reasonably supported belief; non-citizenship is a listed ground (21-A M.R.S. 673). No pre-election private challenge was found.",
+    "form_or_statute": "21-A M.R.S. 673. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://legislature.maine.gov/statutes/21-A/title21-Asec673.html",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://legislature.maine.gov/statutes/21-A/title21-Asec673.html",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Maine - find a municipal clerk or registrar (Secretary of State)",
+      "url": "https://www.maine.gov/sos/elections-voting/find-a-municipal-clerk-or-registrar",
+      "verified_on": "2026-10-07",
+      "note": "Maine runs registration by municipality."
+    },
+    "state_election_office": {
+      "name": "Maine Secretary of State - Elections and Voting",
+      "url": "https://www.maine.gov/sos/elections-voting",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Maine Attorney General",
+      "url": "https://www.maine.gov/ag/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Names drawn for jury service are confidential (14 M.R.S. 1254-A(1)). Central voter data is confidential except for campaign uses (21-A M.R.S. 196-A). Challenges exist only at the polls. Strict gates: counts only."
+  },
+  "notes": [
+    "Purchasable lists show year of birth only and include date of registration (196-A(1)(B)).",
+    "Most private users cannot lawfully get Maine voter data (196-A).",
+    "official_pipeline is null: none found."
+  ]
+}

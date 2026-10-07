@@ -1,0 +1,102 @@
+{
+  "state": "SC",
+  "name": "South Carolina",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Clerk of court (S.C. Code 14-7-1530).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.scstatehouse.gov/code/t14c007.php",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "S.C. Code 14-7-130 (jury list built from DMV citizens and registered voters)",
+        "url": "https://www.scstatehouse.gov/code/t14c007.php",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "S.C. Code 14-7-1530 (clerk keeps a list of excused or disqualified jurors with reasons)",
+        "url": "https://www.scstatehouse.gov/code/t14c007.php",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Official registration records are public records open to inspection by any citizen (S.C. Code 7-5-410). The State Election Commission sells precinct lists to a qualified elector (7-3-20(D)(13)).",
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.scstatehouse.gov/code/t07c005.php",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "S.C. Code 7-3-20(D)(13) (precinct lists to a qualified elector at reasonable price)",
+        "url": "https://www.scstatehouse.gov/code/t07c003.php",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any person; 7-5-230(A) does not limit who may challenge.",
+    "form_or_statute": "S.C. Code 7-5-230(A): challenges to a registered elector's qualifications (other than at the polls) must be made in writing to the county board of voter registration and elections. The board gives notice to the elector and the challenger, holds a hearing within 10 days, accepts evidence, and rules under 7-5-120.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "Not stated in 7-5-230.",
+    "deadline_days_before_election": null,
+    "evidence_standard": "The board accepts evidence at a hearing (7-5-230(A)). No standard stated.",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.scstatehouse.gov/code/t07c005.php",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.scstatehouse.gov/code/t07c005.php",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "South Carolina county voter registration and election offices",
+      "url": "https://scvotes.gov/contact/county-voter-registration-election-offices/",
+      "verified_on": "2026-10-07",
+      "note": "Written challenges under 7-5-230 go to the county board."
+    },
+    "state_election_office": {
+      "name": "South Carolina Election Commission",
+      "url": "https://scvotes.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "South Carolina Attorney General",
+      "url": "https://www.scag.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. A written challenge to the county board is allowed, with a hearing within 10 days (S.C. Code 7-5-230). Strict gates."
+  },
+  "notes": [
+    "The jury list merges registered voters with DMV records of U.S. citizens (14-7-130).",
+    "jury_list.public is null: 14-7-1530 requires a list of disqualified jurors with reasons but does not say whether it is public.",
+    "dob_in_public_file and registration_date_in_public_file are null: the sections read do not list public fields."
+  ]
+}

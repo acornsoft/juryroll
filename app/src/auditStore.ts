@@ -40,6 +40,15 @@ export function writeAudit(db: IDBDatabase, entry: AuditEntry): Promise<void> {
   });
 }
 
+export function clearAudit(db: IDBDatabase): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).clear();
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error ?? new Error('IndexedDB clear failed'));
+  });
+}
+
 export function chainStatus(entries: readonly AuditEntry[]): { ok: true } | { ok: false; seq: number } {
   return verifyChain(entries);
 }

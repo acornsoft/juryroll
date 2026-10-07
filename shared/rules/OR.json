@@ -1,0 +1,96 @@
+{
+  "state": "OR",
+  "name": "Oregon",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "ORS 10.215(1): 'Except as specifically provided by law, the State Court Administrator and circuit courts may not disclose source lists obtained from any person or public body, and jury lists containing names selected from a source list, to any other person or public body.' ORS 10.275 calls these records confidential.",
+    "holder": "State Court Administrator and circuit courts.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/ors/ors010.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "ORS 10.275 (access to confidential jury records only by court order in a jury challenge)",
+        "url": "https://www.oregonlegislature.gov/bills_laws/ors/ors010.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person, from the county clerk (requests before the 45th day before an election) or a statewide list from the Secretary of State for $500 (ORS 247.945).",
+    "permitted_uses": "No commercial use, except resale to candidates or political committees for political purposes (ORS 247.955).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/ors/ors247.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "ORS 247.948 (public fields include year of birth; birth month and day not disclosed)",
+        "url": "https://www.oregonlegislature.gov/bills_laws/ors/ors247.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private challenge procedure was found. The county clerk may inquire into any registration at any time and cancel it after a hearing (ORS 247.195).",
+    "form_or_statute": "ORS 247.195. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/ors/ors247.html",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.oregonlegislature.gov/bills_laws/ors/ors247.html",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Oregon Secretary of State - county elections officials",
+      "url": "https://sos.oregon.gov/elections/Pages/countyofficials.aspx",
+      "verified_on": "2026-10-07",
+      "note": "The county clerk may inquire into a registration under ORS 247.195."
+    },
+    "state_election_office": {
+      "name": "Oregon Secretary of State - Elections",
+      "url": "https://sos.oregon.gov/elections/Pages/default.aspx",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Oregon Department of Justice (Attorney General)",
+      "url": "https://www.doj.state.or.us/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury source and jury lists are confidential (ORS 10.215). No private challenge (ORS 247.195 is clerk-led). Strict gates: counts only."
+  },
+  "notes": [
+    "Voter lists may not be used for commercial purposes (ORS 247.955).",
+    "ORS 10.215 also limits how courts may use source lists, including voter lists, to jury administration.",
+    "official_pipeline is null: none found."
+  ]
+}

@@ -32,11 +32,13 @@ If your state's public voter file has no full date of birth, JuryRoll caps every
 
 ## Registration date
 
-If the voter registered **after** the date they told the jury they were not a citizen, that pair is **not a lead**. It does not appear in any named list or any export. The page shows one line:
+If the voter registered **after** the date they told the jury they were not a citizen, that pair is **not a lead**. It does not appear in any named list or any export. The page always shows two lines:
 
 `N matches excluded: registered after declaration`
 
-If the voter registered **before** that date, the tier stays. If either date is missing, the tier stays, and the row says `date missing` and `Official SAVE / naturalization check required`.
+`N matches cannot compare: no registration date`
+
+A registration **before** the declaration keeps its tier. A missing, unparseable, or equal registration date, or a missing jury declaration date, is counted in the second line and left out of every named list and every named export. Some voter files show the date of the latest registration change, not the first registration. That excludes more matches, which is the safe direction. Every matched pair is in exactly one place: a lead, the first count, or the second count.
 
 ## Read this before you use a result
 

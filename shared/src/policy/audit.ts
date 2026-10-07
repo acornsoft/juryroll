@@ -1,4 +1,6 @@
-// Append-only audit log. The only write API is append(). Purge does not clear it.
+// Append-only audit log while a session is open. A manual purge, the purge
+// after export, and the inactivity purge clear the stored entries. Closing
+// the page purges voter data and leaves the log in place.
 
 import { sha256HexSync } from './sha256.ts';
 

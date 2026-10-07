@@ -1,0 +1,396 @@
+# JuryRoll logic changes: spec for Kyle
+
+Version 1.3.0, 2026-10-07 (B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
+Source of the requirements: `LEGAL-REVIEW.md` (Optimus, 2026-10-07), "Required changes (ranked)".
+Rules data: `rules/schema.json`, `rules/default.json`, `rules/<XX>.json`. Validator: `rules/validate.py`.
+
+The current code is `index.html` (`<script id="juryroll-core">` = pure functions, `<script id="juryroll-ui">` = DOM).
+Line references below are to the v1 file.
+
+Invariant that must not change: the page makes **no network requests**. All data stays in the browser.
+
+---
+
+## A. State rules: loading and gating
+
+### A.1 Loading
+
+1. **Bundle, do not fetch.** `fetch()` from `file://` fails, and a fetch would break the no-network rule.
+   Add a build step (`tools/bundle-rules.(js|py)`) that inlines every `rules/*.json` except `schema.json` into
+   `<script type="application/json" id="juryroll-rules">{"NY":{...},"NC":{...},"DEFAULT":{...}}</script>`.
+2. CI runs `python3 rules/validate.py` before the bundle step. A failure blocks the Azure deploy.
+3. New **Step 0: "Your state"** above Step 1. A required `<select id="stateSel">` lists the 50 states and DC.
+   Steps 1 to 4 stay disabled until a state is chosen.
+4. Runtime load: `rules = BUNDLE[code] || BUNDLE.DEFAULT`. Fallback to DEFAULT also when:
+   - `schema_version !== "1.0.0"`, or
+   - a required top-level key is missing (light runtime check of the keys in `schema.json` `required`).
+   Show "No verified rules for <State>. Strictest rules apply." when DEFAULT is used.
+5. Show the rules header: state name, `verified_on`, and a link list of every `source_url` in the file.
+6. Log `rules_loaded` (section D) with the SHA-256 of the rules JSON text.
+
+### A.2 Null semantics (single rule)
+
+`null` anywhere means the strict value. Implement one helper, `strict(value, strictValue)`, and use it for every read.
+
+| Field | Strict value used when null |
+|---|---|
+| `jury_list.public` | `false` (jury file refused) |
+| `voter_file.no_online_posting` | `true` |
+| `voter_file.dob_in_public_file` | `false` (cap at Probable, A.4) |
+| `voter_file.registration_date_in_public_file` | `false` (B shows "cannot compare") |
+| `private_challenge.allowed` | `false` |
+| `private_challenge.juryroll_lead_sufficient` | `false` |
+| `private_challenge.one_per_affidavit` | `true` |
+| `blackout.state_extra_days` | `0`, plus banner "State time limits not verified" |
+| `gates.allow_jury_list` / `allow_named_export` / `show_challenge_guidance` | `false` |
+| `gates.aggregate_only` | `true` |
+| `referral_targets.*` | not shown; show `default.json` `other` (EAC directory) |
+
+### A.3 Effective gates
+
+Effective gate = the stricter of the declared gate and the derived gate. Same algorithm as `effective()` in `rules/validate.py`:
+
+```
+jl  = jury_list.public === true
+pc  = private_challenge.allowed === true
+derived = { allow_jury_list: jl, aggregate_only: !jl, allow_named_export: jl, show_challenge_guidance: jl && pc }
+eff.allow_jury_list         = strict(g.allow_jury_list,false)         && derived.allow_jury_list
+eff.aggregate_only          = strict(g.aggregate_only,true)           || derived.aggregate_only
+eff.allow_named_export      = strict(g.allow_named_export,false)      && derived.allow_named_export && !eff.aggregate_only
+eff.show_challenge_guidance = strict(g.show_challenge_guidance,false) && derived.show_challenge_guidance
+```
+
+Current effective gates (from the validator run on 2026-10-07):
+
+| File | allow_jury_list | aggregate_only | allow_named_export | show_challenge_guidance |
+|---|---|---|---|---|
+| default | false | true | false | false |
+| NY | false | true | false | false |
+| NC | **true** | false | **true** | **true** |
+| GA | false | true | false | false |
+| TX | false | true | false | false |
+| PA | false | true | false | false |
+
+### A.4 What each gate controls
+
+| Gate | When false / true |
+|---|---|
+| `allow_jury_list = false` | `#fileJuror` is disabled and hidden. Drag-and-drop of a file onto the juror slot is refused **before** `FileReader` reads it. Message: "The jury list is confidential in <State> (<jury_list.statute>). JuryRoll does not load it." The app switches to **Audit mode** (A.5). |
+| `aggregate_only = true` | No results table, no per-person rows in the DOM, no row export. Only counts and the audit referral letter. |
+| `allow_named_export = false` | `#exportBtn` is not rendered (not just disabled). `toCSV()` throws if called. |
+| `allow_named_export = true` | Named export allowed **only** as the referral file (A.6). The Weak tier is never exported (remove `#exportWeak`; LEGAL-REVIEW: no action on name-only matches). |
+| `show_challenge_guidance = true` | Show the Challenge panel (A.7). When false, show only: "A private challenge is not an available JuryRoll path in <State>. Refer the lead to officials." |
+
+**Tier cap from data.** If `strict(voter_file.dob_in_public_file,false)` is false, or fewer than 50% of loaded juror rows have a full DOB,
+cap every pair at **Probable** and show the badge "Full date of birth is not in the public files for <State>. Highest tier: Probable."
+(NC today: public jury list has DOB withheld by G.S. 163-82.10(a1); voter file has birth year only.)
+
+### A.5 Audit mode (aggregate-only states)
+
+LEGAL-REVIEW item 4: "audit the official system (aggregate counts), not individuals."
+Inputs are numbers the user types or copies from official publications. No file of persons is loaded.
+
+| Field id | Label |
+|---|---|
+| `auditPeriod` | Period (from, to) |
+| `auditJuryCount` | Jurors disqualified or excused for non-citizenship (from an official report or answer) |
+| `auditJurySource` | Source of that number (URL or document name) |
+| `auditRemovals` | Voter registrations cancelled for non-citizenship (official report) |
+| `auditRemovalSource` | Source of that number |
+
+Output: a one-page letter to `referral_targets.state_election_office` and the county board.
+The letter quotes `jury_list.official_pipeline` (for example TX Gov't Code 62.113(b), GA O.C.G.A. 21-2-231(a.1)) and asks:
+"Is this process running in <county>? How many records were received, reviewed, confirmed, and removed in the period?"
+No names. Export as `.txt` or print. Log `audit_letter_exported` with the counts only.
+
+### A.6 Referral export (named, only where allowed)
+
+Changes to `toCSV()` (v1 lines 405-416) and `EXPORT_COLS` (lines 398-399):
+
+1. Header lines add: state, rules `verified_on`, the rule cites used, the referral targets with URLs, and the two B counts ("N matches excluded: registered after declaration", "N matches cannot compare: no registration date").
+2. Fixed text line: "Official SAVE or naturalization check required before any action. A match is not proof. Do not publish. Do not contact the voter."
+3. New columns: `Voter status` (C), `Registration date`, `Jury declaration date`, `Flags` (B, C). Every exported row has `REGISTERED_BEFORE_DECLARATION`; excluded pairs (B.2) are never exported.
+4. Rows: Strong and Probable only. Rows flagged `REMOVED` go to a separate section titled "Already removed: confirm the removal was correct" (C).
+5. File name: `JuryRoll-referral-<XX>-<county>-<YYYY-MM-DD>.csv`.
+6. Export triggers the purge prompt (E.2) and the log entry `export` (D).
+
+### A.7 Challenge panel
+
+Visible only when `eff.show_challenge_guidance` is true. Content comes from `private_challenge`:
+`who`, `form_or_statute`, `form_url`, `one_per_affidavit`, `deadlines`, `evidence_standard`, `false_statement_penalty`.
+
+Banners, in this order of priority:
+
+1. `juryroll_lead_sufficient !== true`: "A JuryRoll match alone does not meet this standard. Referral is the recommended path." (Always shown for NC today.)
+2. Inside the federal 90-day window (A.8): "Federal 90-day window. Do not file bulk challenges. Refer leads instead."
+3. Past the state deadline (`deadline_days_before_election`): "The state deadline for this election has passed (<date>)." Hide the form link.
+4. One voter per affidavit: "One affidavit per voter. State the true source: a jury record and a software match."
+
+The panel never pre-fills a challenge form, never generates one affidavit per row, and has no "bulk" feature.
+
+### A.8 Election date and windows
+
+Add `<input type="date" id="electionDate">`, default = next federal general election (2026-11-03, 2028-11-07, 2030-11-05).
+Compute and show: federal window start = election date − 90 days; each `blackout.state_windows[*]` date; `deadline_days_before_election` date.
+For 2026-11-03: federal window from 2026-08-05; NC challenge cutoff 2026-10-09; GA 45-day postponement from 2026-09-19; PA 1509 cutoff 2026-10-24.
+
+### A.9 Referral targets
+
+Render `referral_targets` as a list with `name`, `url`, `note`. Links use `target="_blank" rel="noopener noreferrer"`.
+If all three are null, show `default.json` `referral_targets.other`.
+
+---
+
+## B. Registration date vs jury declaration date
+
+### B.1 New fields (core `FIELDS`, v1 lines 156-169)
+
+| Key | Label | File | Header patterns (normalized) |
+|---|---|---|---|
+| `decl_date` | Jury declaration / disqualification date | juror | `disqualificationdate`, `disqualdate`, `excusedate`, `responsedate`, `questionnairedate`, `qualificationdate`, `datedisqualified`, `decldate` |
+| `reg_date` | Registration date | voter | `registrationdate`, `regdate`, `registrdt`, `dateregistered`, `effectivedate`, `origregdate`, `registrationdt` |
+
+Add `decl_date` to `JUROR_FIELDS` and `reg_date` to `VOTER_FIELDS`. Parse with the `parseDOB()` logic (rename it `parseDate()`). Keep the check that the year is not in the future.
+
+### B.2 Rule: EXCLUDE (decision by Optimus, 2026-10-07)
+
+After `match()` assigns a tier, compare the voter's `reg_date` with the juror's `decl_date`:
+
+| Case | Named output (table, print view, referral export) | Counts |
+|---|---|---|
+| `reg_date < decl_date` (registered **before** the non-citizen declaration) | Lead keeps its tier. Flag `REGISTERED_BEFORE_DECLARATION`. | Counted as a lead in its tier. |
+| `reg_date > decl_date` (registered **after**) | **Not a lead at any tier.** Never shown or exported. | Bucket **"excluded: registered after declaration"**. |
+| `reg_date == decl_date` | **Excluded.** Never shown or exported (B.4). | Bucket **"cannot compare: no registration date"** (B.4). |
+| `reg_date` missing or unparseable (includes files with no registration column) | **Excluded.** Never shown or exported (B.4). | Bucket **"cannot compare: no registration date"** (B.4). |
+| `decl_date` missing or unparseable | **Excluded.** Never shown or exported. | Bucket **"cannot compare: no registration date"** (spec extension; see B.4). |
+
+Every pair that `match()` returns lands in exactly one of three places: a lead, the "registered after" bucket, or the "cannot compare" bucket.
+No pair is dropped silently. Invariant (tested): leads + registered_after + cannot_compare = all pairs.
+
+The two buckets are shown side by side, each time a match runs, in every mode, also when N = 0:
+
+- "N matches excluded: registered after declaration"
+- "N matches cannot compare: no registration date"
+
+The buckets are counts only. They never list names, IDs, or dates. `match_run` in the audit log records the two counts only.
+Where a named export is allowed (A.6), its header lines repeat both counts, so a reader can see that rows were withheld.
+
+Apply B.2 **before** the tier cap (A.4), the Weak filter, and the removed-voter split (C), so excluded pairs never reach those steps.
+A juror whose only matches are excluded counts as "not matched" in `jurorsByBest`.
+
+### B.3 Basis
+
+- Texas 2019 settlement, *Texas LULAC v. Whitley*, No. 5:19-cv-00074 (W.D. Tex.): the Secretary of State "will send to county voter registrars only the matching records of individuals who registered to vote before identifying themselves as non-U.S. citizens." Official source: Texas Secretary of State news release, 2019-04-26, https://www.sos.texas.gov/about/newsreleases/2019/042619.shtml (verified 2026-10-07).
+- Texas later codified the same rule for DPS data: Tex. Elec. Code 16.0332(a-1) ("may not consider information derived from documents presented by the voter to the department before the person's current voter registration became effective").
+- NC G.S. 163-82.14(c1)(1)b: the State Board drops persons who "became a citizen of the United States after the date of that person's jury disqualification."
+- LEGAL-REVIEW item 3.
+
+### B.4 Missing or equal dates: DECIDED (Optimus, 2026-10-07)
+
+Source: decision by Optimus, 2026-10-07. It replaces the open point in v1.2.0.
+
+1. **Named referral (only where `eff.allow_named_export` is true; NC today).** A missing, unparseable, or equal registration date makes the pair **excluded**. It never appears in the results table, the print view, or the referral export.
+2. **Counts (every state; the same code path for every rules file).** These pairs are **not dropped silently**. They are counted in a separate bucket labeled **"cannot compare: no registration date"**, shown next to "excluded: registered after declaration".
+
+Implementation notes for Kyle:
+
+- One pure function, `applyDateRule(pairs) -> { leads, registeredAfter, cannotCompare }`, used by every mode. It does not read the state code. State gates act only after it returns.
+- In aggregate-only states the jury file is refused (A.4), so no match runs and the buckets have nothing to count. The buckets appear in the live UI wherever a match runs (NC today). The function and its tests still cover every state code (AT-38).
+- A voter file with no registration column sends every pair to the "cannot compare" bucket, and the named export then has zero data rows. Examples: the Indiana public file has no registration date (`rules/IN.json`); for Michigan the field is not confirmed (`rules/MI.json` leaves it null).
+- North Dakota files never have a registration date (H.7).
+
+Two points kept for Optimus to confirm (the spec applies the strict reading until then):
+
+- **Equal dates** go to the bucket labeled "no registration date", as decided, although a date is present. A clearer label would be "cannot compare: no registration date or same date". The spec keeps the decided label.
+- **Missing `decl_date`** (jury side) is not named in the decision. The spec puts these pairs in the same "cannot compare" bucket, so they are excluded from named output and still counted.
+
+Known limit to state in the UI: some files show the date of the latest registration change, not the first registration. That excludes more matches, which is the safe direction.
+
+---
+
+## C. Wrongly-removed-voter check (symmetric check, LEGAL-REVIEW item 5)
+
+### C.1 New voter fields
+
+| Key | Patterns |
+|---|---|
+| `status` | `status`, `voterstatus`, `statuscd`, `voterstatusdesc`, `registrationstatus` |
+| `status_reason` | `statusreason`, `reasoncd`, `voterstatusreasondesc`, `cancelreason`, `removalreason` |
+| `status_date` | `statusdate`, `datestatuslastchanged`, `statuschangedate`, `canceldate` |
+
+Note: `status` is currently a pattern of the juror `reason` field (v1 line 168). Keep it there for jurors; add it separately for voters.
+
+### C.2 Rules
+
+- `status` matches `/remov|cancel|purg|denied|deceased/i`: flag `REMOVED`. The row leaves the main list and goes to "Already removed: confirm the removal was correct".
+- `status` or `status_reason` matches `/reinstat|restor|re-?activ/i`: flag `REINSTATED`. Keep the row, add the note "Voter was reinstated. Officials may already have confirmed eligibility."
+- `status` matches `/inactive|suspense/i`: flag `INACTIVE`. Note only.
+- `REMOVED` plus tier below Strong: flag `POSSIBLE_WRONGFUL_REMOVAL`. (Pairs registered after the declaration are already excluded by B.2; they add to the symmetric count below as "removed, registered after declaration".)
+- Symmetric count: number of voters whose `status_reason` matches `/non-?citizen|citizenship/i`, and how many of them have **no** Strong jury match. Shown as counts in every mode.
+  Named rows of this group appear only when `eff.allow_named_export` is true, and only in the referral file.
+
+### C.3 Referral note (added to every exported row with any C flag)
+
+"Before any action, confirm citizenship through official records. If this voter was removed or flagged, confirm that notice was sent and that the removal was correct. Reinstate if it was not."
+
+---
+
+## D. Append-only audit log (local)
+
+### D.1 Storage and format
+
+- IndexedDB database `juryroll-audit`, object store `log`, key = sequence number. If IndexedDB is not available (some browsers on `file://`), keep the log in memory and warn "The log will be lost when you close the page. Download it."
+- One JSON object per entry. "Download log" saves JSON Lines (`juryroll-audit-<date>.jsonl`).
+- Hash chain: `entry.hash = SHA-256(prev_hash + canonical_json(entry_without_hash))` with `crypto.subtle.digest`. The first entry has `prev_hash = "0"*64`.
+- On page load, verify the chain. On a break, show "Audit log integrity check failed at entry N" and log `log_chain_break`.
+- The only write API is `audit.append(type, data)`. No update. No delete. The purge (E) does not touch the log.
+
+### D.2 Entry fields
+
+`seq`, `ts` (ISO 8601 with offset), `app_version`, `type`, `data`, `prev_hash`, `hash`.
+
+| `type` | `data` (no names, no DOBs, no addresses) |
+|---|---|
+| `session_start` | user agent family, rules state code |
+| `rules_loaded` | `state`, `schema_version`, `verified_on`, `sha256`, `fallback_to_default` |
+| `attestation_signed` | `sha256` of the attestation text, typed initials hashed (G) |
+| `file_loaded` | `kind` (juror/voter), `sha256` of file bytes, `bytes`, `rows`, header names |
+| `file_refused` | `kind`, reason (`jury_gate`, `blocked_header`), matched header names |
+| `mapping_set` | field → column header |
+| `match_run` | counts by tier, flag counts, cap applied, `excluded_registered_after`, `cannot_compare_no_reg_date` |
+| `export` | `rows`, tiers included, `sha256` of the export text, voter IDs only if the user ticks "Include IDs in log" (default off) |
+| `audit_letter_exported` | the counts and sources typed in A.5 |
+| `purge` | trigger (`button`, `after_export`, `timeout`, `pagehide`) |
+| `log_chain_break` | `seq` |
+
+File names are not logged by default; a file name can contain a person's name.
+
+---
+
+## E. Purge after referral
+
+### E.1 Purge function
+
+`purgeAll(trigger)`:
+1. Set every data reference in the UI state `S` to null (`S.juror`, `S.voter`, records, pairs, result).
+2. Reset `#fileJuror` and `#fileVoter` (`value = ""`), clear `#results`, `#cards`, `#summary`, mapping tables, reason box.
+3. `URL.revokeObjectURL()` for every export blob URL created.
+4. Return to Step 0 with the state still selected.
+5. `audit.append("purge", {trigger})`.
+
+The app must never write loaded data or results to `localStorage`, `sessionStorage`, IndexedDB, or cookies. Only the audit log is stored.
+
+### E.2 Triggers
+
+- **Button** `#purgeBtn` "Purge all loaded data", always visible after a file loads. Confirm dialog.
+- **After export**: modal "Referral saved. Purge the data now?" Buttons: "Purge now" (default focus) and "Keep for 10 minutes". After 10 minutes, purge without asking.
+- **Inactivity**: 30 minutes without input. Warning at 28 minutes.
+- **Close**: `pagehide` and `beforeunload` call `purgeAll("pagehide")`. Data is in memory only, so a closed tab holds nothing.
+
+---
+
+## F. Refuse DMV, data broker, and SSN data
+
+Reason: DPPA 18 U.S.C. 2721-2724 (no DMV-derived data); LEGAL-REVIEW item 6.
+
+### F.1 Detection (run in `analyze()` before mapping, both files)
+
+Normalized header (`normHeader`, v1 line 223) matched against:
+
+| Class | Patterns |
+|---|---|
+| SSN | `ssn`, `socialsecurity`, `socsec`, `ssn4`, `last4ssn`, `ssnlast4`, `taxid`, `itin`, `tin` (exact) |
+| DMV | `driverslicense`, `driverlicense`, `dlnumber`, `dlnum`, `dlno`, `licensenumber`, `dmv`, `mvr`, `stateidnumber`, `idcardnumber`, `permitnumber` |
+| Broker | `experian`, `acxiom`, `equifax`, `transunion`, `infutor`, `lexisnexis`, `accurint`, `tlo`, `targetsmart`, `catalist`, `l2`, (exact) `creditscore`, `householdincome`, `networth`, `modeled`, `consumerid`, `phoneappend`, `emailappend` |
+
+Value check on the first 500 rows of each column (any header):
+- `^\d{3}-?\d{2}-?\d{4}$` in more than 1% of non-blank values: class SSN.
+
+### F.2 Behavior
+
+- Any SSN or broker match, or a DMV match whose values contain digits: refuse the **whole file**. Show the matched headers. Do not keep the file text in memory. Log `file_refused` with header names only.
+- DMV-named column whose values are only `Y`, `N`, `T`, `F`, `0`, `1`, or blank (an official flag, for example NC `drivers_lic`): allow the file, drop the column, show a note.
+- No override switch. The user must remove the column from an official file or get the file from the official source.
+
+---
+
+## G. Use attestation (LEGAL-REVIEW item 6; not in the original brief)
+
+Before Step 1, a modal with checkboxes. All must be ticked, plus typed initials:
+
+1. I got each file from an official source, and I obey its use rules (`voter_file.permitted_uses`).
+2. I will send leads only to the offices in the referral list.
+3. I will not publish any name or contact any voter.
+4. I understand a match is not proof. Only officials can verify citizenship.
+5. I will purge the data after I send the referral.
+
+Log `attestation_signed` with hashes only.
+
+---
+
+## H. Other UI changes
+
+1. Link `GUIDE.md` (rendered as a static `guide.html` at build time) from the header and from every banner.
+2. Caveats box (v1 line 65): add the state `notes[]` list.
+3. Remove "Show weak matches" from the default view; keep it only in a collapsed "Details" area. Weak rows never export.
+4. Print view: same content as the export. No print in aggregate-only mode except the audit letter.
+5. **Use-limit banner.** If `voter_file.permitted_uses` or `voter_file.attestation_required` is non-null, or `voter_file.no_online_posting` is true, for the selected state, show above Step 1: "Your state limits how its voter list may be used. Read the rule before you load a file." Quote `permitted_uses` and link `voter_file.source_url`. Files with such limits today: AL, AR, AZ, CA, CO, CT, DE, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NM, NY, OH, OK, OR, PA, SD, TN, TX, UT, VA, WA, WI, WV.
+6. **Non-signal jurisdictions.** Add a core constant `NON_SIGNAL = { CT: "Connecticut lets lawful permanent residents serve on juries.", DC: "D.C. lets non-citizens vote in local elections (D.C. Code 1-1001.02(2)(B))." }`. For these codes: force `aggregate_only`, hide the challenge panel even if `private_challenge.allowed` is true, and show the reason in a banner. The match counts must carry the label "not evidence of unlawful registration in this jurisdiction". The reasons are also in each file's `notes[]`.
+7. **North Dakota.** North Dakota has no voter registration (N.D.C.C. 16.1-01-05.1, 16.1-02-05). Files have no registration date, so every pair goes to the B.4 "cannot compare: no registration date" bucket. Show: "North Dakota has no voter registration. Matches cannot be compared with a registration date." Do not map a file-entry or last-voted date to `reg_date`.
+
+---
+
+## I. Acceptance tests
+
+Add to `test/core.test.js` (pure) and `test/ui.test.js` (headless Chrome). Fixtures under `test/fixtures/` (fictional data only).
+
+| ID | Test | Expected |
+|---|---|---|
+| AT-01 | `rules/validate.py` | Exit 0; all files PASS; 6 negative tests rejected |
+| AT-02 | Bundle contains every `rules/*.json` except schema | Keys = state codes + `DEFAULT` |
+| AT-03 | Test bundle with the WY entry removed; select WY | DEFAULT loaded; banner "No verified rules"; jury input absent |
+| AT-04 | Bundle entry with `schema_version: "0.9"` | Falls back to DEFAULT |
+| AT-05 | Select TX, drop a juror CSV on the juror slot | Refused before read (spy on `FileReader.readAsText` = 0 calls); message cites Gov't Code 62.0132 |
+| AT-06 | Select NY | Audit mode; no `#results` rows; no `#exportBtn` in DOM |
+| AT-07 | Call `toCSV()` while `allow_named_export` is false | Throws |
+| AT-08 | Select NC, load samples | Match runs; no Strong tier (cap); badge shown; export has no Weak rows |
+| AT-09 | NC with sample voter file containing full DOB | Still capped at Probable (rules `dob_in_public_file=false`) |
+| AT-10 | `reg_date` after `decl_date` on a Strong pair | Pair absent from `pairs`, table, print view and export; counter "1 matches excluded: registered after declaration" shown |
+| AT-11 | `reg_date` before `decl_date` on a Strong pair | Tier stays Strong; flag `REGISTERED_BEFORE_DECLARATION`; row in export |
+| AT-12 | NC; one Strong pair with missing `reg_date`, and separately one with `reg_date == decl_date` | Both absent from table, print view and export; "N matches cannot compare: no registration date" = 1 for each case; "registered after declaration" unchanged; no names, IDs or dates in counters or log |
+| AT-13 | Voter status `REMOVED` | Row in "Already removed" section; C.3 note in export |
+| AT-14 | Voter status `REMOVED`, registered before declaration, tier Probable | Flag `POSSIBLE_WRONGFUL_REMOVAL` |
+| AT-15 | Voter status reason "REINSTATED" | Flag `REINSTATED`; note present |
+| AT-16 | Symmetric count | Count of non-citizenship removals without a Strong match is shown in all modes |
+| AT-17 | Juror file header `SSN` | Whole file refused; `file_refused` log entry lists `SSN`; no values in log |
+| AT-18 | Header `Notes` with values like `123-45-6789` in 5% of rows | Refused (value check) |
+| AT-19 | Header `drivers_lic` with values Y/N | File accepted; column dropped; note shown |
+| AT-20 | Header `dl_number` with digits | File refused |
+| AT-21 | Header `experian_id` | File refused |
+| AT-22 | Audit log after load, match, export, purge | Entries in order: session_start, rules_loaded, attestation_signed, file_loaded x2, mapping_set, match_run, export, purge; chain verifies |
+| AT-23 | Edit one stored log entry, reload | "Audit log integrity check failed at entry N"; `log_chain_break` appended |
+| AT-24 | Grep all log entries for any juror/voter name or DOB from the fixtures | Zero hits |
+| AT-25 | Export, then click "Purge now" | `S` data fields null; tables empty; file inputs empty; blob URL revoked |
+| AT-26 | Export, then wait (fake timers) 10 minutes | Auto purge; log trigger `after_export` |
+| AT-27 | `pagehide` event | `purgeAll("pagehide")` called |
+| AT-28 | After any session | `localStorage`, `sessionStorage` empty; IndexedDB holds only `juryroll-audit` |
+| AT-29 | Network | Playwright request log has zero requests other than the page itself (keep the v1 check) |
+| AT-30 | Election date 2026-11-03, state NC, today 2026-10-07 | Banners: federal window active; NC cutoff 2026-10-09 shown; challenge panel shows "match alone does not meet this standard" |
+| AT-31 | Same with today 2026-10-10 | NC deadline passed; form link hidden |
+| AT-32 | Attestation | Steps 1-4 disabled until all boxes and initials are given |
+| AT-33 | Export header | Contains "Official SAVE or naturalization check required", state code, rules `verified_on`, referral target URLs |
+| AT-34 | Select DC with a fixture that has a Strong pair | Aggregate only; challenge panel absent although `private_challenge.allowed` is true; NON_SIGNAL banner shown |
+| AT-35 | Core: ND rules, voter fixture with a `last_voted` column and no registration column. UI: select ND | `reg_date` not auto-mapped from `last_voted`; `applyDateRule` puts every pair in `cannotCompare`. UI shows the ND banner (H.7) |
+| AT-36 | Select CA | Use-limit banner quotes Elec. Code 2194 uses; challenge panel absent (`allowed` is false) |
+| AT-37 | NC; IN/MI-style voter fixture `test/fixtures/voter_no_regdate.csv` (no registration column) that yields 3 Strong or Probable pairs | Summary shows "3 matches cannot compare: no registration date" next to "0 matches excluded: registered after declaration"; results table empty; export has header lines (with both counts) and **zero data rows**; `match_run` logs `cannot_compare_no_reg_date: 3` |
+| AT-38 | Core, run for every code in the bundle (51 states + `DEFAULT`): `applyDateRule` on one fixture with before, after, equal, missing-reg and missing-decl pairs | Same buckets for every code: 1 lead, 1 registered-after, 3 cannot-compare; leads + registeredAfter + cannotCompare = pairs (nothing dropped) |
+| AT-39 | NC; all pairs registered before declaration | Both counters visible with value 0 ("0 matches excluded: registered after declaration", "0 matches cannot compare: no registration date") |
+| AT-40 | NC; juror fixture with an empty `decl_date` on a Strong pair | Pair absent from named output; counted in "cannot compare: no registration date" |
+
+---
+
+## J. Out of scope for this change
+
+- Nickname and fuzzy-name matching (v1 gap). Do not add it before the tier caps and B are in place; it raises false positives.
+- Hostname: **juryroll.doge.reviews** (decision 2026-10-07). Product name stays **JuryRoll**. Use this hostname in the Azure Static Web Apps custom-domain config, the README, the export header ("Made with JuryRoll, juryroll.doge.reviews"), and the print footer. Do not use juryroll.com (LEGAL-REVIEW item 8: conspiracy-forum history).
+- Rules content: all 50 states plus DC are delivered (`rules/<XX>.json`, 51 files) and pass `rules/validate.py`. Re-verify each file before every federal election; `verified_on` is 2026-10-07.

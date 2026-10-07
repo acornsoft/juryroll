@@ -1,0 +1,111 @@
+{
+  "state": "MI",
+  "name": "Michigan",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "MCL 600.1315: answers to juror qualification questionnaires 'shall not be disclosed' except by order of the chief circuit judge.",
+    "holder": "County jury board / circuit court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-600-1315",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "MCL 600.1307a (juror must be a U.S. citizen)",
+        "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-600-1307a",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "MCL 600.1313 (qualification questionnaire)",
+        "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-600-1313",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person, from a city, township, or village clerk, at cost (MCL 168.522(1)). The qualified voter file is also subject to FOIA with exemptions (MCL 168.509gg).",
+    "permitted_uses": "No purpose restriction was found in MCL 168.522.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-522",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "MCL 168.509gg (month and day of birth, license number, phone, signature exempt)",
+        "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-509gg",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any elector of the municipality (MCL 168.512).",
+    "form_or_statute": "MCL 168.512: written affidavit to the municipal clerk that the elector is not qualified, with the grounds. The clerk mails notice; the voter has 30 days to answer or the clerk cancels.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No deadline in MCL 168.512. The federal 90-day rule still limits systematic removals.",
+    "deadline_days_before_election": null,
+    "evidence_standard": "The affidavit must state the grounds. A challenge made 'indiscriminately and without good cause or for the purpose of harassment' is a misdemeanor (MCL 168.512).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": "Misdemeanor for indiscriminate, baseless, or harassing challenges (MCL 168.512).",
+    "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-512",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "MCL 168.727 (challenges at the polls; no indiscriminate challenges)",
+        "url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-727",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-168-512",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Michigan Voter Information Center - find your city or township clerk",
+      "url": "https://mvic.sos.state.mi.us/Voter/Index/#yourclerk",
+      "verified_on": "2026-10-07",
+      "note": "Registration challenges under MCL 168.512 go to the municipal clerk."
+    },
+    "state_election_office": {
+      "name": "Michigan Secretary of State - Bureau of Elections",
+      "url": "https://www.michigan.gov/sos/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Michigan Department of Attorney General",
+      "url": "https://www.michigan.gov/ag",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror questionnaire answers are not disclosed without a judge's order (MCL 600.1315), so the jury list is not available. Strict gates: counts only. A private affidavit challenge exists (MCL 168.512) but guidance stays off without a jury list."
+  },
+  "notes": [
+    "official_pipeline is null: no Michigan statute that sends juror non-citizen answers to election officials was found.",
+    "MCL 168.512 makes a baseless or harassing challenge a misdemeanor. A JuryRoll match alone is not 'good cause' under that text (juryroll_lead_sufficient null).",
+    "registration_date_in_public_file is null: not confirmed for the clerk list.",
+    "state_extra_days is 0: MCL 168.512 sets no state window."
+  ]
+}

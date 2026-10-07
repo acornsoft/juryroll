@@ -5,19 +5,39 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": "O.C.G.A. 21-2-231(a.1): the clerk of superior court sends the Secretary of State, monthly, a list of persons who identified themselves as non-citizens during juror qualification. No statute making that list public was found.",
+    "statute": "O.C.G.A. 21-2-231(a.1): each superior court clerk sends the Secretary of State, by the tenth day of each month, a list of all persons 'who identify themselves as not being citizens of the United States during their qualification to serve as a juror'. No statute making the list public was found.",
     "holder": null,
     "fields_withheld": null,
-    "official_pipeline": "O.C.G.A. 21-2-231(a.1) (monthly clerk report to the Secretary of State) and 21-2-231(c) (Secretary of State sends matches to county boards of registrars for removal with notice).",
+    "official_pipeline": "Superior court clerks report self-identified non-citizen jurors monthly to the Secretary of State (21-2-231(a.1)). The Secretary sends names on the list of electors to the county board of registrars, which removes them and mails a notice (21-2-231(c)(1)). Registrars must act within 60 days (21-2-231(f)).",
     "use_restriction": null,
-    "source_url": "https://www.legis.ga.gov/laws/codes",
-    "verified_on": "2026-10-07"
+    "source_url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-231/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "O.C.G.A. 21-2-231 - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-231/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Georgia Department of Audits and Accounts, Voter Registration and List Maintenance (lists 'Superior Court Clerk: Non-citizens identified through juror qualification' as a 21-2-231 data source; SOS citizenship audits 2024 to April 2026 used juror affidavits of non-citizenship, DDS data and SAVE)",
+        "url": "https://www.audits.ga.gov/ReportSearch/download/34351",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Georgia Secretary of State, Qualifications for Electors (quotes O.C.G.A. 21-2-231(c)(1) on lists under (a.1))",
+        "url": "https://mvp.sos.ga.gov/s/qualifications-for-electors",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      }
+    ]
   },
   "voter_file": {
-    "who_may_get": "Any person, by purchase from the Secretary of State (O.C.G.A. 21-2-225(c)).",
-    "permitted_uses": "Any use except commercial purposes: 'Such data may not be used by any person for commercial purposes.' (O.C.G.A. 21-2-225(c)).",
+    "who_may_get": "Any person, by purchase from the Secretary of State (per the Secretary of State's official order page and online store).",
+    "permitted_uses": "Any use except commercial purposes: 'Such data may not be used by any person for commercial purposes' (O.C.G.A. 21-2-225(c)).",
     "no_online_posting": null,
-    "penalty": "Intentional use of the list of electors for commercial purposes is a misdemeanor (O.C.G.A. 21-2-601).",
+    "penalty": "Misdemeanor for intentional commercial use of the list of electors (O.C.G.A. 21-2-601).",
     "dob_in_public_file": false,
     "registration_date_in_public_file": true,
     "attestation_required": null,
@@ -31,8 +51,14 @@
         "kind": "official_page"
       },
       {
-        "cite": "Official Code of Georgia (free public access via the General Assembly) - O.C.G.A. 21-2-225(c), 21-2-601",
-        "url": "https://www.legis.ga.gov/laws/codes",
+        "cite": "O.C.G.A. 21-2-225(b)-(c) (public data; month and day of birth confidential; year of birth public; no commercial use) - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-225/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "O.C.G.A. 21-2-601 (misdemeanor for commercial use) - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-15/section-21-2-601/",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -110,8 +136,8 @@
   },
   "notes": [
     "The official pipeline already exists: clerks report monthly to the Secretary of State (21-2-231(a.1)). The best private action is an aggregate referral that asks whether each county files and processes these reports.",
-    "Statute text for 21-2-229/230 was read from the enrolled session laws (SB 202 of 2021, SB 189 of 2024) on gov.georgia.gov. 21-2-231(a.1), 21-2-225(c) and 21-2-601 were read from secondary reprints and the Secretary of State's pages; the official code (Lexis public access, linked from legis.ga.gov) should be re-checked when this file is next verified.",
-    "HB 397 (2025-2026 session): a secondary summary says the enacted version did not add new challenge rules (proposed 21-2-230.1). Not verified against the enrolled text; re-check.",
+    "Source status: 21-2-229 and 21-2-230 were read from enrolled session laws (SB 202 of 2021, SB 189 of 2024) on gov.georgia.gov. 21-2-231, 21-2-225 and 21-2-601 were re-read on 2026-10-07 from the Justia copy of the 2025 Georgia Code, the source LEGAL-REVIEW steering allows for GA. The text matches the earlier official-page summaries.",
+    "UNVERIFIED, not relied on: a secondary summary says HB 397 (2025-2026 session) did not add new challenge rules (proposed 21-2-230.1). No rule value uses it. Re-check against the enrolled act.",
     "The public voter list has no date of birth. If the jury gate ever opens in GA, matches would be capped at Probable (LOGIC-CHANGES.md A.4).",
     "Federal cases: Majority Forward v. Ben Hill County, 512 F. Supp. 3d 1354 (M.D. Ga. 2021) (mass private challenges in the 90-day window need individualized inquiry); Fair Fight v. True the Vote (N.D. Ga. 2024) (about 364,000 challenges; list 'utterly lacking reliability') (LEGAL-REVIEW.md).",
     "false_statement_penalty is null: not determined in this pass.",

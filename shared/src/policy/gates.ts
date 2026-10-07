@@ -12,6 +12,7 @@ export type RulesFile = {
   jury_list: { public: boolean | null; statute: string | null; official_pipeline?: string | null; source_url?: string | null; verified_on?: string | null };
   voter_file: {
     permitted_uses?: string | null;
+    attestation_required?: string | null;
     no_online_posting?: boolean | null;
     dob_in_public_file?: boolean | null;
     registration_date_in_public_file?: boolean | null;
@@ -91,6 +92,33 @@ export function effective(rules: RulesFile): Gates {
   };
   out.allow_named_export = strict(g.allow_named_export, false) && derived.allow_named_export && !out.aggregate_only;
   return out;
+}
+
+export const NON_SIGNAL: Readonly<Record<string, string>> = {
+  CT: 'Connecticut lets lawful permanent residents serve on juries.',
+  DC: 'D.C. lets non-citizens vote in local elections (D.C. Code 1-1001.02(2)(B)).',
+};
+
+export const NON_SIGNAL_LABEL = 'not evidence of unlawful registration in this jurisdiction';
+
+export const ND_REGISTRATION_NOTE = 'North Dakota has no voter registration. Matches cannot be compared with a registration date.';
+
+export function uiGates(rules: RulesFile): Gates {
+  const gates = effective(rules);
+  if (Object.prototype.hasOwnProperty.call(NON_SIGNAL, rules.state)) {
+    return {
+      allow_jury_list: gates.allow_jury_list,
+      aggregate_only: true,
+      allow_named_export: false,
+      show_challenge_guidance: false,
+    };
+  }
+  return gates;
+}
+
+export function useLimitApplies(rules: RulesFile): boolean {
+  const file = rules.voter_file;
+  return file.permitted_uses != null || file.attestation_required != null || file.no_online_posting === true;
 }
 
 export function lightRulesError(rules: unknown): string | null {

@@ -1,0 +1,93 @@
+{
+  "state": "TN",
+  "name": "Tennessee",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Jury coordinator (court).",
+    "fields_withheld": null,
+    "official_pipeline": "T.C.A. 2-2-113: voter lists go to federal courts for jury selection on condition that the jury coordinator sends the Coordinator of Elections a list of persons disqualified or potentially disqualified as non-citizens (name, addresses, phone, DOB, reason). The Coordinator verifies registration and forwards to the county administrator, who follows 2-2-106 or 2-2-141 (notice; 30 days to prove citizenship; purge).",
+    "use_restriction": null,
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-113/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "T.C.A. 2-2-113 (jury coordinator list to Coordinator of Elections) - Justia copy of the 2025 Tennessee Code",
+        "url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-113/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "T.C.A. 2-2-141 (citizenship verification; 30 days; purge) - Justia copy",
+        "url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-141/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person who certifies on a state form that the list will be used for political purposes (T.C.A. 2-2-138(b)(1)); in large counties, any interested citizen (2-2-138(c)).",
+    "permitted_uses": "Political purposes (2-2-138(b)(1)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Certification on the State Election Commission form that the list will be used for political purposes (T.C.A. 2-2-138(b)(1)).",
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-138/",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls: any person present may challenge; the judges decide after an oath (T.C.A. 2-7-123). No pre-election written challenge by a private voter was found.",
+    "form_or_statute": "T.C.A. 2-7-123. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-7/section-2-7-123/",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://law.justia.com/codes/tennessee/title-2/chapter-2/part-1/section-2-2-106/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Tennessee county election commissions (Secretary of State directory)",
+      "url": "https://tnsos.org/elections/election_commissions.php",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Tennessee Secretary of State - Division of Elections",
+      "url": "https://sos.tn.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Tennessee Attorney General and Reporter",
+      "url": "https://www.tn.gov/attorneygeneral.html",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury non-citizen lists go to the Coordinator of Elections (T.C.A. 2-2-113); public status unknown (null). No private pre-election challenge found. Strict gates: counts only."
+  },
+  "notes": [
+    "Source note: Tennessee's official code is published through a commercial host. Text was read from the Justia copy of the 2025 Tennessee Code, the reprint LEGAL-REVIEW steering allowed for GA. Re-verify against 2026 session laws.",
+    "2-2-113 applies to lists given to federal courts for jury selection.",
+    "dob_in_public_file and registration_date_in_public_file are null: not confirmed."
+  ]
+}

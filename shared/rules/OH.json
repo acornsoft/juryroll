@@ -1,0 +1,117 @@
+{
+  "state": "OH",
+  "name": "Ohio",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Commissioners of jurors and clerk of the court of common pleas (R.C. 2313.06).",
+    "fields_withheld": null,
+    "official_pipeline": "No jury-to-election pipeline found. The Secretary of State reviews the statewide database monthly against BMV and SAVE data, reports non-citizens to boards for cancellation, and refers each to the election integrity unit (R.C. 3503.152).",
+    "use_restriction": null,
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.152",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "R.C. 3503.152 (monthly non-citizen review)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-3503.152",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.C. 2313.06 (jury source list)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.06",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person. Registration forms and the statewide database are public records (R.C. 3503.13(A)); the Secretary of State posts weekly voter files for download.",
+    "permitted_uses": "No purpose restriction found in R.C. 3503.13 or 3503.26.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": true,
+    "registration_date_in_public_file": true,
+    "attestation_required": null,
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.13",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Ohio SoS Voter Files Download Page (layout: Date Of Birth, Registration Date, Voter Status)",
+        "url": "https://www6.ohiosos.gov/ords/f?p=VOTERFTP:HOME",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "R.C. 3503.26 (registration lists open to public inspection)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-3503.26",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any qualified elector (R.C. 3503.24(A)).",
+    "form_or_statute": "R.C. 3503.24: challenge of the right to vote filed with the county board of elections on the Secretary of State form (Form 257, 'Challenge of Right to Vote and Correction of Registration List'), with reasons, signed under penalty of election falsification. The board decides on its records or holds a hearing within 10 days.",
+    "form_url": "https://www.ohiosos.gov/elections/elections-administration/forms-and-petitions",
+    "one_per_affidavit": null,
+    "deadlines": "Not later than the 30th day before the election (R.C. 3503.24(A)). For November 3, 2026 that was October 4, 2026.",
+    "deadline_days_before_election": 30,
+    "evidence_standard": "The board grants or denies on its records, or after a hearing with sworn testimony (R.C. 3503.24(B)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": "Signed under penalty of election falsification (R.C. 3503.24(A)).",
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 30,
+        "applies_to": "Private challenges under R.C. 3503.24",
+        "effect": "No challenge may be filed after the 30th day before the election.",
+        "statute": "R.C. 3503.24(A)",
+        "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Ohio county boards of elections directory",
+      "url": "https://www.ohiosos.gov/directories/county-boards-of-elections",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Ohio Secretary of State - Elections",
+      "url": "https://www.ohiosos.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Ohio Attorney General",
+      "url": "https://www.ohioattorneygeneral.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "The jury record status is unknown (null), so the app treats it as confidential and shows counts only. The voter file is public with DOB and registration date. A private challenge exists (R.C. 3503.24) but guidance stays off without a jury list."
+  },
+  "notes": [
+    "jury_list.public is null: no Ohio statute or Rule of Superintendence on juror citizenship answers was confirmed.",
+    "The R.C. 3503.24 deadline for the November 3, 2026 election (October 4, 2026) has passed as of verified_on.",
+    "The voter file layout document is from 2018; field names were read from the official download page on verified_on.",
+    "state_extra_days is 0: the 30-day cutoff falls inside the federal 90-day window."
+  ]
+}

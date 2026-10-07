@@ -30,6 +30,12 @@
         "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.068",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Texas Secretary of State news release, 'Secretary Whitley Announces Settlement In Litigation On Voter Registration List Maintenance Activity' (2019-04-26)",
+        "url": "https://www.sos.texas.gov/about/newsreleases/2019/042619.shtml",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
@@ -127,6 +133,7 @@
     "Texas 2019: about 95,000 flagged, at least about 25,000 wrong; the advisory was rescinded (LEGAL-REVIEW.md).",
     "registration_date_in_public_file is null: the record layout attached to the SoS request form was not reviewed. The request form offers a filter on the date voters became effective.",
     "one_per_affidavit is null: 16.092 speaks of 'the voter whose registration is being challenged' but does not state a one-per-statement rule.",
-    "false_statement_penalty is null: the perjury provisions of the Penal Code were not checked in this pass."
+    "false_statement_penalty is null: the perjury provisions of the Penal Code were not checked in this pass.",
+    "Naturalization rule: the 2019 settlement in LULAC v. Whitley (W.D. Tex. 5:19-cv-00074) limited SoS referrals to 'individuals who registered to vote before identifying themselves as non-U.S. citizens' (Texas SoS news release, 2019-04-26). Elec. Code 16.0332(a-1) now codifies the same rule for DPS data. JuryRoll's EXCLUDE rule (LOGIC-CHANGES.md B) follows it."
   ]
 }

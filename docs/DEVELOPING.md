@@ -22,13 +22,13 @@ npm run build
 
 ## Policy
 
-`shared/src/policy/apply.ts` runs after `match()`. A full registration date after a full jury declaration date sets `excluded`. That row is not a lead at any tier. It is left out of every named list and every named export. The screen shows `N matches excluded: registered after declaration`.
+`shared/src/policy/apply.ts` runs after `match()`. `applyDateRule` does not read the state code. A full registration date after a full jury declaration date is not a lead. The screen shows `N matches excluded: registered after declaration`.
 
-A registration on or before the declaration keeps the tier. If either date is missing, the tier stays and the row notes `date missing` and `Official SAVE / naturalization check required`. If the rules file does not say the registration date is in the public file, the row notes `cannot compare` and is not excluded.
+A missing, unparseable, or equal registration date, or a missing jury declaration date, is excluded from named lists and named exports and counted as `N matches cannot compare: no registration date`. Both lines are shown even when the count is 0. A registration before the declaration keeps its tier. Leads plus the two counts equal the number of matched pairs.
 
-The wrongful-removal flag can still use a registration-after-declaration fact for a removed or inactive voter. An excluded person is counted, not named.
+The UI uses the strict setting. Tests also cover a lenient setting, which is not offered in the UI. The wrongful-removal flag can still use a registration-after-declaration fact for a removed or inactive voter. An excluded person is counted, not named.
 
-North Carolina is the only shipped state that loads a jury list and exports names. The other shipped states are counts only.
+North Carolina is the only state whose effective gates allow a named referral. Connecticut and the District of Columbia stay counts only, with a banner that the counts are not evidence of unlawful registration. North Dakota has no voter registration, so a last-voted date is not treated as a registration date.
 
 ## Tests
 

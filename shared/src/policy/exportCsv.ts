@@ -41,6 +41,8 @@ export function toCSV(input: {
   const targetLine = input.targets.map((target) => `${target.name} ${target.url}`).join(' | ');
   const lines = [
     csvCell('Referral for official verification'),
+    csvCell(input.result.excludedLine),
+    csvCell(input.result.cannotCompareLine),
     csvCell(`State: ${input.rules.state}. Rules verified on ${input.rules.verified_on}.`),
     csvCell(`Cites: ${cites}`),
     csvCell(`Referral targets: ${targetLine}`),

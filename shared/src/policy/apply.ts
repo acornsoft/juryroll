@@ -1,7 +1,11 @@
 // Policy after the unchanged matcher.
-// A voter who registered AFTER the jury non-citizen declaration is not a lead
-// at any tier. The row is excluded from every named list. Missing dates keep
-// the tier, with a date-missing note. Earlier registration keeps the tier.
+// Strict (the UI default): applyDateRule ignores the state code. A later
+// registration is "N matches excluded: registered after declaration". A missing,
+// unparseable, or equal registration date, or a missing declaration date, is
+// "N matches cannot compare: no registration date". An earlier registration
+// keeps its tier. Every pair is in exactly one of those three places.
+// Lenient (tests only): only a later registration is excluded. Equal dates
+// keep the tier. Missing dates keep the tier with a note.
 
 import core from '../core.js';
 import { strict, type RulesFile } from './gates.ts';
@@ -13,6 +17,10 @@ export const AFTER_NOTE = 'Registered after the jury declaration: likely natural
 export const REMOVAL_NOTE = 'Before any action, confirm citizenship through official records. If this voter was removed or flagged, confirm that notice was sent and that the removal was correct. Reinstate if it was not.';
 export const REINSTATE_NOTE = 'Voter was reinstated. Officials may already have confirmed eligibility.';
 export const EXCLUDE_PHRASE = 'matches excluded: registered after declaration';
+export const CANNOT_COMPARE_PHRASE = 'matches cannot compare: no registration date';
+
+export type DateStrictness = 'strict' | 'lenient';
+export const UI_DATE_STRICTNESS: DateStrictness = 'strict';
 
 const REMOVED_RE = /remov|cancel|purg|denied|deceased/i;
 const REINSTATED_RE = /reinstat|restor|re-?activ/i;
@@ -69,7 +77,10 @@ export type PolicyResult = {
   capApplied: boolean;
   capBadge: string | null;
   excludedCount: number;
+  excludedAfterCount: number;
+  cannotCompareCount: number;
   excludedLine: string;
+  cannotCompareLine: string;
   counts: Record<Tier, number>;
   flagCounts: Record<Flag, number>;
   symmetric: { noncitizenRemovals: number; withoutStrongMatch: number };
@@ -129,6 +140,7 @@ export function applyPolicy(input: {
   jurorOrder: string;
   voterOrder: string;
   rules: RulesFile;
+  dateStrictness?: DateStrictness;
 }): PolicyResult {
   const jurorRows = dataRows(input.jurorText, input.jurorDelim, input.jurorHeader);
   const voterRows = dataRows(input.voterText, input.voterDelim, input.voterHeader);
@@ -154,6 +166,7 @@ export function applyPolicy(input: {
   const dobRatio = jurorRows.length ? fullDob / jurorRows.length : 0;
   const dobPublic = strict(input.rules.voter_file.dob_in_public_file, false);
   const canCompareReg = strict(input.rules.voter_file.registration_date_in_public_file, false) === true;
+  const dateStrictness = input.dateStrictness ?? UI_DATE_STRICTNESS;
   const capApplied = dobPublic === false || dobRatio < 0.5;
   const capBadge = !capApplied
     ? null
@@ -173,19 +186,10 @@ export function applyPolicy(input: {
     const notes: string[] = [SAVE_LINE];
     let excluded = false;
 
-    if (!canCompareReg) {
-      flags.push('DATES_NOT_COMPARABLE');
-      notes.push('cannot compare');
-    } else if (reg && decl && reg > decl) {
-      excluded = true;
-      flags.push('REGISTERED_AFTER_DECLARATION');
-      notes.push(AFTER_NOTE);
-    } else if (reg && decl && reg <= decl) {
-      flags.push('REGISTERED_BEFORE_DECLARATION');
-    } else {
-      flags.push('DATES_NOT_COMPARABLE');
-      notes.push('date missing');
-    }
+    const dated = classifyDates(dateStrictness, canCompareReg, reg, decl);
+    excluded = dated.excluded;
+    flags.push(dated.flag);
+    if (dated.note) notes.push(dated.note);
 
     if (REMOVED_RE.test(status)) flags.push('REMOVED');
     if (REINSTATED_RE.test(status) || REINSTATED_RE.test(statusReason)) {
@@ -256,19 +260,90 @@ export function applyPolicy(input: {
     if (!row.excluded) counts[row.tier] += 1;
     row.flags.forEach((flag) => { flagCounts[flag] += 1; });
   });
+  const excludedAfterCount = rows.filter((row) => row.excluded && row.flags.includes('REGISTERED_AFTER_DECLARATION')).length;
+  const cannotCompareCount = rows.filter((row) => row.excluded && row.flags.includes('DATES_NOT_COMPARABLE')).length;
   const excludedCount = rows.filter((row) => row.excluded).length;
+  const leadCount = counts.Strong + counts.Probable + counts.Weak;
+  if (leadCount + excludedAfterCount + cannotCompareCount !== rows.length || excludedCount !== excludedAfterCount + cannotCompareCount) {
+    throw new Error('Date buckets do not add up to the matched pairs');
+  }
 
   return {
     rows,
     capApplied,
     capBadge,
     excludedCount,
-    excludedLine: `${excludedCount} ${EXCLUDE_PHRASE}`,
+    excludedAfterCount,
+    cannotCompareCount,
+    excludedLine: `${excludedAfterCount} ${EXCLUDE_PHRASE}`,
+    cannotCompareLine: `${cannotCompareCount} ${CANNOT_COMPARE_PHRASE}`,
     counts,
     flagCounts,
     symmetric: { noncitizenRemovals, withoutStrongMatch },
     wrongfulCount: flagCounts.POSSIBLE_WRONGFUL_REMOVAL,
   };
+}
+
+export type DateRulePair = { reg: string | null; decl: string | null };
+
+export function applyDateRule<T extends DateRulePair>(pairs: readonly T[]): {
+  leads: T[];
+  registeredAfter: T[];
+  cannotCompare: T[];
+} {
+  const leads: T[] = [];
+  const registeredAfter: T[] = [];
+  const cannotCompare: T[] = [];
+  pairs.forEach((pair) => {
+    const bucket = dateBucket(pair.reg, pair.decl);
+    switch (bucket) {
+      case 'lead':
+        leads.push(pair);
+        break;
+      case 'registeredAfter':
+        registeredAfter.push(pair);
+        break;
+      case 'cannotCompare':
+        cannotCompare.push(pair);
+        break;
+      default: {
+        const neverBucket: never = bucket;
+        throw new Error(neverBucket);
+      }
+    }
+  });
+  return { leads, registeredAfter, cannotCompare };
+}
+
+function dateBucket(reg: string | null, decl: string | null): 'lead' | 'registeredAfter' | 'cannotCompare' {
+  if (!reg || !decl || reg === decl) return 'cannotCompare';
+  if (reg > decl) return 'registeredAfter';
+  return 'lead';
+}
+
+function classifyDates(
+  strictness: DateStrictness,
+  canCompareReg: boolean,
+  reg: string | null,
+  decl: string | null,
+): { excluded: boolean; flag: Flag; note: string | null } {
+  switch (strictness) {
+    case 'strict': {
+      const ruled = applyDateRule([{ reg, decl }]);
+      if (ruled.registeredAfter.length === 1) return { excluded: true, flag: 'REGISTERED_AFTER_DECLARATION', note: AFTER_NOTE };
+      if (ruled.cannotCompare.length === 1) return { excluded: true, flag: 'DATES_NOT_COMPARABLE', note: 'no registration date' };
+      return { excluded: false, flag: 'REGISTERED_BEFORE_DECLARATION', note: null };
+    }
+    case 'lenient':
+      if (!canCompareReg) return { excluded: false, flag: 'DATES_NOT_COMPARABLE', note: 'cannot compare' };
+      if (reg && decl && reg > decl) return { excluded: true, flag: 'REGISTERED_AFTER_DECLARATION', note: AFTER_NOTE };
+      if (reg && decl) return { excluded: false, flag: 'REGISTERED_BEFORE_DECLARATION', note: null };
+      return { excluded: false, flag: 'DATES_NOT_COMPARABLE', note: 'date missing' };
+    default: {
+      const neverSetting: never = strictness;
+      return neverSetting;
+    }
+  }
 }
 
 export function exportableRows(result: PolicyResult): { main: PolicyRow[]; removed: PolicyRow[] } {

@@ -1,0 +1,87 @@
+{
+  "state": "KS",
+  "name": "Kansas",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Jury commissioner (district court).",
+    "fields_withheld": null,
+    "official_pipeline": "K.S.A. 43-174: a jury commissioner who receives citizenship information that disqualifies or may disqualify a prospective juror sends it to the Secretary of State, for voter registration maintenance only. K.S.A. 25-2324 (2025): DMV non-citizen license lists go to the Secretary of State, who directs removal after investigation.",
+    "use_restriction": null,
+    "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch43/043_001_0074.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "K.S.A. 43-174 (jury citizenship information to Secretary of State)",
+        "url": "https://www.ksrevisor.gov/statutes/chapters/ch43/043_001_0074.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person may examine and get copies of the registration books from the county election officer, at cost (K.S.A. 25-2320(a)).",
+    "permitted_uses": "No purpose restriction in 25-2320. SSN and license numbers are removed (25-2320(b)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_023_0020.html",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private challenge statute was found. Election judges must challenge a person they know or suspect is not qualified (K.S.A. 25-414).",
+    "form_or_statute": "K.S.A. 25-414 (judges' duty to challenge at the polls).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_004_0014.html",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.ksrevisor.gov/statutes/chapters/ch25/025_004_0014.html",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Kansas county election offices (Secretary of State directory)",
+      "url": "https://sos.ks.gov/elections/county-election-offices.html",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Kansas Secretary of State - Elections",
+      "url": "https://sos.ks.gov/elections/elections.html",
+      "verified_on": "2026-10-07",
+      "note": "Receives jury citizenship information under K.S.A. 43-174."
+    },
+    "ag": {
+      "name": "Kansas Attorney General",
+      "url": "https://www.ag.ks.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury citizenship information goes only to the Secretary of State for list maintenance (K.S.A. 43-174); public status is unknown (null). No private challenge statute found. Strict gates: counts only."
+  },
+  "notes": [
+    "K.S.A. 43-174 limits use of the jury data it sends to 'maintaining voter registrations as required by law'.",
+    "allowed is null: no statute lets a private voter file a registration challenge in Kansas."
+  ]
+}

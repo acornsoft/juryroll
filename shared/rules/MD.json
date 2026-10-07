@@ -1,0 +1,87 @@
+{
+  "state": "MD",
+  "name": "Maryland",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Circuit court jury commissioners.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gcj&section=8-103&enactments=false",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Md. Code, Cts. & Jud. Proc. 8-103 (jurors must be U.S. citizens)",
+        "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gcj&section=8-103&enactments=false",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "A Maryland registered voter, on written application and a statement under oath (Md. Code, Elec. Law 3-506(a)(1)).",
+    "permitted_uses": "Not for commercial solicitation or any other purpose not related to the electoral process (3-506(a)(1)).",
+    "no_online_posting": null,
+    "penalty": "Misdemeanor to knowingly allow a list to be used for a purpose not related to the electoral process (3-506(c)).",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Statement under oath that the list is not intended for commercial solicitation or any purpose not related to the electoral process (3-506(a)(1)(ii)).",
+    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gel&section=3-506&enactments=false",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No direct private challenge to another person's registration was found. An administrative complaint may be filed by a person aggrieved by a local board action regarding voter registration, or by a local board (Elec. Law 3-602(a)).",
+    "form_or_statute": "Md. Code, Elec. Law 3-602. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gel&section=3-602&enactments=false",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gel&section=3-602&enactments=false",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Maryland local boards of elections (State Board)",
+      "url": "https://elections.maryland.gov/about/county_boards.html",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Maryland State Board of Elections",
+      "url": "https://elections.maryland.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Attorney General of Maryland",
+      "url": "https://marylandattorneygeneral.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. No direct private challenge found. Voter lists are for electoral-process uses only, under oath (Elec. Law 3-506)."
+  },
+  "notes": [
+    "Use limit: whether JuryRoll matching is 'related to the electoral process' (3-506) is not settled. The app should warn Maryland users.",
+    "Judicial review of eligibility determinations must be filed no later than the third Tuesday before the next election (3-602(c)(2)).",
+    "official_pipeline is null: none found in Elec. Law 3-504 or Cts. & Jud. Proc. title 8 sections read."
+  ]
+}

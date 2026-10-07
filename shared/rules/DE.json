@@ -1,0 +1,95 @@
+{
+  "state": "DE",
+  "name": "Delaware",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "10 Del. C. 4513(b): 'Records used in the selection process shall not be disclosed, except in accordance with the jury selection plan or as necessary in the preparation or presentation of a motion challenging compliance with this chapter.' Qualification form contents go to the parties in a case (4513(a)).",
+    "holder": "Superior Court (jury administration).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://delcode.delaware.gov/title10/c045/index.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "10 Del. C. 4509 (non-citizens disqualified; court decides from the qualification form)",
+        "url": "https://delcode.delaware.gov/title10/c045/index.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Anyone may inspect registration records during business hours and make copies (15 Del. C. 1305(a)).",
+    "permitted_uses": "No purpose restriction stated in 1305.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://delcode.delaware.gov/title15/c013/index.html",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No direct private challenge was found. The State Board of Elections may consider removal of names where there is valid reason to believe a person is not qualified, after notice and a hearing (15 Del. C. 1702). 'Any person interested' may appeal to the court from a decision removing or refusing to remove names (15 Del. C. 2101).",
+    "form_or_statute": "15 Del. C. 1702, 2101. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://delcode.delaware.gov/title15/c017/index.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "15 Del. C. 2101 (registration appeals)",
+        "url": "https://delcode.delaware.gov/title15/c021/index.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://delcode.delaware.gov/title15/c017/index.html",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Delaware Department of Elections - county office locations",
+      "url": "https://elections.delaware.gov/locations.html",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Delaware Department of Elections",
+      "url": "https://elections.delaware.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Delaware Department of Justice (Attorney General)",
+      "url": "https://attorneygeneral.delaware.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury selection records may not be disclosed (10 Del. C. 4513(b)). No direct private challenge found. Strict gates: counts only."
+  },
+  "notes": [
+    "Inspection files exclude Social Security number, date of birth, driver's license number, and phone number (15 Del. C. 1305(a)), so dob_in_public_file is false.",
+    "15 Del. C. 1302(c): a registered person who says on a form that they are not a citizen gets 15 days to affirm citizenship in writing or is canceled.",
+    "official_pipeline is null: 15 Del. C. 1703 covers felony convictions only. The Superior Court's public jury FAQ asks non-citizens to notify election officials, but no statute requires it."
+  ]
+}

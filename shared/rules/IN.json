@@ -1,0 +1,93 @@
+{
+  "state": "IN",
+  "name": "Indiana",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Jury administrator / clerk (IC 33-28-5). The master list of names is public; 'all other information other than the names contained in the master list is confidential' (IC 33-28-5-13(d)).",
+    "fields_withheld": null,
+    "official_pipeline": "IC 3-7-38.2-16: each even-numbered year the NVRA official requests from the two federal district courts the names of persons disqualified from jury service for citizenship; the state sends them to county voter registration offices within 28 days after the primary; counties act within 42 days (address confirmation or IC 3-7-38.2-7.3). No state-court jury pipeline was found.",
+    "use_restriction": null,
+    "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_38.2.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "IC 3-7-38.2-16 (federal court jury citizenship data to counties)",
+        "url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_38.2.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "IC 33-28-5 (jury selection; master list names public, other information confidential)",
+        "url": "https://iga.in.gov/ic/2026/Title_33/Article_28/Chapter_5.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Full list only to listed entities (parties, independent candidates on the ballot, media for publication, courts for jury systems, legislative leaders) (IC 3-7-26.4-6). Any other person gets a redacted compilation after signing an agreement (IC 3-7-26.4-8, -9).",
+    "permitted_uses": "The agreement bars using the list to solicit sales, and bars selling, loaning, giving away or delivering it to another person for a purpose other than political activities or political fundraising (IC 3-7-26.4-10).",
+    "no_online_posting": true,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": false,
+    "attestation_required": "Agreement on the Election Division form (IC 3-7-26.4-9, -10): no commercial solicitation; no sale, loan, gift or delivery to another person except for political activities or political fundraising.",
+    "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_26.4.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: challengers and precinct election board members may challenge a voter on the challenge affidavit (IC 3-11-8). No pre-election written challenge by a private voter was found in IC 3-7.",
+    "form_or_statute": "IC 3-11-8 (challenge at the polls). Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_48.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://iga.in.gov/ic/2026/Title_3/Article_7/Chapter_38.2.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Indiana Voters - find your county election administrator",
+      "url": "https://indianavoters.in.gov/CountyContact/Index",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Indiana Election Division",
+      "url": "https://www.in.gov/sos/elections/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Indiana Attorney General",
+      "url": "https://www.in.gov/attorneygeneral/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury qualification information other than names is confidential (IC 33-28-5-13(d)); the status of non-citizen excusal records is not confirmed (null). No private pre-election challenge was found. Strict gates: counts only."
+  },
+  "notes": [
+    "A private requester gets a voter list without date of birth or registration date (IC 3-7-26.4-8). Matching is capped below the full-DOB tier and the registration-date check (LOGIC-CHANGES.md B) cannot run, so every match is excluded by default under B.2 'missing'.",
+    "no_online_posting is true because the required agreement bars delivering the list to any other person except for political activities (IC 3-7-26.4-10).",
+    "The official pipeline covers federal court jury data only (IC 3-7-38.2-16)."
+  ]
+}

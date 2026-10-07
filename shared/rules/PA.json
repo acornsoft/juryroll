@@ -119,8 +119,8 @@
   "notes": [
     "A 1509 petition requires personal notice to the voter. JuryRoll guidance forbids contacting voters, so 1509 is never a JuryRoll path.",
     "The online-posting ban is in litigation: Voter Reference Foundation v. Schmidt (3d Cir.), pending per LEGAL-REVIEW.md. Keep no_online_posting true until a final ruling.",
-    "PA is not on the NCSL list of states with a jury-to-election-official pipeline (LEGAL-REVIEW.md). Not independently verified; official_pipeline stays null.",
-    "A secondary source (Brennan Center; a Department of State letter reposted by Campaign Legal Center) reports Department of State guidance that 1329 challenges must be individualized and that bulk spreadsheet challenges must be rejected. Not found on pa.gov in this pass, so one_per_affidavit stays null.",
+    "UNVERIFIED, not relied on: PA is not on the NCSL list of states with a jury-to-election-official pipeline (LEGAL-REVIEW.md). official_pipeline stays null.",
+    "UNVERIFIED, not relied on: a secondary source (Brennan Center; a Department of State letter reposted by Campaign Legal Center) reports guidance that 1329 challenges must be individualized and that bulk spreadsheet challenges must be rejected. It was not found on pa.gov, so one_per_affidavit stays null.",
     "juryroll_lead_sufficient and false_statement_penalty are null: not determined in this pass."
   ]
 }

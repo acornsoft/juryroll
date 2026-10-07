@@ -1,0 +1,117 @@
+{
+  "state": "VA",
+  "name": "Virginia",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Circuit court jury commissioners (Va. Code 8.01-345).",
+    "fields_withheld": null,
+    "official_pipeline": "Not found for jury records. The official non-citizen pipeline is the DMV list (Va. Code 24.2-410.1, confidential, official use only) and SAVE checks; the general registrar mails notice and cancels after 14 days without a sworn citizenship statement (Va. Code 24.2-427(B)).",
+    "use_restriction": null,
+    "source_url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-427/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Va. Code 24.2-427 (cancellation after non-citizen report)",
+        "url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-427/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Va. Code 24.2-410.1 (DMV non-citizen lists; confidential)",
+        "url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-410.1/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Not a private citizen. Lists go only to candidates, party committees, PACs, incumbents, voter-participation nonprofits, tax officials, and courts for jury selection (Va. Code 24.2-405(A)). 'The lists shall be furnished to no one else and used for no other purpose.'",
+    "permitted_uses": "Only the purposes listed in 24.2-405 and 24.2-406.",
+    "no_online_posting": true,
+    "penalty": "False statement on the required purchaser statement is a felony (Va. Code 24.2-407, citing 24.2-1016).",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Signed statement that the purchaser is authorized by 24.2-405/406, will use the lists only for the prescribed purposes, and will not permit use or copying by unauthorized persons, subject to felony penalties (Va. Code 24.2-407).",
+    "source_url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-405/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Va. Code 24.2-407 (purchaser statement: authorized person, authorized use, no copying by unauthorized persons)",
+        "url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-407/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Va. Code 24.2-406 (lists of persons who voted; restricted recipients)",
+        "url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-406/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any three qualified voters of the county or city (Va. Code 24.2-431(A)).",
+    "form_or_statute": "Va. Code 24.2-431: petition to the circuit court objecting to a person's registration; 15 days' notice to the person unless the court orders otherwise; the court decides summarily. Amended by Acts 2026, c. 1064. A petition based only on removal of residence from the precinct is not allowed.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No deadline in 24.2-431; the order is not limited by the registration-closing rule in 24.2-416. Appeal within 7 days.",
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-431/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Va. Code 24.2-427 (cancellation; notice and 14 days for non-citizen reports)",
+        "url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-427/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-431/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Virginia Department of Elections - local general registrar and electoral board contacts",
+      "url": "https://vote.elections.virginia.gov/VoterInformation/PublicContactLookup",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Virginia Department of Elections",
+      "url": "https://www.elections.virginia.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Office of the Attorney General of Virginia",
+      "url": "https://www.oag.state.va.us/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "The jury record status is unknown (null), and a private citizen cannot lawfully obtain the voter list (Va. Code 24.2-405). Strict gates: counts only."
+  },
+  "notes": [
+    "Important: a private person is not an authorized recipient of Virginia voter lists (24.2-405). A user who holds a Virginia list must have obtained it under one of the listed purposes, and JuryRoll matching is not one of them. The app should warn Virginia users before loading a voter file.",
+    "Acts 2026, c. 1064 repealed 24.2-432 and 24.2-651 (poll challenges) effective July 1, 2026, and amended 24.2-431.",
+    "24.2-410.1 has a version effective July 1, 2027. Re-verify before then.",
+    "jury_list.public is null: no Virginia statute on the confidentiality of juror non-citizen answers was found.",
+    "state_extra_days is 0: 24.2-431 sets no window."
+  ]
+}

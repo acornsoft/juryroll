@@ -1,6 +1,6 @@
 import core from '../core.js';
 import { guessExtra, type ExtraColumns } from './columns.ts';
-import { applyPolicy, type PolicyResult } from './apply.ts';
+import { applyPolicy, UI_DATE_STRICTNESS, type DateStrictness, type PolicyResult } from './apply.ts';
 import type { RulesFile } from './gates.ts';
 import type { MatchResult } from '../core.js';
 
@@ -15,7 +15,12 @@ export type LoadedTable = {
   reasonFilter: Record<string, boolean> | null;
 };
 
-export function runMatch(juror: LoadedTable, voter: LoadedTable, rules: RulesFile): { coreResult: MatchResult; policy: PolicyResult } {
+export function runMatch(
+  juror: LoadedTable,
+  voter: LoadedTable,
+  rules: RulesFile,
+  options?: { dateStrictness?: DateStrictness },
+): { coreResult: MatchResult; policy: PolicyResult } {
   const builtJ = core.buildRecords(juror.text, juror.delim, juror.hasHeader, juror.map, {
     order: juror.order,
     reasonFilter: juror.reasonFilter,
@@ -38,6 +43,7 @@ export function runMatch(juror: LoadedTable, voter: LoadedTable, rules: RulesFil
     jurorOrder: juror.order,
     voterOrder: voter.order,
     rules,
+    dateStrictness: options?.dateStrictness ?? UI_DATE_STRICTNESS,
   });
   return { coreResult, policy };
 }

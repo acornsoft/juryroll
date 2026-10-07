@@ -1,0 +1,93 @@
+{
+  "state": "MO",
+  "name": "Missouri",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Board of jury commissioners (RSMo 494.415).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=494.400",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "RSMo 494.400 (jurors must be citizens)",
+        "url": "https://revisor.mo.gov/main/OneSection.aspx?section=494.400",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "RSMo 494.415 (juror qualification form; disqualified names deleted from the master list)",
+        "url": "https://revisor.mo.gov/main/OneSection.aspx?section=494.415",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any member of the public: electronic media or printouts showing only voter ID number, name, year of birth, address, township or ward, and precinct (RSMo 115.157.1).",
+    "permitted_uses": "Not stated for the basic list. Lists of who voted in an election may not be used for commercial purposes (115.157.3).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": false,
+    "attestation_required": null,
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.157",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private pre-election challenge was found. The election authority must investigate material affecting a voter's qualifications brought to it from any source (RSMo 115.191). Poll challengers are designated by party chairs (115.105).",
+    "form_or_statute": "RSMo 115.191. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.191",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://revisor.mo.gov/main/OneSection.aspx?section=115.191",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Missouri Secretary of State - local election authorities",
+      "url": "https://www.sos.mo.gov/elections/goVoteMissouri/localelectionauthority",
+      "verified_on": "2026-10-07",
+      "note": "Under RSMo 115.191 the local election authority must investigate information about a voter's qualifications."
+    },
+    "state_election_office": {
+      "name": "Missouri Secretary of State - Elections",
+      "url": "https://www.sos.mo.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Missouri Attorney General",
+      "url": "https://ago.mo.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. No private challenge; information may go to the election authority (RSMo 115.191). Strict gates."
+  },
+  "notes": [
+    "The public list shows year of birth only and no registration date (115.157.1).",
+    "official_pipeline is null: none found."
+  ]
+}

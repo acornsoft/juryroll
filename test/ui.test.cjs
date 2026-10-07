@@ -75,10 +75,10 @@ async function attest(page) {
   pass('AT-06');
 
   await first.page.selectOption('#stateSel', 'WY');
-  const fallback = await first.page.locator('#rulesFallback').innerText();
-  assert.ok(fallback.includes('No verified rules for WY. Strictest rules apply.'));
-  assert.ok((await first.page.locator('#stateLimits').innerText()).includes('State time limits not verified'));
-  pass('AT-03');
+  assert.strictEqual(await first.page.locator('#rulesFallback').count(), 0);
+  assert.strictEqual(await first.page.locator('#fileJuror').count(), 0);
+  assert.ok(await first.page.isVisible('#auditMode'));
+  pass('AT-03-live-wy');
 
   await first.page.selectOption('#stateSel', 'TX');
   const blocked = await first.page.locator('#juryBlocked').innerText();
@@ -127,12 +127,17 @@ async function attest(page) {
   await main.page.waitForSelector('#countStrong');
   const counts = await main.page.evaluate(() => ['Strong', 'Probable', 'Weak'].map((tier) => Number(document.querySelector(`#count${tier} .n`).textContent)));
   console.log('UI tier counts [Strong, Probable, Weak]:', counts);
-  assert.deepStrictEqual(counts, [0, 7, 2]);
+  assert.deepStrictEqual(counts, [0, 0, 0]);
   assert.ok((await main.page.locator('#matcherCounts').innerText()).includes('Strong 3, Probable 4, Weak 2'));
   assert.ok((await main.page.locator('#tierCapBadge').innerText()).includes('North Carolina'));
-  assert.strictEqual((await main.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'), true);
+  assert.ok((await main.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
+  assert.ok((await main.page.locator('#cannotCompareLine').innerText()).includes('9 matches cannot compare: no registration date'));
+  assert.ok((await main.page.locator('#regDateNote').innerText()).includes('latest registration change'));
   const rowsDefault = await main.page.locator('#results tr').count() - 1;
-  assert.strictEqual(rowsDefault, 7, 'weak rows must be hidden by default');
+  assert.strictEqual(rowsDefault, 0, 'pairs with no registration date are not named');
+  const namedText = await main.page.locator('#results').innerText();
+  assert.ok(!namedText.includes('Alpha'));
+  assert.ok(!namedText.includes('Example'));
   assert.strictEqual(await main.page.locator('#exportWeak').count(), 0);
   pass('AT-08');
   pass('AT-09');
@@ -155,8 +160,12 @@ async function attest(page) {
   console.log('Export file name:', download.suggestedFilename());
   assert.ok(download.suggestedFilename().startsWith('JuryRoll-referral-NC-Wake-'));
   assert.ok(csv.startsWith('Referral for official verification'));
+  assert.ok(csv.includes('0 matches excluded: registered after declaration'));
+  assert.ok(csv.includes('9 matches cannot compare: no registration date'));
   assert.ok(csv.includes('Official SAVE or naturalization check required before any action. A match is not proof. Do not publish. Do not contact the voter.'));
   assert.ok(!/^Weak,/m.test(csv));
+  assert.ok(!csv.includes('Alpha'));
+  assert.ok(!csv.includes('Example'));
   await main.page.waitForSelector('#purgeNow');
   assert.ok((await main.page.locator('#purgeTitle').innerText()).includes('Referral saved. Purge the data now?'));
   await main.page.screenshot({ path: path.join(shots, '05b-purge-prompt.png'), fullPage: true });
@@ -176,11 +185,6 @@ async function attest(page) {
   assert.strictEqual(storage.databases.every((name) => name === 'juryroll-audit'), true);
   pass('AT-28');
 
-  await main.page.click('#purgeBtn');
-  await main.page.waitForFunction(() => document.body.dataset.purged === '1' && !document.body.dataset.hasFiles);
-  assert.strictEqual(await main.page.locator('#results tr').count(), 0);
-  pass('AT-25');
-
   const [logDownload] = await Promise.all([
     main.page.waitForEvent('download'),
     main.page.click('#downloadLog'),
@@ -190,13 +194,38 @@ async function attest(page) {
   const entries = fs.readFileSync(logPath, 'utf8').trim().split('\n').map((line) => JSON.parse(line));
   const types = entries.map((entry) => entry.type);
   console.log('Audit types:', types.join(', '));
-  assert.deepStrictEqual(types, ['session_start', 'rules_loaded', 'attestation_signed', 'file_loaded', 'file_loaded', 'mapping_set', 'match_run', 'export', 'purge']);
+  assert.deepStrictEqual(types, ['session_start', 'rules_loaded', 'attestation_signed', 'file_loaded', 'file_loaded', 'mapping_set', 'match_run', 'export']);
+  const matchRun = entries.find((entry) => entry.type === 'match_run');
+  assert.strictEqual(matchRun.data.excluded_registered_after, 0);
+  assert.strictEqual(matchRun.data.cannot_compare_no_reg_date, 9);
   const logText = fs.readFileSync(logPath, 'utf8');
   assert.ok(!logText.includes('Alpha'));
   assert.ok(!logText.includes('J-0001'));
   assert.ok(!logText.includes('sample_juror'));
   assert.ok(!logText.includes('100 Example'));
   pass('AT-22');
+
+  await main.page.click('#purgeBtn');
+  await main.page.waitForFunction(() => document.body.dataset.purged === '1' && !document.body.dataset.hasFiles && document.body.dataset.logCleared === '1');
+  assert.strictEqual(await main.page.locator('#results tr').count(), 0);
+  assert.strictEqual(await main.page.locator('#fileJuror').inputValue(), '');
+  assert.strictEqual(await main.page.locator('#fileVoter').inputValue(), '');
+  const cleared = await main.page.evaluate(() => new Promise((resolve, reject) => {
+    const open = indexedDB.open('juryroll-audit');
+    open.onerror = () => reject(open.error);
+    open.onsuccess = () => {
+      const db = open.result;
+      const request = db.transaction('log', 'readonly').objectStore('log').getAll();
+      request.onsuccess = () => {
+        db.close();
+        resolve(request.result.length);
+      };
+      request.onerror = () => reject(request.error);
+    };
+  }));
+  assert.strictEqual(cleared, 0);
+  pass('AT-25');
+  pass('AT-28-after-purge');
   assert.deepStrictEqual(main.errors, [], 'page errors: ' + main.errors.join('; '));
   assert.deepStrictEqual(main.requests, [], 'network requests: ' + main.requests.join('; '));
   pass('AT-29');
@@ -216,12 +245,13 @@ async function attest(page) {
   await dates.page.click('#runBtn');
   await dates.page.waitForSelector('#excludedLine');
   const excluded = await dates.page.locator('#excludedLine').innerText();
+  const cannot = await dates.page.locator('#cannotCompareLine').innerText();
   assert.ok(excluded.includes('1 matches excluded: registered after declaration'));
+  assert.ok(cannot.includes('1 matches cannot compare: no registration date'));
   const bodyText = await dates.page.locator('body').innerText();
   assert.ok(!bodyText.includes('Afterson'));
   assert.ok(bodyText.includes('Keepson'));
-  assert.ok(bodyText.includes('Missingson'));
-  assert.ok(bodyText.includes('date missing'));
+  assert.ok(!bodyText.includes('Missingson'));
   assert.ok(bodyText.includes('Official SAVE / naturalization check required'));
   const [dateDownload] = await Promise.all([
     dates.page.waitForEvent('download'),
@@ -232,10 +262,11 @@ async function attest(page) {
   const dateCsv = fs.readFileSync(dateCsvPath, 'utf8');
   assert.ok(!dateCsv.includes('Afterson'));
   assert.ok(dateCsv.includes('Keepson'));
-  assert.ok(dateCsv.includes('Missingson'));
+  assert.ok(!dateCsv.includes('Missingson'));
+  assert.ok(dateCsv.includes('1 matches excluded: registered after declaration'));
+  assert.ok(dateCsv.includes('1 matches cannot compare: no registration date'));
   pass('AT-10');
   pass('AT-11');
-  pass('AT-12');
   pass('AT-13-dates');
   await dates.context.close();
 
@@ -261,7 +292,7 @@ async function attest(page) {
   await xlsx.page.click('#runBtn');
   await xlsx.page.waitForSelector('#matcherCounts');
   const xlsxCounts = await xlsx.page.evaluate(() => ['Strong', 'Probable', 'Weak'].map((tier) => Number(document.querySelector(`#count${tier} .n`).textContent)));
-  assert.deepStrictEqual(xlsxCounts, [0, 7, 2]);
+  assert.deepStrictEqual(xlsxCounts, [0, 0, 0]);
   assert.ok((await xlsx.page.locator('#matcherCounts').innerText()).includes('Strong 3, Probable 4, Weak 2'));
   assert.deepStrictEqual(xlsx.errors, [], 'xlsx page errors: ' + xlsx.errors.join('; '));
   console.log('XLSX UI counts [Strong, Probable, Weak]:', xlsxCounts);
@@ -292,7 +323,7 @@ async function attest(page) {
   await timedDownload.saveAs(path.join(shots, 'timed-export.csv'));
   await timed.page.waitForSelector('#purgeNow');
   await timed.page.clock.fastForward(10 * 60 * 1000);
-  await timed.page.waitForFunction(() => document.body.dataset.purged === '1');
+  await timed.page.waitForFunction(() => document.body.dataset.purged === '1' && document.body.dataset.logCleared === '1');
   pass('AT-26');
   await timed.context.close();
 
@@ -304,10 +335,129 @@ async function attest(page) {
   await idle.page.clock.fastForward(28 * 60 * 1000);
   await idle.page.waitForSelector('#idleWarn');
   await idle.page.clock.fastForward(2 * 60 * 1000);
-  await idle.page.waitForFunction(() => document.body.dataset.purged === '1');
+  await idle.page.waitForFunction(() => document.body.dataset.purged === '1' && document.body.dataset.logCleared === '1');
   pass('AT-27');
   assert.deepStrictEqual(idle.errors, [], 'idle page errors: ' + idle.errors.join('; '));
   await idle.context.close();
+
+  const fixtures = path.join(root, 'test/fixtures');
+  async function runPair(page, jurorName, voterName) {
+    await page.selectOption('#stateSel', 'NC');
+    await attest(page);
+    await page.setInputFiles('#fileJuror', path.join(fixtures, jurorName));
+    await page.waitForSelector('#infoJuror');
+    await page.setInputFiles('#fileVoter', path.join(fixtures, voterName));
+    await page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+    await page.click('#runBtn');
+    await page.waitForSelector('#cannotCompareLine');
+  }
+
+  const missing = await openPage(browser);
+  await runPair(missing.page, 'juror_missing_reg.csv', 'voter_missing_reg.csv');
+  assert.ok((await missing.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
+  assert.ok((await missing.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
+  assert.ok(!(await missing.page.locator('body').innerText()).includes('Missingson'));
+  const [missingDownload] = await Promise.all([
+    missing.page.waitForEvent('download'),
+    missing.page.click('#exportBtn'),
+  ]);
+  const missingPath = path.join(shots, 'missing-reg.csv');
+  await missingDownload.saveAs(missingPath);
+  const missingCsv = fs.readFileSync(missingPath, 'utf8');
+  assert.ok(!missingCsv.includes('Missingson'));
+  assert.ok(missingCsv.includes('1 matches cannot compare: no registration date'));
+  pass('AT-12-missing');
+  await missing.context.close();
+
+  const equal = await openPage(browser);
+  await runPair(equal.page, 'juror_equal.csv', 'voter_equal.csv');
+  assert.ok((await equal.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
+  assert.ok((await equal.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
+  assert.ok(!(await equal.page.locator('body').innerText()).includes('Equalson'));
+  const [equalDownload] = await Promise.all([
+    equal.page.waitForEvent('download'),
+    equal.page.click('#exportBtn'),
+  ]);
+  const equalPath = path.join(shots, 'equal-date.csv');
+  await equalDownload.saveAs(equalPath);
+  assert.ok(!fs.readFileSync(equalPath, 'utf8').includes('Equalson'));
+  pass('AT-12');
+  await equal.context.close();
+
+  const before = await openPage(browser);
+  await runPair(before.page, 'juror_before_only.csv', 'voter_before_only.csv');
+  assert.ok((await before.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
+  assert.ok((await before.page.locator('#cannotCompareLine').innerText()).includes('0 matches cannot compare: no registration date'));
+  assert.ok((await before.page.locator('#results').innerText()).includes('Keepson'));
+  pass('AT-39');
+  await before.context.close();
+
+  const noReg = await openPage(browser);
+  await runPair(noReg.page, 'juror_three.csv', 'voter_no_regdate.csv');
+  assert.ok((await noReg.page.locator('#cannotCompareLine').innerText()).includes('3 matches cannot compare: no registration date'));
+  assert.ok((await noReg.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
+  assert.strictEqual(await noReg.page.locator('#results tbody tr').count(), 0);
+  const [noRegDownload] = await Promise.all([
+    noReg.page.waitForEvent('download'),
+    noReg.page.click('#exportBtn'),
+  ]);
+  const noRegPath = path.join(shots, 'no-reg.csv');
+  await noRegDownload.saveAs(noRegPath);
+  const noRegCsv = fs.readFileSync(noRegPath, 'utf8');
+  assert.ok(noRegCsv.includes('3 matches cannot compare: no registration date'));
+  assert.ok(noRegCsv.includes('0 matches excluded: registered after declaration'));
+  assert.ok(!noRegCsv.includes('Pellson'));
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(noRegCsv));
+  await noReg.page.waitForSelector('#keepData');
+  await noReg.page.click('#keepData');
+  const [noRegLog] = await Promise.all([
+    noReg.page.waitForEvent('download'),
+    noReg.page.click('#downloadLog'),
+  ]);
+  const noRegLogPath = path.join(shots, 'no-reg-audit.jsonl');
+  await noRegLog.saveAs(noRegLogPath);
+  const noRegEntries = fs.readFileSync(noRegLogPath, 'utf8').trim().split('\n').map((line) => JSON.parse(line));
+  const noRegMatch = noRegEntries.find((entry) => entry.type === 'match_run');
+  assert.strictEqual(noRegMatch.data.cannot_compare_no_reg_date, 3);
+  assert.strictEqual(noRegMatch.data.excluded_registered_after, 0);
+  pass('AT-37');
+  await noReg.context.close();
+
+  const blankDecl = await openPage(browser);
+  await runPair(blankDecl.page, 'juror_missing_decl.csv', 'voter_missing_decl.csv');
+  assert.ok((await blankDecl.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
+  assert.ok(!(await blankDecl.page.locator('#results').innerText()).includes('Blankdecl'));
+  pass('AT-40');
+  await blankDecl.context.close();
+
+  const dc = await openPage(browser);
+  await dc.page.selectOption('#stateSel', 'DC');
+  const dcBanner = await dc.page.locator('#nonSignalBanner').innerText();
+  assert.ok(dcBanner.includes('D.C. lets non-citizens vote'));
+  assert.ok(dcBanner.includes('not evidence of unlawful registration in this jurisdiction'));
+  assert.strictEqual(await dc.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await dc.page.locator('#fileJuror').count(), 0);
+  assert.strictEqual(await dc.page.locator('#exportBtn').count(), 0);
+  pass('AT-34');
+  await dc.context.close();
+
+  const nd = await openPage(browser);
+  await nd.page.selectOption('#stateSel', 'ND');
+  assert.ok((await nd.page.locator('#ndBanner').innerText()).includes('North Dakota has no voter registration'));
+  assert.strictEqual(await nd.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await nd.page.locator('#fileJuror').count(), 0);
+  pass('AT-35');
+  await nd.context.close();
+
+  const ca = await openPage(browser);
+  await ca.page.selectOption('#stateSel', 'CA');
+  const limit = await ca.page.locator('#useLimitBanner').innerText();
+  assert.ok(limit.includes('Your state limits how its voter list may be used'));
+  assert.ok(limit.includes('Election, scholarly, journalistic, political, or governmental purposes'));
+  assert.ok(limit.includes('2194'));
+  assert.strictEqual(await ca.page.locator('#challengePanel').count(), 0);
+  pass('AT-36');
+  await ca.context.close();
 
   await browser.close();
   console.log('ALL UI TESTS PASSED');

@@ -1,0 +1,109 @@
+{
+  "state": "MS",
+  "name": "Mississippi",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "County jury commission; the master list is the county voter registration list (Miss. Code 13-5-8).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://law.justia.com/codes/mississippi/title-13/chapter-5/section-13-5-32/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Miss. Code 13-5-32 (names drawn from the jury box are public unless the court orders otherwise)",
+        "url": "https://law.justia.com/codes/mississippi/title-13/chapter-5/section-13-5-32/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Miss. Code 13-5-8 (master list is the voter registration list)",
+        "url": "https://law.justia.com/codes/mississippi/title-13/chapter-5/section-13-5-8/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person may get copies of voter registration files under the Public Records Act, at cost, without SSN, phone, email, date of birth, or age (Miss. Code 23-15-165(6)).",
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-3/subarticle-g/section-23-15-165/",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any elector of the county (Miss. Code 23-15-63).",
+    "form_or_statute": "Miss. Code 23-15-63: appeal to the county election commissioners from the registrar's decision allowing a person to register; the appellant must serve written notice of the grounds on the registrant through the sheriff or a constable. Appeals are heard at the September meeting before a general election (23-15-65) and other set meetings (23-15-67).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "Not stated in 23-15-63. Hearings occur at commission meetings (23-15-65, 23-15-67).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "Written notice stating the grounds (23-15-63). No higher standard stated.",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-3/subarticle-c/section-23-15-63/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Miss. Code 23-15-65 (commissioners hear appeals; correct illegal registrations)",
+        "url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-3/subarticle-c/section-23-15-65/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Miss. Code 23-15-17 (any person with reasonable cause may report a suspected false registration to law enforcement)",
+        "url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-3/subarticle-a/section-23-15-17/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://law.justia.com/codes/mississippi/title-23/chapter-15/article-3/subarticle-c/section-23-15-63/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Mississippi Secretary of State - county election information",
+      "url": "https://www.sos.ms.gov/elections-voting/county-election-information",
+      "verified_on": "2026-10-07",
+      "note": "Appeals under 23-15-63 go to the county election commission."
+    },
+    "state_election_office": {
+      "name": "Mississippi Secretary of State - Elections and Voting",
+      "url": "https://www.sos.ms.gov/elections-voting",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Mississippi Attorney General",
+      "url": "https://attorneygenerallynnfitch.com/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury disqualification records: status unknown (null), so counts only. A county elector may appeal a registration to the election commissioners (23-15-63). Strict gates."
+  },
+  "notes": [
+    "The jury master list is the county voter list itself (13-5-8), so jury records add little beyond the voter roll.",
+    "The state compares new registrations with driver's license data and SAVE (23-15-15).",
+    "Source note: the official Mississippi Code is published by a commercial vendor behind scripts; sections were read on Justia (2025 code).",
+    "sos.ms.gov blocks plain HTTP clients; pages were checked in a browser."
+  ]
+}

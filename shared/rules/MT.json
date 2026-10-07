@@ -1,0 +1,96 @@
+{
+  "state": "MT",
+  "name": "Montana",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Clerk of the district court (jury commissioner, MCA 3-15-404).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://mca.legmt.gov/bills/mca/title_0030/chapter_0150/part_0040/section_0030/0030-0150-0040-0030.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "MCA 3-15-403(2) (public excerpt of jury lists: name, address, birth year; disqualification records not addressed)",
+        "url": "https://mca.legmt.gov/bills/mca/title_0030/chapter_0150/part_0040/section_0030/0030-0150-0040-0030.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any individual, for noncommercial use, from the Secretary of State or the local election administrator, at actual cost (MCA 13-2-122(1)). Protected addresses are withheld (13-2-122(2)).",
+    "permitted_uses": "Noncommercial use only (13-2-122(1)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://mca.legmt.gov/bills/mca/title_0130/chapter_0020/part_0010/section_0220/0130-0020-0010-0220.html",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any registered elector, at any time (MCA 13-13-301(1)).",
+    "form_or_statute": "MCA 13-13-301: signed affidavit stating the grounds plus supporting evidence, filed with the election administrator (Secretary of State standardized form, 13-13-301(5)). Grounds include 'does not meet another requirement provided in the constitution or by law' (13-13-301(2)(h)); U.S. citizenship is a statutory voter qualification (MCA 13-1-111(1)(d)).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No filing deadline. Before the close of regular registration the administrator questions both sides and decides on cancellation; after it, the challenged elector casts a provisional ballot (13-13-301(3)).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "Affidavit stating the grounds and 'any evidence supporting the challenge' (13-13-301(1)). The challenged elector receives a copy of the affidavit and evidence and learns who made the challenge (13-13-301(4)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://mca.legmt.gov/bills/mca/title_0130/chapter_0130/part_0030/section_0010/0130-0130-0030-0010.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "MCA 13-1-111(1)(d) (a voter must be a U.S. citizen)",
+        "url": "https://mca.legmt.gov/bills/mca/title_0130/chapter_0010/part_0010/section_0110/0130-0010-0010-0110.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://mca.legmt.gov/bills/mca/title_0130/chapter_0130/part_0030/section_0010/0130-0130-0030-0010.html",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Montana election administrators contact list (Secretary of State)",
+      "url": "https://sosmt.gov/elections/election-administrators-contact-list/",
+      "verified_on": "2026-10-07",
+      "note": "Challenges under MCA 13-13-301 go to the county election administrator."
+    },
+    "state_election_office": {
+      "name": "Montana Secretary of State - Elections and Voter Services",
+      "url": "https://sosmt.gov/elections/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Montana Department of Justice (Attorney General)",
+      "url": "https://dojmt.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury disqualification records: status unknown (null), so counts only. Montana lets any registered elector file a challenge affidavit with evidence at any time (MCA 13-13-301). Guidance stays off while the jury list is not available."
+  },
+  "notes": [
+    "The challenger's name, affidavit, and evidence are given to the challenged elector (13-13-301(4)).",
+    "The jury list excerpt under 3-15-403(2) is public, but it shows qualified jurors, not non-citizen disqualifications. jury_list.public stays null.",
+    "one_per_affidavit, false_statement_penalty, dob_in_public_file, and registration_date_in_public_file are null: not stated in the sections read."
+  ]
+}

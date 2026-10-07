@@ -1,0 +1,4 @@
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status
+V1,Pellson,Pia,1980-03-14,1 Main St,00001,ACTIVE
+V2,Quillson,Quinn,1981-04-02,2 Main St,00001,ACTIVE
+V3,Rennson,Rhea,1982-05-03,3 Main St,00001,ACTIVE

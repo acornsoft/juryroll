@@ -1,0 +1,95 @@
+{
+  "state": "ID",
+  "name": "Idaho",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Idaho Code 2-213(4): the contents of records or papers used by the jury commissioner or clerk in the selection process, and not made public under 2-206(5), 'shall not be disclosed' except for a jury-selection motion. 2-208(1): neither the names drawn nor the list shall be disclosed except on order of the presiding judge. 2-208(7): questionnaire contents are confidential as provided by Supreme Court rule.",
+    "holder": "County jury commission / clerk of the district court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://legislature.idaho.gov/statutesrules/idstat/Title2/T2CH2/SECT2-213/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Idaho Code 2-208 (qualification questionnaire asks about citizenship; names drawn not disclosed; contents confidential per court rule)",
+        "url": "https://legislature.idaho.gov/statutesrules/idstat/Title2/T2CH2/SECT2-208/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any individual, from the county clerk, at reproduction cost (Idaho Code 34-437(1)). The list holds names and addresses by precinct.",
+    "permitted_uses": "Not for mailing or delivering advertisements, offers, or solicitations for money or anything of value; any political purpose is allowed (34-437(2)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://legislature.idaho.gov/statutesrules/idstat/Title34/T34CH4/SECT34-437/",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the time of an election, any registered elector may challenge an entry in the election register by noting the reason and signing (Idaho Code 34-431). The county clerk follows up after the election (34-432). No pre-election written challenge by a private elector was found.",
+    "form_or_statute": "Idaho Code 34-431, 34-432. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://legislature.idaho.gov/statutesrules/idstat/Title34/T34CH4/SECT34-431/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Idaho Code 34-432 (post-election clerk inquiry; clerk may inquire into any registration at any time)",
+        "url": "https://legislature.idaho.gov/statutesrules/idstat/Title34/T34CH4/SECT34-432/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://legislature.idaho.gov/statutesrules/idstat/Title34/T34CH4/SECT34-431/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Idaho county clerks (VoteIdaho.gov)",
+      "url": "https://voteidaho.gov/county-clerk/",
+      "verified_on": "2026-10-07",
+      "note": "The county clerk must suspend a registration that appears from the clerk's records not to be a citizen's (Idaho Code 34-419)."
+    },
+    "state_election_office": {
+      "name": "Idaho Secretary of State - Elections (VoteIdaho.gov)",
+      "url": "https://voteidaho.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Idaho Office of the Attorney General",
+      "url": "https://www.ag.idaho.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror selection records may not be disclosed (Idaho Code 2-213(4), 2-208). The only private challenge is at the time of an election (34-431). Strict gates: counts only."
+  },
+  "notes": [
+    "official_pipeline is null: no jury-to-clerk non-citizen statute was found. Idaho Code 34-419 tells the county clerk to suspend any registration that appears, from the clerk's own records, not to be a citizen's.",
+    "dob_in_public_file and registration_date_in_public_file are null: 34-437 lists names and addresses only and does not address other fields."
+  ]
+}

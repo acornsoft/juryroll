@@ -13,13 +13,13 @@ import jurorTemplateXlsxUrl from '../../shared/templates/juror-template.xlsx?url
 import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url';
 import { ATTEST_LINES, CAVEATS, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
-import { chainStatus, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
+import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
-import { SAVE_LINE, exportableRows, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
+import { exportableRows, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
-import { effective, referralTargets, resolveRules, strict, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
+import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
 import { auditLetter } from '../../shared/src/policy/letter.ts';
 import { runMatch } from '../../shared/src/policy/runMatch.ts';
 import { sha256Hex, sha256HexSync } from '../../shared/src/policy/sha256.ts';
@@ -163,9 +163,32 @@ export function App() {
     const had = Boolean(jurorRef.current || voterRef.current || policyRef.current);
     if (!had && trigger !== 'button') return;
     clearLoaded();
+    const jurorInput = document.getElementById('fileJuror');
+    const voterInput = document.getElementById('fileVoter');
+    if (jurorInput instanceof HTMLInputElement) jurorInput.value = '';
+    if (voterInput instanceof HTMLInputElement) voterInput.value = '';
     setModal(false);
     window.clearTimeout(exportTimer.current);
-    void appendRef.current('purge', { trigger });
+    const clearsLog = trigger === 'button' || trigger === 'after_export' || trigger === 'timeout';
+    if (!clearsLog) {
+      void appendRef.current('purge', { trigger });
+      return;
+    }
+    logRef.current = [];
+    setLogCount(0);
+    setIntegrity('');
+    delete document.body.dataset.logCleared;
+    const db = idbRef.current;
+    if (!db || memOnly.current) {
+      document.body.dataset.logCleared = '1';
+      return;
+    }
+    void clearAudit(db).then(() => {
+      document.body.dataset.logCleared = '1';
+    }).catch(() => {
+      memOnly.current = true;
+      setMemWarn(true);
+    });
   }
   purgeRef.current = purge;
 
@@ -228,7 +251,7 @@ export function App() {
   }, [modal]);
 
   const rules = resolved?.rules ?? null;
-  const gates = rules ? effective(rules) : null;
+  const gates = rules ? uiGates(rules) : null;
   const attested = checks.every(Boolean) && initials.trim().length >= 1;
   const ready = Boolean(code) && attested;
   const today = localISO(new Date());
@@ -255,7 +278,7 @@ export function App() {
     setResolved(picked);
     setPolicy(null);
     setCoreResult(null);
-    if (!picked.rules || !effective(picked.rules).allow_jury_list) {
+    if (!picked.rules || !uiGates(picked.rules).allow_jury_list) {
       setJuror(null);
       setPendingJ(null);
       jurorRef.current = null;
@@ -389,7 +412,8 @@ export function App() {
       counts: matched.policy.counts,
       flag_counts: matched.policy.flagCounts,
       cap_applied: matched.policy.capApplied,
-      excluded: matched.policy.excludedCount,
+      excluded_registered_after: matched.policy.excludedAfterCount,
+      cannot_compare_no_reg_date: matched.policy.cannotCompareCount,
     });
   }
 
@@ -483,7 +507,7 @@ export function App() {
             <a className="guide-link" href="./guide.html">What you can and cannot do</a>
           </div>
         )}
-        {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data at 30 minutes.</p>}
+        {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
 
         <ol className="stepper no-print" id="stepper">
           <li aria-current={code ? undefined : 'step'}>Step 0. Your state</li>
@@ -511,6 +535,12 @@ export function App() {
             <input id="county" type="text" value={county} autoComplete="off" onChange={(event) => setCounty(event.target.value)} />
           </label>
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
+          {rules && NON_SIGNAL[rules.state] && (
+            <p className="banner" id="nonSignalBanner" role="status">
+              {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="guide-link" href="./guide.html">What you can and cannot do</a>
+            </p>
+          )}
+          {rules?.state === 'ND' && <p className="banner" id="ndBanner" role="status">{ND_REGISTRATION_NOTE}</p>}
           {rules && rules.blackout.state_extra_days === null && <p className="note" id="stateLimits">State time limits not verified</p>}
           {rules && (
             <ul className="small" id="rulesNotes">
@@ -619,6 +649,14 @@ export function App() {
           </section>
         )}
 
+        {rules && useLimitApplies(rules) && (
+          <section className="panel" id="useLimitBanner">
+            <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="guide-link" href="./guide.html">What you can and cannot do</a></p>
+            {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
+            {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url}>{rules.voter_file.source_url}</a></p>}
+          </section>
+        )}
+
         <fieldset className="panel" id="step1" disabled={!ready || !gates?.allow_jury_list}>
           <legend>Step 1. Load the files</legend>
           {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
@@ -656,7 +694,8 @@ export function App() {
           </div>
           <p className="row">
             <button id="sampleBtn" type="button" className="secondary" onClick={() => { void loadSamples(); }}>Try with sample data</button>
-            {(juror || voter) && <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data now?')) purge('button'); }}>Purge now</button>}
+            {(juror || voter) && <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge now</button>}
+            {(juror || voter) && <span className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</span>}
           </p>
           {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
           <div className="downloads">
@@ -729,7 +768,9 @@ export function App() {
               </div>
               {policy.capBadge && <p className="note" id="tierCapBadge">{policy.capBadge}</p>}
               <p id="excludedLine"><b>{policy.excludedLine}</b></p>
-              <p className="small" id="regDateNote">Some voter files show the latest registration change, not the first registration. A registration after the jury declaration is not a lead.</p>
+              <p id="cannotCompareLine"><b>{policy.cannotCompareLine}</b></p>
+              <p className="small" id="regDateNote">Some voter files show the date of the latest registration change, not the first registration. That excludes more matches, which is the safe direction.</p>
+              {rules && NON_SIGNAL[rules.state] && <p id="nonSignalCounts">These counts are {NON_SIGNAL_LABEL}.</p>}
               <p id="symmetricCount">Non-citizen removal reasons on the voter file: {policy.symmetric.noncitizenRemovals}. Without a Strong jury match: {policy.symmetric.withoutStrongMatch}.</p>
               <p className="small">Possible wrongful removals, count only: {policy.wrongfulCount}. Official SAVE / naturalization check required.</p>
               {targets.length > 0 && (
@@ -778,6 +819,7 @@ export function App() {
         <div className="modal-back">
           <div className="modal" role="dialog" aria-modal="true" aria-labelledby="purgeTitle">
             <h2 id="purgeTitle">Referral saved. Purge the data now?</h2>
+            <p id="purgeLogModal">Purge also deletes the audit log. Download it first if you need it.</p>
             <p className="row">
               <button id="purgeNow" type="button" onClick={() => purge('after_export')}>Purge now</button>
               <button id="keepData" type="button" className="quiet" onClick={() => setModal(false)}>Keep for 10 minutes</button>

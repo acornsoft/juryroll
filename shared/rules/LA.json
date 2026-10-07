@@ -1,0 +1,103 @@
+{
+  "state": "LA",
+  "name": "Louisiana",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Clerk of court (or the entity that handles jury notices).",
+    "fields_withheld": null,
+    "official_pipeline": "R.S. 18:178(B): by the 10th of each month the clerk of court notifies the Department of State of returned jury notices or questionnaires showing the person is not a U.S. citizen; the Department sends them to the parish registrar. R.S. 18:178(C): federal district courts do the same after each panel.",
+    "use_restriction": null,
+    "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81504",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "La. R.S. 18:178 (notification on jury venire)",
+        "url": "https://www.legis.la.gov/Legis/Law.aspx?d=81504",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "A person who obtains the consent of the Secretary of State or the registrar and pays actual cost (R.S. 18:175(C)). Registrar records are public for inspection (R.S. 18:154(A)).",
+    "permitted_uses": "No purpose restriction found in 18:175. Officials and agencies may not disclose SSN, license number, day and month of birth, mother's maiden name, or assistance status (R.S. 18:154(C)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81501",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "La. R.S. 18:154 (records open; day and month of birth not disclosed)",
+        "url": "https://www.legis.la.gov/Legis/Law.aspx?d=81488",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls: a commissioner, watcher, or qualified voter may challenge a person applying to vote (R.S. 18:565). Registrar-initiated challenges are under R.S. 18:193; Acts 2024, No. 2 repealed 18:193(B) and (I). No current pre-election written challenge by a private voter was found.",
+    "form_or_statute": "La. R.S. 18:565 (polls). Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81646",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "La. R.S. 18:193 (registrar challenge; 21-day show-cause notice)",
+        "url": "https://www.legis.la.gov/Legis/Law.aspx?d=81519",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81519",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Louisiana Voter Portal - parish registrars of voters",
+      "url": "https://voterportal.sos.la.gov/registrar",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Louisiana Secretary of State - Elections and Voting",
+      "url": "https://www.sos.la.gov/elections-voting",
+      "verified_on": "2026-10-07",
+      "note": "Receives jury non-citizen notices monthly (R.S. 18:178(B))."
+    },
+    "ag": {
+      "name": "Louisiana Attorney General",
+      "url": "https://www.ag.state.la.us/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury non-citizen notices go to the Department of State (R.S. 18:178); public status unknown (null). No current private pre-election challenge was found. Strict gates: counts only."
+  },
+  "notes": [
+    "Duplication: the clerk-to-Department pipeline runs monthly (R.S. 18:178(B)).",
+    "Acts 2024, No. 2 repealed parts of R.S. 18:193 effective March 31, 2025. Text read on verified_on."
+  ]
+}
