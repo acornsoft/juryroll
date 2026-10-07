@@ -749,7 +749,16 @@ async function pickCounty(page, fips = '37183') {
       }
     }
   }
-  assert.deepStrictEqual(ran, ['NC']);
+  const expectedRan = codes.filter((code) => {
+    const gates = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates;
+    return gates.allow_jury_list === true;
+  });
+  assert.deepStrictEqual(ran, expectedRan);
+  const challengeCodes = codes.filter((code) => {
+    const gates = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates;
+    return gates.show_challenge_guidance === true;
+  });
+  assert.deepStrictEqual(challengeCodes, ['NC']);
   pass('AT-44-all-states');
   await walk.context.close();
 
@@ -837,6 +846,50 @@ async function pickCounty(page, fips = '37183') {
   ]);
   assert.strictEqual(namedCsv.suggestedFilename(), 'voter-template.csv');
   pass('AT-45-same-origin-downloads');
+
+  const paNote = 'Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.';
+  assert.ok(fs.readFileSync(path.join(root, 'shared/GUIDE.md'), 'utf8').includes(paNote));
+  const pa = await openPage(browser);
+  await pa.page.selectOption('#stateSel', 'PA');
+  await pa.page.waitForSelector('#paWalkthrough');
+  assert.strictEqual(await pa.page.locator('#paWalkthrough').innerText(), paNote);
+  assert.strictEqual(await pa.page.locator('#paNamesNote').innerText(), paNote);
+  assert.strictEqual(await pa.page.locator('#challengePanel').count(), 0);
+  await attest(pa.page);
+  await pa.page.selectOption('#county', { index: 1 });
+  const paDir = path.join(shots, 'pa');
+  fs.mkdirSync(paDir, { recursive: true });
+  const paJuror = path.join(paDir, 'juror.csv');
+  const paVoter = path.join(paDir, 'voter.csv');
+  fs.writeFileSync(paJuror, 'Last,First,Reason\nNamesonly,Ada,Not a U.S. citizen\n');
+  fs.writeFileSync(paVoter, 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Namesonly,Ada,1980-01-02,1 Main St,00001,ACTIVE,2019-01-01\n');
+  await pa.page.setInputFiles('#fileJuror', paJuror);
+  await pa.page.waitForSelector('#infoJuror');
+  await pa.page.setInputFiles('#fileVoter', paVoter);
+  await pa.page.waitForSelector('#infoVoter');
+  await pa.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await pa.page.click('#runBtn');
+  await pa.page.waitForSelector('#countStrong');
+  assert.strictEqual(await pa.page.locator('#countStrong .n').innerText(), '0');
+  assert.strictEqual(await pa.page.locator('#countProbable .n').innerText(), '0');
+  const paWeak = Number(await pa.page.locator('#countWeak .n').innerText());
+  const paCannot = await pa.page.locator('#cannotCompareLine').innerText();
+  assert.ok(paWeak + (Number(paCannot.match(/^(\d+)/)?.[1]) || 0) >= 1);
+  assert.strictEqual(await pa.page.locator('#results tbody tr').count(), 0);
+  assert.strictEqual(await pa.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await pa.page.locator('#paNamesNote').innerText(), paNote);
+  const [paDownload] = await Promise.all([
+    pa.page.waitForEvent('download'),
+    pa.page.click('#exportBtn'),
+  ]);
+  const paCsvPath = path.join(paDir, 'export.csv');
+  await paDownload.saveAs(paCsvPath);
+  const paCsv = fs.readFileSync(paCsvPath, 'utf8');
+  assert.ok(!paCsv.includes('Namesonly'));
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paCsv));
+  pass('AT-41');
+  assert.deepStrictEqual(pa.requests, [], 'PA page network: ' + pa.requests.join('; '));
+  await pa.context.close();
   await sameOrigin.context.close();
   await new Promise((resolve) => preview.close(resolve));
 

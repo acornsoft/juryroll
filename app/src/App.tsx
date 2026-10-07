@@ -11,7 +11,7 @@ import jurorTemplateUrl from '../../shared/templates/juror-template.csv?url';
 import voterTemplateUrl from '../../shared/templates/voter-template.csv?url';
 import jurorTemplateXlsxUrl from '../../shared/templates/juror-template.xlsx?url';
 import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url';
-import { ATTEST_LINES, CAVEATS, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
+import { ATTEST_LINES, CAVEATS, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
 import { COUNTIES, type County } from '../../shared/src/counties.ts';
@@ -689,6 +689,7 @@ export function App() {
         <section className="panel no-print" id="guidePanel">
           <h2>What you can and cannot do</h2>
           <p><a className="guide-link" href="./guide.html">Open the full guide</a></p>
+          {rules?.state === 'PA' && <p id="paWalkthrough">{PA_NAMES_ONLY_NOTE}</p>}
           <pre className="guide-pre">{guideSlice}</pre>
         </section>
 
@@ -872,6 +873,7 @@ export function App() {
 
         <section className="panel" id="step4">
           <h2 className="print-title" id="referralHeader">Referral for official verification — {stateName || 'No state yet'}{selectedCounty ? ` — ${selectedCounty.name} (${selectedCounty.fips})` : ''} — {today}</h2>
+          {rules?.state === 'PA' && <p id="paNamesNote">{PA_NAMES_ONLY_NOTE}</p>}
           {policy && coreResult && (
             <>
               <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
