@@ -1,0 +1,5 @@
+voter_id,name_last,name_first,date_of_birth,Status,Deletion_Reason
+D1,Zzjdalpha,Fjdzza,01/02/1970,D,JD
+D2,Zzjdother,Fjdzzb,01/02/1971,Deleted,JD
+D3,Zzjdthird,Fjdzzc,01/02/1972,Cancelled,jd
+D4,Zzinbeta,Finzza,01/02/1973,Canceled,IN
