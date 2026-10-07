@@ -4,17 +4,43 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
+    "public": false,
+    "statute": "R.I. Gen. Laws 9-9-23(a): 'The jury commissioner shall preserve a full record of the investigation, which shall not be disclosed to any person except by order of a justice of the superior court, or by order of the chief judge or associate justice of the family court'. The investigation covers every person drawn, by questionnaire or interview, and decides who is qualified (9-9-1.1(a)(1): 'A citizen of the United States').",
     "holder": "Jury commissioner (R.I. Gen. Laws 9-9-5).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://webserver.rilegislature.gov/Statutes/TITLE9/9-9/9-9-23.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "R.I. Gen. Laws 9-9-23 (investigation record not disclosed except by court order)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE9/9-9/9-9-23.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.I. Gen. Laws 9-9-1.1(a)(1) (a juror must be a citizen of the United States)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE9/9-9/9-9-1.1.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.I. Gen. Laws 9-9-1(b) (jury commissioner notifies the board of canvassers when a listed person does not reside at the address; the board may challenge and remove after notice and hearing)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE9/9-9/9-9-1.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.I. Gen. Laws 9-9-27 (records may be destroyed on order of the presiding justice)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE9/9-9/9-9-27.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
-    "who_may_get": null,
+    "who_may_get": "Registration cards are 'public records and shall be open to public inspection and copying at all reasonable times' (R.I. Gen. Laws 17-9.1-15(a)). The Department of State sells lists of registered voters statewide, by district, or by city or town to any purchaser on its order form (List of Registered Voters Order Form, rev. 04/2026).",
     "permitted_uses": null,
     "use_restriction": null,
     "no_online_posting": null,
@@ -22,8 +48,22 @@
     "dob_in_public_file": null,
     "registration_date_in_public_file": null,
     "attestation_required": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://webserver.rilegislature.gov/Statutes/TITLE17/17-9.1/17-9.1-15.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "R.I. Gen. Laws 17-9.1-15 (registration cards and list-maintenance records are public)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE17/17-9.1/17-9.1-15.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "RI Department of State, List of Registered Voters Order Form (rev. 04/2026; statewide $25 by email; no use statement on the form)",
+        "url": "https://vote.sos.ri.gov/forms/elections/forms/voter-list-orderform.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": true,
@@ -61,7 +101,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -103,17 +143,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "R.I. Gen. Laws 38-2-3 (Access to Public Records Act), 17-9.1-15(b) (list-maintenance records are public) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the local board of canvassers: per year, the number of 17-9.1-28 challenges filed on citizenship grounds and the number of resulting removals, and the number of non-residence notices received from the jury commissioner under 9-9-1(b) and the number of resulting removals.",
+    "counts_only": true,
+    "source_url": "https://webserver.rilegislature.gov/Statutes/TITLE38/38-2/38-2-3.htm",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. 9-9-1(b) notices are about residence, not citizenship. Whether boards keep counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. Rhode Island allows a private challenge on personal knowledge and reasonable cause, filed 20 days ahead (17-9.1-28). Guidance stays off while the jury list is not available."
+    "basis": "Jury records: the jury commissioner's investigation record 'shall not be disclosed to any person except by order' of a judge (R.I. Gen. Laws 9-9-23), so public is false and the app shows counts only. Rhode Island allows a private challenge on personal knowledge and reasonable cause, filed 20 days ahead (17-9.1-28). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false (9-9-23, quoted exactly); jury sources; voter_file who_may_get and sources (17-9.1-15, Department of State order form); audit_path; federal_source_url moved to govinfo. official_pipeline stays null (ruled: 9-9-1(b) is residence only). No gate changes (null and false give the same strict gates).",
+    "PA-style check: chapter 9-9 has no public list of disqualified persons. The commissioner's 'lists of all grand and petit jurors ... as he or she shall deem well qualified to serve' are kept on file (9-9-23), but the investigation record behind them is closed except by court order.",
+    "official_pipeline is null (ruled 2026-10-07, REQ-NOTE 47 closed). R.I. Gen. Laws 9-9-1(b): 'The jury commissioner shall notify the clerk of the board of canvassers and registration of each particular city or town when it appears that a person on a list of qualified jurors does not reside at the address on the list. The board of canvassers and registration, after due notice to the person, shall challenge the listing thereof and after a hearing thereon may remove that person from the list.' Residence only; does not report citizenship.",
+    "voter_file: permitted_uses, no_online_posting, penalty, dob_in_public_file and registration_date_in_public_file stay null. The order form asks for no use statement, and no Rhode Island use limit was found in the sections read.",
+    "Cancelled-voter file: no published Rhode Island cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "A malicious challenge without reasonable cause is a misdemeanor and exposes the challenger to punitive damages (17-9.1-29).",
     "The challenge rule requires personal knowledge (410-RICR-20-00-20). A data match alone is unlikely to qualify.",
-    "voter_file is all null: the Rhode Island voter-list statute was not read in this batch.",
-    "jury_list.public is null: chapter 9-9 has no disclosure section in its table of contents; records status unknown."
+    "Source note: webserver.rilegislature.gov and vote.sos.ri.gov read with curl on 2026-10-07."
   ]
 }
