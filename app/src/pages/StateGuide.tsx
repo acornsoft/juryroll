@@ -5,12 +5,27 @@ import { buildGuide, guideFacts } from '../lib/guide.ts';
 import type { StepId } from '../lib/flow.ts';
 import { NC_LIST_NOTE, PA_NAMES_ONLY_NOTE } from '../../../shared/src/content/copy.ts';
 import { referralTargets, resolveRules, uiGates, type RulesFile } from '../../../shared/src/policy/gates.ts';
-import { federalWindow, nextFederalElection } from '../../../shared/src/policy/windows.ts';
+import { refusalBlock } from '../../../shared/src/policy/refusal.ts';
+import { federalWindow, localISO, nextFederalElection } from '../../../shared/src/policy/windows.ts';
 import { STATES } from '../states.ts';
 import rulesBundle from '../../../shared/src/rulesBundle.json';
 
 type Bundle = Record<string, { raw: string; rules: RulesFile }>;
 const bundle = rulesBundle as Bundle;
+
+function RefusalLines({ rules }: { rules: RulesFile }) {
+  const block = refusalBlock(rules, localISO(new Date()));
+  return (
+    <>
+      {block.carryOver && <p id="paCarry">{block.carryOver}</p>}
+      {block.lawLine && <p id="refusalLaw">{block.lawLine}</p>}
+      {block.publicList && <p id="publicListHint">{block.publicList}</p>}
+      {block.useRestriction && <p id="juryUseLimit">{block.useRestriction}</p>}
+      {block.extras.map((line) => <p key={line}>{line}</p>)}
+      {block.noStrong && <p id="noStrongMatch">{block.noStrong}</p>}
+    </>
+  );
+}
 
 function LinkedText({ text }: { text: string }) {
   const parts = text.split(/(https?:\/\/[^\s)]+)/);
@@ -119,7 +134,10 @@ export function StatePage({ code }: { code: string }) {
             {named ? (
               <p>Add the jury disqualification list and the voter roll, type a printed list, or try the fictional samples. Map each disqualification code. Only rows mapped to Non-citizen are matched. Column checks happen before the match runs.</p>
             ) : (
-              <p>JuryRoll cannot load the jury list in {rules.name}. The rules say: {rules.gates.basis}</p>
+              <>
+                <p>JuryRoll cannot load the jury list in {rules.name}. The rules say: {rules.gates.basis}</p>
+                <RefusalLines rules={rules} />
+              </>
             )}
           </StepPanel>
           <StepPanel id="run">

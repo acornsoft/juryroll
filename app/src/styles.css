@@ -1005,6 +1005,16 @@ button.rail-btn:disabled { opacity: 1; }
 .basis-why p { margin: 6px 0 0; }
 .coming-later #comingLaterPlan,
 .coming-later #comingReason { margin: 6px 0 0; font-size: 14px; }
+.what-now {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  background: var(--wash);
+  border: 1px solid var(--line);
+}
+.what-now h3 { margin: 0; font-size: 15px; }
+.what-now p { margin: 6px 0 0; font-size: 14px; }
+.what-now-links { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.what-now-links a { font-weight: 700; }
 .choose-file {
   display: inline-flex;
   flex: 0 0 auto;

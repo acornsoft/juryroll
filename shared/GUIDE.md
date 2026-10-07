@@ -131,61 +131,13 @@ Read the full file for each state. This table is a summary only.
 
 | State | Jury list available to you | Private challenge in law | App mode |
 |---|---|---|---|
-| NY | No (Judiciary Law 509(a)) | Yes, one voter per affidavit (Election Law 5-220) | Counts only |
-| NC | Yes, the State Board list (G.S. 9-6.2(b)). It has no date of birth | Not through JuryRoll. A database match is not individualized evidence (State Board form) | Referral only. The list gives no named rows |
-| GA | Not known, so the app treats it as no | Yes (O.C.G.A. 21-2-229, 21-2-230) | Counts only |
-| TX | No (Gov't Code 62.0132, 62.113) | Yes, but personal knowledge is necessary (Elec. Code 16.092) | Counts only |
-| PA | Yes. You can inspect the list of disqualified jurors and reasons on site (42 Pa.C.S. 4523(a)). Copies are at the county's discretion | Not through JuryRoll. A 1329 challenge must name one registrant under oath. The list has names and reasons only | Referral only. A list with names only gives no named rows |
-| AZ | No (A.R.S. 21-312) | Only at the polls (A.R.S. 16-591); not supported | Counts only |
-| FL | Not known, so the app treats it as no | Yes, at one election only (Fla. Stat. 101.111) | Counts only |
-| MI | No (MCL 600.1315) | Yes (MCL 168.512) | Counts only |
-| WI | No (Wis. Stat. 756.04(11)) | Yes (Wis. Stat. 6.48) | Counts only |
-| VA | Not known, so the app treats it as no | Yes, three voters petition the court (Va. Code 24.2-431) | Counts only. You cannot get the voter list (24.2-405) |
-| OH | Not known, so the app treats it as no | Yes, until day 30 (R.C. 3503.24) | Counts only |
-| IN | Not known, so the app treats it as no | Only at the polls (IC 3-11-8); not supported | Counts only |
-| IA | No (Iowa Code 607A.48) | Yes, one voter per challenge (Iowa Code 48A.14) | Counts only |
-| KS | Not known, so the app treats it as no | No private challenge found | Counts only |
-| KY | Not known, so the app treats it as no | Only at the polls (KRS 117.245); not supported | Counts only |
-| LA | Not known, so the app treats it as no | Only at the polls (R.S. 18:565); not supported | Counts only |
-| TN | Not known, so the app treats it as no | Only at the polls (T.C.A. 2-7-123); not supported | Counts only |
-| AR | Not known, so the app treats it as no | Only at the polls (Ark. Code 7-5-312); not supported | Counts only |
-| CT | No (Conn. Gen. Stat. 51-232(c)). Permanent residents can be jurors | Only at the polls; citizenship is not a ground (9-232) | Counts only |
-| OK | Not known, so the app treats it as no | No private challenge found | Counts only |
-| SD | Not known, so the app treats it as no | Yes, until day 90, with personal checks (SDCL 12-4-59, 12-4-60) | Counts only |
-| UT | Not known, so the app treats it as no | Yes, until day 45, with personal checks (Utah Code 20A-3a-804) | Counts only. Voter list use is limited (20A-2-607) |
-| CO | Not known, so the app treats it as no | Yes, until day 60 (C.R.S. 1-9-101) | Counts only |
-| ID | No (Idaho Code 2-213(4), 2-208) | Only on election day (34-431); not supported | Counts only |
-| MT | Not known, so the app treats it as no | Yes, at any time, with an affidavit and evidence (MCA 13-13-301) | Counts only |
-| NE | Not known, so the app treats it as no | Only at the polls (Neb. Rev. Stat. 32-926); not supported | Counts only. Voter list use is limited under oath (32-330) |
-| NH | No (RSA 500-A:1, 500-A:2) | Only at the polls (RSA 659:27-a); not supported | Counts only |
-| WA | No (RCW 2.36.072(4)) | Yes, until day 45, with firsthand knowledge only (RCW 29A.08.810, 29A.08.820) | Counts only |
-| WV | No (W. Va. Code 52-1-5a(e)) | Yes, in person at the county clerk (3-2-28) | Counts only |
-| AL | No (Ala. Code 12-16-59(a)) | No private challenge found | Counts only |
-| DE | No (10 Del. C. 4513(b)) | No direct private challenge found | Counts only |
-| MA | Not known, so the app treats it as no | Yes, sworn complaint to registrars, 14 days ahead in cities (M.G.L. c. 51, sec. 48) | Counts only. Statewide voter registry is not public (c. 51, sec. 47C) |
-| NJ | Not known, so the app treats it as no | Only at the polls (N.J.S.A. 19:15-20); not supported | Counts only |
-| NM | Not known, so the app treats it as no | No private challenge (NMSA 1-12-20, 1-4-22) | Counts only. 30 extra blackout days. Voter data use is limited (1-4-5.5) |
-| RI | Not known, so the app treats it as no | Yes, 20 days ahead, on personal knowledge (R.I. Gen. Laws 17-9.1-28) | Counts only |
-| VT | Not known, so the app treats it as no | Only at the polls, and not on citizenship (17 V.S.A. 2564) | Counts only |
-| WY | Not known, so the app treats it as no | No private challenge found (W.S. 22-3-105) | Counts only |
-| AK | Not known, so the app treats it as no | Only at the polls (AS 15.15.210); not supported | Counts only. Birth dates are not public (AS 15.07.195) |
-| CA | Not known, so the app treats it as no | No. Private challenges are banned (Elec. Code 14240(b)) | Counts only. Voter data use is limited (2188, 2194) |
-| DC | Not known, so the app treats it as no | Yes, until day 45 (D.C. Code 1-1001.07), but see the note | Counts only. Non-citizens may vote in D.C. local elections (1-1001.02(2)(B)), so a match is not a lead |
-| HI | No (HRS 612-13(a)) | Yes, in writing to the county clerk (HRS 11-25) | Counts only. Voter data is mostly confidential (HRS 11-97) |
-| IL | Not known, so the app treats it as no | Yes, on two set days about 14 days ahead, on personal knowledge (10 ILCS 5/4-12) | Counts only. Private persons cannot get voter data (5/4-8) |
-| ME | No (14 M.R.S. 1254-A(1)) | Only at the polls (21-A M.R.S. 673); not supported | Counts only. Voter data is confidential (196-A) |
-| MD | Not known, so the app treats it as no | No direct private challenge found (Elec. Law 3-602) | Counts only. Voter lists are for electoral uses only (3-506) |
-| MN | No (Minn. Gen. R. Prac. 814) | Yes, until day 45, on personal knowledge (Minn. Stat. 201.195) | Counts only. Voter list use is limited (201.091) |
-| MS | Not known, so the app treats it as no | Yes, appeal to county commissioners (Miss. Code 23-15-63) | Counts only |
-| MO | Not known, so the app treats it as no | No private challenge; tell the election authority (RSMo 115.191) | Counts only |
-| NV | Not known, so the app treats it as no | Yes, citizenship affidavit until day 30, on personal knowledge (NRS 293.535) | Counts only |
-| ND | Not known, so the app treats it as no | None found | Counts only. No voter registration; private users cannot get the file (16.1-02-15) |
-| OR | No (ORS 10.215) | No; the county clerk inquires (ORS 247.195) | Counts only. No commercial use of voter lists (247.955) |
-| SC | Not known, so the app treats it as no | Yes, written challenge to the county board (S.C. Code 7-5-230) | Counts only |
+<!-- state-rows -->
 
 Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.
 
 The North Carolina State Board's posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.
+
+<!-- state-sections -->
 
 ## 7. When a field is null
 

@@ -1,0 +1,1 @@
+| PA | Yes. You can inspect the list of disqualified jurors and reasons on site (42 Pa.C.S. 4523(a)). Copies are at the county's discretion | Not through JuryRoll. A 1329 challenge must name one registrant under oath. The list has names and reasons only | Referral only. A list with names only gives no named rows |

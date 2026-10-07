@@ -19,6 +19,7 @@ type VoterFileSlotProps = {
   pendingNames: string[] | null;
   onSheet: (name: string) => void;
   info: string | null;
+  protectedCount: number;
 };
 
 export function VoterFileSlot({
@@ -34,6 +35,7 @@ export function VoterFileSlot({
   pendingNames,
   onSheet,
   info,
+  protectedCount,
 }: VoterFileSlotProps) {
   return (
     <div className="voter-file-block">
@@ -99,6 +101,7 @@ export function VoterFileSlot({
           </label>
         )}
         {info && <p className="small" id="infoVoter">{info}</p>}
+        {protectedCount > 0 && <p className="note" id="protectedRecords">{protectedCount} protected record: cannot compare</p>}
       </div>
     </div>
   );

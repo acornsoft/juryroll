@@ -9,7 +9,22 @@ export type RulesFile = {
   name: string;
   schema_version: string;
   verified_on: string;
-  jury_list: { public: boolean | null; statute: string | null; official_pipeline?: string | null; source_url?: string | null; verified_on?: string | null };
+  jury_list: {
+    public: boolean | null;
+    statute: string | null;
+    official_pipeline?: string | null;
+    use_restriction?: string | null;
+    source_url?: string | null;
+    verified_on?: string | null;
+  };
+  audit_path?: {
+    statute: string;
+    what_you_can_request: string;
+    counts_only: true;
+    source_url: string;
+    verified_on: string;
+    note?: string;
+  } | null;
   voter_file: {
     permitted_uses?: string | null;
     use_restriction?: string | null;

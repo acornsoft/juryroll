@@ -40,6 +40,8 @@ import type { ExtraColumns } from '../../shared/src/policy/columns.ts';
 import { exportableRows, flagLabel, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
+import { CSV_CONVERT_MESSAGE, looksFixedWidth } from '../../shared/src/policy/refusal.ts';
+import { stateCopy } from '../../shared/src/policy/stateCopy/index.ts';
 import { runMatch } from '../../shared/src/policy/runMatch.ts';
 import { sha256Hex, sha256HexSync } from '../../shared/src/policy/sha256.ts';
 import { VOTER_USE_REFUSE, voterUseRestriction, voterUseShownText } from '../../shared/src/policy/voterUse.ts';
@@ -109,6 +111,8 @@ export function App() {
   const [hdrJ, setHdrJ] = useState(true);
   const [hdrV, setHdrV] = useState(true);
   const [fileError, setFileError] = useState('');
+  const [csvGuideHref, setCsvGuideHref] = useState<string | null>(null);
+  const [protectedCount, setProtectedCount] = useState(0);
   const [policy, setPolicy] = useState<PolicyResult | null>(null);
   const [coreResult, setCoreResult] = useState<MatchResult | null>(null);
   const [showWeak, setShowWeak] = useState(false);
@@ -441,7 +445,24 @@ export function App() {
       setFileError(rules?.gates.basis || confidential || 'JuryRoll does not load a jury list for this state.');
       return;
     }
-    const analyzed = analyzeText(text, hasHeader, kind, bytes, sha256);
+    const guideHref = rules ? stateCopy(rules.state).csvGuideHref : null;
+    if (kind === 'voter' && guideHref && looksFixedWidth(text)) {
+      setCsvGuideHref(guideHref);
+      setFileError(CSV_CONVERT_MESSAGE);
+      await append('file_refused', { kind, reason: 'not_csv', headers: [] });
+      return;
+    }
+    let textToUse = text;
+    if (kind === 'voter' && rules) {
+      const prepared = stateCopy(rules.state).prepareVoter?.(text, hasHeader) ?? null;
+      if (prepared) {
+        textToUse = prepared.csv;
+        setProtectedCount(prepared.protectedCount);
+      } else {
+        setProtectedCount(0);
+      }
+    }
+    const analyzed = analyzeText(textToUse, hasHeader, kind, bytes, sha256);
     if (!analyzed.ok) {
       if (kind === 'juror') setJuror(null);
       else setVoter(null);
@@ -450,6 +471,7 @@ export function App() {
       return;
     }
     setFileError('');
+    setCsvGuideHref(null);
     const reasons = kind === 'juror' && analyzed.file.map.reason >= 0
       ? core.reasonValues(analyzed.file.text, analyzed.file.delim, hasHeader, analyzed.file.map.reason)
       : [];
@@ -764,6 +786,7 @@ export function App() {
         setPendingV(null);
       }}
       info={voter ? `${voter.rows} rows.` : null}
+      protectedCount={protectedCount}
     />
   );
 
@@ -795,13 +818,24 @@ export function App() {
           ) : null} />
           {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
-          {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
+          {fileError && (
+            <p className="banner" id="fileError" role="alert">
+              {csvGuideHref ? (
+                <>
+                  Convert it to CSV first. <a id="convertCsvGuide" href={csvGuideHref}>See the guide for your state.</a>
+                </>
+              ) : fileError}
+            </p>
+          )}
 
           {code && !juryListAllowed(code) ? (
             <ComingLater
               stateName={stateName}
               basis={rules?.gates.basis ?? ''}
+              rules={rules}
+              today={today}
               clearedNote={clearedNote}
+              links={[]}
               picker={(
                 <PlacePicker
                   stateCode={code}
@@ -1050,7 +1084,7 @@ export function App() {
                     {targets.length > 0 && (
                       <div id="referralTargets">
                         <h3>Send a referral only to these offices</h3>
-                        <ul>{targets.map((target) => <li key={target.url}><a href={target.url}>{target.name}</a></li>)}</ul>
+                        <ul>{targets.map((target) => <li key={target.url}><a href={target.url}>{target.name}</a>{target.note ? ` ${target.note}` : ''}</li>)}</ul>
                       </div>
                     )}
                     {named && (

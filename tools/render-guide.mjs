@@ -3,7 +3,22 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const md = fs.readFileSync(path.join(root, 'shared', 'GUIDE.md'), 'utf8');
+
+function assembleGuide(source) {
+  const order = fs.readFileSync(path.join(root, 'shared/guide/order.txt'), 'utf8').trim().split('\n');
+  const rows = order.map((code) => fs.readFileSync(path.join(root, 'shared/guide/rows', `${code}.md`), 'utf8').trim()).join('\n');
+  const sections = order.flatMap((code) => {
+    const file = path.join(root, 'shared/guide/sections', `${code}.md`);
+    if (!fs.existsSync(file)) return [];
+    const text = fs.readFileSync(file, 'utf8').trim();
+    return text ? [text] : [];
+  }).join('\n\n');
+  return source
+    .replace('<!-- state-rows -->', rows)
+    .replace('<!-- state-sections -->', sections);
+}
+
+const md = assembleGuide(fs.readFileSync(path.join(root, 'shared', 'GUIDE.md'), 'utf8'));
 
 function escapeHtml(text) {
   return text
