@@ -27,6 +27,8 @@ export const WEAK_CAUTION = 'Caution: weak matches. Only the name agrees. Most w
 
 export const PA_NAMES_ONLY_NOTE = 'Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.';
 
+export const NC_LIST_NOTE = 'The North Carolina State Board\'s posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.';
+
 export const ATTEST_LINES = [
   'I got each file from an official source, and I obey its use rules.',
   'I will send leads only to the offices in the referral list.',

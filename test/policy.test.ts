@@ -102,7 +102,9 @@ assert.deepStrictEqual(effective(shipped.TX), { allow_jury_list: false, aggregat
 assert.deepStrictEqual(effective(shipped.PA), { allow_jury_list: true, aggregate_only: false, allow_named_export: true, show_challenge_guidance: false });
 pass('AT-01');
 
-assert.deepStrictEqual(effective(shipped.NC), { allow_jury_list: true, aggregate_only: false, allow_named_export: true, show_challenge_guidance: true });
+assert.deepStrictEqual(effective(shipped.NC), { allow_jury_list: true, aggregate_only: false, allow_named_export: true, show_challenge_guidance: false });
+assert.strictEqual(shipped.NC.private_challenge.juryroll_lead_sufficient, false);
+assert.strictEqual(uiGates(shipped.NC).show_challenge_guidance, false);
 pass('AT-02');
 
 assert.strictEqual(strict(null, false), false);
@@ -572,15 +574,14 @@ const namedStates: string[] = [];
 const challengeStates: string[] = [];
 for (const name of ruleFiles) {
   const rules = loadRules(name);
-  if (rules.state === 'DEFAULT') continue;
-  const gates = effective(rules);
-  if (gates.allow_named_export) namedStates.push(rules.state);
-  if (gates.show_challenge_guidance) challengeStates.push(rules.state);
+  const shown = uiGates(rules);
+  if (rules.state !== 'DEFAULT' && shown.allow_named_export) namedStates.push(rules.state);
+  if (shown.show_challenge_guidance) challengeStates.push(rules.state);
 }
 namedStates.sort();
 challengeStates.sort();
 assert.deepStrictEqual(namedStates, ['NC', 'PA']);
-assert.deepStrictEqual(challengeStates, ['NC']);
+assert.deepStrictEqual(challengeStates, []);
 pass('AT-NC-only');
 
 const paNames = runMatch(

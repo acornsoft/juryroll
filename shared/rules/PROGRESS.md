@@ -135,7 +135,7 @@ Key points:
 
 ## All batches complete
 
-51 jurisdictions (50 states + DC) have rules files that validate against rules/schema.json. Effective mode is counts only (aggregate_only) in 50 jurisdictions. Only North Carolina has jury list access, named export, and challenge guidance enabled. Only New Mexico adds extra blackout days (30).
+51 jurisdictions (50 states + DC) have rules files that validate against rules/schema.json. North Carolina and Pennsylvania allow the jury list and a named export. No jurisdiction shows challenge guidance. Only New Mexico adds extra blackout days (30).
 
 ## Post-batch fixes (2026-10-07)
 

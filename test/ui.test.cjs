@@ -225,10 +225,13 @@ async function pickCounty(page, fips = '37183') {
   assert.strictEqual(await main.page.locator('#fileJuror').count(), 1);
   assert.strictEqual(await main.page.locator('#runBtn').isDisabled(), true);
   await attest(main.page);
-  assert.strictEqual(await main.page.locator('#challengeFormLink').count(), 1);
+  const ncNote = 'The North Carolina State Board\'s posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.';
+  assert.strictEqual(await main.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await main.page.locator('#challengeFormLink').count(), 0);
   assert.strictEqual(await main.page.locator('#deadlineBanner').count(), 0);
-  assert.ok((await main.page.locator('#leadBanner').innerText()).includes('A JuryRoll match alone does not meet this standard'));
-  assert.ok((await main.page.locator('#oneAffidavit').innerText()).includes('Use one affidavit for one voter.'));
+  assert.strictEqual(await main.page.locator('#leadBanner').count(), 0);
+  assert.strictEqual(await main.page.locator('#ncWalkthrough').innerText(), ncNote);
+  assert.strictEqual(await main.page.locator('#ncNamesNote').innerText(), ncNote);
   pass('AT-31');
   pass('AT-32');
   await pickCounty(main.page);
@@ -448,7 +451,8 @@ async function pickCounty(page, fips = '37183') {
   const later = await openPage(browser, { time: '2026-10-10T15:00:00Z' });
   await later.page.selectOption('#stateSel', 'NC');
   await attest(later.page);
-  assert.ok((await later.page.locator('#deadlineBanner').innerText()).includes('The state deadline for this election has passed (2026-10-09).'));
+  assert.strictEqual(await later.page.locator('#challengePanel').count(), 0);
+  assert.strictEqual(await later.page.locator('#deadlineBanner').count(), 0);
   assert.strictEqual(await later.page.locator('#challengeFormLink').count(), 0);
   pass('AT-31-passed');
   await later.context.close();
@@ -713,6 +717,7 @@ async function pickCounty(page, fips = '37183') {
     const sampleCount = await walk.page.locator('#sampleBtn').count();
     if (sampleCount > 0) {
       assert.strictEqual(await walk.page.locator('#sampleBtn').isEnabled(), true, `${code} sample button disabled`);
+      assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
       assert.strictEqual(await walk.page.locator('#juryRefuse').count(), 0, code);
       if (!loaded) {
         await walk.page.click('#sampleBtn');
@@ -741,6 +746,7 @@ async function pickCounty(page, fips = '37183') {
       const refuse = (await walk.page.locator('#juryRefuse').innerText()).trim();
       assert.ok(refuse.includes(basis), `${code} missing explanation`);
       assert.ok(await walk.page.locator('#auditLetterBtn').isVisible(), code);
+      assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
       if (loaded) {
         const cleared = await walk.page.locator('#jurorCleared').innerText();
         assert.match(cleared, /cleared/i, code);
@@ -754,11 +760,13 @@ async function pickCounty(page, fips = '37183') {
     return gates.allow_jury_list === true;
   });
   assert.deepStrictEqual(ran, expectedRan);
-  const challengeCodes = codes.filter((code) => {
-    const gates = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates;
+  const ruleNames = fs.readdirSync(path.join(root, 'shared/rules')).filter((name) => name.endsWith('.json') && name !== 'schema.json');
+  const challengeCodes = ruleNames.filter((name) => {
+    const gates = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', name), 'utf8')).gates;
     return gates.show_challenge_guidance === true;
   });
-  assert.deepStrictEqual(challengeCodes, ['NC']);
+  assert.strictEqual(ruleNames.length, 52);
+  assert.deepStrictEqual(challengeCodes, []);
   pass('AT-44-all-states');
   await walk.context.close();
 

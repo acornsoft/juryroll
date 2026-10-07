@@ -28,7 +28,7 @@ A missing, unparseable, or equal registration date, or a missing jury declaratio
 
 The UI uses the strict setting. Tests also cover a lenient setting, which is not offered in the UI. The wrongful-removal flag can still use a registration-after-declaration fact for a removed or inactive voter. An excluded person is counted, not named.
 
-North Carolina is the only state whose effective gates allow a named referral. Connecticut and the District of Columbia stay counts only, with a banner that the counts are not evidence of unlawful registration. North Dakota has no voter registration, so a last-voted date is not treated as a registration date.
+North Carolina and Pennsylvania are the states whose effective gates allow a named referral. No current state file turns on challenge guidance. Connecticut and the District of Columbia stay counts only, with a banner that the counts are not evidence of unlawful registration. North Dakota has no voter registration, so a last-voted date is not treated as a registration date.
 
 ## Tests
 

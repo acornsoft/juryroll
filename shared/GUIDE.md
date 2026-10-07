@@ -77,7 +77,7 @@ Do this only if all of these conditions are true:
 
 A match from JuryRoll alone is usually not enough evidence.
 In Texas, the law requires personal knowledge. A match is not personal knowledge.
-In North Carolina, the law requires "affirmative proof". A match alone does not give that proof.
+In North Carolina, the law requires "affirmative proof". A match alone does not give that proof. JuryRoll does not show challenge steps for North Carolina. Refer the lead.
 
 If you file, obey these rules:
 
@@ -132,7 +132,7 @@ Read the full file for each state. This table is a summary only.
 | State | Jury list available to you | Private challenge in law | App mode |
 |---|---|---|---|
 | NY | No (Judiciary Law 509(a)) | Yes, one voter per affidavit (Election Law 5-220) | Counts only |
-| NC | Yes, the State Board list (G.S. 9-6.2(b)) | Yes, one voter per challenge (G.S. 163-85) | Named referral |
+| NC | Yes, the State Board list (G.S. 9-6.2(b)). The posted list has no date of birth | Yes (G.S. 163-85). The app does not show challenge guidance | Named referral. Without a date of birth, matches stay Weak and are not exported |
 | GA | Not known, so the app treats it as no | Yes (O.C.G.A. 21-2-229, 21-2-230) | Counts only |
 | TX | No (Gov't Code 62.0132, 62.113) | Yes, but personal knowledge is necessary (Elec. Code 16.092) | Counts only |
 | PA | Yes, the county list of disqualified jurors (42 Pa.C.S. 4523(a)) | Yes (25 Pa.C.S. 1329). The app does not show challenge guidance | Named referral. A names-only list stays Weak and is not exported |
@@ -184,6 +184,8 @@ Read the full file for each state. This table is a summary only.
 | SC | Not known, so the app treats it as no | Yes, written challenge to the county board (S.C. Code 7-5-230) | Counts only |
 
 Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.
+
+The North Carolina State Board's posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.
 
 ## 7. When a field is null
 
