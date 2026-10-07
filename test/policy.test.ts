@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import core from '../shared/src/core.js';
 import { ATTEST_LINES } from '../shared/src/content/copy.ts';
 import { CANNOT_COMPARE_PHRASE, EXCLUDE_PHRASE, SAVE_EXPORT_LINE, SAVE_LINE, UI_DATE_STRICTNESS, applyDateRule, type PolicyResult } from '../shared/src/policy/apply.ts';
-import { appendEntry, canonicalJson, verifyChain } from '../shared/src/policy/audit.ts';
+import { appendEntry, auditLogFile, canonicalJson, verifyChain } from '../shared/src/policy/audit.ts';
 import { screenColumns } from '../shared/src/policy/blocked.ts';
 import { guessExtra } from '../shared/src/policy/columns.ts';
 import { toCSV } from '../shared/src/policy/exportCsv.ts';
@@ -358,6 +358,21 @@ if (!brokenChain.ok) assert.strictEqual(brokenChain.seq, 1);
 assert.strictEqual(canonicalJson({ b: 1, a: 2 }), '{"a":2,"b":1}');
 pass('AT-24');
 
+const emptyLog = auditLogFile([], null);
+const emptyHeader = JSON.parse(emptyLog.trim());
+assert.strictEqual(emptyHeader.county_name, null);
+assert.strictEqual(emptyHeader.county_fips, null);
+assert.strictEqual(emptyHeader.header, 'No county selected');
+assert.ok(emptyLog.includes('No county selected'));
+const countyLog = auditLogFile(log, { name: 'Wake County', fips: '37183' });
+const countyLines = countyLog.trim().split('\n');
+assert.deepStrictEqual(JSON.parse(countyLines[0]), { county_name: 'Wake County', county_fips: '37183' });
+assert.strictEqual(JSON.parse(countyLines[1]).type, 'session_start');
+assert.strictEqual(JSON.parse(countyLines[1]).hash, log[0].hash);
+assert.ok(!countyLog.includes('No county selected'));
+assert.strictEqual(verifyChain(log).ok, true);
+pass('AT-48-log-header');
+
 const letter = auditLetter(shipped.TX, referralTargets(shipped.TX, shipped.DEFAULT), {
   periodFrom: '2026-01-01',
   periodTo: '2026-06-01',
@@ -452,6 +467,8 @@ J1,Signal,Sam,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15
 const ndVoterTable = table('voter', ndVoter);
 assert.strictEqual(ndVoterTable.extra.regDate, -1);
 assert.strictEqual(guessExtra('voter', ['last_voted', 'file_entry_date']).regDate, -1);
+assert.strictEqual(guessExtra('juror', ['Last', 'First', 'Date Of Excusal']).declDate, 2);
+pass('AT-date-of-excusal');
 const ndRun = runMatch(table('juror', ndJuror), ndVoterTable, loadRules('ND.json'));
 assert.strictEqual(ndRun.coreResult.counts.Strong, 1);
 assert.strictEqual(ndRun.policy.cannotCompareCount, 1);

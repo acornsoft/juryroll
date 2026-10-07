@@ -36,6 +36,29 @@ export type Flag =
   | 'INACTIVE'
   | 'POSSIBLE_WRONGFUL_REMOVAL';
 
+export function flagLabel(flag: Flag): string {
+  switch (flag) {
+    case 'REGISTERED_AFTER_DECLARATION':
+      return 'Registered after the declaration';
+    case 'REGISTERED_BEFORE_DECLARATION':
+      return 'Registered before the declaration';
+    case 'DATES_NOT_COMPARABLE':
+      return 'Dates cannot be compared';
+    case 'REMOVED':
+      return 'Removed';
+    case 'REINSTATED':
+      return 'Reinstated';
+    case 'INACTIVE':
+      return 'Inactive';
+    case 'POSSIBLE_WRONGFUL_REMOVAL':
+      return 'Possible wrongful removal';
+    default: {
+      const neverFlag: never = flag;
+      return neverFlag;
+    }
+  }
+}
+
 export type Tier = 'Strong' | 'Probable' | 'Weak';
 
 export type PolicyRow = {

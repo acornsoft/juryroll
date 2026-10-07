@@ -132,10 +132,10 @@ Read the full file for each state. This table is a summary only.
 | State | Jury list available to you | Private challenge in law | App mode |
 |---|---|---|---|
 | NY | No (Judiciary Law 509(a)) | Yes, one voter per affidavit (Election Law 5-220) | Counts only |
-| NC | Yes, the State Board list (G.S. 9-6.2(b)). The posted list has no date of birth | Yes (G.S. 163-85). The app does not show challenge guidance | Named referral. Without a date of birth, matches stay Weak and are not exported |
+| NC | Yes, the State Board list (G.S. 9-6.2(b)). It has no date of birth | Not through JuryRoll. A database match is not individualized evidence (State Board form) | Referral only. The list gives no named rows |
 | GA | Not known, so the app treats it as no | Yes (O.C.G.A. 21-2-229, 21-2-230) | Counts only |
 | TX | No (Gov't Code 62.0132, 62.113) | Yes, but personal knowledge is necessary (Elec. Code 16.092) | Counts only |
-| PA | Yes, the county list of disqualified jurors (42 Pa.C.S. 4523(a)) | Yes (25 Pa.C.S. 1329). The app does not show challenge guidance | Named referral. A names-only list stays Weak and is not exported |
+| PA | Yes. You can inspect the list of disqualified jurors and reasons on site (42 Pa.C.S. 4523(a)). Copies are at the county's discretion | Not through JuryRoll. A 1329 challenge must name one registrant under oath. The list has names and reasons only | Referral only. A list with names only gives no named rows |
 | AZ | No (A.R.S. 21-312) | Only at the polls (A.R.S. 16-591); not supported | Counts only |
 | FL | Not known, so the app treats it as no | Yes, at one election only (Fla. Stat. 101.111) | Counts only |
 | MI | No (MCL 600.1315) | Yes (MCL 168.512) | Counts only |

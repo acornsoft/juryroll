@@ -147,7 +147,7 @@ If all three are null, show `default.json` `referral_targets.other`.
 
 | Key | Label | File | Header patterns (normalized) |
 |---|---|---|---|
-| `decl_date` | Jury declaration / disqualification date | juror | `disqualificationdate`, `disqualdate`, `excusedate`, `responsedate`, `questionnairedate`, `qualificationdate`, `datedisqualified`, `decldate` |
+| `decl_date` | Jury declaration / disqualification date | juror | `disqualificationdate`, `disqualdate`, `excusedate`, `dateofexcusal`, `responsedate`, `questionnairedate`, `qualificationdate`, `datedisqualified`, `decldate` |
 | `reg_date` | Registration date | voter | `registrationdate`, `regdate`, `registrdt`, `dateregistered`, `effectivedate`, `origregdate`, `registrationdt` |
 
 Add `decl_date` to `JUROR_FIELDS` and `reg_date` to `VOTER_FIELDS`. Parse with the `parseDOB()` logic (rename it `parseDate()`). Keep the check that the year is not in the future.
@@ -240,7 +240,7 @@ Note: `status` is currently a pattern of the juror `reason` field (v1 line 168).
 ### D.1 Storage and format
 
 - IndexedDB database `juryroll-audit`, object store `log`, key = sequence number. If IndexedDB is not available (some browsers on `file://`), keep the log in memory and warn "The log will be lost when you close the page. Download it."
-- One JSON object per entry. "Download log" saves JSON Lines (`juryroll-audit-<date>.jsonl`).
+- One JSON object per entry. "Download log" saves JSON Lines (`juryroll-audit-<date>.jsonl`). The first line is a file header, not a hashed entry. It always has `county_name` and `county_fips`. Both are JSON `null` when no county is selected, and that header is `"No county selected"`. The download stays available without a county: the log is the user's own accountability record and has to be saved before a purge. A referral file and an audit letter still require a county.
 - Hash chain: `entry.hash = SHA-256(prev_hash + canonical_json(entry_without_hash))` with `crypto.subtle.digest`. The first entry has `prev_hash = "0"*64`.
 - On page load, verify the chain. On a break, show "Audit log integrity check failed at entry N" and log `log_chain_break`.
 - The only write API is `audit.append(type, data)`. No update. No delete. The purge (E) does not touch the log.

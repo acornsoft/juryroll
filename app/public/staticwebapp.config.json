@@ -1,16 +1,17 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "*.css", "*.js", "*.png", "*.svg", "*.xlsx", "*.csv", "/guide.html", "/guide.css"]
+    "exclude": ["/assets/*", "/fonts/*", "*.css", "*.js", "*.png", "*.svg", "*.woff2", "*.xlsx", "*.csv", "/guide.html", "/guide.css"]
   },
   "globalHeaders": {
-    "Content-Security-Policy": "default-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none'; img-src data:; script-src 'self'; style-src 'self'",
+    "Content-Security-Policy": "default-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none'; img-src 'self' data:; font-src 'self'; script-src 'self'; style-src 'self'",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "no-referrer"
   },
   "mimeTypes": {
     ".jsonl": "application/jsonl",
     ".csv": "text/csv",
-    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ".woff2": "font/woff2"
   }
 }

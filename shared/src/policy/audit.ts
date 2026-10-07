@@ -61,6 +61,24 @@ export function verifyChain(entries: readonly AuditEntry[]): { ok: true } | { ok
   return { ok: true };
 }
 
+export type AuditLogHeader = {
+  county_name: string | null;
+  county_fips: string | null;
+  header?: string;
+};
+
+// The downloaded log is the user's accountability record. It stays available
+// when no county is chosen, including before a purge. The header is not part
+// of the hash chain. Referral and letter files still require a county.
+export function auditLogFile(entries: readonly AuditEntry[], county: { name: string; fips: string } | null): string {
+  const header: AuditLogHeader = {
+    county_name: county ? county.name : null,
+    county_fips: county ? county.fips : null,
+  };
+  if (!county) header.header = 'No county selected';
+  return `${[JSON.stringify(header), ...entries.map((entry) => JSON.stringify(entry))].join('\n')}\n`;
+}
+
 export function appendEntry(log: readonly AuditEntry[], type: AuditType, data: Record<string, unknown>, now = new Date()): AuditEntry[] {
   const prev = log.length ? log[log.length - 1].hash : ZERO_HASH;
   const entry = sealEntry(prev, {

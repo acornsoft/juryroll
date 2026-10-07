@@ -1,6 +1,6 @@
 import { normHeader } from './blocked.ts';
 
-const DECL = ['disqualificationdate', 'disqualdate', 'excusedate', 'responsedate', 'questionnairedate', 'qualificationdate', 'datedisqualified', 'decldate'];
+const DECL = ['disqualificationdate', 'disqualdate', 'excusedate', 'dateofexcusal', 'responsedate', 'questionnairedate', 'qualificationdate', 'datedisqualified', 'decldate'];
 const REG = ['registrationdate', 'regdate', 'registrdt', 'dateregistered', 'effectivedate', 'origregdate', 'registrationdt'];
 const STATUS = ['status', 'voterstatus', 'statuscd', 'voterstatusdesc', 'registrationstatus'];
 const STATUS_REASON = ['statusreason', 'reasoncd', 'voterstatusreasondesc', 'cancelreason', 'removalreason'];
