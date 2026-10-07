@@ -1,1 +1,1 @@
-| MO | Not known, so the app treats it as no | No private challenge; tell the election authority (RSMo 115.191) | Counts only |
+| MO | Not known, so the app treats it as no. Names on the master jury list are public, but disqualified names are deleted, with no reasons kept public (RSMo 494.410, 494.415) | No private challenge; tell the election authority (RSMo 115.191) | Counts only |
