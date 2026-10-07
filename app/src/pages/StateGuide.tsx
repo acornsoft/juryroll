@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { StepPanel, Stepper } from '../components/Stepper.tsx';
 import { COUNTIES } from '../../../shared/src/counties.ts';
 import { buildGuide, guideFacts } from '../lib/guide.ts';
-import { RUN_STEPS, type StepId } from '../lib/flow.ts';
+import type { StepId } from '../lib/flow.ts';
 import { NC_LIST_NOTE, PA_NAMES_ONLY_NOTE } from '../../../shared/src/content/copy.ts';
 import { referralTargets, resolveRules, uiGates, type RulesFile } from '../../../shared/src/policy/gates.ts';
 import { federalWindow, nextFederalElection } from '../../../shared/src/policy/windows.ts';
@@ -101,9 +101,6 @@ export function StatePage({ code }: { code: string }) {
       {rules.state === 'NC' && <p id="ncWalkthrough">{NC_LIST_NOTE}</p>}
       <section className="panel" id={sectionId('Walk through it')}>
         <h2>Walk through it</h2>
-        <ol className="walk-steps">
-          {RUN_STEPS.map((step) => <li key={step.id}><b>{step.title}.</b> {step.job}</li>)}
-        </ol>
         <p><a className="btn-primary" id="startCheck" href={startHref}>Start a check in {rules.name}</a></p>
         <Stepper
           facts={facts}

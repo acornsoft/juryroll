@@ -27,18 +27,45 @@ export function PageBanner({ title, crumbs }: {
   );
 }
 
-const SWOOSH = 'M186.3,17.5c0,0-36.4-18.2-92.3-14.7S1.4,29.6,2.9,47.8s34.4,25.9,62.6,28s79.9-1.5,108.2-14.9s12.8-31.8-5.9-37.7c-26.4-8.4-49.5-9.5-49.5-9.5';
+const SWOOSH = 'M4 5 C 28 16, 78 17, 112 4';
 
 export function HomeHero() {
   return (
     <section className="home-hero header-area header-sanatory" aria-labelledby="heroTitle">
       <div className="hero-wash" aria-hidden="true" />
-      <div className="hero-panel" aria-hidden="true" />
+      <div className="hero-panel">
+        <div className="hero-visual">
+          <svg className="hero-ballot" viewBox="0 0 220 148" aria-hidden="true">
+            <rect x="58" y="14" width="104" height="120" rx="6" fill="#fff" />
+            <path d="M58 28h104" stroke="#DD131A" strokeWidth="8" />
+            <rect x="72" y="44" width="14" height="14" rx="2" fill="none" stroke="#000565" strokeWidth="2" />
+            <path d="M75 51.5l3 3.2 6.5-7" fill="none" stroke="#DD131A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M94 51h52" stroke="#04072E" strokeWidth="3" strokeLinecap="round" />
+            <rect x="72" y="70" width="14" height="14" rx="2" fill="none" stroke="#000565" strokeWidth="2" />
+            <path d="M75 77.5l3 3.2 6.5-7" fill="none" stroke="#DD131A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M94 77h40" stroke="#04072E" strokeWidth="3" strokeLinecap="round" />
+            <rect x="72" y="96" width="14" height="14" rx="2" fill="none" stroke="#000565" strokeWidth="2" />
+            <path d="M94 103h46" stroke="#9aa0b8" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+          <ul className="hero-stats">
+            <li>100% in your browser</li>
+            <li>0 network calls</li>
+            <li>Counts only</li>
+          </ul>
+        </div>
+      </div>
       <div className="header-inner">
-        <svg viewBox="0 0 191.6 78.6" className="lottie-shape" aria-hidden="true">
-          <path className="path" fill="none" stroke="#DD131A" strokeWidth="4.5" strokeLinecap="round" d={SWOOSH} />
-        </svg>
-        <h1 id="heroTitle" className="title">Check a jury list<br />against the voter roll</h1>
+        <h1 id="heroTitle" className="title">
+          Check a jury list
+          <br />
+          <span className="swoosh-word">
+            against the
+            <svg viewBox="0 0 116 18" className="lottie-shape" aria-hidden="true">
+              <path className="path" fill="none" stroke="#DD131A" strokeWidth="4" strokeLinecap="round" d={SWOOSH} />
+            </svg>
+          </span>
+          {' '}voter roll
+        </h1>
         <p className="subtitle-01">
           <span className="bullet" aria-hidden="true" />
           A match is a referral, not proof
