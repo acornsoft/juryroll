@@ -1,1 +1,1 @@
-| ME | No (14 M.R.S. 1254-A(1)) | Only at the polls (21-A M.R.S. 673); not supported | Counts only. Voter data is confidential (196-A) |
+| ME | No. Names drawn and qualification forms are confidential (14 M.R.S. 1254-A(1), (7)) | Only at the polls (21-A M.R.S. 673); not supported | Counts only. Voter data is confidential except for listed uses, including a file to monitor compliance with election laws (196-A(1)(K)) |
