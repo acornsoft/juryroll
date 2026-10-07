@@ -3,6 +3,7 @@ import core from '../../shared/src/core.js';
 import { bannerFor, HomeHero, IconBox, PageBanner, SideTab } from './components/Chrome.tsx';
 import { CountySummary } from './components/CountySummary.tsx';
 import { PlacePicker } from './components/PlacePicker.tsx';
+import { UsMap } from './components/UsMap.tsx';
 import { ReasonMap } from './components/ReasonMap.tsx';
 import { StepPanel, Stepper } from './components/Stepper.tsx';
 import { TranscriptionSheet } from './components/TranscriptionSheet.tsx';
@@ -751,7 +752,22 @@ export function App() {
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
           {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
 
-          <Stepper facts={facts} activeId={activeStep} notice={invalidateNote} nextEnabled={nextEnabled} onActivate={setActiveStep}>
+          <Stepper
+            facts={facts}
+            activeId={activeStep}
+            notice={invalidateNote}
+            nextEnabled={nextEnabled}
+            onActivate={setActiveStep}
+            companion={(
+              <UsMap
+                stateCode={code}
+                countyFips={countyFips}
+                counties={stateCounties}
+                onState={(next) => { void onState(next); }}
+                onCounty={onCounty}
+              />
+            )}
+          >
             <StepPanel id="where">
               <section id="step0">
                 <PlacePicker

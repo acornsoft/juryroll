@@ -289,8 +289,8 @@ button:disabled {
 .home-hero {
   position: relative;
   overflow: hidden;
-  padding: 10px 0 8px;
-  margin-bottom: 6px;
+  padding: 4px 0 2px;
+  margin-bottom: 2px;
 }
 .hero-wash,
 .hero-panel,
@@ -374,7 +374,7 @@ button:disabled {
   position: relative;
   z-index: 1;
   max-width: 12em;
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   color: #000565;
   font-size: clamp(32px, 3.4vw, 46px);
   line-height: 1.05;
@@ -605,17 +605,31 @@ legend { padding: 0 6px 0 10px; }
   box-shadow: 0 10px 30px rgba(4, 7, 46, 0.05);
 }
 fieldset.panel:disabled { opacity: 0.72; }
-#step0 {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  box-shadow: none;
-}
 .step-card { display: flex; flex-direction: column; }
-#step-panel-where { order: -1; }
+.workflow-split {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.workflow-split > .step-card {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-top: 0;
+}
+.workflow-map {
+  flex: 0 0 min(26rem, 42%);
+  width: min(26rem, 42%);
+  max-width: 42%;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid rgba(227, 227, 227, 0.9);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(4, 7, 46, 0.05);
+}
 
 /* Stepper: horizontal rail on the desktop check, vertical timeline elsewhere */
-.stepper-block { margin-top: 8px; }
+.stepper-block { margin-top: 2px; }
 .rail {
   list-style: none;
   position: relative;
@@ -738,7 +752,7 @@ button.rail-btn:disabled { opacity: 1; }
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 10px;
-    margin: 4px 0 16px;
+    margin: 2px 0 10px;
     padding: 0 0 4px;
   }
   .mode-run .rail::before {
@@ -1145,12 +1159,6 @@ pre, #auditLetter {
   letter-spacing: 0.02em;
 }
 
-.place-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(16rem, 0.75fr);
-  gap: 16px;
-  align-items: start;
-}
 .place-fields {
   background: #fff;
   border: 1px solid rgba(227, 227, 227, 0.9);
@@ -1177,7 +1185,6 @@ pre, #auditLetter {
   background-size: 18px 18px;
   border: 1px solid rgba(227, 227, 227, 0.9);
   border-radius: 10px;
-  box-shadow: 0 10px 28px rgba(4, 7, 46, 0.05);
   overflow: hidden;
 }
 #usMap path {
@@ -1255,13 +1262,40 @@ pre, #auditLetter {
   .home-hero .lottie-shape .path { stroke-dashoffset: 0; }
 }
 
+@media (min-width: 901px) {
+  .workflow-map {
+    position: sticky;
+    top: 12px;
+    align-self: start;
+    overflow: visible;
+    margin-right: 28px;
+  }
+  .workflow-map #usMap {
+    display: block;
+    width: min(100%, 400px);
+    height: auto;
+    aspect-ratio: 960 / 600;
+    max-height: 250px;
+    margin-inline: auto;
+  }
+}
 @media (max-width: 1100px) {
   .hero-panel { display: none; }
 }
-@media (max-width: 800px) {
-  .place-layout { grid-template-columns: 1fr; }
-}
 @media (max-width: 900px) {
+  .workflow-split { flex-direction: column; }
+  .workflow-map { flex: none; width: auto; max-width: none; }
+  .workflow-map {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    margin-right: 0;
+  }
+  .workflow-map #usMap {
+    width: 100%;
+    max-height: none;
+    margin-inline: 0;
+  }
   .nav-container { flex-wrap: wrap; padding: 10px 14px; min-height: 0; }
   .nav { order: 3; width: 100%; margin-left: 0; gap: 0 14px; }
   .nav-actions { margin-left: auto; }
@@ -1279,7 +1313,7 @@ pre, #auditLetter {
 
 @media print {
   .no-print, button, .rail, .topbar, .modal-back, .downloads, .step-actions,
-  .home-hero, .page-banner, .side-tab, .footer-area,
+  .home-hero, .page-banner, .side-tab, .footer-area, .workflow-map,
   #step0, #step1, #step2, #step3, #logPanel {
     display: none !important;
   }

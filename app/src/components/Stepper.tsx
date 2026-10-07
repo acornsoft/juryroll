@@ -28,6 +28,7 @@ type StepperProps = {
   nextEnabled?: boolean;
   onActivate: (id: StepId) => void;
   guideStartHref?: string;
+  companion?: ReactNode;
   children: ReactNode;
 };
 
@@ -39,6 +40,7 @@ export function Stepper({
   nextEnabled = false,
   onActivate,
   guideStartHref,
+  companion,
   children,
 }: StepperProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -90,45 +92,7 @@ export function Stepper({
     onActivate(id);
   }
 
-  return (
-    <div className={`stepper-block mode-${mode}`}>
-      <ol className="rail" id="stepper" aria-label="Check progress">
-        {RUN_STEPS.map((step, index) => {
-          const status = railStatus(step, facts, activeId, mode);
-          const open = canActivate(step, facts, mode);
-          const hint = status === 'blocked'
-            ? step.blocked(facts)
-            : status === 'locked'
-              ? step.unlockHint
-              : status === 'done'
-                ? (mode === 'guide' ? step.guideSummary : step.summary(facts))
-                : null;
-          return (
-            <li key={step.id} className={`rail-item action-single-items is-${status}`}>
-              <button
-                type="button"
-                id={`step-tab-${step.id}`}
-                className="rail-btn"
-                aria-current={step.id === activeId ? 'step' : undefined}
-                aria-disabled={open ? undefined : true}
-                disabled={!open}
-                onClick={() => go(step.id)}
-              >
-                <span className="action-shape" aria-hidden="true">
-                  <span className="rail-index">{String(index + 1).padStart(2, '0')}</span>
-                </span>
-                <span className="rail-copy">
-                  <span className="rail-title">{step.title}</span>
-                  <span className="rail-state">{status}</span>
-                  {hint && <span className="rail-hint">{hint}</span>}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-      <p id="stepLive" className="visually-hidden" aria-live="polite">{announcement}</p>
-      {notice && <p className="note" id="invalidateNote" role="status">{notice}</p>}
+  const stepCard = (
       <article className="step-card" aria-labelledby="stepHeading">
         <p className="kicker">{active.kicker}</p>
         <h2 id="stepHeading" tabIndex={-1} ref={headingRef}>{active.title}</h2>
@@ -168,6 +132,55 @@ export function Stepper({
           )}
         </div>
       </article>
+    );
+
+  return (
+    <div className={`stepper-block mode-${mode}${companion ? ' has-map' : ''}`}>
+      <ol className="rail" id="stepper" aria-label="Check progress">
+        {RUN_STEPS.map((step, index) => {
+          const status = railStatus(step, facts, activeId, mode);
+          const open = canActivate(step, facts, mode);
+          const hint = status === 'blocked'
+            ? step.blocked(facts)
+            : status === 'locked'
+              ? step.unlockHint
+              : status === 'done'
+                ? (mode === 'guide' ? step.guideSummary : step.summary(facts))
+                : null;
+          return (
+            <li key={step.id} className={`rail-item action-single-items is-${status}`}>
+              <button
+                type="button"
+                id={`step-tab-${step.id}`}
+                className="rail-btn"
+                aria-current={step.id === activeId ? 'step' : undefined}
+                aria-disabled={open ? undefined : true}
+                disabled={!open}
+                onClick={() => go(step.id)}
+              >
+                <span className="action-shape" aria-hidden="true">
+                  <span className="rail-index">{String(index + 1).padStart(2, '0')}</span>
+                </span>
+                <span className="rail-copy">
+                  <span className="rail-title">{step.title}</span>
+                  <span className="rail-state">{status}</span>
+                  {hint && <span className="rail-hint">{hint}</span>}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+      <p id="stepLive" className="visually-hidden" aria-live="polite">{announcement}</p>
+      {notice && <p className="note" id="invalidateNote" role="status">{notice}</p>}
+      {companion ? (
+        <div className="workflow-split">
+          {stepCard}
+          <aside className="workflow-map" aria-label="County map">
+            {companion}
+          </aside>
+        </div>
+      ) : stepCard}
     </div>
   );
 }
