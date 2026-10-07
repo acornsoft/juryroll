@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import core from '../../shared/src/core.js';
 import { CountySummary } from './components/CountySummary.tsx';
+import { PlacePicker } from './components/PlacePicker.tsx';
 import { ReasonMap } from './components/ReasonMap.tsx';
 import { StepPanel, Stepper } from './components/Stepper.tsx';
 import { TranscriptionSheet } from './components/TranscriptionSheet.tsx';
@@ -26,7 +27,7 @@ import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url
 import { ATTEST_LINES, CAVEATS, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
-import { COUNTIES, type County } from '../../shared/src/counties.ts';
+import { COUNTIES } from '../../shared/src/counties.ts';
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, auditLogFile, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
@@ -95,7 +96,6 @@ export function App() {
   const [initials, setInitials] = useState('');
   const [election, setElection] = useState(() => nextFederalElection(new Date()));
   const [countyFips, setCountyFips] = useState('');
-  const [countyFilter, setCountyFilter] = useState('');
   const [juror, setJuror] = useState<Held | null>(null);
   const [voter, setVoter] = useState<Held | null>(null);
   const [pendingJ, setPendingJ] = useState<PendingBook | null>(null);
@@ -297,10 +297,6 @@ export function App() {
   const deadlinePassed = Boolean(deadlineDate && today > deadlineDate);
   const windows = rules ? stateWindowDates(election, rules.blackout.state_windows, today) : [];
   const stateCounties = code ? (COUNTIES[code] ?? []) : [];
-  const countyQuery = countyFilter.trim().toLowerCase();
-  const filteredCounties = countyQuery
-    ? stateCounties.filter((item) => item.name.toLowerCase().includes(countyQuery) || item.fips.includes(countyQuery))
-    : stateCounties;
   const selectedCounty = stateCounties.find((item) => item.fips === countyFips) ?? null;
 
   useEffect(() => {
@@ -317,10 +313,6 @@ export function App() {
     setCoreResult(null);
     setInvalidateNote('The use statement changed. The match was cleared and has to be run again.');
   }, [attested]);
-  const countyOptions: County[] = selectedCounty && !filteredCounties.some((item) => item.fips === selectedCounty.fips)
-    ? [selectedCounty, ...filteredCounties]
-    : filteredCounties;
-
   useEffect(() => {
     if (!gates) {
       delete document.body.dataset.aggregate;
@@ -335,11 +327,15 @@ export function App() {
     setCode(next);
     setInvalidateNote(hadResult ? 'The state changed. The match was cleared and has to be run again.' : '');
     setCountyFips('');
-    setCountyFilter('');
-    const picked = resolveRules(next, bundle);
-    setResolved(picked);
     setPolicy(null);
     setCoreResult(null);
+    if (!next) {
+      setResolved(null);
+      setClearedNote('');
+      return;
+    }
+    const picked = resolveRules(next, bundle);
+    setResolved(picked);
     const nextAllows = Boolean(picked.rules && uiGates(picked.rules).allow_jury_list);
     if (nextAllows) {
       setClearedNote('');
@@ -371,6 +367,7 @@ export function App() {
   }
 
   function onCounty(fips: string) {
+    if (fips === countyFips) return;
     const hadResult = Boolean(policyRef.current);
     setCountyFips(fips);
     if (!hadResult) {
@@ -787,23 +784,13 @@ export function App() {
           <Stepper facts={facts} activeId={activeStep} notice={invalidateNote} nextEnabled={nextEnabled} onActivate={setActiveStep}>
             <StepPanel id="where">
               <section id="step0">
-                <div id="placePicker">
-                  <label>
-                    State
-                    <select id="stateSel" value={code} onChange={(event) => { void onState(event.target.value); }}>
-                      <option value="">Choose a state</option>
-                      {STATES.map(([abbr, name]) => <option key={abbr} value={abbr}>{name}</option>)}
-                    </select>
-                  </label>
-                  <label id="countyPicker">
-                    County
-                    <input id="countyFilter" type="search" value={countyFilter} disabled={!code} placeholder="Type to filter" autoComplete="off" onChange={(event) => setCountyFilter(event.target.value)} />
-                    <select id="county" value={countyFips} disabled={!code} onChange={(event) => onCounty(event.target.value)}>
-                      <option value="">Choose a county</option>
-                      {countyOptions.map((item) => <option key={item.fips} value={item.fips}>{item.name} ({item.fips})</option>)}
-                    </select>
-                  </label>
-                </div>
+                <PlacePicker
+                  stateCode={code}
+                  countyFips={countyFips}
+                  counties={stateCounties}
+                  onState={(next) => { void onState(next); }}
+                  onCounty={onCounty}
+                />
                 <label>
                   Federal election date
                   <input id="electionDate" type="date" value={election} onChange={(event) => setElection(event.target.value)} />
