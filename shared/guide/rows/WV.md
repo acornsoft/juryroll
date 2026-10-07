@@ -1,1 +1,1 @@
-| WV | No (W. Va. Code 52-1-5a(e)) | Yes, in person at the county clerk (3-2-28) | Counts only |
+| WV | Not known, so the app treats it as no. Drawn-names lists may carry a 'not a citizen' entry (W. Va. Code 52-1-8(a)); no ruling on WV FOIA's privacy exemption. Under review | Yes, in person at the county clerk (3-2-28) | Counts only. See 6.17 |

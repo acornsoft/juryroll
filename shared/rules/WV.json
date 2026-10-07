@@ -4,20 +4,62 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": false,
-    "statute": "W. Va. Code 52-1-5a(e): juror qualification questionnaires are made available, on request, to counsel of record in the trial; after the trial they 'may only be released with the written permission of the judge who presided over the trial.' The county name list itself is open for inspection (52-1-5(g)), but it does not show disqualifications.",
-    "holder": "Clerk of the circuit court.",
+    "public": null,
+    "statute": "W. Va. Code 52-1-8(a): 'The clerk shall enter this determination in the space provided on the juror qualification form and on the alphabetical lists of names drawn from the jury wheel.' 52-1-8(b)(1): a prospective juror is disqualified who 'Is not a citizen of the United States'. No statute or court rule says whether those drawn lists are open or closed. 52-1-5a(e) covers juror qualification forms only: after trial, the forms 'for persons serving on a particular trial jury may only be released with the written permission of the judge who presided over the trial or his or her successor'. Status of the drawn lists: null.",
+    "holder": "Clerk of the circuit court. Records are kept at least four years (52-1-16(a)).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://code.wvlegislature.gov/52-1-5A/",
+    "source_url": "https://code.wvlegislature.gov/52-1-8/",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "W. Va. Code 52-1-8 (court determines disqualification, including non-citizenship; clerk records it on the form and list)",
+        "cite": "W. Va. Code 52-1-8 (court determines disqualification, including non-citizenship; clerk enters it on the form and on the alphabetical lists of names drawn)",
         "url": "https://code.wvlegislature.gov/52-1-8/",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Code 52-1-6(a) (names or identifying numbers of prospective jurors placed in the jury wheel)",
+        "url": "https://code.wvlegislature.gov/52-1-6/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Code 52-1-5a(e) (questionnaires to counsel; post-trial release of trial jurors' forms only with the judge's written permission)",
+        "url": "https://code.wvlegislature.gov/52-1-5A/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Code 52-1-5(g) (county list and freeholder list open for public inspection)",
+        "url": "https://code.wvlegislature.gov/52-1-5/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Code 52-1-15(b) ('any relevant records and papers not public or otherwise available used by the clerk')",
+        "url": "https://code.wvlegislature.gov/52-1-15/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Code 52-1-16(a) (jury selection records preserved at least four years)",
+        "url": "https://code.wvlegislature.gov/52-1-16/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Code 29B-1-2(4) ('Public body' includes 'the executive, legislative and judicial departments') and 29B-1-4(a) (presumption of public accessibility; exemption (2) personal privacy)",
+        "url": "https://code.wvlegislature.gov/29B-1-4/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "W. Va. Trial Court Rule 10.04(b) (writings retained by a court or circuit clerk 'are to be considered \"public records\"')",
+        "url": "https://www.courtswv.gov/legal-community/court-rules/wv-trial-court-rules-contents",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
       }
     ]
   },
@@ -49,7 +91,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://code.wvlegislature.gov/3-2-28/",
@@ -74,17 +116,32 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "W. Va. Code 29B-1-3 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: from a circuit clerk, per jury term, the number of prospective jurors the court found disqualified under 52-1-8(b)(1) (not a citizen). From the county clerk, per month, the number of registrations canceled because the voter was not a citizen.",
+    "counts_only": true,
+    "source_url": "https://code.wvlegislature.gov/29B-1-3/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names or for the drawn lists themselves. Their status is unsettled (Optimus 2026-10-07, option A). The annual clerk report under 52-1-16(b) covers only age, race, and gender."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror questionnaires go only to counsel, or out with the trial judge's written permission (W. Va. Code 52-1-5a(e)). A voter may challenge in person at the county clerk's office (3-2-28). Strict gates: counts only."
+    "basis": "The drawn-names lists may carry a 'not a citizen' entry (52-1-8(a)), but no court or AG ruling settles whether they are open under the WV FOIA privacy exemption (29B-1-4(a)(2)). Status null (Optimus 2026-10-07, option A). Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: Optimus ruled option A. jury_list.public false to null (no gate changes); statute citation fixed (52-1-5a(e) covers forms only; the drawn lists are 52-1-8(a)); jury sources; audit_path; federal_source_url moved to govinfo. Reopen candidate (LEGAL-REVIEW.md, Optimus 2026-10-07) if a court or AG ruling on the drawn lists turns up. See review/REOPEN.md.",
+    "52-1-8(a): 'The clerk shall enter this determination in the space provided on the juror qualification form and on the alphabetical lists of names drawn from the jury wheel.'",
+    "52-1-5(g): 'The names from the county list provided to the clerks and freeholder list shall be open for public inspection in person during business hours.' This covers the county list, not the drawn lists.",
+    "29B-1-4(a)(2) exempts 'Information of a personal nature such as that kept in a personal, medical, or similar file, if the public disclosure of the information would constitute an unreasonable invasion of privacy, unless the public interest by clear and convincing evidence requires disclosure in this particular instance'. No court or AG ruling applies it to the drawn lists.",
+    "Trial Court Rule 10.04(b): 'Writings and documents relating to the conduct of the public's business, and which are prepared, owned or retained by a court, circuit clerk, or other court employee, are to be considered \"public records.\"' FOIA covers the judicial department (29B-1-2(4)).",
+    "List contents: 52-1-8(a) calls them 'alphabetical lists of names drawn from the jury wheel'. 52-1-6(a) puts 'the names or identifying numbers of prospective jurors' in the wheel. No section in article 52-1 says the drawn lists carry date of birth or address. So even if the lists were opened, every match would be name-only, and name-only matches are never exported.",
     "Caution: West Virginia cancels the registration if the voter does not appear within 30 days or the certified notice comes back (3-2-28(c)). A wrong challenge can remove an eligible voter quickly. This is a strong reason to keep guidance off without a lawful jury source.",
     "Federal law: the NVRA 90-day rule on systematic removal programs still applies; 3-2-28 itself sets no pre-election cutoff.",
-    "dob_in_public_file is null: 3-2-30(a) says inspection files include all registration information except phone, email, SSN, and license numbers, and 3-2-18 says records hold birth dates, but no section says birth dates are on the sold lists.",
-    "official_pipeline is null: no jury-to-clerk non-citizen statute was found."
+    "dob_in_public_file and registration_date_in_public_file stay null: 3-2-30(a) says the files open for examination and copying 'shall include all registration and voting information maintained in the file' except phone, email, SSN, and license numbers, but no section names birth date or registration date as list fields.",
+    "Cancelled-voter file: 3-2-30(a): 'Any person may examine the active, inactive, rejected and canceled voter registration records'. No reason code is named, so no jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "official_pipeline is null: no jury-to-clerk non-citizen statute was found. SB 800 (2026, effective June 11, 2026) amended article 52-1 but added none."
   ]
 }
