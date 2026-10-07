@@ -361,6 +361,8 @@ export function App() {
   async function takeFile(kind: Kind, file: File) {
     if (!attested) {
       setFileError(ATTEST_REFUSE);
+      const input = document.getElementById(kind === 'juror' ? 'fileJuror' : 'fileVoter');
+      if (input instanceof HTMLInputElement) input.value = '';
       return;
     }
     if (!gates?.allow_jury_list) {
