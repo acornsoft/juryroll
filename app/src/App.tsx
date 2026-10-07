@@ -747,61 +747,9 @@ export function App() {
     case 'home':
       page = (
         <>
-          <IconBox id="privacy" icon="icon-check" title="On this computer">
-            <p><b>{PRIVACY_LEAD}</b> {PRIVACY_BODY}</p>
-          </IconBox>
-          {inFederal && (
-            <IconBox id="federalBanner" icon="icon-calander" title="Federal 90-day window" role="status">
-              <p>
-                <b>Do not file bulk challenges. Refer leads instead.</b>
-                <span> The window for {election} is {window90.start} through {window90.end}. Today is {today}. </span>
-                <a className="why" href="#/law/blackout">Why?</a>
-              </p>
-            </IconBox>
-          )}
           {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
-          {rules && (
-            <details className="state-brief sen-acc" id="stateNotices">
-              <summary><i className="icon-star" aria-hidden="true" /> <span id="stateBrief">{stateName}: {gates?.allow_named_export ? 'named leads allowed. Referral only.' : 'counts only.'} Why?</span></summary>
-              {NON_SIGNAL[rules.state] && (
-                <p className="banner" id="nonSignalBanner" role="status">
-                  {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="why" href="#/law/blackout">Why?</a>
-                </p>
-              )}
-              {rules.state === 'ND' && <p className="banner" id="ndBanner" role="status">{ND_REGISTRATION_NOTE}</p>}
-              {useLimitApplies(rules) && (
-                <section id="useLimitBanner">
-                  <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="why" href="#/law/use">Why?</a></p>
-                  {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
-                  {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url} target="_blank" rel="noopener noreferrer">{rules.voter_file.source_url}</a></p>}
-                </section>
-              )}
-              {gates?.show_challenge_guidance && (
-                <section id="challengePanel">
-                  <h2>Private challenge</h2>
-                  {rules.private_challenge.juryroll_lead_sufficient !== true && (
-                    <p className="banner" id="leadBanner">A JuryRoll match alone does not meet this standard. Referral is the recommended path. <a className="why" href="#/law/challenge">Why?</a></p>
-                  )}
-                  {deadlinePassed && deadlineDate && (
-                    <p className="banner" id="deadlineBanner">The state deadline for this election has passed ({deadlineDate}).</p>
-                  )}
-                  {strict(rules.private_challenge.one_per_affidavit, true) && <p id="oneAffidavit">Use one affidavit for one voter.</p>}
-                  {rules.private_challenge.who && <p>{rules.private_challenge.who}</p>}
-                  {rules.private_challenge.form_or_statute && <p>{rules.private_challenge.form_or_statute}</p>}
-                  {rules.private_challenge.evidence_standard && <p>{rules.private_challenge.evidence_standard}</p>}
-                  {rules.private_challenge.deadlines && <p>{rules.private_challenge.deadlines}</p>}
-                  {rules.private_challenge.false_statement_penalty && <p>{rules.private_challenge.false_statement_penalty}</p>}
-                  {rules.private_challenge.form_url && !deadlinePassed && (
-                    <p><a id="challengeFormLink" href={rules.private_challenge.form_url} target="_blank" rel="noopener noreferrer">Official challenge form</a></p>
-                  )}
-                </section>
-              )}
-              <p><a href={`#/state/${code.toLowerCase()}`}>Open the {stateName} walkthrough</a></p>
-            </details>
-          )}
           {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
-          {code && !selectedCounty && <p id="countyRequired" className="note">Choose a county before you run a match or export.</p>}
 
           <Stepper facts={facts} activeId={activeStep} notice={invalidateNote} nextEnabled={nextEnabled} onActivate={setActiveStep}>
             <StepPanel id="where">
@@ -1078,6 +1026,59 @@ export function App() {
               {policy && !gates?.allow_named_export && <p id="aggregateExport">This state shows counts only. Download the counts-only letter from Add files.</p>}
             </StepPanel>
           </Stepper>
+
+          <IconBox id="privacy" icon="icon-check" title="On this computer">
+            <p><b>{PRIVACY_LEAD}</b> {PRIVACY_BODY}</p>
+          </IconBox>
+          {inFederal && (
+            <IconBox id="federalBanner" icon="icon-calander" title="Federal 90-day window" role="status">
+              <p>
+                <b>Do not file bulk challenges. Refer leads instead.</b>
+                <span> The window for {election} is {window90.start} through {window90.end}. Today is {today}. </span>
+                <a className="why" href="#/law/blackout">Why?</a>
+              </p>
+            </IconBox>
+          )}
+          {rules && (
+            <details className="state-brief sen-acc" id="stateNotices">
+              <summary><i className="icon-star" aria-hidden="true" /> <span id="stateBrief">{stateName}: {gates?.allow_named_export ? 'named leads allowed. Referral only.' : 'counts only.'} Why?</span></summary>
+              {NON_SIGNAL[rules.state] && (
+                <p className="banner" id="nonSignalBanner" role="status">
+                  {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="why" href="#/law/blackout">Why?</a>
+                </p>
+              )}
+              {rules.state === 'ND' && <p className="banner" id="ndBanner" role="status">{ND_REGISTRATION_NOTE}</p>}
+              {useLimitApplies(rules) && (
+                <section id="useLimitBanner">
+                  <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="why" href="#/law/use">Why?</a></p>
+                  {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
+                  {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url} target="_blank" rel="noopener noreferrer">{rules.voter_file.source_url}</a></p>}
+                </section>
+              )}
+              {gates?.show_challenge_guidance && (
+                <section id="challengePanel">
+                  <h2>Private challenge</h2>
+                  {rules.private_challenge.juryroll_lead_sufficient !== true && (
+                    <p className="banner" id="leadBanner">A JuryRoll match alone does not meet this standard. Referral is the recommended path. <a className="why" href="#/law/challenge">Why?</a></p>
+                  )}
+                  {deadlinePassed && deadlineDate && (
+                    <p className="banner" id="deadlineBanner">The state deadline for this election has passed ({deadlineDate}).</p>
+                  )}
+                  {strict(rules.private_challenge.one_per_affidavit, true) && <p id="oneAffidavit">Use one affidavit for one voter.</p>}
+                  {rules.private_challenge.who && <p>{rules.private_challenge.who}</p>}
+                  {rules.private_challenge.form_or_statute && <p>{rules.private_challenge.form_or_statute}</p>}
+                  {rules.private_challenge.evidence_standard && <p>{rules.private_challenge.evidence_standard}</p>}
+                  {rules.private_challenge.deadlines && <p>{rules.private_challenge.deadlines}</p>}
+                  {rules.private_challenge.false_statement_penalty && <p>{rules.private_challenge.false_statement_penalty}</p>}
+                  {rules.private_challenge.form_url && !deadlinePassed && (
+                    <p><a id="challengeFormLink" href={rules.private_challenge.form_url} target="_blank" rel="noopener noreferrer">Official challenge form</a></p>
+                  )}
+                </section>
+              )}
+              <p><a href={`#/state/${code.toLowerCase()}`}>Open the {stateName} walkthrough</a></p>
+            </details>
+          )}
+          {code && !selectedCounty && <p id="countyRequired" className="note">Choose a county before you run a match or export.</p>}
 
           <section className="panel no-print" id="downloadsPanel">
             <h2>Blank templates and fictional samples</h2>
