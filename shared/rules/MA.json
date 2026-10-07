@@ -1,0 +1,118 @@
+{
+  "state": "MA",
+  "name": "Massachusetts",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Office of Jury Commissioner.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section23",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "M.G.L. c. 234A, sec. 23 (completed juror questionnaires 'shall not constitute a public record')",
+        "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section23",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "M.G.L. c. 234A, sec. 15 (prospective juror lists open for inspection only to insure the integrity of the selection process)",
+        "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section15",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "M.G.L. c. 234A, sec. 4 (jurors must be U.S. citizens)",
+        "url": "https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleII/Chapter234A/Section4",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "The statewide central registry names and addresses 'shall not be a matter of public record'; they go to state party committees, statewide candidate and ballot committees, the jury commissioner, and others the Secretary designates by regulation (M.G.L. c. 51, sec. 47C). Local lists were not researched.",
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter51/Section47C",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "A registered voter (M.G.L. c. 51, sec. 48).",
+    "form_or_statute": "M.G.L. c. 51, secs. 48-49: sworn, signed complaint to the registrars naming the person and giving reasons; registrars summon the person to a hearing with counsel and cross-examination allowed.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "At least 14 days before a primary, election, or town meeting in a city; at least 4 days in a town (c. 51, sec. 48).",
+    "deadline_days_before_election": 14,
+    "evidence_standard": "The complainant 'has reason to believe and does believe' that the person is illegally or incorrectly registered, and gives the reasons (sec. 48). If the person does not appear, the complainant must produce testimony making a prima facie case (sec. 49).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter51/Section48",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "M.G.L. c. 51, sec. 49 (hearing; striking names)",
+        "url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter51/Section49",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 14,
+        "applies_to": "Registration complaints under M.G.L. c. 51, sec. 48 (cities; towns: 4 days)",
+        "effect": "Complaints must be filed at least 14 days (city) or 4 days (town) before the election.",
+        "statute": "M.G.L. c. 51, sec. 48",
+        "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter51/Section48",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleVIII/Chapter51/Section48",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Massachusetts - contact your local election official (Secretary of the Commonwealth)",
+      "url": "https://www.sec.state.ma.us/divisions/elections/contact-us/contact-local-election-official.htm",
+      "verified_on": "2026-10-07",
+      "note": "Complaints under c. 51, sec. 48 go to the local board of registrars."
+    },
+    "state_election_office": {
+      "name": "Secretary of the Commonwealth - Elections Division",
+      "url": "https://www.sec.state.ma.us/divisions/elections/elections-and-voting.htm",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Massachusetts Office of the Attorney General",
+      "url": "https://www.mass.gov/orgs/office-of-the-attorney-general",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury non-citizen records: status not settled by statute (null), so counts only. A registered voter may file a sworn complaint with the registrars (c. 51, sec. 48). Guidance stays off while the jury list is not available."
+  },
+  "notes": [
+    "jury_list.public is null, not false: the confidential questionnaire (c. 234A, secs. 22-23) does not ask about citizenship, and no section addresses records of non-citizen disqualifications.",
+    "The statewide voter registry is not a public record (c. 51, sec. 47C). Most private users cannot lawfully get a statewide voter file.",
+    "The complainant must be ready to prove a prima facie case at a hearing with cross-examination (sec. 49). A data match alone is unlikely to meet this.",
+    "The mass.gov site refuses plain HTTP clients; the AG page was checked in a browser."
+  ]
+}

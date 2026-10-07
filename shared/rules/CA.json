@@ -1,0 +1,97 @@
+{
+  "state": "CA",
+  "name": "California",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Superior court jury commissioners (Code Civ. Proc. 195-196).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=196",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Code Civ. Proc. 196 (jury commissioner inquiry into qualifications; information noted in commissioner records)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CCP&sectionNum=196",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Candidates, ballot-measure committees, and any person for election, scholarly, journalistic, political, or governmental purposes as determined by the Secretary of State (Elec. Code 2194(a)(3)), after a written application under penalty of perjury (Elec. Code 2188).",
+    "permitted_uses": "Election, scholarly, journalistic, political, or governmental purposes. Not for any personal, private, or commercial purpose, and not for reproduction or display on the internet (2194(a)(2)).",
+    "no_online_posting": true,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Application with name, addresses, phone, ID number, the information requested, and a statement of intended use, certified under penalty of perjury (Elec. Code 2188(b), (e)).",
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=2194",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Elec. Code 2188 (application; statement of intended use; penalty of perjury)",
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=2188",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": false,
+    "who": "Only a member of the precinct board may challenge, at the polling place. 'A person, other than a member of a precinct board or other official responsible for the conduct of the election, shall not challenge or question any voter concerning the voter's qualifications to vote' (Elec. Code 14240(b)).",
+    "form_or_statute": "Elec. Code 14240. Lists sent to precinct board members need probable cause and must go to the elections official first (14240(c)).",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=14240",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=ELEC&sectionNum=2201",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "California county elections offices (Secretary of State)",
+      "url": "https://www.sos.ca.gov/elections/voting-resources/county-elections-offices",
+      "verified_on": "2026-10-07",
+      "note": "The county elections official cancels a registration 'upon proof that the person is otherwise ineligible to vote' (Elec. Code 2201(a)(8))."
+    },
+    "state_election_office": {
+      "name": "California Secretary of State - Elections",
+      "url": "https://www.sos.ca.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "California Department of Justice (Attorney General)",
+      "url": "https://oag.ca.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. California bars private persons from challenging voters (Elec. Code 14240(b)). Voter data use is limited and may not be put online (2194)."
+  },
+  "notes": [
+    "private_challenge.allowed is false: Elec. Code 14240(b) forbids anyone except precinct board members and election officials from challenging or questioning a voter's qualifications.",
+    "Use limit: JuryRoll matching must fit an election, scholarly, journalistic, political, or governmental purpose stated under penalty of perjury (2188, 2194). The app should warn California users.",
+    "Source note: leginfo.legislature.ca.gov shows a bot-check page to plain HTTP clients; sections were read in a browser.",
+    "penalty, dob_in_public_file, and registration_date_in_public_file are null: not stated in the sections read."
+  ]
+}

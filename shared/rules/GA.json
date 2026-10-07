@@ -1,0 +1,146 @@
+{
+  "state": "GA",
+  "name": "Georgia",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": "O.C.G.A. 21-2-231(a.1): each superior court clerk sends the Secretary of State, by the tenth day of each month, a list of all persons 'who identify themselves as not being citizens of the United States during their qualification to serve as a juror'. No statute making the list public was found.",
+    "holder": null,
+    "fields_withheld": null,
+    "official_pipeline": "Superior court clerks report self-identified non-citizen jurors monthly to the Secretary of State (21-2-231(a.1)). The Secretary sends names on the list of electors to the county board of registrars, which removes them and mails a notice (21-2-231(c)(1)). Registrars must act within 60 days (21-2-231(f)).",
+    "use_restriction": null,
+    "source_url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-231/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "O.C.G.A. 21-2-231 - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-231/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Georgia Department of Audits and Accounts, Voter Registration and List Maintenance (lists 'Superior Court Clerk: Non-citizens identified through juror qualification' as a 21-2-231 data source; SOS citizenship audits 2024 to April 2026 used juror affidavits of non-citizenship, DDS data and SAVE)",
+        "url": "https://www.audits.ga.gov/ReportSearch/download/34351",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Georgia Secretary of State, Qualifications for Electors (quotes O.C.G.A. 21-2-231(c)(1) on lists under (a.1))",
+        "url": "https://mvp.sos.ga.gov/s/qualifications-for-electors",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person, by purchase from the Secretary of State (per the Secretary of State's official order page and online store).",
+    "permitted_uses": "Any use except commercial purposes: 'Such data may not be used by any person for commercial purposes' (O.C.G.A. 21-2-225(c)).",
+    "no_online_posting": null,
+    "penalty": "Misdemeanor for intentional commercial use of the list of electors (O.C.G.A. 21-2-601).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": true,
+    "attestation_required": null,
+    "source_url": "https://sos.ga.gov/page/order-voter-registration-lists-and-files",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Georgia Secretary of State online store - Voter List (contents: name, residential and mailing address, race, gender, registration date, last voting date; no date of birth; 21-2-225(c) and 21-2-601 notices)",
+        "url": "https://georgiasecretaryofstate.net/collections/voter-list-1",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "O.C.G.A. 21-2-225(b)-(c) (public data; month and day of birth confidential; year of birth public; no commercial use) - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-225/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "O.C.G.A. 21-2-601 (misdemeanor for commercial use) - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-15/section-21-2-601/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any elector of the county or municipality (O.C.G.A. 21-2-229(a), 21-2-230(a)).",
+    "form_or_statute": "O.C.G.A. 21-2-229 (challenge to qualifications to remain on the list; hearing by the board of registrars) and 21-2-230 (challenge to the right to vote in an election; probable-cause review). Written challenge that specifies the grounds, filed with the county board of registrars.",
+    "form_url": null,
+    "one_per_affidavit": false,
+    "deadlines": "21-2-229: hearing set within 10 business days after notice; appeal to superior court within 10 days. 21-2-230: before the challenged elector votes (absentee: before 5:00 p.m. the day before scanning starts); any challenge within 45 days of a primary, runoff or election is postponed until certification (21-2-230(b)(1), SB 189 (2024)).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "21-2-229(c): burden on the challenging elector to prove the person is not qualified. 21-2-230(b): registrars must find probable cause or deny the challenge.",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://gov.georgia.gov/document/2021-signed-legislation/sb-202/download",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Georgia SB 189 (2024), Section 5 - amended O.C.G.A. 21-2-230(b) (probable cause; 45-day postponement)",
+        "url": "https://gov.georgia.gov/document/2024-signed-legislation/sb-189/download",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
+      },
+      {
+        "cite": "Georgia SB 202 (2021), Sections 15-16 - O.C.G.A. 21-2-229 and 21-2-230 ('There shall not be a limit on the number of persons whose qualifications such elector may challenge.')",
+        "url": "https://gov.georgia.gov/document/2021-signed-legislation/sb-202/download",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 45,
+        "applies_to": "Elector challenges under O.C.G.A. 21-2-230",
+        "effect": "Postponed until certification of the primary, election or runoff is complete.",
+        "statute": "O.C.G.A. 21-2-230(b)(1) as amended by SB 189 (2024)",
+        "source_url": "https://gov.georgia.gov/document/2024-signed-legislation/sb-189/download",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://gov.georgia.gov/document/2024-signed-legislation/sb-189/download",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "County election offices / boards of registrars (Georgia Secretary of State directory)",
+      "url": "https://sos.ga.gov/county-elections-offices",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Georgia Secretary of State - Elections Division",
+      "url": "https://sos.ga.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Georgia Attorney General",
+      "url": "https://law.georgia.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "No source found that makes the juror non-citizen list available to a private person (jury_list.public is null, so the strict default applies). Without a lawful jury list there are no named leads. Aggregate audit mode only: ask officials whether the 21-2-231(a.1) monthly reports are filed and processed."
+  },
+  "notes": [
+    "The official pipeline already exists: clerks report monthly to the Secretary of State (21-2-231(a.1)). The best private action is an aggregate referral that asks whether each county files and processes these reports.",
+    "Source status: 21-2-229 and 21-2-230 were read from enrolled session laws (SB 202 of 2021, SB 189 of 2024) on gov.georgia.gov. 21-2-231, 21-2-225 and 21-2-601 were re-read on 2026-10-07 from the Justia copy of the 2025 Georgia Code, the source LEGAL-REVIEW steering allows for GA. The text matches the earlier official-page summaries.",
+    "UNVERIFIED, not relied on: a secondary summary says HB 397 (2025-2026 session) did not add new challenge rules (proposed 21-2-230.1). No rule value uses it. Re-check against the enrolled act.",
+    "The public voter list has no date of birth. If the jury gate ever opens in GA, matches would be capped at Probable (LOGIC-CHANGES.md A.4).",
+    "Federal cases: Majority Forward v. Ben Hill County, 512 F. Supp. 3d 1354 (M.D. Ga. 2021) (mass private challenges in the 90-day window need individualized inquiry); Fair Fight v. True the Vote (N.D. Ga. 2024) (about 364,000 challenges; list 'utterly lacking reliability') (LEGAL-REVIEW.md).",
+    "false_statement_penalty is null: not determined in this pass.",
+    "Georgia 2024 audit: 20 noncitizens among 8.2 million registrants (LEGAL-REVIEW.md)."
+  ]
+}

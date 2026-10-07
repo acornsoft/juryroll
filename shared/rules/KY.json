@@ -1,0 +1,102 @@
+{
+  "state": "KY",
+  "name": "Kentucky",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Administrative Office of the Courts.",
+    "fields_withheld": null,
+    "official_pipeline": "KRS 30A.145(2): on the first Tuesday of each month the AOC lists all persons excused from jury duty for not being U.S. citizens and sends the list to the Attorney General, the U.S. Attorney, and the State Board of Elections. KRS 116.113(3): the State Board removes the name within 5 days, except while registration books are closed.",
+    "use_restriction": null,
+    "source_url": "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=55500",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "KRS 30A.145 (monthly AOC list of jury non-citizen excusals)",
+        "url": "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=55500",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "KRS 116.113 (State Board removes name within 5 days)",
+        "url": "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=58059",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Qualified candidates, political party committees or officials, and committees for or against a ballot question; other persons at the State Board's discretion (KRS 117.025(3)(i)).",
+    "permitted_uses": "Not for commercial use (KRS 117.025(3)(i)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=52994",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "SBE 84 Request for Voter Registration Data (State Board form)",
+        "url": "https://elect.ky.gov/Candidates/Documents/SBE%2084%20%20Request%20for%20Voter%20Registration%20Data%2010.2025.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls: a challenger may dispute a voter's right to vote; the voter signs an oath, which goes to the Commonwealth's attorney (KRS 117.245). No pre-election written challenge by a private voter was found.",
+    "form_or_statute": "KRS 117.245. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=51671",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=51671",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Kentucky county clerks (State Board of Elections directory)",
+      "url": "https://elect.ky.gov/About-Us/Pages/County-Clerks.aspx",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Kentucky State Board of Elections",
+      "url": "https://elect.ky.gov/Pages/default.aspx",
+      "verified_on": "2026-10-07",
+      "note": "Already receives the AOC jury non-citizen list monthly (KRS 30A.145(2))."
+    },
+    "ag": {
+      "name": "Kentucky Attorney General",
+      "url": "https://www.ag.ky.gov/Pages/default.aspx",
+      "verified_on": "2026-10-07",
+      "note": "Also receives the AOC list monthly (KRS 30A.145(2))."
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "The jury non-citizen list goes to the AG, U.S. Attorney and State Board (KRS 30A.145(2)); no statute makes it public (null). A private person may not get the voter list as of right (KRS 117.025(3)(i)). Strict gates: counts only."
+  },
+  "notes": [
+    "Duplication: Kentucky already runs the exact match JuryRoll does, monthly, with removal in 5 days (KRS 116.113(3)). An aggregate referral should ask about that process.",
+    "dob_in_public_file and registration_date_in_public_file are null: not confirmed."
+  ]
+}

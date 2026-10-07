@@ -1,0 +1,90 @@
+{
+  "state": "MN",
+  "name": "Minnesota",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Minn. Gen. R. Prac. 814: 'The jury source list, the names of prospective jurors summoned, records regarding prospective jurors, and the contents of juror qualification questionnaires shall not be disclosed except as provided by this rule.' Other access needs a written request to the chief judge (814(a)(4)).",
+    "holder": "State court administrator and district court jury offices.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.revisor.mn.gov/court_rules/gp/id/814/",
+    "verified_on": "2026-10-07"
+  },
+  "voter_file": {
+    "who_may_get": "Any individual may inspect or obtain the public information list (name, address, year of birth, voting history, phone if given) after showing ID and signing a written statement on use (Minn. Stat. 201.091, subd. 4).",
+    "permitted_uses": "Only purposes related to elections, political activities, or law enforcement (201.091, subd. 4(b)).",
+    "no_online_posting": true,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Identification plus a written statement that the information will not be used for purposes unrelated to elections, political activities, or law enforcement (201.091, subd. 4(c)). Recipients may not post the list online or sell, loan, or give it to others (subd. 4(e)).",
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.091",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any voter registered in the same county (Minn. Stat. 201.195, subd. 1(a)).",
+    "form_or_statute": "Minn. Stat. 201.195: petition to the county auditor stating grounds and facts, with a personal-knowledge and due-diligence affidavit; the auditor sets a hearing and serves the voter.",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "At least 45 days before the election; for voters who registered or updated within 60 days of the election, at least 10 days before the election or within 10 days after the registration appeared on the public list, whichever is later (201.195, subd. 1(a)).",
+    "deadline_days_before_election": 45,
+    "evidence_standard": "Affidavit that the challenge is based on the challenger's personal knowledge and that the filer used due diligence to personally verify the facts; the filer must prove the basis by clear and convincing evidence (201.195, subd. 1(b)).",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": null,
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.195",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 45,
+        "applies_to": "Voter challenges under Minn. Stat. 201.195",
+        "effect": "Petitions must be filed at least 45 days before the election (10 days for recent registrants).",
+        "statute": "Minn. Stat. 201.195, subd. 1(a)",
+        "source_url": "https://www.revisor.mn.gov/statutes/cite/201.195",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://www.revisor.mn.gov/statutes/cite/201.195",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Minnesota Secretary of State - find county election office",
+      "url": "https://www.sos.mn.gov/elections-voting/find-county-election-office/",
+      "verified_on": "2026-10-07",
+      "note": "Challenge petitions under 201.195 go to the county auditor."
+    },
+    "state_election_office": {
+      "name": "Minnesota Secretary of State - find county election office",
+      "url": "https://www.sos.mn.gov/elections-voting/find-county-election-office/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Minnesota Attorney General",
+      "url": "https://www.ag.state.mn.us/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records are confidential (Minn. Gen. R. Prac. 814). Strict gates: counts only. A challenge needs personal knowledge, due diligence, and clear and convincing evidence (201.195)."
+  },
+  "notes": [
+    "Use limit: the public information list may be used only for elections, political activities, or law enforcement, after a signed statement (201.091, subd. 4). The app should warn Minnesota users.",
+    "juryroll_lead_sufficient is false: 201.195 requires personal knowledge and personal verification, and the filer bears a clear and convincing burden.",
+    "jury_list.public cites a court rule (Minn. Gen. R. Prac. 814), read on the Revisor's official site.",
+    "sos.mn.gov blocks plain HTTP clients; the county office page was checked in a browser."
+  ]
+}

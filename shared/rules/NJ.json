@@ -1,0 +1,80 @@
+{
+  "state": "NJ",
+  "name": "New Jersey",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "New Jersey Judiciary (jury management).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": "Any voter, from the county clerk (printed registry lists) or the commissioner of registration (electronic list, at reproduction cost, max $375) (N.J.S.A. 19:31-18.1(a)-(b)).",
+    "permitted_uses": "Not as a basis for commercial or charitable solicitation (19:31-18.1(c)).",
+    "no_online_posting": null,
+    "penalty": "Disorderly person; fine up to $500 (19:31-18.1(c)).",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://nj.gov/state/dos-statutes-elections-19-31-39.shtml",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: authorized challengers and district board members may challenge a person offering to vote; a challenge as an alien is handled by oath or naturalization certificate (N.J.S.A. 19:15-20). No pre-election written challenge by a private voter was found.",
+    "form_or_statute": "N.J.S.A. 19:15-18.1 to 19:15-20. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://nj.gov/state/dos-statutes-elections-19-10-19.shtml",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://nj.gov/state/dos-statutes-elections-19-10-19.shtml",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "New Jersey county election officials (Division of Elections)",
+      "url": "https://www.nj.gov/state/elections/vote-county-election-officials.shtml",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "New Jersey Division of Elections",
+      "url": "https://www.nj.gov/state/elections/index.shtml",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "New Jersey Office of Attorney General",
+      "url": "https://www.njoag.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. Challenges exist only at the polls. Strict gates."
+  },
+  "notes": [
+    "UNVERIFIED: N.J. Court Rule 1:38-5(g). Secondary sources say it excludes juror qualification questionnaires from public access. The official text on njcourts.gov could not be fetched (bot wall), so jury_list.public and jury_list.statute stay null and the strict default applies.",
+    "Source note: election statutes were read from the Division of Elections statute pages on nj.gov.",
+    "A pending bill (A509, 2026 session) would match juror records against the voter system. It is not law and is not relied on.",
+    "official_pipeline is null: no enacted jury-to-election-official non-citizen statute was found."
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "state": "ND",
+  "name": "North Dakota",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Clerk of district court (N.D.C.C. 27-09.1-07, 27-09.1-08).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://ndlegis.gov/cencode/t27c09-1.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "N.D.C.C. 27-09.1-07 (qualification form asks whether the person is a U.S. citizen)",
+        "url": "https://ndlegis.gov/cencode/t27c09-1.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.D.C.C. 27-09.1-08 (non-citizens disqualified)",
+        "url": "https://ndlegis.gov/cencode/t27c09-1.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Only candidates, political parties, and political committees, for election-related purposes. Other central voter file information is an exempt record (N.D.C.C. 16.1-02-15).",
+    "permitted_uses": "Election-related purposes only; may not be sold or distributed for other purposes (16.1-02-15).",
+    "no_online_posting": null,
+    "penalty": "Class A misdemeanor for intentional violation of the chapter (16.1-02-16(3)).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://ndlegis.gov/cencode/t16-1c02.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private challenge procedure was found. The former poll challenge section, N.D.C.C. 16.1-05-06, was repealed in 2013.",
+    "form_or_statute": "None found. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://ndlegis.gov/cencode/t16-1c05.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://ndlegis.gov/cencode/t16-1c02.pdf",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "North Dakota Secretary of State - county election officials",
+      "url": "https://www.sos.nd.gov/elections/voter/current-officials/county-election-officials",
+      "verified_on": "2026-10-07",
+      "note": "County auditors keep central voter file records (N.D.C.C. 16.1-02-01)."
+    },
+    "state_election_office": {
+      "name": "North Dakota Secretary of State - Elections",
+      "url": "https://www.sos.nd.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "North Dakota Attorney General",
+      "url": "https://attorneygeneral.nd.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "North Dakota has no voter registration. Voters enter the central voter file after they vote (N.D.C.C. 16.1-02-05). Private users cannot get the file (16.1-02-15). Strict gates: counts only."
+  },
+  "notes": [
+    "No voter registration: N.D.C.C. 16.1-01-05.1 says its procedure 'may not be used to require the registration of electors'. The county auditor enters each person who voted into the central voter file after the election (16.1-02-05(1)).",
+    "Logic impact: the EXCLUDE rule compares a registration date with a jury declaration date. North Dakota has no registration date. The app must not treat file-entry dates as registration dates.",
+    "Date of birth is held in the file (16.1-02-12(8)) but is not among the fields released to candidates and parties, so dob_in_public_file is false.",
+    "jury_list.public is null: chapter 27-09.1 does not state whether qualification forms are public."
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "state": "WV",
+  "name": "West Virginia",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "W. Va. Code 52-1-5a(e): juror qualification questionnaires are made available, on request, to counsel of record in the trial; after the trial they 'may only be released with the written permission of the judge who presided over the trial.' The county name list itself is open for inspection (52-1-5(g)), but it does not show disqualifications.",
+    "holder": "Clerk of the circuit court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://code.wvlegislature.gov/52-1-5A/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "W. Va. Code 52-1-8 (court determines disqualification, including non-citizenship; clerk records it on the form and list)",
+        "url": "https://code.wvlegislature.gov/52-1-8/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person may examine registration records at the county clerk's office (W. Va. Code 3-2-30(a)). Lists may be obtained for noncommercial purposes from the county clerk at one cent per name, or bought from the Secretary of State (3-2-30(c), (e)).",
+    "permitted_uses": "Noncommercial purposes. Not for commercial or charitable solicitation or advertising, and not sold or reproduced for resale (3-2-30(c), (f)).",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://code.wvlegislature.gov/3-2-30/",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "The county clerk, the Secretary of State, any county registrar, a political party committee chair, or 'any voter who shall appear in person at the clerk's office' (W. Va. Code 3-2-28(a)).",
+    "form_or_statute": "W. Va. Code 3-2-28: form prescribed by the Secretary of State giving the voter's name and address and the reason for the challenge, filed of record with the county clerk.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No filing deadline stated. The clerk mails a certified notice; the voter has 30 days to appear with evidence of eligibility, or the registration is canceled (3-2-28(b)-(c)).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "Not stated. Returned mail or failure to appear is prima facie evidence of ineligibility (3-2-28(c)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://code.wvlegislature.gov/3-2-28/",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://code.wvlegislature.gov/3-2-28/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "West Virginia county clerk directory (Secretary of State)",
+      "url": "https://sos.wv.gov/west-virginia-county-clerk-directory",
+      "verified_on": "2026-10-07",
+      "note": "Challenges under W. Va. Code 3-2-28 are filed in person at the county clerk's office."
+    },
+    "state_election_office": {
+      "name": "West Virginia Secretary of State - Elections",
+      "url": "https://sos.wv.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "West Virginia Attorney General",
+      "url": "https://ago.wv.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror questionnaires go only to counsel, or out with the trial judge's written permission (W. Va. Code 52-1-5a(e)). A voter may challenge in person at the county clerk's office (3-2-28). Strict gates: counts only."
+  },
+  "notes": [
+    "Caution: West Virginia cancels the registration if the voter does not appear within 30 days or the certified notice comes back (3-2-28(c)). A wrong challenge can remove an eligible voter quickly. This is a strong reason to keep guidance off without a lawful jury source.",
+    "Federal law: the NVRA 90-day rule on systematic removal programs still applies; 3-2-28 itself sets no pre-election cutoff.",
+    "dob_in_public_file is null: 3-2-30(a) says inspection files include all registration information except phone, email, SSN, and license numbers, and 3-2-18 says records hold birth dates, but no section says birth dates are on the sold lists.",
+    "official_pipeline is null: no jury-to-clerk non-citizen statute was found."
+  ]
+}

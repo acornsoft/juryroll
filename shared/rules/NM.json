@@ -1,0 +1,98 @@
+{
+  "state": "NM",
+  "name": "New Mexico",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "District courts (jury management).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": "Any requester who makes a written request and signs an affidavit (NMSA 1-4-5.5(A), (C)).",
+    "permitted_uses": "Governmental or election and election campaign purposes only (1-4-5.5(C), (E)).",
+    "no_online_posting": true,
+    "penalty": "Fourth degree felony plus $100 per line of voter information, including making voter data that identifies a voter publicly available on the internet (NMSA 1-4-5.6).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Affidavit (Secretary of State form) that the data will be used for governmental or election and election campaign purposes only (1-4-5.5(C)-(D)).",
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-4/section-1-4-5-5/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "NMSA 1-4-5.6 (unlawful use; fourth degree felony)",
+        "url": "https://law.justia.com/codes/new-mexico/chapter-1/article-4/section-1-4-5-6/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private challenge was found. At the polls, only an election board member or a party challenger may challenge (NMSA 1-12-20). Before an election, only the Secretary of State may petition the district court to cancel registrations (NMSA 1-4-22).",
+    "form_or_statute": "NMSA 1-12-20, 1-4-22. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-12/section-1-12-20/",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 30,
+    "state_windows": [
+      {
+        "days_before_election": 120,
+        "applies_to": "Secretary of State petitions to the district court to cancel registrations (NMSA 1-4-22)",
+        "effect": "A petition may be filed only at a time not less than 120 days before a statewide election (and after it).",
+        "statute": "NMSA 1-4-22(A)",
+        "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-4/section-1-4-22/",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-1/article-4/section-1-4-22/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "New Mexico county clerk information (Secretary of State)",
+      "url": "https://www.sos.nm.gov/voting-and-elections/county-clerk-information/",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "New Mexico Secretary of State - Voting and Elections",
+      "url": "https://www.sos.nm.gov/voting-and-elections/",
+      "verified_on": "2026-10-07",
+      "note": "Only the Secretary of State may petition the court to cancel registrations (NMSA 1-4-22)."
+    },
+    "ag": {
+      "name": "New Mexico Department of Justice (Attorney General)",
+      "url": "https://nmdoj.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. No private challenge exists; only the Secretary of State may petition to cancel, and not within 120 days of a statewide election. Strict gates."
+  },
+  "notes": [
+    "Extra blackout: state_extra_days is 30 because NMSA 1-4-22 bars the Secretary of State's cancellation petitions within 120 days before a statewide election (120 - 90 = 30).",
+    "Use limit: voter data may be used only for governmental or election campaign purposes, under affidavit (1-4-5.5). The Justia annotation reports a federal ruling that limited enforcement of New Mexico's online-publication restrictions against one organization; the ruling is not relied on, and JuryRoll never publishes data.",
+    "Source note: NMSA was read from the Justia copy of the 2025 statutes (the official NMOneSource site is a script-only application).",
+    "Voter data excludes day and month of birth (1-4-5.5(B)), so dob_in_public_file is false."
+  ]
+}

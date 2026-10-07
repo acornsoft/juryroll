@@ -1,0 +1,73 @@
+{
+  "state": "DEFAULT",
+  "name": "Default (state unknown or not yet researched)",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": null,
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": null,
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": null,
+    "form_or_statute": null,
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": null,
+    "state_windows": [],
+    "source_url": null,
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": null,
+    "state_election_office": null,
+    "ag": null,
+    "other": [
+      {
+        "name": "U.S. Election Assistance Commission - State election office directory (use it to find the official state and county election office)",
+        "url": "https://www.eac.gov/voters/register-and-vote-in-your-state",
+        "verified_on": "2026-10-07"
+      }
+    ]
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Most restrictive behavior. Used when rules/<state>.json is missing, fails schema validation, or a field is null. Jury non-qualification records are treated as confidential (LEGAL-REVIEW.md: 'Unverified: non-juror list confidentiality outside NY and NC. Default to confidential.'). Output is counts only. No names leave the page."
+  },
+  "notes": [
+    "Every null in this file means: the strict default applies.",
+    "The federal NVRA 90-day rule (52 U.S.C. 20507(c)(2)(A)) always applies. For the November 3, 2026 general election the window began August 5, 2026.",
+    "A private person may still refer concerns about the official process (aggregate counts only) to the state election office found through the EAC directory."
+  ]
+}

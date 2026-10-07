@@ -1,0 +1,126 @@
+{
+  "state": "NY",
+  "name": "New York",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "N.Y. Judiciary Law 509(a): records of persons found not qualified or excused, and the reasons, 'shall be considered confidential and shall not be disclosed except to the county jury board or as permitted by the appellate division.'",
+    "holder": null,
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": "Disclosure only to the county jury board or as the Appellate Division permits (Judiciary Law 509(a)).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/JUD/509",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "N.Y. Judiciary Law 510(1) (juror must be a U.S. citizen)",
+        "url": "https://www.nysenate.gov/legislation/laws/JUD/510",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person, by FOIL request to the county board of elections or the NYS Board of Elections Records Access Officer, with a written statement that the data will be used for an 'elections purpose'.",
+    "permitted_uses": "Election purposes only. Election Law 3-103(5): 'The information contained in the statewide voter registration list shall not be used for non-election purposes.' The State Board says 'elections purpose' has traditionally been read to include campaigning, voter outreach, fundraising and academic research.",
+    "no_online_posting": null,
+    "penalty": "Knowing and wilful violation of the Election Law not otherwise covered is a misdemeanor (Election Law 17-168); county FOIL forms apply this to 3-103(5).",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Statement that the information will be used for an elections purpose in compliance with Election Law 3-103(5).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/3-103",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "NYS Board of Elections, FOIL Requests - How to Request Voter Registration Data",
+        "url": "https://elections.ny.gov/freedom-information-law-foil-requests",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "N.Y. Election Law 17-168",
+        "url": "https://www.nysenate.gov/legislation/laws/ELN/17-168",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ulster County Board of Elections FOIL request form (3-103(5) notice; 17-168 misdemeanor)",
+        "url": "https://elections.ulstercountyny.gov/wp-content/uploads/2026/05/2026-FOIL-REQUEST-FORM.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any person (Election Law 5-220(1)).",
+    "form_or_statute": "N.Y. Election Law 5-220: affidavit delivered to the board of elections, oath read and signed before a board member; the board furnishes the forms.",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "No filing deadline in 5-220. The board investigates; if it cannot decide before the next election, the voter goes on a challenge list to be challenged when voting (5-220(2)). The voter is notified by registered or certified mail within 5 days.",
+    "deadline_days_before_election": null,
+    "evidence_standard": "Affidavit must recite the reasons and the facts supporting the belief, and state whether based on the affiant's personal knowledge or on information from another person; if from another person, it must name that person and the basis for that person's information. The board then investigates.",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": "Material false statement in a challenge affidavit is a misdemeanor (Election Law 17-108(2)).",
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/5-220",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "N.Y. Election Law 17-108",
+        "url": "https://www.nysenate.gov/legislation/laws/ELN/17-108",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.nysenate.gov/legislation/laws/ELN/5-220",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "County boards of elections (NYS Board of Elections county board roster)",
+      "url": "https://elections.ny.gov/county-boards-elections",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "New York State Board of Elections",
+      "url": "https://elections.ny.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "New York Attorney General - Election Protection Hotline complaint form",
+      "url": "https://electionhotline.ag.ny.gov/",
+      "verified_on": "2026-10-07",
+      "note": "The hotline is focused on voter protection. Election Law violations go to the State Board's Division of Election Law Enforcement (listed under other)."
+    },
+    "other": [
+      {
+        "name": "NYS Board of Elections - Division of Election Law Enforcement (complaints about possible Election Law violations, Election Law 3-104(3))",
+        "url": "https://electionenforcement.ny.gov/file-complaint",
+        "verified_on": "2026-10-07"
+      }
+    ]
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Judiciary Law 509(a) makes the non-qualified juror records and reasons confidential. A private person cannot lawfully hold them, so no named leads exist and no challenge affidavit can rest on them. LEGAL-REVIEW.md item 4: NY primary mode is an audit of the official system with aggregate counts, not individuals."
+  },
+  "notes": [
+    "NY primary mode (LEGAL-REVIEW.md item 4): aggregate audit of the official process. Example question for officials: how many jurors were disqualified for non-citizenship, and does any process compare them with the voter list?",
+    "NY FOIL (Public Officers Law 86) excludes the courts; the Commissioner of Jurors is a court function (Committee on Open Government advisory, cited in LEGAL-REVIEW.md). Not re-verified in this pass.",
+    "NY is not on the NCSL list of states with a jury-to-election-official pipeline (LEGAL-REVIEW.md). Not independently verified here; the field official_pipeline stays null.",
+    "no_online_posting is null: no explicit posting ban was found; 3-103(5) bars non-election use. The app treats null as barred. JuryRoll never posts data in any state.",
+    "dob_in_public_file and registration_date_in_public_file are null: the file layout was not checked against an official source in this pass. In NY mode the voter file is not loaded for matching, so this has no effect.",
+    "state_extra_days 0 means Election Law 5-220 has no window that starts before the federal 90-day window. Other Election Law sections were not exhaustively reviewed.",
+    "Election Law 17-212 (NY Voting Rights Act) creates private liability for intimidation, deception or obstruction, assessed by effect (LEGAL-REVIEW.md). Not re-verified in this pass."
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "state": "PA",
+  "name": "Pennsylvania",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Pa.R.Crim.P. 625(A)(2)-(3) (234 Pa. Code): 'The information provided on the juror qualification form shall be confidential' and the form and copies 'shall not constitute a public record.'",
+    "holder": null,
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.pacodeandbulletin.gov/secure/pacode/data/234/chapter6/s625.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Pa.R.Crim.P. 632 (juror information questionnaire confidential)",
+        "url": "https://www.pacodeandbulletin.gov/secure/pacode/data/234/chapter6/s632.html",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Public information list: paper copies to any registered elector in Pennsylvania (25 Pa.C.S. 1404(c)(1)). The Department of State provides public information, street, walking and full voter export lists to requesters who show identification and sign the affirmation.",
+    "permitted_uses": "Only 'purposes related to elections, political activities and law enforcement'; not commercial or improper purposes (25 Pa.C.S. 1404(b)(3), 1404(c)(2), 1207(b); 4 Pa. Code 183.14(b)(4)-(5)).",
+    "no_online_posting": true,
+    "penalty": "False statements on the request affirmation: 18 Pa.C.S. 4904 (unsworn falsification to authorities), as stated on the Department of State form.",
+    "dob_in_public_file": true,
+    "registration_date_in_public_file": true,
+    "attestation_required": "Affirmation that the information will not be used except for purposes related to elections, political activities and law enforcement, and that the lists will not be published on the Internet (4 Pa. Code 183.13(g), 183.14(k)).",
+    "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.014..HTM",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Pennsylvania Department of State - Request for Voter Lists (affirmation; no Internet publication; 18 Pa.C.S. 4904; Full Voter Export contains date of birth and date registered)",
+        "url": "https://www.pa.gov/content/dam/copapwp-pagov/en/dos/programs/voting-and-elections/documents/requestvoterlists.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      },
+      {
+        "cite": "4 Pa. Code 183.14 (public information lists)",
+        "url": "https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/004/chapter183/s183.14.html",
+        "verified_on": "2026-10-07",
+        "kind": "regulation"
+      },
+      {
+        "cite": "25 Pa.C.S. 1207 (open records; no commercial or improper use)",
+        "url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.012..HTM",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "A qualified elector of the municipality (25 Pa.C.S. 1329(a)). Separately, 1509 lets a qualified elector petition to cancel or suspend a registration.",
+    "form_or_statute": "25 Pa.C.S. 1329: challenge affidavit in a form prescribed by the Secretary (name and address of the challenged person and of the complainant, date, reason). 25 Pa.C.S. 1509: sworn petition to strike off names.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "1329 states no deadline. 1509 petitions: not later than the 10th day before an election, and the petition must show personal notice to the voter at least 24 hours before it is presented.",
+    "deadline_days_before_election": null,
+    "evidence_standard": "1329(c)-(d): the challenged individual responds in a sworn written statement and must satisfy the commission of the right to be registered. 1509 requires 'sufficient grounds' under oath; the commission cancels unless the voter shows cause.",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.013..HTM",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "25 Pa.C.S. 1509 (petition to strike off names)",
+        "url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.015..HTM",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 10,
+        "applies_to": "Petitions to strike off names under 25 Pa.C.S. 1509",
+        "effect": "Petition must be filed not later than the 10th day before an election.",
+        "statute": "25 Pa.C.S. 1509(a)",
+        "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.015..HTM",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.015..HTM",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "County boards of elections (Pennsylvania Department of State directory)",
+      "url": "https://www.pa.gov/agencies/vote/contact-us/contact-your-election-officials",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Pennsylvania Department of State - Voting and Elections",
+      "url": "https://www.pa.gov/agencies/vote",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Pennsylvania Office of Attorney General - Voting and Elections",
+      "url": "https://www.attorneygeneral.gov/for-the-public/voting-and-elections/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror qualification forms are confidential and not public records (Pa.R.Crim.P. 625(A)(2)-(3)). Without a lawful jury list there are no named leads. The voter file may not be posted online (4 Pa. Code 183.13(g), 183.14(k)). Aggregate audit mode only."
+  },
+  "notes": [
+    "A 1509 petition requires personal notice to the voter. JuryRoll guidance forbids contacting voters, so 1509 is never a JuryRoll path.",
+    "The online-posting ban is in litigation: Voter Reference Foundation v. Schmidt (3d Cir.), pending per LEGAL-REVIEW.md. Keep no_online_posting true until a final ruling.",
+    "UNVERIFIED, not relied on: PA is not on the NCSL list of states with a jury-to-election-official pipeline (LEGAL-REVIEW.md). official_pipeline stays null.",
+    "UNVERIFIED, not relied on: a secondary source (Brennan Center; a Department of State letter reposted by Campaign Legal Center) reports guidance that 1329 challenges must be individualized and that bulk spreadsheet challenges must be rejected. It was not found on pa.gov, so one_per_affidavit stays null.",
+    "juryroll_lead_sufficient and false_statement_penalty are null: not determined in this pass."
+  ]
+}

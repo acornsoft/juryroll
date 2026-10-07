@@ -1,0 +1,84 @@
+{
+  "state": "WI",
+  "name": "Wisconsin",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Wis. Stat. 756.04(11)(a): completed juror qualification forms are confidential and released only on court order for good cause.",
+    "holder": "Clerk of circuit court; Director of State Courts (master list).",
+    "fields_withheld": [
+      "completed juror qualification forms",
+      "social security numbers (756.04(2)(f))"
+    ],
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://docs.legis.wisconsin.gov/document/statutes/756.04",
+    "verified_on": "2026-10-07"
+  },
+  "voter_file": {
+    "who_may_get": "Any person (Wis. Stat. 6.36(1)(b)1: the official registration list is open to public inspection and electronically accessible). The Elections Commission sells list extracts.",
+    "permitted_uses": "No purpose restriction was found in 6.36.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://docs.legis.wisconsin.gov/document/statutes/6.36",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any registered elector of the municipality (Wis. Stat. 6.48(1)(a)).",
+    "form_or_statute": "Wis. Stat. 6.48: affidavit to the municipal clerk (or the board of election commissioners in cities over 500,000) that the elector is not qualified, with reasons. The challenger must appear within one week and may be put under oath (6.925). Disqualification only on the grounds and procedure in 6.325.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "No deadline in 6.48. In cities over 500,000 the board sits on the last Wednesday before each election to hear objections (6.48(2)(a)).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "The clerk decides on the answers and may require oaths (6.48(1)(b)). If the challenger does not appear within one week, the challenge is cancelled (6.48(1)(c)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://docs.legis.wisconsin.gov/document/statutes/6.48",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://docs.legis.wisconsin.gov/document/statutes/6.48",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "MyVote Wisconsin - find your municipal clerk",
+      "url": "https://myvote.wi.gov/en-us/My-Municipal-Clerk",
+      "verified_on": "2026-10-07",
+      "note": "Wisconsin registration challenges go to the municipal clerk (6.48)."
+    },
+    "state_election_office": {
+      "name": "Wisconsin Elections Commission",
+      "url": "https://elections.wi.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Wisconsin Department of Justice (Attorney General)",
+      "url": "https://www.wisdoj.gov/Pages/home.aspx",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror qualification forms are confidential (Wis. Stat. 756.04(11)(a)), so the jury list is not available. Strict gates: counts only."
+  },
+  "notes": [
+    "official_pipeline is null: no Wisconsin statute sending juror non-citizen answers to election officials was found.",
+    "The voter list is public but date of birth is restricted to election staff (6.36(1)(b)1.a). Matching is capped below the full-DOB tier.",
+    "false_statement_penalty is null: 6.48 has no specific penalty clause; general false-swearing law may apply.",
+    "state_extra_days is 0: 6.48 sets no window that starts before day 90."
+  ]
+}

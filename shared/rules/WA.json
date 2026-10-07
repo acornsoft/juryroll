@@ -1,0 +1,112 @@
+{
+  "state": "WA",
+  "name": "Washington",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "RCW 2.36.072(4): 'Information provided to the court for preliminary determination of statutory qualification for jury duty may only be used for the term such person is summoned and may not be used for any other purpose', except that the court may report a change of address or nondelivery of summons to the county auditor.",
+    "holder": "Each superior court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=2.36.072",
+    "verified_on": "2026-10-07"
+  },
+  "voter_file": {
+    "who_may_get": "Any person. Precinct lists and current lists of registered voters are public records; the county auditor or Secretary of State furnishes them at reproduction cost (RCW 29A.08.720(3)).",
+    "permitted_uses": "Not for commercial advertising, offers, or solicitations of money or anything of value; any political purpose is allowed (29A.08.720(3)(a)).",
+    "no_online_posting": null,
+    "penalty": "Class C felony for commercial misuse, plus $5 liability per item (RCW 29A.08.740(1)).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": true,
+    "attestation_required": null,
+    "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.720",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "RCW 29A.08.710(2)(a) (public fields: name, address, jurisdiction, gender, year of birth, voting record, date of registration, registration number)",
+        "url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.710",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "RCW 29A.08.740 (penalties)",
+        "url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.740",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Another registered voter from the same county, or the county prosecuting attorney (RCW 29A.08.810(2)).",
+    "form_or_statute": "RCW 29A.08.810: separate challenge form for each voter, plus a separate hand-signed affidavit under penalty of perjury for each voter. Ground (1)(e): 'The challenged voter is not a citizen of the United States.' Filed with the county auditor (29A.08.820).",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "No later than 45 days before the election (RCW 29A.08.820(1)). Later challenges are allowed only for voters who registered or moved less than 60 days before the election, up to 10 days before it (29A.08.820(2)).",
+    "deadline_days_before_election": 45,
+    "evidence_standard": "Must be based on personal knowledge, defined as 'firsthand knowledge through experience or observation'; the affidavit must state that the challenger exercised due diligence to personally verify the evidence; the challenge 'may not be based on unsupported allegations or allegations by third parties' (29A.08.810(1), (3)). All challenge documents are public records.",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": "Certification and affidavit under penalty of perjury (chapter 9A.72 RCW) (29A.08.810(3)).",
+    "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.810",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "RCW 29A.08.820 (45-day deadline; hearings; challenged ballots)",
+        "url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.820",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 45,
+        "applies_to": "Voter registration challenges under RCW 29A.08.810",
+        "effect": "Challenges must be filed at least 45 days before the election (later only for recent registrants or movers).",
+        "statute": "RCW 29A.08.820",
+        "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.820",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.820",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Washington county elections offices (Secretary of State)",
+      "url": "https://www.sos.wa.gov/elections/voters/voter-registration/county-elections-offices",
+      "verified_on": "2026-10-07",
+      "note": "Challenges are filed with the county auditor (RCW 29A.08.820)."
+    },
+    "state_election_office": {
+      "name": "Washington Secretary of State - Elections",
+      "url": "https://www.sos.wa.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Washington State Office of the Attorney General",
+      "url": "https://www.atg.wa.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror qualification answers may be used only for the jury term and for no other purpose (RCW 2.36.072(4)). The challenge law demands firsthand personal knowledge (RCW 29A.08.810). Strict gates: counts only."
+  },
+  "notes": [
+    "juryroll_lead_sufficient is false: RCW 29A.08.810 defines personal knowledge as firsthand experience or observation and bars allegations by third parties. A data match is not personal knowledge.",
+    "All challenge documents are public records (29A.08.810(3)(b)), including the challenger's name and contact information.",
+    "The public voter file gives year of birth only (29A.08.710(2)(a)), so dob_in_public_file is false.",
+    "official_pipeline is null: 2.36.072(4) lets the court report only address changes and undelivered summonses to the auditor."
+  ]
+}

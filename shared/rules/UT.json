@@ -1,0 +1,97 @@
+{
+  "state": "UT",
+  "name": "Utah",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Administrative Office of the Courts (master jury list, Utah Code 78B-1-106).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": "Utah Code 20A-2-607(3) (2026): a person may only obtain or use the voter list for a political purpose, a purpose expressly permitted by Part 6, or a purpose permitted by other law or court order.",
+    "permitted_uses": "Political purpose or another expressly permitted purpose (20A-2-607(3)). Obtaining it under false pretenses or using it for another purpose is unlawful (20A-2-607(4)).",
+    "no_online_posting": true,
+    "penalty": "Class A misdemeanor (20A-2-607(5)), including knowingly posting the list or its information on the internet or disclosing it to the public (20A-2-607(4)(c)).",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter2/20A-2-S607.html",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any individual (Utah Code 20A-3a-803(1), 20A-3a-804(1)).",
+    "form_or_statute": "Utah Code 20A-3a-804: written statement to the election officer naming each challenged individual, the ground under 20A-3a-803 (ground (1)(c): 'not a citizen of the United States'), supporting facts, and a signed affidavit under penalty of perjury.",
+    "form_url": null,
+    "one_per_affidavit": false,
+    "deadlines": "At least 45 calendar days before the election (for voters registered later, up to election day) (20A-3a-804(1)(b)). The officer notifies the voter at least 28 days before the election.",
+    "deadline_days_before_election": 45,
+    "evidence_standard": "Affidavit that the filer 'exercised due diligence to personally verify the facts and circumstances' and that the basis is valid 'according to the filer's personal knowledge and belief'; no 'unsupported allegations or allegations by an anonymous individual' (20A-3a-804(1)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": "Affidavit subject to penalties of perjury (20A-3a-804(1)(a)(iii)).",
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter3A/20A-3a-S804.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Utah Code 20A-3a-803 (grounds, including non-citizenship)",
+        "url": "https://le.utah.gov/xcode/Title20A/Chapter3A/20A-3a-S803.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 45,
+        "applies_to": "Pre-election written challenges under Utah Code 20A-3a-804",
+        "effect": "Challenges must be filed at least 45 days before the election (except for late registrants).",
+        "statute": "Utah Code 20A-3a-804(1)(b)",
+        "source_url": "https://le.utah.gov/xcode/Title20A/Chapter3A/20A-3a-S804.html",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://le.utah.gov/xcode/Title20A/Chapter3A/20A-3a-S804.html",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Utah county clerk contact information (vote.utah.gov)",
+      "url": "https://vote.utah.gov/county-clerk-contact-information/",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Utah Lieutenant Governor - Elections (vote.utah.gov)",
+      "url": "https://vote.utah.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Utah Attorney General",
+      "url": "https://attorneygeneral.utah.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury record status unknown (null): counts only. Utah limits voter-list use to political and other expressly permitted purposes (20A-2-607), and a private challenge needs personal verification (20A-3a-804)."
+  },
+  "notes": [
+    "Use limit: JuryRoll matching may not be a 'political purpose' under 20A-2-607(3). The app should warn Utah users before loading a voter file.",
+    "Utah allows several challenged individuals in one statement (one_per_affidavit false), but each needs its own facts and personal verification.",
+    "Source note: le.utah.gov sends no intermediate certificate. On 2026-10-07, 20A-2-607 (effective 3/18/2026), 20A-3a-803, 20A-3a-804 and 78B-1-106 were re-fetched with TLS verification on. The chain was completed with Sectigo's OV R36 intermediate and verified to a system root. The text matches every value in this file.",
+    "dob_in_public_file and registration_date_in_public_file are null: not confirmed."
+  ]
+}

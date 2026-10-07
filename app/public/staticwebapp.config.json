@@ -1,0 +1,15 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "*.css", "*.js", "*.png", "*.svg", "/guide.html", "/guide.css"]
+  },
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none'; img-src data:; script-src 'self'; style-src 'self'",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer"
+  },
+  "mimeTypes": {
+    ".jsonl": "application/jsonl",
+    ".csv": "text/csv"
+  }
+}

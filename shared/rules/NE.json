@@ -1,0 +1,95 @@
+{
+  "state": "NE",
+  "name": "Nebraska",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Jury commissioner of each county (Jury Selection Act, Neb. Rev. Stat. 25-1625 et seq.).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1650",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Neb. Rev. Stat. 25-1650 (jurors must be U.S. citizens; disability documents are not public records)",
+        "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=25-1650",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person who gives name, address, phone, email, organization, and reason, and signs an oath (Neb. Rev. Stat. 32-330(2), (4)).",
+    "permitted_uses": "Solely for purposes related to elections, political activities, voter registration, law enforcement, or jury selection. Not to be posted, displayed, used commercially, or made accessible on the Internet (32-330(2)).",
+    "no_online_posting": true,
+    "penalty": "The oath is sworn under penalty of election falsification, a Class IV felony (32-330(4)).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": true,
+    "attestation_required": "Sworn oath to use the list only for 32-330 purposes, not to permit unauthorized use or copying, and not to post it on the Internet (32-330(4)).",
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-330",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: an inspector, judge or clerk of election, or registered voter may challenge a person offering to vote (Neb. Rev. Stat. 32-926). A person challenged as an alien must show naturalization papers or complete a form (32-928). No pre-election written challenge by a private voter was found.",
+    "form_or_statute": "Neb. Rev. Stat. 32-926 to 32-932. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-926",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Neb. Rev. Stat. 32-928 (challenge as alien)",
+        "url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-928",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://nebraskalegislature.gov/laws/statutes.php?statute=32-926",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Nebraska election officials contact information (Secretary of State)",
+      "url": "https://sos.nebraska.gov/election-officials-contact-information",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Nebraska Secretary of State - Elections",
+      "url": "https://sos.nebraska.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Nebraska Attorney General",
+      "url": "https://ago.nebraska.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury disqualification records: status unknown (null), so counts only. Challenges exist only at the polls. The voter list may be used only for listed purposes, under oath (32-330)."
+  },
+  "notes": [
+    "Use limit: the 32-330 oath limits use to election, political, voter registration, law enforcement, or jury selection purposes, under penalty of a Class IV felony. The app should warn Nebraska users and show the 32-330 text before they load a voter file.",
+    "The public voter list shows birth year only (32-330(3)(b)(vii)), so dob_in_public_file is false. Date of registration is included ((3)(b)(viii)).",
+    "official_pipeline is null: no jury-to-election-official non-citizen statute was found in the Jury Selection Act sections read (25-1649 to 25-1660)."
+  ]
+}

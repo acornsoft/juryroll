@@ -1,0 +1,88 @@
+{
+  "state": "NH",
+  "name": "New Hampshire",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "RSA 500-A:1, IV: 'Information contained in the master jury list shall be private and confidential and shall not be subject to RSA 91-A.' RSA 500-A:2: voter lists, Department of Safety lists, and the master jury list 'are confidential documents to be used ... only for purposes of jury selection.'",
+    "holder": "Administrative Office of the Courts and clerks of the superior court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://gc.nh.gov/rsa/html/LI/500-A/500-A-mrg.htm",
+    "verified_on": "2026-10-07"
+  },
+  "voter_file": {
+    "who_may_get": "Any person may get a copy of the public checklist of a town or city from the supervisors of the checklist or the town or city clerk, for a fee (RSA 654:31, II). The full statewide list goes only to parties, political committees, and candidates (654:31, IV). Anyone may view statewide data at the state archives but may not print, duplicate, or transmit it (654:31, III).",
+    "permitted_uses": "No commercial purposes (sale of property or services unrelated to an election or campaign) (654:31, I(b), VI).",
+    "no_online_posting": null,
+    "penalty": "Misdemeanor for a natural person, felony for any other person (654:31, VI).",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://gc.nh.gov/rsa/html/LXIII/654/654-31.htm",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: a challenge to 'the person seeking to vote' must be a signed affidavit under oath administered by an election official (RSA 659:27-a). Non-citizenship is a listed ground. No pre-election written challenge by a private voter was found.",
+    "form_or_statute": "RSA 659:27-a. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://gc.nh.gov/rsa/html/LXIII/659/659-27-a.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "RSA 654:44 (supervisors may remove a name only after 30 days' mailed notice and a meeting)",
+        "url": "https://gc.nh.gov/rsa/html/LXIII/654/654-44.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://gc.nh.gov/rsa/html/LXIII/654/654-44.htm",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "New Hampshire Secretary of State - Register to Vote (contact your town or city clerk)",
+      "url": "https://www.sos.nh.gov/elections/register-vote",
+      "verified_on": "2026-10-07",
+      "note": "New Hampshire runs elections by town and city. Supervisors of the checklist decide removals (RSA 654:44)."
+    },
+    "state_election_office": {
+      "name": "New Hampshire Secretary of State - Elections",
+      "url": "https://www.sos.nh.gov/elections",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "New Hampshire Department of Justice (Attorney General)",
+      "url": "https://www.doj.nh.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury list data is confidential by law (RSA 500-A:1, IV and 500-A:2). Challenges exist only at the polls (RSA 659:27-a). Strict gates: counts only."
+  },
+  "notes": [
+    "RSA 500-A:2 (as amended 2025) says errors the court finds in voter-list data are reported to the Secretary of State. The text does not say this covers non-citizen juror answers, so official_pipeline stays null.",
+    "The sos.nh.gov and doj.nh.gov sites refuse plain HTTP clients; the referral pages were checked in a browser.",
+    "dob_in_public_file and registration_date_in_public_file are null: RSA 654:25 (public checklist contents) was not read in this batch."
+  ]
+}

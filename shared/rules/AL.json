@@ -1,0 +1,89 @@
+{
+  "state": "AL",
+  "name": "Alabama",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Ala. Code 12-16-59(a): 'Neither the names drawn nor any list thereof shall be disclosed to any person other than pursuant to this article or specific order of the court.' The jury commission certifies disqualified jurors to the court (12-16-60(b)).",
+    "holder": "County jury commission and circuit court.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://law.justia.com/codes/alabama/title-12/chapter-16/article-2a/section-12-16-59/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Ala. Code 12-16-60 (qualifications, including citizenship; certification of disqualified jurors)",
+        "url": "https://law.justia.com/codes/alabama/title-12/chapter-16/article-2a/section-12-16-60/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Anyone making application to the Secretary of State; Social Security numbers are not released (Ala. Code 17-4-38(c)).",
+    "permitted_uses": "No purpose restriction stated in 17-4-38.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://law.justia.com/codes/alabama/title-17/chapter-4/article-2/section-17-4-38/",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private voter challenge was found. At the polls, an inspector with knowledge that a person is not entitled to vote may challenge, and the person votes a provisional ballot (Ala. Code 17-10-2(a)(2)). The board of registrars may remove an improperly registered person at any time by majority vote (17-4-39(a)).",
+    "form_or_statute": "Ala. Code 17-10-2, 17-4-39. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://law.justia.com/codes/alabama/title-17/chapter-10/section-17-10-2/",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://law.justia.com/codes/alabama/title-17/chapter-4/article-2/section-17-4-39/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Alabama Secretary of State - Register to vote / county boards of registrars",
+      "url": "https://www.sos.alabama.gov/alabama-votes/voter/register-to-vote",
+      "verified_on": "2026-10-07",
+      "note": "County boards of registrars purge disqualified electors (Ala. Code 17-4-3) and process AVID matches (17-4-39)."
+    },
+    "state_election_office": {
+      "name": "Alabama Secretary of State - Alabama Votes",
+      "url": "https://www.sos.alabama.gov/alabama-votes",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Alabama Attorney General",
+      "url": "https://www.alabamaag.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Names drawn for jury service and lists of them may not be disclosed without a court order (Ala. Code 12-16-59(a)). No private challenge found. Strict gates: counts only."
+  },
+  "notes": [
+    "Duplication: the Secretary of State's Alabama Voter Integrity Database (AVID) compares the voter list to USCIS citizenship data and to foreign-national license data, and sends matches to boards of registrars (Ala. Code 17-4-39(b)).",
+    "Source note: the Code of Alabama was read from the Justia copy of the 2025 code. The official legislature site (alison.legislature.state.al.us) is a script-only application.",
+    "official_pipeline is null: 17-4-4 sends deaths, incompetency, and felony convictions to registrars, not jury citizenship answers.",
+    "dob_in_public_file and registration_date_in_public_file are null: not stated in 17-4-38."
+  ]
+}

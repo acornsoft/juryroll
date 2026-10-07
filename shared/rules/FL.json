@@ -1,0 +1,121 @@
+{
+  "state": "FL",
+  "name": "Florida",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Clerk of the circuit court (jury). Supervisors of elections and the Department of State (voter list maintenance).",
+    "fields_withheld": null,
+    "official_pipeline": "Fla. Stat. 98.093(9): the Department of State and supervisors may receive information from federal courts' jury coordinators about persons excused for non-citizenship, for list maintenance. Fla. Stat. 98.075(6)-(7): the supervisor gives notice, the voter has 30 days to respond, and the supervisor decides after a hearing if requested. No state-court jury-excusal report duty was found in current text.",
+    "use_restriction": null,
+    "source_url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.093.html",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Fla. Stat. 98.093 (duty of officials to furnish information; (9) federal jury coordinators)",
+        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.093.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 98.075 (registration records maintenance; notice and hearing)",
+        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.075.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person. The Division of Elections provides the statewide voter extract on request (Fla. Stat. 98.0981; Division voter extract page).",
+    "permitted_uses": "No purpose restriction was found in Florida statute for the public extract. Exempt records (Fla. Stat. 97.0585, e.g. protected addresses) are removed.",
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": true,
+    "registration_date_in_public_file": true,
+    "attestation_required": null,
+    "source_url": "https://dos.fl.gov/elections/data-statistics/voter-registration-statistics/voter-extract-request/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Florida voter extract file layout (rev. 2026-05-04): includes Birth Date, Registration Date, Voter Status",
+        "url": "https://files.floridados.gov/media/710644/final-voter-extract-disk-file-layout-rev-20260504.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Fla. Stat. 97.0585 (public records exemptions for voter information)",
+        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0097/Sections/0097.0585.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 98.0981 (voter registration and voting history data)",
+        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.0981.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any registered elector or poll watcher of the county (Fla. Stat. 101.111(1)).",
+    "form_or_statute": "Fla. Stat. 101.111: a written oath on the statutory form, naming the challenged person and the reasons, filed with the clerk or inspector at the polls, or in advance with the supervisor of elections. The challenged voter casts a provisional ballot.",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "An advance challenge may be filed with the supervisor no sooner than 30 days before the election (Fla. Stat. 101.111(1)(b)). The challenge is to the person's right to vote at that election, not a registration removal.",
+    "deadline_days_before_election": null,
+    "evidence_standard": "The challenger swears that the person is attempting to vote illegally and gives the reasons (Fla. Stat. 101.111(1)(a)).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": "A frivolous challenge is a first-degree misdemeanor (Fla. Stat. 101.111(3)). The oath is made under penalty of perjury.",
+    "source_url": "https://flsenate.gov/Laws/Statutes/2026/101.111",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://flsenate.gov/Laws/Statutes/2026/101.111",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "County Supervisors of Elections (Division of Elections directory)",
+      "url": "https://dos.fl.gov/elections/contacts/supervisor-of-elections/",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Florida Department of State - Division of Elections",
+      "url": "https://dos.fl.gov/elections/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Florida Attorney General",
+      "url": "https://www.myfloridalegal.com/",
+      "verified_on": "2026-10-07"
+    },
+    "other": [
+      {
+        "name": "Division of Elections - Elections Fraud Complaint",
+        "url": "https://dos.fl.gov/elections/contacts/elections-fraud-complaint/",
+        "verified_on": "2026-10-07"
+      }
+    ]
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury non-qualification records were not shown to be public (null), so the app treats them as confidential and shows counts only. The voter extract is public. A private challenge exists (Fla. Stat. 101.111) but challenge guidance stays off while the jury list is not available."
+  },
+  "notes": [
+    "jury_list.public is null: no Florida statute or court rule was found that makes juror non-citizenship excusal records public, and none was found that closes them. Default: confidential.",
+    "Fla. Stat. 101.111 is a challenge to a vote at one election (provisional ballot), not a removal from the rolls. It cannot start sooner than 30 days before the election.",
+    "Check: Florida 2026 HB 991 was reported to change jury-related voter list maintenance. The current Online Sunshine text of 98.075 and 98.093 was used. Re-verify after any 2026 changes take effect.",
+    "no_online_posting and penalty are null: no ban on re-posting the extract was found. The app treats null as barred.",
+    "state_extra_days is 0: 101.111 sets no window that starts before day 90."
+  ]
+}

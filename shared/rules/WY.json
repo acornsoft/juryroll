@@ -1,0 +1,80 @@
+{
+  "state": "WY",
+  "name": "Wyoming",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "District courts (jury management).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": null,
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private pre-election challenge was found. The county clerk may investigate any registration when there is reasonable cause to believe the voter may be unqualified, and strikes unqualified names after a thorough investigation (W.S. 22-3-105(a)).",
+    "form_or_statute": "W.S. 22-3-105. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://law.justia.com/codes/wyoming/title-22/chapter-3/section-22-3-105/",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://law.justia.com/codes/wyoming/title-22/chapter-3/section-22-3-105/",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Wyoming county clerks (Secretary of State, PDF)",
+      "url": "https://sos.wyo.gov/Elections/Docs/WYCountyClerks.pdf",
+      "verified_on": "2026-10-07",
+      "note": "The county clerk may investigate registrations on reasonable cause (W.S. 22-3-105)."
+    },
+    "state_election_office": {
+      "name": "Wyoming Secretary of State - Elections",
+      "url": "https://sos.wyo.gov/Elections/Default.aspx",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Wyoming Attorney General",
+      "url": "https://ag.wyo.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. No private challenge; the county clerk investigates on reasonable cause (W.S. 22-3-105). Strict gates."
+  },
+  "notes": [
+    "Source note: Wyoming Statutes read from the Justia copy of the 2025 statutes.",
+    "voter_file is all null and jury_list is null: the Wyoming voter-list and jury-records statutes were not confirmed in this batch.",
+    "official_pipeline is null: none found."
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "state": "RI",
+  "name": "Rhode Island",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Jury commissioner (R.I. Gen. Laws 9-9-5).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": null,
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any elector (R.I. Gen. Laws 17-9.1-28(a)).",
+    "form_or_statute": "R.I. Gen. Laws 17-9.1-28: affidavit prescribed by the State Board of Elections, filed with the local board of canvassers; certified-mail notice and a hearing where the voter answers under oath (citizenship questions in (c)(1)). 410-RICR-20-00-20: a separate affidavit for each challenged voter, with supporting documents attached.",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "All information and documents must be filed at least 20 days before the election; no supplements after that. No one may be removed within 90 days before an election except on request, sworn statement of moving, conviction, incapacity, or death (410-RICR-20-00-20).",
+    "deadline_days_before_election": 20,
+    "evidence_standard": "Affidavit based on the affiant's personal knowledge, setting forth evidence that creates 'a reasonable cause to suspect' the voter is not eligible (17-9.1-28(a); 410-RICR-20-00-20).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": "Willful and malicious challenge without reasonable cause: misdemeanor, plus liability for compensatory and punitive damages and counsel fees (17-9.1-29).",
+    "source_url": "https://webserver.rilegislature.gov/Statutes/TITLE17/17-9.1/17-9.1-28.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "410-RICR-20-00-20 (challenge regulation: one affidavit per voter, personal knowledge, 20-day filing rule, 90-day removal limit)",
+        "url": "https://rules.sos.ri.gov/regulations/part/410-20-00-20",
+        "verified_on": "2026-10-07",
+        "kind": "regulation"
+      },
+      {
+        "cite": "R.I. Gen. Laws 17-9.1-29 (penalty for unsubstantiated challenge)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE17/17-9.1/17-9.1-29.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.I. Gen. Laws 17-9.1-30 (appeal to the State Board of Elections)",
+        "url": "https://webserver.rilegislature.gov/Statutes/TITLE17/17-9.1/17-9.1-30.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 90,
+        "applies_to": "Removal after a 17-9.1-28 challenge",
+        "effect": "No removal within 90 days before an election except on the voter's request or listed grounds (not citizenship).",
+        "statute": "410-RICR-20-00-20",
+        "source_url": "https://rules.sos.ri.gov/regulations/part/410-20-00-20",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "days_before_election": 20,
+        "applies_to": "Filing of 17-9.1-28 challenge affidavits",
+        "effect": "All affidavits and documents must be filed at least 20 days before the election.",
+        "statute": "410-RICR-20-00-20",
+        "source_url": "https://rules.sos.ri.gov/regulations/part/410-20-00-20",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://rules.sos.ri.gov/regulations/part/410-20-00-20",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Rhode Island local boards of canvassers (Board of Elections)",
+      "url": "https://elections.ri.gov/about/local-boards-canvassers",
+      "verified_on": "2026-10-07",
+      "note": "Challenges under 17-9.1-28 go to the local board of canvassers."
+    },
+    "state_election_office": {
+      "name": "Rhode Island Board of Elections",
+      "url": "https://elections.ri.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Rhode Island Attorney General",
+      "url": "https://riag.ri.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. Rhode Island allows a private challenge on personal knowledge and reasonable cause, filed 20 days ahead (17-9.1-28). Guidance stays off while the jury list is not available."
+  },
+  "notes": [
+    "A malicious challenge without reasonable cause is a misdemeanor and exposes the challenger to punitive damages (17-9.1-29).",
+    "The challenge rule requires personal knowledge (410-RICR-20-00-20). A data match alone is unlikely to qualify.",
+    "voter_file is all null: the Rhode Island voter-list statute was not read in this batch.",
+    "jury_list.public is null: chapter 9-9 has no disclosure section in its table of contents; records status unknown."
+  ]
+}

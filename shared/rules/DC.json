@@ -1,0 +1,98 @@
+{
+  "state": "DC",
+  "name": "District of Columbia",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "D.C. Superior Court (jury system plan, D.C. Code 11-1904).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/11-1906",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "D.C. Code 11-1906 (jurors must be U.S. citizens)",
+        "url": "https://code.dccouncil.gov/us/dc/council/code/sections/11-1906",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": null,
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "Any duly registered voter (D.C. Code 1-1001.07, paragraph (5)(A) of the registration-notice subsection).",
+    "form_or_statute": "D.C. Code 1-1001.07: written objection to the Board of Elections, with any evidence that the registrant is not qualified; the Board sends notice with the evidence; the registrant has 30 days to respond or is cancelled; the chief voter registration official decides; appeal to the Board.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "Challenges filed from day 90 to day 45 get an expedited review. The Board does not accept challenges after the 45th day before an election.",
+    "deadline_days_before_election": 45,
+    "evidence_standard": "The voter must have 'reason to believe' the person is ineligible; the challenge must include any supporting evidence. At a Vote Center appeal, the challenger must present 'substantial evidence that is specific to the voter being challenged.'",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": null,
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.07",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 45,
+        "applies_to": "Voter registration challenges under D.C. Code 1-1001.07",
+        "effect": "The Board does not accept challenges after the 45th day before an election; challenges filed from day 90 to day 45 get expedited review.",
+        "statute": "D.C. Code 1-1001.07",
+        "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.07",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.07",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "District of Columbia Board of Elections",
+      "url": "https://dcboe.org/",
+      "verified_on": "2026-10-07",
+      "note": "D.C. has a single election board; it receives registration challenges."
+    },
+    "state_election_office": {
+      "name": "District of Columbia Board of Elections",
+      "url": "https://dcboe.org/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Office of the Attorney General for the District of Columbia",
+      "url": "https://oag.dc.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Key fact: in D.C., U.S. citizenship is not required to vote in local elections (D.C. Code 1-1001.02(2)(B)). A non-citizen juror record is therefore not evidence of an unlawful registration. Strict gates: counts only."
+  },
+  "notes": [
+    "Important: D.C. Code 1-1001.02(2)(B) says the citizenship requirement 'shall not apply in a local election.' Non-citizen residents may lawfully register to vote in D.C. local elections. JuryRoll must not treat a D.C. juror non-citizen record as a lead, and must not suggest a challenge on that basis.",
+    "juryroll_lead_sufficient is false for this reason, even though a private challenge procedure exists.",
+    "voter_file is all null: the D.C. voter list access rules were not read in this batch.",
+    "jury_list.public is null: D.C. Code 11-1904(a)(3) covers disclosure of names selected for service, not non-citizen disqualifications."
+  ]
+}

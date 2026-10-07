@@ -1,0 +1,112 @@
+{
+  "state": "SD",
+  "name": "South Dakota",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Clerk of courts / Unified Judicial System.",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "voter_file": {
+    "who_may_get": "Anyone. The Secretary of State posts the complete statewide voter registration file on its website every Monday, with a free five-year archive (SDCL 12-4-37, 12-4-37.1).",
+    "permitted_uses": "May not be sold or used for any commercial purpose (campaign and political polling are not commercial) (SDCL 12-4-41).",
+    "no_online_posting": true,
+    "penalty": "Class 1 misdemeanor and a civil penalty up to $2,000 per violation (SDCL 12-4-41).",
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://sdlegislature.gov/Statutes/12-4-41",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "SDCL 12-4-37 and 12-4-37.1 (weekly posting; archive; month and day of birth not public)",
+        "url": "https://sdlegislature.gov/Statutes/12-4-37",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "The Secretary of State, the county auditor, or any individual registered to vote in the same county as the challenged voter (SDCL 12-4-59).",
+    "form_or_statute": "SDCL 12-4-59 (ground (3): 'Is a United States citizen', added by SL 2026, ch 67), 12-4-60 (affidavit on the State Board of Elections form), 12-4-61 (auditor review, verification request, 30 days, hearing).",
+    "form_url": null,
+    "one_per_affidavit": true,
+    "deadlines": "Not later than the 90th day before a primary, runoff, special, or general election (12-4-59). The auditor may not cancel a registration challenged under 12-4-59 within the 90 days before an election (12-4-61).",
+    "deadline_days_before_election": 90,
+    "evidence_standard": "Affidavit that, 'to the best of the individual's personal knowledge and belief, having exercised due diligence to personally verify the evidence presented,' the voter is not qualified; documented evidence attached; no 'unsupported allegation or the allegation of an anonymous third party' (12-4-60).",
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://sdlegislature.gov/Statutes/12-4-59",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "SDCL 12-4-60 (affidavit, personal verification, documentary evidence; Class 2 misdemeanor for publishing confidential IDs)",
+        "url": "https://sdlegislature.gov/Statutes/12-4-60",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SDCL 12-4-61 (auditor process; no cancellation within 90 days)",
+        "url": "https://sdlegislature.gov/Statutes/12-4-61",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 90,
+        "applies_to": "Private challenges under SDCL 12-4-59 (including citizenship)",
+        "effect": "No challenge may be filed after the 90th day before an election, and no cancellation within 90 days.",
+        "statute": "SDCL 12-4-59, 12-4-61",
+        "source_url": "https://sdlegislature.gov/Statutes/12-4-59",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://sdlegislature.gov/Statutes/12-4-59",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "South Dakota county auditors (Secretary of State directory)",
+      "url": "https://vip.sdsos.gov/CountyAuditors.aspx",
+      "verified_on": "2026-10-07",
+      "note": "Registration challenges under SDCL 12-4-59 go to the county auditor."
+    },
+    "state_election_office": {
+      "name": "South Dakota Secretary of State - Elections and Voting",
+      "url": "https://sdsos.gov/elections-voting/default.aspx",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "South Dakota Attorney General",
+      "url": "https://atg.sd.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "The jury record status is unknown (null), so the app shows counts only. A private citizenship challenge exists (SDCL 12-4-59) but needs personal verification and documents, and it closes on day 90. Guidance stays off while the jury list is not available."
+  },
+  "notes": [
+    "The voter file is posted publicly by the state, but re-posting it for unrestricted internet access is a Class 1 misdemeanor (12-4-41). JuryRoll never posts data.",
+    "false_statement_penalty is null: 12-4-60 penalizes publishing confidential identifiers (Class 2 misdemeanor), not false statements; general perjury law may apply.",
+    "official_pipeline is null: SDCL 12-4-18 covers incompetency, felony, and death, not jury citizenship. No jury pipeline was found.",
+    "For the November 3, 2026 election the 12-4-59 deadline (August 5, 2026) has passed."
+  ]
+}

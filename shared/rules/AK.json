@@ -1,0 +1,88 @@
+{
+  "state": "AK",
+  "name": "Alaska",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Alaska Court System (jury management).",
+    "fields_withheld": null,
+    "official_pipeline": null,
+    "use_restriction": null,
+    "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=09.20.010&secEnd=09.20.010",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "AS 09.20.010 (jurors must be U.S. citizens)",
+        "url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=09.20.010&secEnd=09.20.010",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Voter registration records are open to public inspection except listed confidential fields (AS 15.07.195(a)).",
+    "permitted_uses": null,
+    "no_online_posting": null,
+    "penalty": null,
+    "dob_in_public_file": false,
+    "registration_date_in_public_file": null,
+    "attestation_required": null,
+    "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=15.07.195&secEnd=15.07.195",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "At the polls only: election officials, watchers, and any person qualified to vote in the precinct may question a person attempting to vote, in writing, on good reason to suspect the person is not qualified; the person may vote after signing a declaration (AS 15.15.210). No pre-election private challenge was found.",
+    "form_or_statute": "AS 15.15.210. Not supported by JuryRoll.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=15.15.210&secEnd=15.15.210",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=15.07.130&secEnd=15.07.130",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Alaska Division of Elections - regional office contact information",
+      "url": "https://www.elections.alaska.gov/contact-information/",
+      "verified_on": "2026-10-07",
+      "note": "Alaska runs elections statewide through regional offices; there are no county election boards."
+    },
+    "state_election_office": {
+      "name": "Alaska Division of Elections",
+      "url": "https://www.elections.alaska.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Alaska Department of Law (Attorney General)",
+      "url": "https://law.alaska.gov/",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Jury records: status unknown (null), so counts only. Questioning exists only at the polls (AS 15.15.210). Strict gates."
+  },
+  "notes": [
+    "The voter's age and date of birth are confidential (AS 15.07.195(a)(1)), so dob_in_public_file is false. Matching on date of birth is not possible with public data.",
+    "official_pipeline is null: none found.",
+    "law.alaska.gov shows a bot-check page to plain HTTP clients; it was checked in a browser."
+  ]
+}

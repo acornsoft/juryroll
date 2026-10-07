@@ -1,0 +1,139 @@
+{
+  "state": "TX",
+  "name": "Texas",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": false,
+    "statute": "Tex. Gov't Code 62.0132(f)-(g): information in a completed juror questionnaire 'is confidential and is not subject to Chapter 552' (Public Information Act); disclosure only to the judge, court personnel, litigants, and the voter registrar. Tex. Gov't Code 62.113(c)-(d): the clerk's list of persons disqualified for non-citizenship may not be used for any other purpose; violation is a Class C misdemeanor.",
+    "holder": null,
+    "fields_withheld": null,
+    "official_pipeline": "Tex. Gov't Code 62.113(b): on the third business day of each month the clerk sends the list to the county voter registrar, the Secretary of State, and the county or district attorney. Tex. Elec. Code 16.0332: the registrar demands proof of citizenship and cancels after 30 days without it. Tex. Elec. Code 18.068: the Secretary of State compares the lists quarterly.",
+    "use_restriction": "Only the purposes in Gov't Code 62.113(b) and Elec. Code 16.0332 and 18.068 (Gov't Code 62.113(c)). Class C misdemeanor (62.113(d)).",
+    "source_url": "https://statutes.capitol.texas.gov/Docs/GV/htm/GV.62.htm#62.113",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Tex. Gov't Code 62.0132 (juror questionnaire confidential)",
+        "url": "https://statutes.capitol.texas.gov/Docs/GV/htm/GV.62.htm#62.0132",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Tex. Elec. Code 16.0332 (cancellation because of citizenship status)",
+        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.0332",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Tex. Elec. Code 18.068 (quarterly comparison)",
+        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.068",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Texas Secretary of State news release, 'Secretary Whitley Announces Settlement In Litigation On Voter Registration List Maintenance Activity' (2019-04-26)",
+        "url": "https://www.sos.texas.gov/about/newsreleases/2019/042619.shtml",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Any person: statewide list from the Secretary of State on request with an affidavit (Elec. Code 18.066); county lists from the voter registrar (18.008).",
+    "permitted_uses": "Any use except 'in connection with advertising or promoting commercial products or services' (Elec. Code 18.066(d), 18.067, 18.009). Social Security numbers and protected residence addresses are excluded (18.066(b), 13.004(c)).",
+    "no_online_posting": null,
+    "penalty": "Class A misdemeanor for commercial advertising use (Elec. Code 18.009, 18.067).",
+    "dob_in_public_file": true,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Affidavit that the information will not be used in connection with advertising or promoting commercial products or services (Elec. Code 18.066(d)).",
+    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.066",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Tex. Elec. Code 18.005(a)(1) (lists contain date of birth)",
+        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.005",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Tex. Elec. Code 13.004 (confidential registration information; (d) bars officials from posting DOB, phone, SSN, DL numbers on a website)",
+        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.13.htm#13.004",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Texas Secretary of State - Voter Registration Public Information Request Form",
+        "url": "https://www.sos.state.tx.us/elections/forms/pi.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
+  },
+  "private_challenge": {
+    "allowed": true,
+    "who": "A registered voter of the same county (Elec. Code 16.091).",
+    "form_or_statute": "Tex. Elec. Code 16.091-16.095: sworn statement filed with the voter registrar; hearing before the registrar for non-residence grounds.",
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": "Registrar holds the hearing within 20 days after filing unless both parties agree to a later date (16.093(b)); 15 days' notice to the parties (16.094(a)); cancellation takes effect on the 31st day after the decision (16.095(c)). For residence grounds only, no confirmation notice goes out for statements filed after the 75th day before the November general election until after that election (16.0921(c)).",
+    "deadline_days_before_election": null,
+    "evidence_standard": "The sworn statement must state a specific qualification the voter has not met 'based on the personal knowledge of the voter desiring to challenge the registration' (Elec. Code 16.092(2)).",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": null,
+    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.092",
+    "verified_on": "2026-10-07"
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [
+      {
+        "days_before_election": 75,
+        "applies_to": "Residence-based challenges under Elec. Code 16.0921 (not citizenship)",
+        "effect": "No confirmation notice for a sworn statement filed after the 75th day before the November general election until after that election.",
+        "statute": "Tex. Elec. Code 16.0921(c)",
+        "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.0921",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.0921",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "County voter registrars (Texas Secretary of State county directory)",
+      "url": "https://www.sos.state.tx.us/elections/voter/county.shtml",
+      "verified_on": "2026-10-07"
+    },
+    "state_election_office": {
+      "name": "Texas Secretary of State - Elections Division",
+      "url": "https://www.sos.state.tx.us/elections/index.shtml",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Texas Attorney General - Election Integrity",
+      "url": "https://www.texasattorneygeneral.gov/initiatives/election-integrity",
+      "verified_on": "2026-10-07",
+      "note": "The OAG page directs election complaints to the Secretary of State, which refers credible criminal allegations to the OAG."
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "Juror questionnaires are confidential (Gov't Code 62.0132(f)) and the non-citizen list may be used only by officials for listed purposes, Class C misdemeanor (62.113(c)-(d)). A private challenge needs personal knowledge (Elec. Code 16.092(2)), which a JuryRoll match cannot supply. Aggregate audit mode only."
+  },
+  "notes": [
+    "The official pipeline already sends every non-citizen jury disqualification to the registrar, the Secretary of State and the prosecutor each month (62.113(b)). An aggregate referral can ask whether each county clerk sends these lists on time.",
+    "LEGAL-REVIEW.md lists TX among 'no online posting (some fields)'. The only bar found is Elec. Code 13.004(d), which binds the registrar and other officials, not private recipients. no_online_posting stays null (treated as barred). JuryRoll never posts data.",
+    "Texas 2019: about 95,000 flagged, at least about 25,000 wrong; the advisory was rescinded (LEGAL-REVIEW.md).",
+    "registration_date_in_public_file is null: the record layout attached to the SoS request form was not reviewed. The request form offers a filter on the date voters became effective.",
+    "one_per_affidavit is null: 16.092 speaks of 'the voter whose registration is being challenged' but does not state a one-per-statement rule.",
+    "false_statement_penalty is null: the perjury provisions of the Penal Code were not checked in this pass.",
+    "Naturalization rule: the 2019 settlement in LULAC v. Whitley (W.D. Tex. 5:19-cv-00074) limited SoS referrals to 'individuals who registered to vote before identifying themselves as non-U.S. citizens' (Texas SoS news release, 2019-04-26). Elec. Code 16.0332(a-1) now codifies the same rule for DPS data. JuryRoll's EXCLUDE rule (LOGIC-CHANGES.md B) follows it."
+  ]
+}

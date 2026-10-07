@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:juryroll:rules:state-rules:1.0.0",
+  "title": "JuryRoll per-state rules file",
+  "description": "One file per state (rules/<XX>.json) plus rules/default.json. Rule: an unknown value is null, and null ALWAYS means the strict default applies (see LOGIC-CHANGES.md section A). Every non-null rule cites a primary source (statute, regulation, court rule, or official state or county government page) and a verified_on date.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state", "name", "schema_version", "verified_on", "jury_list", "voter_file", "private_challenge", "blackout", "referral_targets", "gates", "notes"],
+  "properties": {
+    "state": {
+      "description": "Two-letter USPS code, or DEFAULT for rules/default.json.",
+      "type": "string",
+      "pattern": "^([A-Z]{2}|DEFAULT)$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "verified_on": { "$ref": "#/$defs/date" },
+    "jury_list": {
+      "description": "Can a private person lawfully obtain juror qualification / disqualification (non-citizen) records?",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public", "statute", "source_url", "verified_on"],
+      "properties": {
+        "public": { "type": ["boolean", "null"], "description": "true = a private person may lawfully obtain the non-citizen disqualification list. false = confidential by law. null = unknown, treat as confidential." },
+        "statute": { "type": ["string", "null"] },
+        "holder": { "type": ["string", "null"], "description": "Which office holds the public version (if public)." },
+        "fields_withheld": { "type": ["array", "null"], "items": { "type": "string" }, "description": "Fields the law removes from the public version (for example date of birth)." },
+        "official_pipeline": { "type": ["string", "null"], "description": "Statute that already sends the list to election officials, if any." },
+        "use_restriction": { "type": ["string", "null"] },
+        "source_url": { "$ref": "#/$defs/urlOrNull" },
+        "verified_on": { "$ref": "#/$defs/dateOrNull" },
+        "sources": { "$ref": "#/$defs/sources" }
+      },
+      "allOf": [ { "$ref": "#/$defs/citedIfKnown_public" } ]
+    },
+    "voter_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["who_may_get", "permitted_uses", "no_online_posting", "penalty", "source_url"],
+      "properties": {
+        "who_may_get": { "type": ["string", "null"] },
+        "permitted_uses": { "type": ["string", "null"] },
+        "no_online_posting": { "type": ["boolean", "null"], "description": "true = law bars a private recipient from posting the file online. false = no such bar (cite). null = unknown, treat as barred." },
+        "penalty": { "type": ["string", "null"] },
+        "dob_in_public_file": { "type": ["boolean", "null"], "description": "Whether the file a private person can get includes full date of birth. Drives match-tier caps (LOGIC-CHANGES A.4)." },
+        "registration_date_in_public_file": { "type": ["boolean", "null"], "description": "Whether the file includes registration date. Drives the naturalization check (LOGIC-CHANGES B)." },
+        "attestation_required": { "type": ["string", "null"], "description": "The statement the requester signs, if any." },
+        "source_url": { "$ref": "#/$defs/urlOrNull" },
+        "verified_on": { "$ref": "#/$defs/dateOrNull" },
+        "sources": { "$ref": "#/$defs/sources" }
+      },
+      "if": { "properties": { "who_may_get": { "type": "string" } } },
+      "then": { "required": ["verified_on"], "properties": { "source_url": { "$ref": "#/$defs/url" }, "verified_on": { "$ref": "#/$defs/date" } } }
+    },
+    "private_challenge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "who", "form_or_statute", "one_per_affidavit", "deadlines", "evidence_standard", "source_url", "verified_on"],
+      "properties": {
+        "allowed": { "type": ["boolean", "null"], "description": "Can a private citizen challenge another voter's registration? null = unknown, show no challenge guidance." },
+        "who": { "type": ["string", "null"] },
+        "form_or_statute": { "type": ["string", "null"] },
+        "form_url": { "$ref": "#/$defs/urlOrNull" },
+        "one_per_affidavit": { "type": ["boolean", "null"] },
+        "deadlines": { "type": ["string", "null"] },
+        "deadline_days_before_election": { "type": ["integer", "null"], "minimum": 0, "description": "Last day to file, counted back from election day, when the statute gives a fixed day. null = no fixed day found." },
+        "evidence_standard": { "type": ["string", "null"] },
+        "juryroll_lead_sufficient": { "type": ["boolean", "null"], "description": "false = the statute's evidence or knowledge rule cannot be met by a JuryRoll match alone (for example a personal-knowledge requirement). null = not determined; app treats as false." },
+        "false_statement_penalty": { "type": ["string", "null"] },
+        "source_url": { "$ref": "#/$defs/urlOrNull" },
+        "verified_on": { "$ref": "#/$defs/dateOrNull" },
+        "sources": { "$ref": "#/$defs/sources" }
+      },
+      "if": { "properties": { "allowed": { "type": "boolean" } } },
+      "then": { "properties": { "source_url": { "$ref": "#/$defs/url" }, "verified_on": { "$ref": "#/$defs/date" } } }
+    },
+    "blackout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["federal_90_day", "federal_source_url", "state_extra_days", "verified_on"],
+      "properties": {
+        "federal_90_day": { "const": true, "description": "NVRA 52 U.S.C. 20507(c)(2)(A). Always true; the app always applies it." },
+        "federal_source_url": { "$ref": "#/$defs/url" },
+        "state_extra_days": { "type": ["integer", "null"], "minimum": 0, "description": "Days the state adds BEFORE the federal 90-day window starts. 0 = the state windows found all fall inside the 90 days (cite). null = not determined." },
+        "state_windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["days_before_election", "applies_to", "effect", "statute", "source_url", "verified_on"],
+            "properties": {
+              "days_before_election": { "type": "integer", "minimum": 0 },
+              "applies_to": { "type": "string" },
+              "effect": { "type": "string" },
+              "statute": { "type": "string" },
+              "source_url": { "$ref": "#/$defs/url" },
+              "verified_on": { "$ref": "#/$defs/date" }
+            }
+          }
+        },
+        "source_url": { "$ref": "#/$defs/urlOrNull" },
+        "verified_on": { "$ref": "#/$defs/date" }
+      },
+      "if": { "properties": { "state_extra_days": { "type": "integer" } } },
+      "then": { "properties": { "source_url": { "$ref": "#/$defs/url" } }, "required": ["source_url"] }
+    },
+    "referral_targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["county_board", "state_election_office", "ag"],
+      "properties": {
+        "county_board": { "$ref": "#/$defs/targetOrNull" },
+        "state_election_office": { "$ref": "#/$defs/targetOrNull" },
+        "ag": { "$ref": "#/$defs/targetOrNull" },
+        "other": { "type": "array", "items": { "$ref": "#/$defs/target" } }
+      }
+    },
+    "gates": {
+      "description": "What the app may do in this state. null = strict default: allow_jury_list=false, aggregate_only=true, allow_named_export=false, show_challenge_guidance=false. The app also derives gates from the facts above and uses whichever is stricter (LOGIC-CHANGES A.3).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allow_jury_list", "aggregate_only", "allow_named_export", "show_challenge_guidance", "basis"],
+      "properties": {
+        "allow_jury_list": { "type": ["boolean", "null"] },
+        "aggregate_only": { "type": ["boolean", "null"] },
+        "allow_named_export": { "type": ["boolean", "null"] },
+        "show_challenge_guidance": { "type": ["boolean", "null"] },
+        "basis": { "type": "string", "minLength": 1 }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "dateOrNull": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "url": { "type": "string", "pattern": "^https?://[^\\s]+$" },
+    "urlOrNull": { "type": ["string", "null"], "pattern": "^https?://[^\\s]+$" },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cite", "url", "verified_on"],
+        "properties": {
+          "cite": { "type": "string" },
+          "url": { "$ref": "#/$defs/url" },
+          "verified_on": { "$ref": "#/$defs/date" },
+          "kind": { "enum": ["statute", "regulation", "court_rule", "official_page", "official_form", "session_law", "court_order"] }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "url", "verified_on"],
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "$ref": "#/$defs/url" },
+        "verified_on": { "$ref": "#/$defs/date" },
+        "note": { "type": "string" }
+      }
+    },
+    "targetOrNull": { "oneOf": [ { "type": "null" }, { "$ref": "#/$defs/target" } ] },
+    "citedIfKnown_public": {
+      "if": { "properties": { "public": { "type": "boolean" } } },
+      "then": { "properties": { "source_url": { "$ref": "#/$defs/url" }, "verified_on": { "$ref": "#/$defs/date" }, "statute": { "type": "string" } } }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "state": "OK",
+  "name": "Oklahoma",
+  "schema_version": "1.0.0",
+  "verified_on": "2026-10-07",
+  "jury_list": {
+    "public": null,
+    "statute": null,
+    "holder": "Court clerk of each county.",
+    "fields_withheld": null,
+    "official_pipeline": "26 O.S. 4-120.5(B): each month the court clerk lists all persons excused from jury duty for not being a U.S. citizen and gives it to the secretary of the county election board, who cancels each listed registration and reports the person to the district attorney and the U.S. attorney. 26 O.S. 4-120(A)(8) lists this as a cancellation ground.",
+    "use_restriction": null,
+    "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78478",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "26 O.S. 4-120.5 (monthly jury non-citizen list to county election board)",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78478",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "26 O.S. 4-120 (cancellation grounds; public list of cancellations for 24 months with reasons, (C))",
+        "url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78473",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
+  },
+  "voter_file": {
+    "who_may_get": "Free electronic copy to bona fide Oklahoma residents who are U.S. citizens, recognized parties, candidates, or others authorized by law, after an application with an attestation under penalty of perjury (26 O.S. 7-103.2(B)).",
+    "permitted_uses": "Not for commercial marketing or advertising (campaign, party, government and polling use is not commercial). May not be given to a foreign national, foreign commercial interest, or foreign government (7-103.2(B)(3)-(4)).",
+    "no_online_posting": null,
+    "penalty": "Unlawful use under 7-103.2(B)(3)-(4); penalty clause not stated in the section.",
+    "dob_in_public_file": null,
+    "registration_date_in_public_file": null,
+    "attestation_required": "Application with legal name, Oklahoma residence address, phone, email, and an attestation under penalty of perjury that the person meets the legal requirements (26 O.S. 7-103.2(B)(2)).",
+    "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78543",
+    "verified_on": "2026-10-07"
+  },
+  "private_challenge": {
+    "allowed": null,
+    "who": "No private pre-election registration challenge statute was found in Title 26.",
+    "form_or_statute": null,
+    "form_url": null,
+    "one_per_affidavit": null,
+    "deadlines": null,
+    "deadline_days_before_election": null,
+    "evidence_standard": null,
+    "juryroll_lead_sufficient": null,
+    "false_statement_penalty": null,
+    "source_url": null,
+    "verified_on": null
+  },
+  "blackout": {
+    "federal_90_day": true,
+    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "state_extra_days": 0,
+    "state_windows": [],
+    "source_url": "https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=78473",
+    "verified_on": "2026-10-07"
+  },
+  "referral_targets": {
+    "county_board": {
+      "name": "Oklahoma county election boards (State Election Board directory)",
+      "url": "https://oklahoma.gov/elections/about-us/county-election-boards.html",
+      "verified_on": "2026-10-07",
+      "note": "Receives the court clerk's monthly jury non-citizen list (26 O.S. 4-120.5(B))."
+    },
+    "state_election_office": {
+      "name": "Oklahoma State Election Board",
+      "url": "https://oklahoma.gov/elections.html",
+      "verified_on": "2026-10-07"
+    },
+    "ag": {
+      "name": "Oklahoma Attorney General",
+      "url": "https://oklahoma.gov/oag.html",
+      "verified_on": "2026-10-07"
+    },
+    "other": []
+  },
+  "gates": {
+    "allow_jury_list": false,
+    "aggregate_only": true,
+    "allow_named_export": false,
+    "show_challenge_guidance": false,
+    "basis": "The jury non-citizen list goes to the county election board (26 O.S. 4-120.5(B)); the list itself is not stated to be public (null). No private challenge statute found. Strict gates: counts only."
+  },
+  "notes": [
+    "26 O.S. 4-120(C) makes the list of cancellations in the last 24 months, with reasons, public. Those records are completed official actions, not leads. JuryRoll should not re-publish them.",
+    "Duplication: Oklahoma cancels monthly from the same jury data and refers to prosecutors (4-120.5(B)).",
+    "allowed is null: none found; the app shows no challenge guidance."
+  ]
+}
