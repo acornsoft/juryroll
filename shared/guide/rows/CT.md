@@ -1,1 +1,1 @@
-| CT | No (Conn. Gen. Stat. 51-232(c)). Permanent residents can be jurors | Only at the polls; citizenship is not a ground (9-232) | Counts only |
+| CT | No (Conn. Gen. Stat. 51-232(c)(1)). Permanent residents can be jurors. The qualified-juror list goes to the Secretary of the State (9-19l) | Only at the polls; citizenship is not a ground (9-232) | Counts only. See 6.19 |
