@@ -465,6 +465,8 @@ J1,Signal,Sam,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15
 const ndVoterTable = table('voter', ndVoter);
 assert.strictEqual(ndVoterTable.extra.regDate, -1);
 assert.strictEqual(guessExtra('voter', ['last_voted', 'file_entry_date']).regDate, -1);
+assert.strictEqual(guessExtra('juror', ['Last', 'First', 'Date Of Excusal']).declDate, 2);
+pass('AT-date-of-excusal');
 const ndRun = runMatch(table('juror', ndJuror), ndVoterTable, loadRules('ND.json'));
 assert.strictEqual(ndRun.coreResult.counts.Strong, 1);
 assert.strictEqual(ndRun.policy.cannotCompareCount, 1);

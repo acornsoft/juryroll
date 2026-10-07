@@ -32,7 +32,17 @@ async function openPage(browser, options = {}) {
   const errors = [];
   const requests = [];
   page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+  page.on('console', (message) => {
+    if (message.type() !== 'error') return;
+    const text = message.text();
+    if (text.startsWith('Failed to load resource:')) return;
+    errors.push(text);
+  });
+  page.on('requestfailed', (request) => {
+    const url = request.url();
+    if (url.includes('/fonts/') || url.startsWith('blob:') || url.startsWith('data:')) return;
+    errors.push(`failed ${url}`);
+  });
   page.on('request', (request) => {
     const url = request.url();
     if (!url.startsWith('file:') && !url.startsWith('blob:') && !url.startsWith('data:')) requests.push(url);
@@ -43,7 +53,44 @@ async function openPage(browser, options = {}) {
   return { context, page, errors, requests };
 }
 
+async function openStep(page, id) {
+  await page.click(`#step-tab-${id}`);
+  await page.waitForSelector(`#step-panel-${id}:not([hidden])`);
+}
+
+async function selectState(page, code) {
+  if (!(await page.locator('#stateSel').isVisible())) await openStep(page, 'where');
+  await page.selectOption('#stateSel', code);
+}
+
+async function openStateNotices(page) {
+  const notices = page.locator('#stateNotices');
+  if (await notices.count()) await notices.evaluate((node) => { node.open = true; });
+}
+
+async function assertFits(page, width, label) {
+  const report = await page.evaluate((limit) => {
+    const scrollWidth = document.documentElement.scrollWidth;
+    if (scrollWidth <= limit) return null;
+    let worst = null;
+    for (const node of document.querySelectorAll('body *')) {
+      const rect = node.getBoundingClientRect();
+      if (rect.right <= limit + 1) continue;
+      if (worst && rect.right <= worst.right) continue;
+      worst = {
+        right: Math.round(rect.right),
+        tag: node.tagName,
+        id: node.id,
+        className: String(node.className).slice(0, 80),
+      };
+    }
+    return { scrollWidth, worst };
+  }, width);
+  assert.strictEqual(report, null, `${label} wider than ${width}: ${JSON.stringify(report)}`);
+}
+
 async function attest(page) {
+  if (!(await page.locator('#attest1').isVisible())) await openStep(page, 'sign');
   for (let i = 1; i <= 5; i += 1) await page.check(`#attest${i}`);
   await page.fill('#initials', 'AB');
 }
@@ -122,6 +169,7 @@ function requestHeaders(url) {
 }
 
 async function pickCounty(page, fips = '37183') {
+  if (!(await page.locator('#county').isVisible())) await openStep(page, 'where');
   await page.selectOption('#county', fips);
 }
 
@@ -143,6 +191,9 @@ function readAuditDownload(file) {
 (async () => {
   const built = fs.readFileSync(dist, 'utf8');
   assert.ok(built.includes("connect-src 'none'"), 'CSP connect-src');
+  assert.ok(built.includes('/fonts/roboto-400.woff2'), 'fonts use an absolute /fonts/ URL');
+  assert.ok(!/url\(\s*['"]?(?:\.\.\/)?fonts\//.test(built), 'font URLs must not be relative');
+  assert.ok(built.includes("font-src 'self'"), 'CSP font-src');
   assert.ok(!/<script[^>]+src=/.test(built), 'scripts must be inlined');
   const config = fs.readFileSync(path.join(root, 'app/dist/staticwebapp.config.json'), 'utf8');
   assert.ok(config.includes("connect-src 'none'"));
@@ -199,13 +250,15 @@ function readAuditDownload(file) {
   assert.strictEqual(xlsxBytes[1], 0x4b);
   pass('AT-41-downloads');
 
-  await first.page.selectOption('#stateSel', 'NY');
+  await selectState(first.page, 'NY');
+  await openStep(first.page, 'files');
   await first.page.screenshot({ path: path.join(shots, '07-blackout-aggregate.png'), fullPage: true });
   assert.strictEqual(await first.page.locator('#fileJuror').count(), 0);
   assert.strictEqual(await first.page.locator('#fileVoter').count(), 0);
   assert.strictEqual(await first.page.locator('#sampleBtn').count(), 0);
   assert.strictEqual(await first.page.locator('#runBtn').count(), 0);
   assert.strictEqual(await first.page.locator('#exportBtn').count(), 0);
+  assert.strictEqual(await first.page.locator('#typePath').count(), 0);
   assert.strictEqual(await first.page.locator('#results tr').count(), 0);
   assert.ok(await first.page.isVisible('#auditMode'));
   assert.ok(await first.page.isVisible('#auditLetter'));
@@ -215,13 +268,15 @@ function readAuditDownload(file) {
   assert.ok((await first.page.locator('#federalBanner').innerText()).includes('Federal 90-day window'));
   pass('AT-06');
 
-  await first.page.selectOption('#stateSel', 'WY');
+  await selectState(first.page, 'WY');
+  await openStep(first.page, 'files');
   assert.strictEqual(await first.page.locator('#rulesFallback').count(), 0);
   assert.strictEqual(await first.page.locator('#fileJuror').count(), 0);
   assert.ok(await first.page.isVisible('#auditMode'));
   pass('AT-03-live-wy');
 
-  await first.page.selectOption('#stateSel', 'TX');
+  await selectState(first.page, 'TX');
+  await openStep(first.page, 'files');
   const blocked = await first.page.locator('#juryBlocked').innerText();
   assert.ok(blocked.includes('confidential'));
   assert.ok(blocked.includes("Gov't Code 62.0132"));
@@ -245,10 +300,11 @@ function readAuditDownload(file) {
   await first.context.close();
 
   const main = await openPage(browser);
-  await main.page.selectOption('#stateSel', 'NC');
+  await selectState(main.page, 'NC');
   assert.strictEqual(await main.page.locator('#fileJuror').count(), 1);
   assert.strictEqual(await main.page.locator('#runBtn').isDisabled(), true);
   await attest(main.page);
+  await openStateNotices(main.page);
   assert.strictEqual(await main.page.locator('#challengeFormLink').count(), 1);
   assert.strictEqual(await main.page.locator('#deadlineBanner').count(), 0);
   assert.ok((await main.page.locator('#leadBanner').innerText()).includes('A JuryRoll match alone does not meet this standard'));
@@ -256,11 +312,14 @@ function readAuditDownload(file) {
   pass('AT-31');
   pass('AT-32');
   await pickCounty(main.page);
+  await openStep(main.page, 'files');
   await main.page.screenshot({ path: path.join(shots, '02-step-files.png'), fullPage: true });
+  assert.strictEqual(await main.page.locator('#typePath').count(), 1);
   await main.page.setInputFiles('#fileJuror', sampleJ);
   await main.page.waitForSelector('#infoJuror');
   await main.page.setInputFiles('#fileVoter', sampleV);
   await main.page.waitForSelector('#infoVoter');
+  await openStep(main.page, 'run');
   assert.strictEqual(await main.page.locator('#mapJuror-declDate').count(), 1);
   assert.strictEqual(await main.page.locator('#mapJuror-regDate').count(), 1);
   assert.strictEqual(await main.page.locator('#mapVoter-declDate').count(), 1);
@@ -291,6 +350,15 @@ function readAuditDownload(file) {
   assert.ok((await main.page.locator('#regDateNote').innerText()).includes('latest registration change'));
   assert.ok((await main.page.locator('#templateDateNote').innerText()).includes('The registration date is needed for a named referral.'));
   assert.match(await main.page.locator('#referralHeader').innerText(), /Wake County \(37183\)/);
+  const summary = await main.page.locator('#countySummary').innerText();
+  assert.match(summary, /Wake County, North Carolina:/);
+  assert.match(summary, /coded non-citizen/);
+  assert.match(summary, /Strong 0 \/ Probable 3 \/ Weak 2/);
+  assert.match(summary, /Language 0 excluded/);
+  assert.match(summary, /Non-resident 0 excluded/);
+  assert.ok(!summary.includes('Alpha'));
+  assert.match(await main.page.locator('#summaryDisclaimer').innerText(), /leads for official verification/);
+  assert.strictEqual(await main.page.locator('#countyRollup tbody tr').count(), 1);
   const rowsDefault = await main.page.locator('#results tr').count() - 1;
   assert.strictEqual(rowsDefault, 3, 'named leads are the pairs registered before the declaration');
   const namedText = await main.page.locator('#results').innerText();
@@ -311,6 +379,7 @@ function readAuditDownload(file) {
   await main.page.screenshot({ path: path.join(shots, '06-print.png'), fullPage: true });
   await main.page.emulateMedia({ media: 'screen' });
 
+  await openStep(main.page, 'export');
   const [download] = await Promise.all([
     main.page.waitForEvent('download'),
     main.page.click('#exportBtn'),
@@ -336,6 +405,7 @@ function readAuditDownload(file) {
   await main.page.screenshot({ path: path.join(shots, '05b-purge-prompt.png'), fullPage: true });
   await main.page.click('#keepData');
 
+  await openStep(main.page, 'triage');
   await main.page.locator('#weakDetails').evaluate((el) => { el.open = true; });
   await main.page.check('#showWeak');
   assert.ok(await main.page.isVisible('#weakWarn'));
@@ -408,12 +478,14 @@ function readAuditDownload(file) {
   fs.writeFileSync(path.join(datesDir, 'juror.csv'), 'Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date\nJ1,Afterson,Ann,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15\nJ2,Keepson,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-06-01\nJ3,Missingson,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,\n');
   fs.writeFileSync(path.join(datesDir, 'voter.csv'), 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Afterson,Ann,1980-03-14,1 Main St,00001,ACTIVE,2021-05-01\nV2,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01\nV3,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,\n');
   const dates = await openPage(browser);
-  await dates.page.selectOption('#stateSel', 'NC');
+  await selectState(dates.page, 'NC');
   await attest(dates.page);
   await pickCounty(dates.page);
+  await openStep(dates.page, 'files');
   await dates.page.setInputFiles('#fileJuror', path.join(datesDir, 'juror.csv'));
   await dates.page.waitForSelector('#infoJuror');
   await dates.page.setInputFiles('#fileVoter', path.join(datesDir, 'voter.csv'));
+  await openStep(dates.page, 'run');
   await dates.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
   await dates.page.click('#runBtn');
   await dates.page.waitForSelector('#excludedLine');
@@ -426,6 +498,7 @@ function readAuditDownload(file) {
   assert.ok(bodyText.includes('Keepson'));
   assert.ok(!bodyText.includes('Missingson'));
   assert.ok(bodyText.includes('Official SAVE / naturalization check required'));
+  await openStep(dates.page, 'export');
   const [dateDownload] = await Promise.all([
     dates.page.waitForEvent('download'),
     dates.page.click('#exportBtn'),
@@ -444,8 +517,9 @@ function readAuditDownload(file) {
   await dates.context.close();
 
   const refused = await openPage(browser);
-  await refused.page.selectOption('#stateSel', 'NC');
+  await selectState(refused.page, 'NC');
   await attest(refused.page);
+  await openStep(refused.page, 'files');
   const ssnPath = path.join(datesDir, 'ssn.csv');
   fs.writeFileSync(ssnPath, 'voter_id,name_last,name_first,ssn\n1,Ada,Bee,123-45-6789\n');
   await refused.page.setInputFiles('#fileVoter', ssnPath);
@@ -456,12 +530,14 @@ function readAuditDownload(file) {
   await refused.context.close();
 
   const xlsx = await openPage(browser);
-  await xlsx.page.selectOption('#stateSel', 'NC');
+  await selectState(xlsx.page, 'NC');
   await attest(xlsx.page);
   await pickCounty(xlsx.page);
+  await openStep(xlsx.page, 'files');
   await xlsx.page.setInputFiles('#fileJuror', sampleJx);
   await xlsx.page.waitForSelector('#infoJuror');
   await xlsx.page.setInputFiles('#fileVoter', sampleVx);
+  await openStep(xlsx.page, 'run');
   await xlsx.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
   await xlsx.page.click('#runBtn');
   await xlsx.page.waitForSelector('#matcherCounts');
@@ -474,22 +550,27 @@ function readAuditDownload(file) {
   await xlsx.context.close();
 
   const later = await openPage(browser, { time: '2026-10-10T15:00:00Z' });
-  await later.page.selectOption('#stateSel', 'NC');
+  await selectState(later.page, 'NC');
   await attest(later.page);
+  await openStateNotices(later.page);
   assert.ok((await later.page.locator('#deadlineBanner').innerText()).includes('The state deadline for this election has passed (2026-10-09).'));
   assert.strictEqual(await later.page.locator('#challengeFormLink').count(), 0);
   pass('AT-31-passed');
   await later.context.close();
 
   const timed = await openPage(browser, { time: '2026-10-07T15:00:00Z' });
-  await timed.page.selectOption('#stateSel', 'NC');
+  await selectState(timed.page, 'NC');
   await attest(timed.page);
   await pickCounty(timed.page);
+  await openStep(timed.page, 'files');
   await timed.page.setInputFiles('#fileJuror', sampleJ);
   await timed.page.waitForSelector('#infoJuror');
   await timed.page.setInputFiles('#fileVoter', sampleV);
+  await openStep(timed.page, 'run');
   await timed.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
   await timed.page.click('#runBtn');
+  await timed.page.waitForSelector('#countStrong');
+  await openStep(timed.page, 'export');
   await timed.page.waitForSelector('#exportBtn');
   const [timedDownload] = await Promise.all([
     timed.page.waitForEvent('download'),
@@ -503,8 +584,9 @@ function readAuditDownload(file) {
   await timed.context.close();
 
   const idle = await openPage(browser, { time: '2026-10-07T15:00:00Z' });
-  await idle.page.selectOption('#stateSel', 'NC');
+  await selectState(idle.page, 'NC');
   await attest(idle.page);
+  await openStep(idle.page, 'files');
   await idle.page.setInputFiles('#fileJuror', sampleJ);
   await idle.page.waitForSelector('#infoJuror');
   await idle.page.clock.fastForward(28 * 60 * 1000);
@@ -517,12 +599,14 @@ function readAuditDownload(file) {
 
   const fixtures = path.join(root, 'test/fixtures');
   async function runPair(page, jurorName, voterName) {
-    await page.selectOption('#stateSel', 'NC');
+    await selectState(page, 'NC');
     await attest(page);
     await pickCounty(page);
+    await openStep(page, 'files');
     await page.setInputFiles('#fileJuror', path.join(fixtures, jurorName));
     await page.waitForSelector('#infoJuror');
     await page.setInputFiles('#fileVoter', path.join(fixtures, voterName));
+    await openStep(page, 'run');
     await page.waitForFunction(() => !document.getElementById('runBtn').disabled);
     await page.click('#runBtn');
     await page.waitForSelector('#cannotCompareLine');
@@ -533,6 +617,7 @@ function readAuditDownload(file) {
   assert.ok((await missing.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
   assert.ok((await missing.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
   assert.ok(!(await missing.page.locator('body').innerText()).includes('Missingson'));
+  await openStep(missing.page, 'export');
   const [missingDownload] = await Promise.all([
     missing.page.waitForEvent('download'),
     missing.page.click('#exportBtn'),
@@ -550,6 +635,7 @@ function readAuditDownload(file) {
   assert.ok((await equal.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
   assert.ok((await equal.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
   assert.ok(!(await equal.page.locator('body').innerText()).includes('Equalson'));
+  await openStep(equal.page, 'export');
   const [equalDownload] = await Promise.all([
     equal.page.waitForEvent('download'),
     equal.page.click('#exportBtn'),
@@ -573,6 +659,7 @@ function readAuditDownload(file) {
   assert.ok((await noReg.page.locator('#cannotCompareLine').innerText()).includes('3 matches cannot compare: no registration date'));
   assert.ok((await noReg.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
   assert.strictEqual(await noReg.page.locator('#results tbody tr').count(), 0);
+  await openStep(noReg.page, 'export');
   const [noRegDownload] = await Promise.all([
     noReg.page.waitForEvent('download'),
     noReg.page.click('#exportBtn'),
@@ -609,7 +696,8 @@ function readAuditDownload(file) {
   await blankDecl.context.close();
 
   const dc = await openPage(browser);
-  await dc.page.selectOption('#stateSel', 'DC');
+  await selectState(dc.page, 'DC');
+  await openStateNotices(dc.page);
   const dcBanner = await dc.page.locator('#nonSignalBanner').innerText();
   assert.ok(dcBanner.includes('D.C. lets non-citizens vote'));
   assert.ok(dcBanner.includes('not evidence of unlawful registration in this jurisdiction'));
@@ -620,7 +708,8 @@ function readAuditDownload(file) {
   await dc.context.close();
 
   const nd = await openPage(browser);
-  await nd.page.selectOption('#stateSel', 'ND');
+  await selectState(nd.page, 'ND');
+  await openStateNotices(nd.page);
   assert.ok((await nd.page.locator('#ndBanner').innerText()).includes('North Dakota has no voter registration'));
   assert.strictEqual(await nd.page.locator('#challengePanel').count(), 0);
   assert.strictEqual(await nd.page.locator('#fileJuror').count(), 0);
@@ -628,7 +717,8 @@ function readAuditDownload(file) {
   await nd.context.close();
 
   const ca = await openPage(browser);
-  await ca.page.selectOption('#stateSel', 'CA');
+  await selectState(ca.page, 'CA');
+  await openStateNotices(ca.page);
   const limit = await ca.page.locator('#useLimitBanner').innerText();
   assert.ok(limit.includes('Your state limits how its voter list may be used'));
   assert.ok(limit.includes('Election, scholarly, journalistic, political, or governmental purposes'));
@@ -638,10 +728,14 @@ function readAuditDownload(file) {
   await ca.context.close();
 
   const gate = await openPage(browser);
-  await gate.page.selectOption('#stateSel', 'NC');
-  await gate.page.waitForSelector('#sampleBtn');
+  await selectState(gate.page, 'NC');
+  await gate.page.waitForSelector('#sampleBtn', { state: 'attached' });
   async function enableMatch() {
     await gate.page.evaluate(() => {
+      for (const id of ['step-panel-files', 'step-panel-run']) {
+        const node = document.getElementById(id);
+        if (node) node.hidden = false;
+      }
       for (const id of ['step1', 'step2', 'step3', 'sampleBtn', 'runBtn', 'fileJuror', 'fileVoter']) {
         const node = document.getElementById(id);
         if (node) node.disabled = false;
@@ -674,9 +768,11 @@ function readAuditDownload(file) {
   await gate.context.close();
 
   const reselect = await openPage(browser);
-  await reselect.page.selectOption('#stateSel', 'NC');
-  await reselect.page.waitForSelector('#fileJuror');
+  await selectState(reselect.page, 'NC');
+  await reselect.page.waitForSelector('#fileJuror', { state: 'attached' });
   await reselect.page.evaluate(() => {
+    const panel = document.getElementById('step-panel-files');
+    if (panel) panel.hidden = false;
     document.getElementById('step1').disabled = false;
     document.getElementById('fileJuror').disabled = false;
     document.getElementById('fileVoter').disabled = false;
@@ -687,6 +783,7 @@ function readAuditDownload(file) {
   assert.strictEqual(await reselect.page.locator('#fileJuror').inputValue(), '');
   assert.strictEqual(await reselect.page.locator('#infoJuror').count(), 0);
   await attest(reselect.page);
+  await openStep(reselect.page, 'files');
   const secondChoice = await chooseFileIfValueChanges(reselect.page, 'fileJuror', sampleJ);
   assert.strictEqual(secondChoice.dispatched, true);
   await reselect.page.waitForSelector('#infoJuror');
@@ -697,8 +794,9 @@ function readAuditDownload(file) {
   await reselect.context.close();
 
   const switched = await openPage(browser);
-  await switched.page.selectOption('#stateSel', 'NC');
+  await selectState(switched.page, 'NC');
   await attest(switched.page);
+  await openStep(switched.page, 'files');
   await switched.page.click('#sampleBtn');
   await switched.page.waitForSelector('#infoJuror');
   const entriesBefore = await switched.page.locator('#logPanel').innerText();
@@ -708,7 +806,8 @@ function readAuditDownload(file) {
   await switched.page.waitForFunction((prev) => document.getElementById('logPanel').innerText !== prev, entriesBefore);
   assert.strictEqual(await switched.page.locator('#infoJuror').count(), 1);
   assert.strictEqual(await switched.page.locator('#jurorCleared').count(), 0);
-  await switched.page.selectOption('#stateSel', 'NY');
+  await selectState(switched.page, 'NY');
+  await openStep(switched.page, 'files');
   await switched.page.waitForSelector('#jurorCleared');
   assert.strictEqual(await switched.page.locator('#infoJuror').count(), 0);
   assert.strictEqual(await switched.page.locator('#sampleBtn').count(), 0);
@@ -719,7 +818,8 @@ function readAuditDownload(file) {
   assert.ok((await switched.page.locator('#jurorCleared').innerText()).includes(switchedBasis));
   assert.match(await switched.page.locator('#jurorCleared').innerText(), /cleared/i);
   assert.ok(await switched.page.isVisible('#auditLetter'));
-  await switched.page.selectOption('#stateSel', 'NC');
+  await selectState(switched.page, 'NC');
+  await openStep(switched.page, 'files');
   await switched.page.waitForSelector('#fileJuror');
   assert.strictEqual(await switched.page.locator('#jurorCleared').count(), 0);
   assert.strictEqual(await switched.page.locator('#juryRefuse').count(), 0);
@@ -728,13 +828,13 @@ function readAuditDownload(file) {
   await switched.context.close();
 
   const walk = await openPage(browser);
-  await attest(walk.page);
   const codes = await walk.page.$$eval('#stateSel option', (opts) => opts.map((opt) => opt.value).filter(Boolean));
   assert.strictEqual(codes.length, 51);
   const ran = [];
   let loaded = false;
+  let signed = false;
   for (const code of codes) {
-    await walk.page.selectOption('#stateSel', code);
+    await selectState(walk.page, code);
     await walk.page.waitForFunction((expected) => {
       const sel = document.querySelector('#stateSel');
       if (!sel || sel.value !== expected) return false;
@@ -742,6 +842,11 @@ function readAuditDownload(file) {
     }, code);
     const sampleCount = await walk.page.locator('#sampleBtn').count();
     if (sampleCount > 0) {
+      if (!signed) {
+        await attest(walk.page);
+        signed = true;
+      }
+      await openStep(walk.page, 'files');
       assert.strictEqual(await walk.page.locator('#sampleBtn').isEnabled(), true, `${code} sample button disabled`);
       assert.strictEqual(await walk.page.locator('#juryRefuse').count(), 0, code);
       if (!loaded) {
@@ -752,7 +857,9 @@ function readAuditDownload(file) {
         assert.strictEqual(await walk.page.locator('#infoJuror').count(), 1, `${code} kept the juror file`);
         assert.strictEqual(await walk.page.locator('#jurorCleared').count(), 0, code);
       }
+      await openStep(walk.page, 'where');
       await walk.page.selectOption('#county', { index: 1 });
+      await openStep(walk.page, 'run');
       await walk.page.waitForFunction(() => {
         const button = document.getElementById('runBtn');
         return button && !button.disabled;
@@ -764,6 +871,7 @@ function readAuditDownload(file) {
       loaded = true;
       ran.push(code);
     } else {
+      await openStep(walk.page, 'files');
       assert.strictEqual(await walk.page.locator('#runBtn').count(), 0, `${code} run button still present`);
       assert.strictEqual(await walk.page.locator('#fileJuror').count(), 0, code);
       assert.strictEqual(await walk.page.locator('#fileVoter').count(), 0, code);
@@ -786,7 +894,7 @@ function readAuditDownload(file) {
   const counties = await openPage(browser);
   assert.strictEqual(await counties.page.locator('#county').isDisabled(), true);
   assert.strictEqual(await counties.page.locator('#countyFilter').isDisabled(), true);
-  await counties.page.selectOption('#stateSel', 'NC');
+  await selectState(counties.page, 'NC');
   await counties.page.waitForSelector('#county:not([disabled])');
   assert.strictEqual(await counties.page.locator('#county option').count(), 101);
   assert.strictEqual(await counties.page.locator('#county option').nth(1).innerText(), 'Alamance County (37001)');
@@ -800,15 +908,18 @@ function readAuditDownload(file) {
   await counties.page.fill('#countyFilter', '');
   await pickCounty(counties.page);
   assert.strictEqual(await counties.page.locator('#countyRequired').count(), 0);
-  await counties.page.selectOption('#stateSel', 'NY');
+  await selectState(counties.page, 'NY');
   assert.strictEqual(await counties.page.locator('#county').inputValue(), '');
   assert.ok(await counties.page.locator('#countyRequired').isVisible());
+  await openStep(counties.page, 'files');
   assert.match(await counties.page.locator('#auditLetter').innerText(), /Choose a county/);
   assert.strictEqual(await counties.page.locator('#auditLetterBtn').isDisabled(), true);
   await counties.page.evaluate(() => { document.getElementById('auditLetterBtn').disabled = false; });
   await counties.page.click('#auditLetterBtn');
   assert.match(await counties.page.locator('#auditLetter').innerText(), /Choose a county/);
+  await openStep(counties.page, 'where');
   await counties.page.selectOption('#county', '36047');
+  await openStep(counties.page, 'files');
   const nyLetter = await counties.page.locator('#auditLetter').innerText();
   assert.ok(nyLetter.includes('Kings County (36047)'));
   assert.ok(nyLetter.includes('Kings County board of elections'));
@@ -822,19 +933,24 @@ function readAuditDownload(file) {
   const nyText = fs.readFileSync(nyPath, 'utf8');
   assert.ok(nyText.includes('Kings County (36047)'));
   assert.ok(nyText.includes('Kings County board of elections'));
-  await counties.page.selectOption('#stateSel', 'NC');
-  await counties.page.waitForSelector('#sampleBtn');
+  await selectState(counties.page, 'NC');
+  await counties.page.waitForSelector('#sampleBtn', { state: 'attached' });
   await attest(counties.page);
+  await openStep(counties.page, 'files');
   await counties.page.click('#sampleBtn');
   await counties.page.waitForSelector('#infoJuror');
   await counties.page.evaluate(() => {
+    const panel = document.getElementById('step-panel-run');
+    if (panel) panel.hidden = false;
     document.getElementById('step3').disabled = false;
     document.getElementById('runBtn').disabled = false;
   });
   await counties.page.click('#runBtn');
   assert.strictEqual(await counties.page.locator('#countStrong').count(), 0);
+  await openStep(counties.page, 'where');
   assert.ok(await counties.page.locator('#countyRequired').isVisible());
   await pickCounty(counties.page);
+  await openStep(counties.page, 'run');
   await counties.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
   await counties.page.click('#runBtn');
   await counties.page.waitForSelector('#countStrong');
@@ -861,7 +977,7 @@ function readAuditDownload(file) {
   assert.strictEqual(bare.header.header, 'No county selected');
   assert.strictEqual(bare.text, '{"county_name":null,"county_fips":null,"header":"No county selected"}\n');
   assert.strictEqual(bare.entries.length, 0);
-  await logOnly.page.selectOption('#stateSel', 'NY');
+  await selectState(logOnly.page, 'NY');
   await logOnly.page.waitForFunction(() => {
     const panel = document.getElementById('logPanel');
     return Boolean(panel && panel.innerText.includes('2 entries on this computer'));
@@ -880,6 +996,7 @@ function readAuditDownload(file) {
   assert.strictEqual(still.header.county_fips, null);
   assert.ok(still.text.includes('No county selected'));
   assert.deepStrictEqual(still.entries.map((entry) => entry.type), ['session_start', 'rules_loaded']);
+  await openStep(logOnly.page, 'where');
   await logOnly.page.selectOption('#county', '36047');
   assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').isDisabled(), false);
   const [kingsDownload] = await Promise.all([
@@ -926,6 +1043,73 @@ function readAuditDownload(file) {
   pass('AT-45-same-origin-downloads');
   await sameOrigin.context.close();
   await new Promise((resolve) => preview.close(resolve));
+
+  const design = await openPage(browser);
+  const RAW_FLAGS = /REGISTERED_BEFORE_DECLARATION|REGISTERED_AFTER_DECLARATION|DATES_NOT_COMPARABLE|POSSIBLE_WRONGFUL_REMOVAL/;
+  async function shot(name) {
+    await design.page.screenshot({ path: path.join(shots, name), fullPage: true });
+  }
+  await design.page.setViewportSize({ width: 1280, height: 800 });
+  await selectState(design.page, 'NC');
+  await design.page.waitForSelector('#stateBrief');
+  assert.strictEqual(await design.page.locator('#stateBrief').innerText(), 'North Carolina: named leads allowed. Referral only. Why?');
+  await assertFits(design.page, 1280, 'home NC');
+  const rail = await design.page.locator('#stepper').boundingBox();
+  assert.ok(rail && rail.y < 800, `stepper starts at ${rail && rail.y}`);
+  await shot('home-nc-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'home NC');
+  await shot('home-nc-390.png');
+  await design.page.setViewportSize({ width: 1280, height: 800 });
+  await attest(design.page);
+  await pickCounty(design.page);
+  await openStep(design.page, 'files');
+  await design.page.waitForSelector('#typeGrid');
+  await assertFits(design.page, 1280, 'files grid');
+  const gridBox = await design.page.locator('#typeGrid').boundingBox();
+  assert.ok(gridBox && gridBox.x + gridBox.width <= 1280, 'type grid escapes the 1280 viewport');
+  await shot('files-grid-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'files grid');
+  await shot('files-grid-390.png');
+  await design.page.setViewportSize({ width: 1280, height: 800 });
+  await design.page.click('#sampleBtn');
+  await design.page.waitForSelector('#infoJuror');
+  await openStep(design.page, 'run');
+  await design.page.click('#runBtn');
+  await design.page.waitForSelector('#results');
+  const triageText = await design.page.locator('#step-panel-triage').innerText();
+  assert.ok(!RAW_FLAGS.test(triageText), triageText);
+  assert.ok(triageText.includes('Registered before the declaration'));
+  await assertFits(design.page, 1280, 'triage');
+  await shot('triage-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'triage');
+  await shot('triage-390.png');
+  const base = design.page.url().split('#')[0];
+  await design.page.setViewportSize({ width: 1280, height: 800 });
+  await design.page.goto(`${base}#/state/nc`);
+  await design.page.waitForSelector('#walkthrough');
+  const headings = await design.page.locator('#walkthrough h2').allInnerTexts();
+  assert.ok(headings.indexOf('Walk through it') === 0, headings.join(' | '));
+  assert.ok(headings.indexOf('Walk through it') < headings.indexOf('At a glance'));
+  const glance = await design.page.locator('#guide-at-a-glance').innerText();
+  assert.ok(glance.includes('The jury list is public in this state.'));
+  assert.ok(!glance.includes('Jury list public:'));
+  await design.page.locator('#guide-state-layer').evaluate((node) => { node.open = true; });
+  const ruleLink = design.page.locator('#guide-state-layer a[href^="http"]').first();
+  assert.strictEqual(await ruleLink.getAttribute('target'), '_blank');
+  assert.strictEqual(await ruleLink.getAttribute('rel'), 'noopener noreferrer');
+  await assertFits(design.page, 1280, 'state NC');
+  await shot('state-nc-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'state NC');
+  await shot('state-nc-390.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await design.page.goto(`${base}#/state/pa`);
+  await design.page.waitForSelector('#walkthrough');
+  await assertFits(design.page, 390, 'state PA');
+  await design.context.close();
 
   await browser.close();
   console.log('ALL UI TESTS PASSED');
