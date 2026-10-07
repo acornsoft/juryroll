@@ -1,1 +1,1 @@
-| NV | Not known, so the app treats it as no | Yes, citizenship affidavit until day 30, on personal knowledge (NRS 293.535) | Counts only |
+| NV | Not known, so the app treats it as no. No NRS section opens or closes records of jurors excused as non-citizens | Yes, citizenship affidavit until day 30, on personal knowledge (NRS 293.535) | Counts only |

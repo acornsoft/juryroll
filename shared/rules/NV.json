@@ -5,13 +5,27 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
-    "holder": null,
+    "statute": "No NRS section in chapter 6 addresses public access to juror qualification records or creates a list of persons excused as non-citizens. NRS 6.010: a qualified juror is 'every qualified elector of the State, whether registered or not', with the other listed qualifications. NRS 6.090(2): after the sheriff returns the venire, 'the venire is subject to inspection by any officer or attorney of the court.' Status of records of non-citizen excusals: null.",
+    "holder": "District court jury commissioner (NRS 6.045(1)).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://www.leg.state.nv.us/NRS/NRS-006.html#NRS006Sec010",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "NRS 6.045(3), (5) (list of qualified electors compiled from voter, DMV, DETR, public utility and DHHS lists; record of the name, occupation, address and race of each juror selected and each juror who appears)",
+        "url": "https://www.leg.state.nv.us/NRS/NRS-006.html#NRS006Sec045",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "NRS 6.090(2) (venire open to inspection by officers and attorneys of the court)",
+        "url": "https://www.leg.state.nv.us/NRS/NRS-006.html#NRS006Sec090",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any person, at the county clerk's office, for 1 cent per name (NRS 293.440(1)). Lists include address, date of birth, phone, and application serial number (293.440(2)), except fields withheld under 293.558.",
@@ -28,6 +42,12 @@
       {
         "cite": "NRS 293.558 (fields withheld: SSN, license number, email; address and phone on request)",
         "url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec558",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "NRS 293.503(3), (5) (county clerk's list-maintenance records, including names and addresses of persons mailed notices under 293.535, open for public inspection)",
+        "url": "https://www.leg.state.nv.us/NRS/NRS-293.html#NRS293Sec503",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -57,7 +77,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -99,17 +119,31 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "NRS 239.010 (public books and records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county clerk: per year, the number of affidavits filed under NRS 293.535(1)(a) stating that a registrant is not a U.S. citizen, and the number of registrations cancelled under 293.535(3). NRS 293.503(3) and (5) make the clerk's list-maintenance records open for public inspection.",
+    "counts_only": true,
+    "source_url": "https://www.leg.state.nv.us/NRS/NRS-239.html#NRS239Sec010",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Nevada statute sends juror citizenship answers to election officials, so there is no jury count to ask for."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. Nevada has a citizenship affidavit procedure, but it needs personal knowledge (NRS 293.535). Strict gates."
+    "basis": "Jury records: no NRS section opens or closes records of non-citizen excusals (null), so counts only. Nevada's citizenship affidavit needs personal knowledge (NRS 293.535(1)). Strict gates."
   },
   "notes": [
-    "jury_list is all null: NRS chapter 6 was searched and no rule on public access to juror qualification records was found.",
-    "juryroll_lead_sufficient is false: NRS 293.535 requires the affiant to have personal knowledge; a data match is not personal knowledge.",
-    "registration_date_in_public_file is null: 293.440(2) requires the date of the most recent addition or revision, which is not always the registration date.",
-    "one_per_affidavit is null for 293.535; it is true for 293.547 challenges."
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute, holder, source_url and sources filled from NRS chapter 6; voter_file source 293.503 added; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No voter_file behavior field changes.",
+    "PA-style check: no Nevada statute makes a list of persons excused as non-citizens public. The only inspection rule in chapter 6 is 6.090(2), and it covers the venire (persons summoned), for officers and attorneys of the court only.",
+    "official_pipeline is null: no section of NRS chapter 6 or chapter 293 sends juror citizenship answers to election officials. No 2025-26 Nevada bill to add one was found.",
+    "Jury source lists: NRS 6.045(3) draws on voter, DMV, DETR, public utility and DHHS lists, and 6.010 qualifies electors 'whether registered or not'. A Nevada juror record does not show that the person was registered to vote.",
+    "Cancelled-voter file: 293.503(3) and (5) make public the clerk's records of list-maintenance programs, including the names and addresses of persons mailed notices under 293.535. The statute lists no reason-code field; no jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "juryroll_lead_sufficient is false: NRS 293.535(1) says 'The affiant must state that he or she has personal knowledge of the facts set forth in the affidavit.' 293.547(2)(b) also requires personal knowledge. A data match is not personal knowledge.",
+    "registration_date_in_public_file is null: 293.440(2) requires 'the date of the most recent addition or revision to an entry', which is not always the registration date.",
+    "permitted_uses is null: 293.440(1) lets 'Any person' get a copy for 1 cent per name and states no use limit. No other use limit was confirmed.",
+    "one_per_affidavit is null for 293.535; it is true for 293.547 challenges ('must not contain the name of more than one person', 293.547(4)).",
+    "Source note: NRS chapters 6, 239 and 293 read on leg.state.nv.us on 2026-10-07. The text of NRS 239.005 was not checked, so whether chapter 239 reaches court jury records is unknown."
   ]
 }
