@@ -12,6 +12,7 @@
     ".jsonl": "application/jsonl",
     ".csv": "text/csv",
     ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    ".woff2": "font/woff2"
+    ".woff2": "font/woff2",
+    ".woff": "font/woff"
   }
 }
