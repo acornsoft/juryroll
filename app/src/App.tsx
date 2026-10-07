@@ -31,7 +31,7 @@ import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, auditLogFile, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
 import type { ExtraColumns } from '../../shared/src/policy/columns.ts';
-import { exportableRows, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
+import { exportableRows, flagLabel, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
 import { auditLetter } from '../../shared/src/policy/letter.ts';
@@ -742,38 +742,44 @@ export function App() {
           )}
           {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
-          {rules && NON_SIGNAL[rules.state] && (
-            <p className="banner" id="nonSignalBanner" role="status">
-              {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="why" href="#/law/blackout">Why?</a>
-            </p>
-          )}
-          {rules?.state === 'ND' && <p className="banner" id="ndBanner" role="status">{ND_REGISTRATION_NOTE}</p>}
-          {rules && useLimitApplies(rules) && (
-            <section className="panel" id="useLimitBanner">
-              <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="why" href="#/law/use">Why?</a></p>
-              {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
-              {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url}>{rules.voter_file.source_url}</a></p>}
-            </section>
-          )}
-          {gates?.show_challenge_guidance && rules && (
-            <section className="panel" id="challengePanel">
-              <h2>Private challenge</h2>
-              {rules.private_challenge.juryroll_lead_sufficient !== true && (
-                <p className="banner" id="leadBanner">A JuryRoll match alone does not meet this standard. Referral is the recommended path. <a className="why" href="#/law/challenge">Why?</a></p>
+          {rules && (
+            <details className="state-brief" id="stateNotices">
+              <summary id="stateBrief">{stateName}: {gates?.allow_named_export ? 'named leads allowed. Referral only.' : 'counts only.'} Why?</summary>
+              {NON_SIGNAL[rules.state] && (
+                <p className="banner" id="nonSignalBanner" role="status">
+                  {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="why" href="#/law/blackout">Why?</a>
+                </p>
               )}
-              {deadlinePassed && deadlineDate && (
-                <p className="banner" id="deadlineBanner">The state deadline for this election has passed ({deadlineDate}).</p>
+              {rules.state === 'ND' && <p className="banner" id="ndBanner" role="status">{ND_REGISTRATION_NOTE}</p>}
+              {useLimitApplies(rules) && (
+                <section id="useLimitBanner">
+                  <p><b>Your state limits how its voter list may be used. Read the rule before you load a file.</b> <a className="why" href="#/law/use">Why?</a></p>
+                  {rules.voter_file.permitted_uses && <p id="useLimitQuote">{rules.voter_file.permitted_uses}</p>}
+                  {rules.voter_file.source_url && <p><a id="useLimitSource" href={rules.voter_file.source_url} target="_blank" rel="noopener noreferrer">{rules.voter_file.source_url}</a></p>}
+                </section>
               )}
-              {strict(rules.private_challenge.one_per_affidavit, true) && <p id="oneAffidavit">Use one affidavit for one voter.</p>}
-              {rules.private_challenge.who && <p>{rules.private_challenge.who}</p>}
-              {rules.private_challenge.form_or_statute && <p>{rules.private_challenge.form_or_statute}</p>}
-              {rules.private_challenge.evidence_standard && <p>{rules.private_challenge.evidence_standard}</p>}
-              {rules.private_challenge.deadlines && <p>{rules.private_challenge.deadlines}</p>}
-              {rules.private_challenge.false_statement_penalty && <p>{rules.private_challenge.false_statement_penalty}</p>}
-              {rules.private_challenge.form_url && !deadlinePassed && (
-                <p><a id="challengeFormLink" href={rules.private_challenge.form_url}>Official challenge form</a></p>
+              {gates?.show_challenge_guidance && (
+                <section id="challengePanel">
+                  <h2>Private challenge</h2>
+                  {rules.private_challenge.juryroll_lead_sufficient !== true && (
+                    <p className="banner" id="leadBanner">A JuryRoll match alone does not meet this standard. Referral is the recommended path. <a className="why" href="#/law/challenge">Why?</a></p>
+                  )}
+                  {deadlinePassed && deadlineDate && (
+                    <p className="banner" id="deadlineBanner">The state deadline for this election has passed ({deadlineDate}).</p>
+                  )}
+                  {strict(rules.private_challenge.one_per_affidavit, true) && <p id="oneAffidavit">Use one affidavit for one voter.</p>}
+                  {rules.private_challenge.who && <p>{rules.private_challenge.who}</p>}
+                  {rules.private_challenge.form_or_statute && <p>{rules.private_challenge.form_or_statute}</p>}
+                  {rules.private_challenge.evidence_standard && <p>{rules.private_challenge.evidence_standard}</p>}
+                  {rules.private_challenge.deadlines && <p>{rules.private_challenge.deadlines}</p>}
+                  {rules.private_challenge.false_statement_penalty && <p>{rules.private_challenge.false_statement_penalty}</p>}
+                  {rules.private_challenge.form_url && !deadlinePassed && (
+                    <p><a id="challengeFormLink" href={rules.private_challenge.form_url} target="_blank" rel="noopener noreferrer">Official challenge form</a></p>
+                  )}
+                </section>
               )}
-            </section>
+              <p><a href={`#/state/${code.toLowerCase()}`}>Open the {stateName} walkthrough</a></p>
+            </details>
           )}
           {fileError && <p className="banner" id="fileError" role="alert">{fileError}</p>}
           {code && !selectedCounty && <p id="countyRequired" className="note">Choose a county before you run a match or export.</p>}
@@ -1028,7 +1034,7 @@ export function App() {
                           <LeadPile tier="Strong" rows={mainRows} history={voterHistory} />
                           <LeadPile tier="Probable" rows={mainRows} history={voterHistory} />
                         </div>
-                        <div className="scroll"><ResultsTable id="results" rows={mainRows} /></div>
+                        <ResultsTable id="results" rows={mainRows} />
                         {removedRows.length > 0 && (
                           <div id="alreadyRemoved">
                             <h3>Already removed: confirm the removal was correct</h3>
@@ -1212,27 +1218,29 @@ function MapTable({ id, headers, map, fields, extra, onChange, onExtra }: {
 
 function ResultsTable({ rows, id }: { rows: PolicyRow[]; id?: string }) {
   return (
-    <table id={id}>
-      <thead>
-        <tr>
-          <th>Tier</th><th>Voter name</th><th>Voter DOB</th><th>Address</th><th>Status</th><th>Registration date</th><th>Jury declaration date</th><th>Flags</th><th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row) => (
-          <tr key={`${row.jurorId}-${row.voterId}-${row.tier}`}>
-            <td>{row.tier}</td>
-            <td>{row.voterName}</td>
-            <td>{row.voterDob}</td>
-            <td>{row.voterAddress}</td>
-            <td>{row.voterStatus}</td>
-            <td>{row.regDate}</td>
-            <td>{row.declDate}</td>
-            <td>{row.flags.join(', ')}</td>
-            <td>{row.notes.join(' ')}</td>
+    <div className="scroll">
+      <table id={id}>
+        <thead>
+          <tr>
+            <th>Tier</th><th>Voter name</th><th>Voter DOB</th><th>Address</th><th>Status</th><th>Registration date</th><th>Jury declaration date</th><th>Flags</th><th>Notes</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={`${row.jurorId}-${row.voterId}-${row.tier}`}>
+              <td>{row.tier}</td>
+              <td>{row.voterName}</td>
+              <td>{row.voterDob}</td>
+              <td>{row.voterAddress}</td>
+              <td>{row.voterStatus}</td>
+              <td>{row.regDate}</td>
+              <td>{row.declDate}</td>
+              <td>{row.flags.map((flag) => flagLabel(flag)).join(', ')}</td>
+              <td>{row.notes.join(' ')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

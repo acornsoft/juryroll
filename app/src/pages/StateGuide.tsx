@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { StepPanel, Stepper } from '../components/Stepper.tsx';
 import { COUNTIES } from '../../../shared/src/counties.ts';
 import { buildGuide, guideFacts } from '../lib/guide.ts';
-import type { StepId } from '../lib/flow.ts';
+import { RUN_STEPS, type StepId } from '../lib/flow.ts';
 import { referralTargets, resolveRules, uiGates, type RulesFile } from '../../../shared/src/policy/gates.ts';
 import { federalWindow, nextFederalElection } from '../../../shared/src/policy/windows.ts';
 import { STATES } from '../states.ts';
@@ -10,6 +10,23 @@ import rulesBundle from '../../../shared/src/rulesBundle.json';
 
 type Bundle = Record<string, { raw: string; rules: RulesFile }>;
 const bundle = rulesBundle as Bundle;
+
+function LinkedText({ text }: { text: string }) {
+  const parts = text.split(/(https?:\/\/[^\s)]+)/);
+  return (
+    <>
+      {parts.map((part, index) => (
+        part.startsWith('http://') || part.startsWith('https://')
+          ? <a key={index} href={part} target="_blank" rel="noopener noreferrer">{part}</a>
+          : <span key={index}>{part}</span>
+      ))}
+    </>
+  );
+}
+
+function sectionId(title: string): string {
+  return `guide-${title.toLowerCase().replace(/\s+/g, '-')}`;
+}
 
 function badgeFor(rules: RulesFile): 'Named leads allowed' | 'Counts-only' {
   return uiGates(rules).allow_named_export ? 'Named leads allowed' : 'Counts-only';
@@ -68,6 +85,10 @@ export function StatePage({ code }: { code: string }) {
   const targets = referralTargets(rules, bundle.DEFAULT.rules);
   const named = gates.allow_jury_list;
 
+  const glance = sections.find((section) => section.title === 'At a glance');
+  const layers = sections.filter((section) => section.title === 'Federal layer' || section.title === 'State layer' || section.title === 'Local layer');
+  const startHref = `#/run/${code.toLowerCase()}`;
+
   return (
     <div className="page" id="walkthrough">
       <p className="kicker">State walkthrough</p>
@@ -75,9 +96,52 @@ export function StatePage({ code }: { code: string }) {
       <p className={`badge ${gates.allow_named_export ? 'badge-named' : 'badge-counts'}`}>
         {gates.allow_named_export ? 'Named leads allowed' : 'Counts-only'}
       </p>
-      {sections.map((section) => (
-        <section className="panel" key={section.title} id={`guide-${section.title.toLowerCase().replace(/\s+/g, '-')}`}>
-          <h2>{section.title}</h2>
+      <section className="panel" id={sectionId('Walk through it')}>
+        <h2>Walk through it</h2>
+        <ol className="walk-steps">
+          {RUN_STEPS.map((step) => <li key={step.id}><b>{step.title}.</b> {step.job}</li>)}
+        </ol>
+        <p><a className="btn-primary" id="startCheck" href={startHref}>Start a check in {rules.name}</a></p>
+        <Stepper
+          facts={facts}
+          activeId={active}
+          mode="guide"
+          onActivate={setActive}
+          guideStartHref={startHref}
+        >
+          <StepPanel id="where">
+            <p>This check is for {rules.name}. On the run you will choose one county. Referrals can go to: {targets.map((target) => target.name).join('; ') || 'the offices named in the rules file'}.</p>
+          </StepPanel>
+          <StepPanel id="sign">
+            <p>You sign the same five statements on every state, then enter your initials. The statements are the use rules, not a substitute for the statute.</p>
+          </StepPanel>
+          <StepPanel id="files">
+            {named ? (
+              <p>Add the jury disqualification list and the voter roll, type a printed list, or try the fictional samples. Map each disqualification code. Only rows mapped to Non-citizen are matched. Column checks happen before the match runs.</p>
+            ) : (
+              <p>JuryRoll cannot load the jury list in {rules.name}. The rules say: {rules.gates.basis}</p>
+            )}
+          </StepPanel>
+          <StepPanel id="run">
+            <p>{named ? 'Run the match in this browser. Nothing is uploaded.' : 'There is no person match on the counts-only path.'}</p>
+          </StepPanel>
+          <StepPanel id="triage">
+            <p>{named ? 'Strong, Probable, and Weak leads, plus the excluded and cannot-compare counts.' : 'Counts only. No names are shown.'}</p>
+          </StepPanel>
+          <StepPanel id="export">
+            <p>{named ? 'Export the referral CSV. It names the county you selected.' : 'Download the counts-only letter. It names the county you selected.'}</p>
+          </StepPanel>
+        </Stepper>
+      </section>
+      {glance && (
+        <section className="panel" id={sectionId(glance.title)}>
+          <h2>{glance.title}</h2>
+          {glance.lines.map((line, index) => <p key={`${glance.title}-${index}`}><LinkedText text={line} /></p>)}
+        </section>
+      )}
+      {layers.map((section) => (
+        <details className="guide-layer" key={section.title} id={sectionId(section.title)}>
+          <summary>{section.title}</summary>
           {section.title === 'Local layer' && (
             <label>
               County
@@ -87,40 +151,8 @@ export function StatePage({ code }: { code: string }) {
               </select>
             </label>
           )}
-          {section.title !== 'Walk through it' && section.lines.map((line, index) => <p key={`${section.title}-${index}`}>{line}</p>)}
-          {section.title === 'Walk through it' && (
-            <Stepper
-              facts={facts}
-              activeId={active}
-              mode="guide"
-              onActivate={setActive}
-              guideStartHref={`#/run/${code.toLowerCase()}`}
-            >
-              <StepPanel id="where">
-                <p>This check is for {rules.name}. On the run you will choose one county. Referrals can go to: {targets.map((target) => target.name).join('; ') || 'the offices named in the rules file'}.</p>
-              </StepPanel>
-              <StepPanel id="sign">
-                <p>You sign the same five statements on every state, then enter your initials. The statements are the use rules, not a substitute for the statute.</p>
-              </StepPanel>
-              <StepPanel id="files">
-                {named ? (
-                  <p>Add the jury disqualification list and the voter roll, type a printed list, or try the fictional samples. Map each disqualification code. Only rows mapped to Non-citizen are matched. Column checks happen before the match runs.</p>
-                ) : (
-                  <p>JuryRoll cannot load the jury list in {rules.name}. The rules say: {rules.gates.basis}</p>
-                )}
-              </StepPanel>
-              <StepPanel id="run">
-                <p>{named ? 'Run the match in this browser. Nothing is uploaded.' : 'There is no person match on the counts-only path.'}</p>
-              </StepPanel>
-              <StepPanel id="triage">
-                <p>{named ? 'Strong, Probable, and Weak leads, plus the excluded and cannot-compare counts.' : 'Counts only. No names are shown.'}</p>
-              </StepPanel>
-              <StepPanel id="export">
-                <p>{named ? 'Export the referral CSV. It names the county you selected.' : 'Download the counts-only letter. It names the county you selected.'}</p>
-              </StepPanel>
-            </Stepper>
-          )}
-        </section>
+          {section.lines.map((line, index) => <p key={`${section.title}-${index}`}><LinkedText text={line} /></p>)}
+        </details>
       ))}
     </div>
   );

@@ -2,7 +2,7 @@ import { CANNOT_COMPARE_PHRASE, EXCLUDE_PHRASE } from '../../../shared/src/polic
 import type { Gates, RulesFile } from '../../../shared/src/policy/gates.ts';
 import { RUN_STEPS, type FlowFacts, emptyFacts } from './flow.ts';
 
-export const GUIDE_SECTIONS = ['At a glance', 'Federal layer', 'State layer', 'Local layer', 'Walk through it'] as const;
+export const GUIDE_SECTIONS = ['Walk through it', 'At a glance', 'Federal layer', 'State layer', 'Local layer'] as const;
 
 export type GuideSection = { title: (typeof GUIDE_SECTIONS)[number]; lines: string[] };
 
@@ -15,9 +15,22 @@ function shown(value: unknown): string {
 }
 
 function targetLine(label: string, target: unknown): string {
-  if (!target || typeof target !== 'object') return `${label}: Not stated in the rules file.`;
+  if (!target || typeof target !== 'object') return `The ${label} is not stated in the rules file.`;
   const rec = target as Record<string, unknown>;
-  return `${label}: ${shown(rec.name)} ${shown(rec.url)}`;
+  const url = typeof rec.url === 'string' && rec.url.length > 0 ? ` ${rec.url}` : '';
+  return `Send a referral to the ${label}: ${shown(rec.name)}.${url}`;
+}
+
+function juryPublicSentence(value: unknown): string {
+  if (value === true) return 'The jury list is public in this state.';
+  if (value === false) return 'The jury list is not public in this state.';
+  return 'Not confirmed, so treated as not public.';
+}
+
+function registrationSentence(value: unknown): string {
+  if (value === true) return 'The public voter file includes a registration date.';
+  if (value === false) return 'The public voter file does not include a registration date.';
+  return 'Not confirmed, so the registration date is treated as not in the public file.';
 }
 
 function sourceLines(sources: unknown): string[] {
@@ -63,19 +76,24 @@ export function buildGuide(
     ? (blackout as { state_windows: unknown[] }).state_windows
     : [];
 
+  const juryPublic = jury && typeof jury === 'object' ? (jury as { public?: unknown }).public : null;
+  const regPublic = voter && typeof voter === 'object' ? (voter as { registration_date_in_public_file?: unknown }).registration_date_in_public_file : null;
   const glance: GuideSection = {
     title: 'At a glance',
     lines: [
-      `State: ${shown(raw.name)} (${shown(raw.state)})`,
-      `Jury list public: ${shown(jury && typeof jury === 'object' ? (jury as { public?: unknown }).public : null)}`,
-      `Jury list allowed in JuryRoll: ${gates.allow_jury_list ? 'yes' : 'no'}`,
-      `Named export allowed: ${gates.allow_named_export ? 'yes' : 'no'}`,
-      `Badge: ${gates.allow_named_export ? 'Named leads allowed' : 'Counts-only'}`,
-      `Date rule: ${EXCLUDE_PHRASE}. ${CANNOT_COMPARE_PHRASE}.`,
-      `Registration date in the public voter file: ${shown(voter && typeof voter === 'object' ? (voter as { registration_date_in_public_file?: unknown }).registration_date_in_public_file : null)}`,
-      targetLine('County board', targets && typeof targets === 'object' ? (targets as { county_board?: unknown }).county_board : null),
-      targetLine('Chief state election official', targets && typeof targets === 'object' ? (targets as { state_election_office?: unknown }).state_election_office : null),
-      targetLine('State attorney general', targets && typeof targets === 'object' ? (targets as { ag?: unknown }).ag : null),
+      `${shown(raw.name)} is the state for this check.`,
+      juryPublicSentence(juryPublic),
+      gates.allow_jury_list
+        ? 'JuryRoll can load the jury list and run a match.'
+        : 'JuryRoll does not load the jury list. This check shows counts only.',
+      gates.allow_named_export
+        ? 'Named leads are allowed. A referral can include names.'
+        : 'Named leads are not exported.',
+      `A later registration is excluded (${EXCLUDE_PHRASE}). A missing date cannot be compared (${CANNOT_COMPARE_PHRASE}).`,
+      registrationSentence(regPublic),
+      targetLine('county board', targets && typeof targets === 'object' ? (targets as { county_board?: unknown }).county_board : null),
+      targetLine('chief state election official', targets && typeof targets === 'object' ? (targets as { state_election_office?: unknown }).state_election_office : null),
+      targetLine('state attorney general', targets && typeof targets === 'object' ? (targets as { ag?: unknown }).ag : null),
     ],
   };
 
@@ -135,19 +153,20 @@ export function buildGuide(
     gates.allow_jury_list
       ? 'Walk through the named-lead path.'
       : 'Walk through the counts-only path.',
-    ...RUN_STEPS.map((step) => {
+    ...RUN_STEPS.map((step, index) => {
       const reason = step.blocked(guideFacts(rules, gates));
-      return reason ? `${step.title}: blocked. ${reason}` : `${step.title}: ${step.job} ${step.question}`;
+      const detail = reason ? `Blocked. ${reason}` : `${step.job} ${step.question}`;
+      return `${index + 1}. ${step.title}. ${detail}`;
     }),
     `Start a check in ${shown(raw.name)}`,
   ];
 
   return [
+    { title: 'Walk through it', lines: walkLines },
     glance,
     { title: 'Federal layer', lines: federalLines },
     { title: 'State layer', lines: stateLines },
     { title: 'Local layer', lines: localLines },
-    { title: 'Walk through it', lines: walkLines },
   ];
 }
 

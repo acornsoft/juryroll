@@ -147,7 +147,7 @@ If all three are null, show `default.json` `referral_targets.other`.
 
 | Key | Label | File | Header patterns (normalized) |
 |---|---|---|---|
-| `decl_date` | Jury declaration / disqualification date | juror | `disqualificationdate`, `disqualdate`, `excusedate`, `responsedate`, `questionnairedate`, `qualificationdate`, `datedisqualified`, `decldate` |
+| `decl_date` | Jury declaration / disqualification date | juror | `disqualificationdate`, `disqualdate`, `excusedate`, `dateofexcusal`, `responsedate`, `questionnairedate`, `qualificationdate`, `datedisqualified`, `decldate` |
 | `reg_date` | Registration date | voter | `registrationdate`, `regdate`, `registrdt`, `dateregistered`, `effectivedate`, `origregdate`, `registrationdt` |
 
 Add `decl_date` to `JUROR_FIELDS` and `reg_date` to `VOTER_FIELDS`. Parse with the `parseDOB()` logic (rename it `parseDate()`). Keep the check that the year is not in the future.

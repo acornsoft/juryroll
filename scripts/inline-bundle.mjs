@@ -46,7 +46,7 @@ for (const match of styleHrefs) {
   const file = path.join(dist, rel);
   if (!fs.existsSync(file)) continue;
   const css = fs.readFileSync(file, 'utf8')
-    .replace(/url\(\s*(['"]?)(?:\.\.\/|\/)fonts\//g, 'url($1fonts/')
+    .replace(/url\(\s*(['"]?)(?:\.\.\/|\/)?fonts\//g, 'url($1/fonts/')
     .replace(/<\/style/gi, '<\\/style');
   styles.push(css);
   fs.unlinkSync(file);

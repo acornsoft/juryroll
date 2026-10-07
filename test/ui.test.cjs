@@ -32,7 +32,17 @@ async function openPage(browser, options = {}) {
   const errors = [];
   const requests = [];
   page.on('pageerror', (error) => errors.push(String(error)));
-  page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+  page.on('console', (message) => {
+    if (message.type() !== 'error') return;
+    const text = message.text();
+    if (text.startsWith('Failed to load resource:')) return;
+    errors.push(text);
+  });
+  page.on('requestfailed', (request) => {
+    const url = request.url();
+    if (url.includes('/fonts/') || url.startsWith('blob:') || url.startsWith('data:')) return;
+    errors.push(`failed ${url}`);
+  });
   page.on('request', (request) => {
     const url = request.url();
     if (!url.startsWith('file:') && !url.startsWith('blob:') && !url.startsWith('data:')) requests.push(url);
@@ -51,6 +61,32 @@ async function openStep(page, id) {
 async function selectState(page, code) {
   if (!(await page.locator('#stateSel').isVisible())) await openStep(page, 'where');
   await page.selectOption('#stateSel', code);
+}
+
+async function openStateNotices(page) {
+  const notices = page.locator('#stateNotices');
+  if (await notices.count()) await notices.evaluate((node) => { node.open = true; });
+}
+
+async function assertFits(page, width, label) {
+  const report = await page.evaluate((limit) => {
+    const scrollWidth = document.documentElement.scrollWidth;
+    if (scrollWidth <= limit) return null;
+    let worst = null;
+    for (const node of document.querySelectorAll('body *')) {
+      const rect = node.getBoundingClientRect();
+      if (rect.right <= limit + 1) continue;
+      if (worst && rect.right <= worst.right) continue;
+      worst = {
+        right: Math.round(rect.right),
+        tag: node.tagName,
+        id: node.id,
+        className: String(node.className).slice(0, 80),
+      };
+    }
+    return { scrollWidth, worst };
+  }, width);
+  assert.strictEqual(report, null, `${label} wider than ${width}: ${JSON.stringify(report)}`);
 }
 
 async function attest(page) {
@@ -155,6 +191,8 @@ function readAuditDownload(file) {
 (async () => {
   const built = fs.readFileSync(dist, 'utf8');
   assert.ok(built.includes("connect-src 'none'"), 'CSP connect-src');
+  assert.ok(built.includes('/fonts/roboto-400.woff2'), 'fonts use an absolute /fonts/ URL');
+  assert.ok(!/url\(\s*['"]?(?:\.\.\/)?fonts\//.test(built), 'font URLs must not be relative');
   assert.ok(built.includes("font-src 'self'"), 'CSP font-src');
   assert.ok(!/<script[^>]+src=/.test(built), 'scripts must be inlined');
   const config = fs.readFileSync(path.join(root, 'app/dist/staticwebapp.config.json'), 'utf8');
@@ -266,6 +304,7 @@ function readAuditDownload(file) {
   assert.strictEqual(await main.page.locator('#fileJuror').count(), 1);
   assert.strictEqual(await main.page.locator('#runBtn').isDisabled(), true);
   await attest(main.page);
+  await openStateNotices(main.page);
   assert.strictEqual(await main.page.locator('#challengeFormLink').count(), 1);
   assert.strictEqual(await main.page.locator('#deadlineBanner').count(), 0);
   assert.ok((await main.page.locator('#leadBanner').innerText()).includes('A JuryRoll match alone does not meet this standard'));
@@ -513,6 +552,7 @@ function readAuditDownload(file) {
   const later = await openPage(browser, { time: '2026-10-10T15:00:00Z' });
   await selectState(later.page, 'NC');
   await attest(later.page);
+  await openStateNotices(later.page);
   assert.ok((await later.page.locator('#deadlineBanner').innerText()).includes('The state deadline for this election has passed (2026-10-09).'));
   assert.strictEqual(await later.page.locator('#challengeFormLink').count(), 0);
   pass('AT-31-passed');
@@ -657,6 +697,7 @@ function readAuditDownload(file) {
 
   const dc = await openPage(browser);
   await selectState(dc.page, 'DC');
+  await openStateNotices(dc.page);
   const dcBanner = await dc.page.locator('#nonSignalBanner').innerText();
   assert.ok(dcBanner.includes('D.C. lets non-citizens vote'));
   assert.ok(dcBanner.includes('not evidence of unlawful registration in this jurisdiction'));
@@ -668,6 +709,7 @@ function readAuditDownload(file) {
 
   const nd = await openPage(browser);
   await selectState(nd.page, 'ND');
+  await openStateNotices(nd.page);
   assert.ok((await nd.page.locator('#ndBanner').innerText()).includes('North Dakota has no voter registration'));
   assert.strictEqual(await nd.page.locator('#challengePanel').count(), 0);
   assert.strictEqual(await nd.page.locator('#fileJuror').count(), 0);
@@ -676,6 +718,7 @@ function readAuditDownload(file) {
 
   const ca = await openPage(browser);
   await selectState(ca.page, 'CA');
+  await openStateNotices(ca.page);
   const limit = await ca.page.locator('#useLimitBanner').innerText();
   assert.ok(limit.includes('Your state limits how its voter list may be used'));
   assert.ok(limit.includes('Election, scholarly, journalistic, political, or governmental purposes'));
@@ -1002,31 +1045,70 @@ function readAuditDownload(file) {
   await new Promise((resolve) => preview.close(resolve));
 
   const design = await openPage(browser);
-  await design.page.screenshot({ path: path.join(shots, 'home-step-1.png'), fullPage: true });
-  await design.page.setViewportSize({ width: 390, height: 844 });
-  await design.page.screenshot({ path: path.join(shots, 'home-mobile.png'), fullPage: true });
-  await design.page.setViewportSize({ width: 1360, height: 900 });
+  const RAW_FLAGS = /REGISTERED_BEFORE_DECLARATION|REGISTERED_AFTER_DECLARATION|DATES_NOT_COMPARABLE|POSSIBLE_WRONGFUL_REMOVAL/;
+  async function shot(name) {
+    await design.page.screenshot({ path: path.join(shots, name), fullPage: true });
+  }
+  await design.page.setViewportSize({ width: 1280, height: 800 });
   await selectState(design.page, 'NC');
+  await design.page.waitForSelector('#stateBrief');
+  assert.strictEqual(await design.page.locator('#stateBrief').innerText(), 'North Carolina: named leads allowed. Referral only. Why?');
+  await assertFits(design.page, 1280, 'home NC');
+  const rail = await design.page.locator('#stepper').boundingBox();
+  assert.ok(rail && rail.y < 800, `stepper starts at ${rail && rail.y}`);
+  await shot('home-nc-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'home NC');
+  await shot('home-nc-390.png');
+  await design.page.setViewportSize({ width: 1280, height: 800 });
   await attest(design.page);
   await pickCounty(design.page);
   await openStep(design.page, 'files');
+  await design.page.waitForSelector('#typeGrid');
+  await assertFits(design.page, 1280, 'files grid');
+  const gridBox = await design.page.locator('#typeGrid').boundingBox();
+  assert.ok(gridBox && gridBox.x + gridBox.width <= 1280, 'type grid escapes the 1280 viewport');
+  await shot('files-grid-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'files grid');
+  await shot('files-grid-390.png');
+  await design.page.setViewportSize({ width: 1280, height: 800 });
   await design.page.click('#sampleBtn');
   await design.page.waitForSelector('#infoJuror');
   await openStep(design.page, 'run');
   await design.page.click('#runBtn');
-  await design.page.waitForSelector('#countStrong');
-  await design.page.screenshot({ path: path.join(shots, 'triage-nc.png'), fullPage: true });
+  await design.page.waitForSelector('#results');
+  const triageText = await design.page.locator('#step-panel-triage').innerText();
+  assert.ok(!RAW_FLAGS.test(triageText), triageText);
+  assert.ok(triageText.includes('Registered before the declaration'));
+  await assertFits(design.page, 1280, 'triage');
+  await shot('triage-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'triage');
+  await shot('triage-390.png');
   const base = design.page.url().split('#')[0];
-  await design.page.goto(`${base}#/states`);
-  await design.page.waitForSelector('#stateIndex');
-  await design.page.screenshot({ path: path.join(shots, 'states-index.png') });
+  await design.page.setViewportSize({ width: 1280, height: 800 });
   await design.page.goto(`${base}#/state/nc`);
   await design.page.waitForSelector('#walkthrough');
-  await design.page.screenshot({ path: path.join(shots, 'state-nc.png'), fullPage: true });
-  await design.page.locator('#stepper').screenshot({ path: path.join(shots, 'stepper-states.png') });
-  await design.page.goto(`${base}#/state/ny`);
+  const headings = await design.page.locator('#walkthrough h2').allInnerTexts();
+  assert.ok(headings.indexOf('Walk through it') === 0, headings.join(' | '));
+  assert.ok(headings.indexOf('Walk through it') < headings.indexOf('At a glance'));
+  const glance = await design.page.locator('#guide-at-a-glance').innerText();
+  assert.ok(glance.includes('The jury list is public in this state.'));
+  assert.ok(!glance.includes('Jury list public:'));
+  await design.page.locator('#guide-state-layer').evaluate((node) => { node.open = true; });
+  const ruleLink = design.page.locator('#guide-state-layer a[href^="http"]').first();
+  assert.strictEqual(await ruleLink.getAttribute('target'), '_blank');
+  assert.strictEqual(await ruleLink.getAttribute('rel'), 'noopener noreferrer');
+  await assertFits(design.page, 1280, 'state NC');
+  await shot('state-nc-1280.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(design.page, 390, 'state NC');
+  await shot('state-nc-390.png');
+  await design.page.setViewportSize({ width: 390, height: 844 });
+  await design.page.goto(`${base}#/state/pa`);
   await design.page.waitForSelector('#walkthrough');
-  await design.page.screenshot({ path: path.join(shots, 'state-ny.png'), fullPage: true });
+  await assertFits(design.page, 390, 'state PA');
   await design.context.close();
 
   await browser.close();

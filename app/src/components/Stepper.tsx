@@ -162,7 +162,7 @@ export function Stepper({
             </button>
           )}
           {showStart && guideStartHref && (
-            <a className="btn-primary" id="startCheck" href={guideStartHref}>Start a check in {facts.stateName}</a>
+            <a className="btn-primary" href={guideStartHref}>Start a check in {facts.stateName}</a>
           )}
         </div>
       </article>

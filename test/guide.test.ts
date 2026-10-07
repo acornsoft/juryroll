@@ -36,4 +36,14 @@ for (const file of files) {
   if (typeof basis === 'string' && basis.length > 0) assert.ok(text.includes(basis), `${file} dropped gates.basis`);
 }
 
+const nyRaw = JSON.parse(fs.readFileSync(path.join(rulesDir, 'NY.json'), 'utf8')) as Record<string, unknown>;
+const nyGlance = buildGuide(nyRaw, uiGates(nyRaw as unknown as RulesFile), federal, null).find((section) => section.title === 'At a glance');
+assert.ok(nyGlance);
+assert.ok(nyGlance.lines.includes('The jury list is not public in this state.'));
+assert.ok(!nyGlance.lines.some((line) => /public:\s*(true|false|null)/.test(line)));
+const wyRaw = JSON.parse(fs.readFileSync(path.join(rulesDir, 'WY.json'), 'utf8')) as Record<string, unknown>;
+const wyGlance = buildGuide(wyRaw, uiGates(wyRaw as unknown as RulesFile), federal, null).find((section) => section.title === 'At a glance');
+assert.ok(wyGlance);
+assert.ok(wyGlance.lines.includes('Not confirmed, so treated as not public.'));
+
 console.log(`guide tests passed (${files.length} states)`);

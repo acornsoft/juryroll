@@ -22,39 +22,41 @@ export function CountySummary({
         <button id="copySummary" type="button" className="quiet" onClick={onCopy}>Copy summary</button>
       </p>
       {note && <p id="copySummaryStatus" className="note">{note}</p>}
-      <table id="countyRollup">
-        <caption>Counties checked this session. One row per county. Cleared by Purge.</caption>
-        <thead>
-          <tr>
-            <th>County</th>
-            <th>Entered</th>
-            <th>Non-citizen</th>
-            <th>Language excluded</th>
-            <th>Non-resident excluded</th>
-            <th>Strong</th>
-            <th>Probable</th>
-            <th>Weak</th>
-            <th>Excluded</th>
-            <th>Cannot compare</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={`${row.stateCode}-${row.countyFips}`}>
-              <td>{row.countyName}</td>
-              <td>{row.entered}</td>
-              <td>{row.nonCitizen}</td>
-              <td>{row.language}</td>
-              <td>{row.nonResident}</td>
-              <td>{row.strong}</td>
-              <td>{row.probable}</td>
-              <td>{row.weak}</td>
-              <td>{row.excluded}</td>
-              <td>{row.cannotCompare}</td>
+      <div className="scroll">
+        <table id="countyRollup">
+          <caption>Counties checked this session. One row per county. Cleared by Purge.</caption>
+          <thead>
+            <tr>
+              <th>County</th>
+              <th>Entered</th>
+              <th>Non-citizen</th>
+              <th>Language excluded</th>
+              <th>Non-resident excluded</th>
+              <th>Strong</th>
+              <th>Probable</th>
+              <th>Weak</th>
+              <th>Excluded</th>
+              <th>Cannot compare</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={`${row.stateCode}-${row.countyFips}`}>
+                <td>{row.countyName}</td>
+                <td>{row.entered}</td>
+                <td>{row.nonCitizen}</td>
+                <td>{row.language}</td>
+                <td>{row.nonResident}</td>
+                <td>{row.strong}</td>
+                <td>{row.probable}</td>
+                <td>{row.weak}</td>
+                <td>{row.excluded}</td>
+                <td>{row.cannotCompare}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

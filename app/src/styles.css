@@ -58,6 +58,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+fieldset { min-width: 0; }
+p, li, a, dd { overflow-wrap: anywhere; }
 body {
   background: var(--wash);
   color: var(--paragraph-color);
@@ -273,12 +275,17 @@ button:disabled { cursor: not-allowed; opacity: 0.55; }
 table { border-collapse: collapse; width: 100%; background: #fff; color: var(--heading-color); }
 th, td { border-bottom: 1px solid var(--line); text-align: left; padding: 8px; vertical-align: top; }
 .maptable th { width: 46%; font-weight: 600; }
+.stepper-block, .step-card, .type-wrap, .scroll { min-width: 0; max-width: 100%; }
 .scroll { overflow-x: auto; }
+.scroll table { width: max-content; min-width: 100%; }
 .small { font-size: 0.95rem; }
 .foot { margin-top: 28px; color: var(--paragraph-color); }
 .downloads a { display: inline-flex; align-items: center; min-height: 44px; margin: 4px 12px 4px 0; }
 .faq-item { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; margin: 8px 0; }
-.faq-item summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--heading-color); font-weight: 700; }
+.faq-item summary, .state-brief summary, .guide-layer summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--heading-color); font-weight: 700; }
+.state-brief, .guide-layer { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; margin: 8px 0; }
+.walk-steps { margin: 8px 0 16px; padding-left: 1.4rem; }
+.walk-steps li { margin: 4px 0; color: var(--heading-color); }
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -293,6 +300,7 @@ th, td { border-bottom: 1px solid var(--line); text-align: left; padding: 8px; v
 .print-only { display: none; }
 #transcriptionSheet { display: none; }
 .type-wrap { overflow-x: auto; }
+.type-grid { width: max-content; min-width: 100%; }
 .type-grid input { min-width: 6.5rem; max-width: 10rem; padding: 6px; }
 .type-grid th, .type-grid td { padding: 4px; }
 .context-note { color: var(--paragraph-color); }
