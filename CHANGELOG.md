@@ -10,4 +10,5 @@
 - Excel workbooks, blank templates, an audit log, attestation, and a purge step.
 - The app does not contact a network. Real voter files stay in the browser.
 - The audit log download stays available before a county is chosen. The `.jsonl` header records the county, or "No county selected".
+- Step 1 shows a United States map. A state or county can be chosen on the map or with the lists. The county card quotes Census Bureau population estimates, Vintage 2025. Run and export still require a county.
 - The footer shows the version and the short git SHA of the build.

@@ -1,4 +1,5 @@
 node_modules/
+tools/.cache/
 app/dist/
 dist/
 .env

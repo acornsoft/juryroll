@@ -27,7 +27,11 @@ function pass(id) {
 }
 
 async function openPage(browser, options = {}) {
-  const context = await browser.newContext({ viewport: { width: 1360, height: 900 }, acceptDownloads: true });
+  const context = await browser.newContext({
+    viewport: options.viewport ?? { width: 1360, height: 900 },
+    acceptDownloads: true,
+    reducedMotion: options.reducedMotion,
+  });
   const page = await context.newPage();
   const errors = [];
   const requests = [];
@@ -195,6 +199,10 @@ function readAuditDownload(file) {
   assert.ok(!/url\(\s*['"]?(?:\.\.\/)?fonts\//.test(built), 'font URLs must not be relative');
   assert.ok(built.includes("font-src 'self'"), 'CSP font-src');
   assert.ok(!/<script[^>]+src=/.test(built), 'scripts must be inlined');
+  assert.ok(!built.includes('"type":"Topology"'), 'county geometry stays out of the inline page');
+  assert.ok(fs.existsSync(path.join(root, 'app/dist/assets/us-map.js')), 'map chunk');
+  assert.ok(fs.existsSync(path.join(root, 'app/dist/assets/us-map-global.js')), 'file map script');
+  assert.ok(built.includes('./assets/us-map.js'), 'hosted page imports the map chunk');
   const config = fs.readFileSync(path.join(root, 'app/dist/staticwebapp.config.json'), 'utf8');
   assert.ok(config.includes("connect-src 'none'"));
   pass('AT-29-csp');
@@ -202,6 +210,7 @@ function readAuditDownload(file) {
   const browser = await chromium.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
 
   const first = await openPage(browser);
+  await first.page.waitForSelector('#usMap path');
   await first.page.screenshot({ path: path.join(shots, '01-state-picker.png'), fullPage: true });
   await first.page.setViewportSize({ width: 390, height: 844 });
   await first.page.screenshot({ path: path.join(shots, '01b-state-picker-mobile.png'), fullPage: true });
@@ -893,19 +902,15 @@ function readAuditDownload(file) {
 
   const counties = await openPage(browser);
   assert.strictEqual(await counties.page.locator('#county').isDisabled(), true);
-  assert.strictEqual(await counties.page.locator('#countyFilter').isDisabled(), true);
+  assert.strictEqual(await counties.page.locator('#countyFilter').count(), 0);
+  await counties.page.waitForSelector('#usMap path[data-code="NC"]');
   await selectState(counties.page, 'NC');
   await counties.page.waitForSelector('#county:not([disabled])');
+  await counties.page.waitForSelector('#usMap[data-level="state"]');
   assert.strictEqual(await counties.page.locator('#county option').count(), 101);
   assert.strictEqual(await counties.page.locator('#county option').nth(1).innerText(), 'Alamance County (37001)');
   assert.ok(await counties.page.locator('#countyRequired').isVisible());
-  await counties.page.evaluate(() => { document.getElementById('county').size = 12; });
   await counties.page.locator('#placePicker').screenshot({ path: path.join(shots, 'county-picker-nc.png') });
-  await counties.page.evaluate(() => { document.getElementById('county').removeAttribute('size'); });
-  await counties.page.fill('#countyFilter', 'wake');
-  assert.strictEqual(await counties.page.locator('#county option').count(), 2);
-  assert.strictEqual(await counties.page.locator('#county option').nth(1).getAttribute('value'), '37183');
-  await counties.page.fill('#countyFilter', '');
   await pickCounty(counties.page);
   assert.strictEqual(await counties.page.locator('#countyRequired').count(), 0);
   await selectState(counties.page, 'NY');
@@ -1110,6 +1115,76 @@ function readAuditDownload(file) {
   await design.page.waitForSelector('#walkthrough');
   await assertFits(design.page, 390, 'state PA');
   await design.context.close();
+
+  const mapShots = await openPage(browser, { viewport: { width: 1280, height: 800 } });
+  const population = JSON.parse(fs.readFileSync(path.join(root, 'shared/map/population.json'), 'utf8'));
+  const alleghenyPop = population.counties['42003'];
+  const pennsylvaniaPop = population.states['42'];
+  const alleghenyPct = ((alleghenyPop / pennsylvaniaPop) * 100).toFixed(1);
+  const alleghenySentence = `Allegheny County, Pennsylvania: population ${alleghenyPop.toLocaleString('en-US')} of the state's ${pennsylvaniaPop.toLocaleString('en-US')} (${alleghenyPct}%)`;
+  async function shootMap(name) {
+    await mapShots.page.locator('#usMap').evaluate((node) => node.scrollIntoView({ block: 'start' }));
+    await mapShots.page.screenshot({ path: path.join(shots, name) });
+  }
+  await mapShots.page.waitForSelector('#usMap path[data-code="PA"]');
+  await mapShots.page.waitForTimeout(200);
+  await shootMap('map-us-1280.png');
+  await mapShots.page.locator('#usMap path[data-code="PA"]').click();
+  await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === 'PA');
+  await mapShots.page.waitForSelector('#usMap[data-level="state"]');
+  await mapShots.page.waitForTimeout(900);
+  await shootMap('map-pennsylvania-1280.png');
+  await mapShots.page.locator('#usMap path[data-fips="42003"]').click();
+  await mapShots.page.waitForSelector('#populationCard');
+  await mapShots.page.waitForTimeout(900);
+  assert.strictEqual(await mapShots.page.locator('#populationCardText').innerText(), alleghenySentence);
+  assert.strictEqual(await mapShots.page.locator('#populationSource').innerText(), population.label);
+  assert.strictEqual(await mapShots.page.locator('#county').inputValue(), '42003');
+  await assertFits(mapShots.page, 1280, 'map allegheny');
+  await shootMap('map-allegheny-1280.png');
+  await mapShots.page.click('#mapBackState');
+  await mapShots.page.waitForFunction(() => document.querySelector('#county').value === '' && document.querySelector('#stateSel').value === 'PA');
+  await mapShots.page.click('#mapBackUs');
+  await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === '');
+  await mapShots.page.locator('#usMap path[data-code="DE"]').focus();
+  await mapShots.page.keyboard.press('Enter');
+  await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === 'DE');
+  await mapShots.page.locator('#usMap path[data-fips="10001"]').focus();
+  await mapShots.page.keyboard.press('Space');
+  await mapShots.page.waitForFunction(() => document.querySelector('#county').value === '10001');
+  assert.match(await mapShots.page.locator('#populationCardText').innerText(), /Kent County, Delaware: population /);
+  await mapShots.page.setViewportSize({ width: 390, height: 800 });
+  await mapShots.page.click('#mapBackUs');
+  await mapShots.page.waitForSelector('#usMap[data-level="us"]');
+  await mapShots.page.waitForTimeout(900);
+  await assertFits(mapShots.page, 390, 'map us narrow');
+  await shootMap('map-us-390.png');
+  await mapShots.page.selectOption('#stateSel', 'PA');
+  await mapShots.page.waitForSelector('#usMap[data-level="state"]');
+  await mapShots.page.waitForTimeout(900);
+  await assertFits(mapShots.page, 390, 'map pa narrow');
+  await shootMap('map-pennsylvania-390.png');
+  await mapShots.page.selectOption('#county', '42003');
+  await mapShots.page.waitForSelector('#populationCard');
+  await mapShots.page.waitForTimeout(900);
+  await assertFits(mapShots.page, 390, 'map allegheny narrow');
+  await shootMap('map-allegheny-390.png');
+  pass('AT-50-map');
+  assert.deepStrictEqual(mapShots.requests, [], 'map page network: ' + mapShots.requests.join('; '));
+  assert.deepStrictEqual(mapShots.errors, [], 'map page errors: ' + mapShots.errors.join('; '));
+  await mapShots.context.close();
+
+  const reducedPage = await openPage(browser, { reducedMotion: 'reduce', viewport: { width: 1280, height: 800 } });
+  await reducedPage.page.waitForSelector('#usMap[data-motion="reduced"]');
+  await reducedPage.page.selectOption('#stateSel', 'PA');
+  await reducedPage.page.waitForFunction(() => {
+    const box = document.querySelector('#usMap')?.getAttribute('viewBox') ?? '';
+    return box.length > 0 && !box.startsWith('0 0 960');
+  });
+  const jumped = await reducedPage.page.locator('#usMap').getAttribute('viewBox');
+  await reducedPage.page.waitForTimeout(250);
+  assert.strictEqual(await reducedPage.page.locator('#usMap').getAttribute('viewBox'), jumped);
+  await reducedPage.context.close();
 
   await browser.close();
   console.log('ALL UI TESTS PASSED');

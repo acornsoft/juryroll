@@ -56,6 +56,8 @@ JuryRoll never contacts voters. Do not publish names.
 
 County names and 5-digit FIPS codes come from the U.S. Census Bureau 2025 Gazetteer Files, National Counties Gazetteer File (`2025_Gaz_counties_national.txt`, dated 2025-09-08). That work is in the public domain. The file is stored at `shared/data/2025_Gaz_counties_national.txt`. Louisiana parishes, Alaska boroughs and census areas, Virginia independent cities, the District of Columbia, and Connecticut's nine planning regions are included as the Census Bureau publishes them.
 
+Step 1 shows a map of the United States. Alaska and Hawaii are insets. Choosing a state or a county on the map does the same thing as the State and County lists. County shapes are a simplified TopoJSON of the Census Bureau 2024 cartographic boundary file `cb_2024_us_county_5m`, and state shapes come from `cb_2024_us_state_5m`. The county card uses Census Bureau population estimates, Vintage 2025 (`co-est2025-alldata`, column `POPESTIMATE2025`). Those Census products are public domain. `npm run geography` rebuilds `shared/map` from the Census files.
+
 ## For developers
 
 Build and test notes are in [docs/DEVELOPING.md](docs/DEVELOPING.md). Version 2.0.0.

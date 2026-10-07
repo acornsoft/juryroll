@@ -21,9 +21,14 @@ export default defineConfig({
     sourcemap: false,
     cssCodeSplit: false,
     modulePreload: false,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
-        inlineDynamicImports: true,
+        inlineDynamicImports: false,
+        chunkFileNames(chunkInfo) {
+          if (chunkInfo.name === 'data' || chunkInfo.name === 'us-map') return 'assets/us-map.js';
+          return 'assets/[name]-[hash].js';
+        },
       },
     },
   },
