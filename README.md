@@ -20,7 +20,7 @@ If the jury list is confidential in your state, JuryRoll does not load it. You c
 
 The files in `shared/samples` are fictional. They are safe to try. On the version 1 matcher they produce **Strong 3, Probable 4, Weak 2**. State rules can lower a Strong lead to Probable, and they can remove a lead from the list entirely.
 
-Blank templates, in CSV and Excel, are in `shared/templates`.
+Blank templates, in CSV and Excel, are in `shared/templates`. They include a jury declaration date and a registration date. The registration date is needed for a named referral.
 
 ## Tiers
 

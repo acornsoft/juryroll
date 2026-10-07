@@ -1,13 +1,13 @@
-Juror Number,Last,First,MI,Sfx,Birth Date,Address,Zip,Disqualification Reason,Note
-J-0001,Example,Alpha,,,03/14/1980,100 Example St,00001,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0002,O'Sampleton-Jones,Bravo,,Jr.,11/30/1972,"22 Sample Ave., Unit B",00001,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0003,Mockley III,India,,,06/21/1988,7 Mock Lane,00001,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0004,Fictitious,D.,,,07/04/1975,,,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0005,Placeholder,Echo,,,05/05/1990,12 Example Street Apt 2,00002,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0006,Testperson,F.,,,1/2/85,,,NON-CITIZEN,FICTIONAL SAMPLE DATA
-J-0007,Dummyfield,Golf,,,,,,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0008,Notonroll,Hotel,,,10/10/1999,,,NON-CITIZEN,FICTIONAL SAMPLE DATA
-J-0009,Sampleperson,Juliet,,,04/04/1982,,,Not a county resident,FICTIONAL SAMPLE DATA
-J-0010,Medicalcase,Papa,,,12/12/1958,,,Medical excuse,FICTIONAL SAMPLE DATA
-J-0011,Sampleton,Lima,Q,,09/09/1965,,,Not a U.S. citizen,FICTIONAL SAMPLE DATA
-J-0012,Felonycase,Quebec,,,03/03/1979,,,Felony conviction,FICTIONAL SAMPLE DATA
+Juror Number,Last,First,MI,Sfx,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J-0001,Example,Alpha,,,03/14/1980,100 Example St,00001,Not a U.S. citizen,FICTIONAL SAMPLE DATA,06/15/2004
+J-0002,O'Sampleton-Jones,Bravo,,Jr.,11/30/1972,"22 Sample Ave., Unit B",00001,Not a U.S. citizen,FICTIONAL SAMPLE DATA,07/20/2004
+J-0003,Mockley III,India,,,06/21/1988,7 Mock Lane,00001,Not a U.S. citizen,FICTIONAL SAMPLE DATA,08/08/2005
+J-0004,Fictitious,D.,,,07/04/1975,,,Not a U.S. citizen,FICTIONAL SAMPLE DATA,01/15/2002
+J-0005,Placeholder,Echo,,,05/05/1990,12 Example Street Apt 2,00002,Not a U.S. citizen,FICTIONAL SAMPLE DATA,03/03/2002
+J-0006,Testperson,F.,,,1/2/85,,,NON-CITIZEN,FICTIONAL SAMPLE DATA,04/04/2003
+J-0007,Dummyfield,Golf,,,,,,Not a U.S. citizen,FICTIONAL SAMPLE DATA,09/09/2003
+J-0008,Notonroll,Hotel,,,10/10/1999,,,NON-CITIZEN,FICTIONAL SAMPLE DATA,01/01/2003
+J-0009,Sampleperson,Juliet,,,04/04/1982,,,Not a county resident,FICTIONAL SAMPLE DATA,02/02/2003
+J-0010,Medicalcase,Papa,,,12/12/1958,,,Medical excuse,FICTIONAL SAMPLE DATA,03/03/2003
+J-0011,Sampleton,Lima,Q,,09/09/1965,,,Not a U.S. citizen,FICTIONAL SAMPLE DATA,04/04/2004
+J-0012,Felonycase,Quebec,,,03/03/1979,,,Felony conviction,FICTIONAL SAMPLE DATA,05/05/2003

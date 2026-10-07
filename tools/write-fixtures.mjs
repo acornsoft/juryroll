@@ -9,8 +9,8 @@ const samples = path.join(root, 'shared', 'samples');
 const templates = path.join(root, 'shared', 'templates');
 fs.mkdirSync(templates, { recursive: true });
 
-const jurorTemplate = 'Juror Number,Last,First,MI,Sfx,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date\n';
-const voterTemplate = 'voter_id,name_last,name_first,name_middle,name_suffix,date_of_birth,res_street,res_zip,status,status_reason,registration_date\n';
+const jurorTemplate = 'Juror Number,Last,First,MI,Sfx,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date\nNOTE,,,,,,,,,The registration date is needed for a named referral.\n';
+const voterTemplate = 'voter_id,name_last,name_first,name_middle,name_suffix,date_of_birth,res_street,res_zip,status,status_reason,registration_date\nNOTE,,,,,,,,,,The registration date is needed for a named referral.\n';
 fs.writeFileSync(path.join(templates, 'juror-template.csv'), jurorTemplate);
 fs.writeFileSync(path.join(templates, 'voter-template.csv'), voterTemplate);
 

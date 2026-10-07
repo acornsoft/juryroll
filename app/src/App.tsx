@@ -698,6 +698,7 @@ export function App() {
             {(juror || voter) && <span className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</span>}
           </p>
           {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
+          <p className="small" id="templateDateNote">The registration date is needed for a named referral.</p>
           <div className="downloads">
             <a href={jurorTemplateUrl} download>Blank juror template (CSV)</a>
             <a href={jurorTemplateXlsxUrl} download>Blank juror template (Excel)</a>
