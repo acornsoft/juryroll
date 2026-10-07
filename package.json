@@ -11,7 +11,7 @@
     "build": "vite build --config app/vite.config.ts && node scripts/inline-bundle.mjs && node scripts/write-map-global.mjs && node scripts/check-dist-assets.mjs",
     "geography": "node tools/build-geography.mjs",
     "pretest": "node tools/bundle-rules.mjs && node tools/render-guide.mjs && node tools/write-fixtures.mjs",
-    "test": "node test/core.test.mjs && node test/counties.test.mjs && node --experimental-strip-types test/geography.test.mjs && node --experimental-strip-types test/policy.test.ts && node --experimental-strip-types test/flow.test.ts && node --experimental-strip-types test/guide.test.ts && node --experimental-strip-types test/session.test.ts && node --experimental-strip-types test/xlsx.test.ts && node scripts/check-content.mjs && node scripts/check-gitignore.mjs && tsc --noEmit -p tsconfig.json && npm run build && node test/ui.test.cjs",
+    "test": "node test/core.test.mjs && node test/counties.test.mjs && node --experimental-strip-types test/geography.test.mjs && node --experimental-strip-types test/policy.test.ts && node test/states/run.mjs && node --experimental-strip-types test/flow.test.ts && node --experimental-strip-types test/guide.test.ts && node --experimental-strip-types test/session.test.ts && node --experimental-strip-types test/xlsx.test.ts && node scripts/check-content.mjs && node scripts/check-gitignore.mjs && tsc --noEmit -p tsconfig.json && npm run build && node test/ui.test.cjs",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
