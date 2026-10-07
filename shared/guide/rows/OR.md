@@ -1,1 +1,1 @@
-| OR | No (ORS 10.215) | No; the county clerk inquires (ORS 247.195) | Counts only. No commercial use of voter lists (247.955) |
+| OR | Not known, so the app treats it as no. Source lists and jury lists may not be disclosed (ORS 10.215(1)); the status of the record of persons discharged as ineligible (10.255(2)) is not settled | No; the county clerk inquires (ORS 247.195) | Counts only. No commercial use of voter lists (247.955) |
