@@ -12,7 +12,7 @@ npm test
 npm run build
 ```
 
-`npm run build` writes `app/dist`. Open `app/dist/index.html` from disk or host that folder. Paths are relative. `staticwebapp.config.json` is copied into the output and the build fills in the Content-Security-Policy header.
+`npm run build` writes `app/dist`. Open `app/dist/index.html` from disk or host that folder. Paths are relative. `staticwebapp.config.json` is copied into the output and the build fills in the Content-Security-Policy header. The footer build id is the first 7 characters of `GITHUB_SHA` in CI, or of `git rev-parse HEAD` on a local build. It is injected with Vite `define`. The page does not look it up.
 
 ## What not to edit
 

@@ -9,3 +9,5 @@
 - The fictional samples include declaration and registration dates, so a North Carolina sample run shows leads, later registrations, and dates that cannot be compared.
 - Excel workbooks, blank templates, an audit log, attestation, and a purge step.
 - The app does not contact a network. Real voter files stay in the browser.
+- The audit log download stays available before a county is chosen. The `.jsonl` header records the county, or "No county selected".
+- The footer shows the version and the short git SHA of the build.

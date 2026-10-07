@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert');
+const { execSync } = require('child_process');
 
 const root = path.join(__dirname, '..');
 const dist = path.join(root, 'app', 'dist', 'index.html');
@@ -124,6 +125,21 @@ async function pickCounty(page, fips = '37183') {
   await page.selectOption('#county', fips);
 }
 
+function expectedBuildId() {
+  const script = "import { buildId } from './scripts/build-id.mjs'; process.stdout.write(buildId())";
+  return execSync(`node --input-type=module -e ${JSON.stringify(script)}`, { cwd: root, encoding: 'utf8' });
+}
+
+function readAuditDownload(file) {
+  const text = fs.readFileSync(file, 'utf8');
+  const rows = text.trim().split('\n').map((line) => JSON.parse(line));
+  const header = rows[0];
+  assert.ok(header && !header.type && !header.seq, 'jsonl starts with a county header');
+  assert.ok(Object.prototype.hasOwnProperty.call(header, 'county_name'));
+  assert.ok(Object.prototype.hasOwnProperty.call(header, 'county_fips'));
+  return { text, header, entries: rows.slice(1) };
+}
+
 (async () => {
   const built = fs.readFileSync(dist, 'utf8');
   assert.ok(built.includes("connect-src 'none'"), 'CSP connect-src');
@@ -141,7 +157,15 @@ async function pickCounty(page, fips = '37183') {
   await first.page.setViewportSize({ width: 1360, height: 900 });
   assert.ok(await first.page.isVisible('#federalBanner'));
   assert.strictEqual(await first.page.locator('#exportBtn').count(), 0);
+  const buildId = expectedBuildId();
+  assert.match(buildId, /^[0-9a-f]{7}$/);
+  assert.strictEqual(
+    await first.page.locator('#appFooter').innerText(),
+    `JuryRoll 2.0.0 · build ${buildId}. A match is a lead for officials. It is not proof.`,
+  );
+  assert.ok(built.includes(buildId), 'build id is injected, not fetched');
   pass('AT-07-banner');
+  pass('AT-49-build-id');
 
   for (const name of [
     'juror-template.csv',
@@ -332,7 +356,11 @@ async function pickCounty(page, fips = '37183') {
   ]);
   const logPath = path.join(shots, 'audit.jsonl');
   await logDownload.saveAs(logPath);
-  const entries = fs.readFileSync(logPath, 'utf8').trim().split('\n').map((line) => JSON.parse(line));
+  const savedLog = readAuditDownload(logPath);
+  assert.strictEqual(savedLog.header.county_name, 'Wake County');
+  assert.strictEqual(savedLog.header.county_fips, '37183');
+  assert.ok(!savedLog.text.includes('No county selected'));
+  const entries = savedLog.entries;
   const types = entries.map((entry) => entry.type);
   console.log('Audit types:', types.join(', '));
   assert.deepStrictEqual(types, ['session_start', 'rules_loaded', 'attestation_signed', 'file_loaded', 'file_loaded', 'mapping_set', 'match_run', 'export']);
@@ -342,7 +370,7 @@ async function pickCounty(page, fips = '37183') {
   assert.strictEqual(matchRun.data.county_name, 'Wake County');
   assert.strictEqual(matchRun.data.county_fips, '37183');
   assert.strictEqual(entries.find((entry) => entry.type === 'export').data.county_fips, '37183');
-  const logText = fs.readFileSync(logPath, 'utf8');
+  const logText = savedLog.text;
   assert.ok(!logText.includes('Alpha'));
   assert.ok(!logText.includes('J-0001'));
   assert.ok(!logText.includes('sample_juror'));
@@ -564,7 +592,9 @@ async function pickCounty(page, fips = '37183') {
   ]);
   const noRegLogPath = path.join(shots, 'no-reg-audit.jsonl');
   await noRegLog.saveAs(noRegLogPath);
-  const noRegEntries = fs.readFileSync(noRegLogPath, 'utf8').trim().split('\n').map((line) => JSON.parse(line));
+  const noRegSaved = readAuditDownload(noRegLogPath);
+  assert.strictEqual(noRegSaved.header.county_fips, '37183');
+  const noRegEntries = noRegSaved.entries;
   const noRegMatch = noRegEntries.find((entry) => entry.type === 'match_run');
   assert.strictEqual(noRegMatch.data.cannot_compare_no_reg_date, 3);
   assert.strictEqual(noRegMatch.data.excluded_registered_after, 0);
@@ -810,6 +840,63 @@ async function pickCounty(page, fips = '37183') {
   await counties.page.waitForSelector('#countStrong');
   assert.match(await counties.page.locator('#referralHeader').innerText(), /Wake County \(37183\)/);
   pass('AT-47-counties');
+
+  const logOnly = await openPage(browser);
+  const note = await logOnly.page.locator('#auditLogNote').innerText();
+  assert.ok(note.includes('accountability record'));
+  assert.ok(note.includes('before you choose a county'));
+  assert.ok(note.includes('before a purge'));
+  assert.ok(note.includes('still require a county'));
+  assert.strictEqual(await logOnly.page.locator('#downloadLog').isDisabled(), false);
+  const [bareDownload] = await Promise.all([
+    logOnly.page.waitForEvent('download'),
+    logOnly.page.click('#downloadLog'),
+  ]);
+  assert.match(bareDownload.suggestedFilename(), /^juryroll-audit-\d{4}-\d{2}-\d{2}\.jsonl$/);
+  const barePath = path.join(shots, 'audit-no-county.jsonl');
+  await bareDownload.saveAs(barePath);
+  const bare = readAuditDownload(barePath);
+  assert.strictEqual(bare.header.county_name, null);
+  assert.strictEqual(bare.header.county_fips, null);
+  assert.strictEqual(bare.header.header, 'No county selected');
+  assert.strictEqual(bare.text, '{"county_name":null,"county_fips":null,"header":"No county selected"}\n');
+  assert.strictEqual(bare.entries.length, 0);
+  await logOnly.page.selectOption('#stateSel', 'NY');
+  await logOnly.page.waitForFunction(() => {
+    const panel = document.getElementById('logPanel');
+    return Boolean(panel && panel.innerText.includes('2 entries on this computer'));
+  });
+  assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').isDisabled(), true);
+  assert.strictEqual(await logOnly.page.locator('#exportBtn').count(), 0);
+  assert.strictEqual(await logOnly.page.locator('#downloadLog').isDisabled(), false);
+  const [stillBare] = await Promise.all([
+    logOnly.page.waitForEvent('download'),
+    logOnly.page.click('#downloadLog'),
+  ]);
+  const stillBarePath = path.join(shots, 'audit-ny-no-county.jsonl');
+  await stillBare.saveAs(stillBarePath);
+  const still = readAuditDownload(stillBarePath);
+  assert.strictEqual(still.header.county_name, null);
+  assert.strictEqual(still.header.county_fips, null);
+  assert.ok(still.text.includes('No county selected'));
+  assert.deepStrictEqual(still.entries.map((entry) => entry.type), ['session_start', 'rules_loaded']);
+  await logOnly.page.selectOption('#county', '36047');
+  assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').isDisabled(), false);
+  const [kingsDownload] = await Promise.all([
+    logOnly.page.waitForEvent('download'),
+    logOnly.page.click('#downloadLog'),
+  ]);
+  const kingsPath = path.join(shots, 'audit-kings.jsonl');
+  await kingsDownload.saveAs(kingsPath);
+  const kings = readAuditDownload(kingsPath);
+  assert.deepStrictEqual(
+    { county_name: kings.header.county_name, county_fips: kings.header.county_fips },
+    { county_name: 'Kings County', county_fips: '36047' },
+  );
+  assert.ok(!kings.text.includes('No county selected'));
+  pass('AT-48-audit-log');
+  assert.deepStrictEqual(logOnly.requests, [], 'audit log page network: ' + logOnly.requests.join('; '));
+  await logOnly.context.close();
   assert.deepStrictEqual(counties.requests, [], 'county page network: ' + counties.requests.join('; '));
   await counties.context.close();
 
