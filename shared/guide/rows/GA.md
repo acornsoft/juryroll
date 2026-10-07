@@ -1,1 +1,1 @@
-| GA | Not known, so the app treats it as no | Yes (O.C.G.A. 21-2-229, 21-2-230) | Counts only |
+| GA | Not known, so the app treats it as no. Clerks send a monthly non-citizen juror list to the Secretary of State (O.C.G.A. 21-2-231(a.1)) | Yes (O.C.G.A. 21-2-229, 21-2-230). A challenge within 45 days waits until certification | Counts only. See 6.8 |
