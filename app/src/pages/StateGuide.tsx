@@ -41,8 +41,10 @@ export function StateIndex({ query, onQuery }: { query: string; onQuery: (value:
   });
   return (
     <div className="page" id="stateIndex">
-      <p className="kicker">Per state</p>
-      <h1>State walkthroughs</h1>
+      <div className="section-title">
+        <p className="kicker">Per state</p>
+        <h2>Every jurisdiction</h2>
+      </div>
       <p className="lede">Every jurisdiction, from its rules file. Open one to see the federal, state, and local layers, then start a check.</p>
       <label className="search-label">
         Find a state
@@ -92,8 +94,6 @@ export function StatePage({ code }: { code: string }) {
 
   return (
     <div className="page" id="walkthrough">
-      <p className="kicker">State walkthrough</p>
-      <h1>{rules.name}</h1>
       <p className={`badge ${gates.allow_named_export ? 'badge-named' : 'badge-counts'}`}>
         {gates.allow_named_export ? 'Named leads allowed' : 'Counts-only'}
       </p>
@@ -145,8 +145,8 @@ export function StatePage({ code }: { code: string }) {
         </section>
       )}
       {layers.map((section) => (
-        <details className="guide-layer" key={section.title} id={sectionId(section.title)}>
-          <summary>{section.title}</summary>
+        <details className="guide-layer sen-acc" key={section.title} id={sectionId(section.title)}>
+          <summary><i className="icon-star" aria-hidden="true" /> {section.title}</summary>
           {section.title === 'Local layer' && (
             <label>
               County

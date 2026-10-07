@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import core from '../../shared/src/core.js';
+import { bannerFor, HomeHero, IconBox, PageBanner, SideTab } from './components/Chrome.tsx';
 import { CountySummary } from './components/CountySummary.tsx';
 import { PlacePicker } from './components/PlacePicker.tsx';
 import { ReasonMap } from './components/ReasonMap.tsx';
@@ -708,6 +709,11 @@ export function App() {
   };
   const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
   const section = route.name === 'state' ? 'states' : route.name;
+  const bannerState = route.name === 'state'
+    ? (STATES.find((item) => item[0] === route.code)?.[1] ?? route.code)
+    : '';
+  const banner = bannerFor(route, bannerState);
+  const runHref = section === 'home' ? '#stepper' : '#/run';
 
   let page: ReactNode;
   switch (route.name) {
@@ -726,22 +732,23 @@ export function App() {
     case 'home':
       page = (
         <>
-          <p className="kicker">Run a check</p>
-          <h1>Check a jury list</h1>
-          <p className="lede">A match is a referral for official verification. It is not proof. JuryRoll never contacts voters. Do not publish names.</p>
-          <p className="privacy" id="privacy"><b>{PRIVACY_LEAD}</b> {PRIVACY_BODY}</p>
+          <IconBox id="privacy" icon="icon-check" title="On this computer">
+            <p><b>{PRIVACY_LEAD}</b> {PRIVACY_BODY}</p>
+          </IconBox>
           {inFederal && (
-            <div className="banner" id="federalBanner" role="status">
-              <b>Federal 90-day window. Do not file bulk challenges. Refer leads instead.</b>
-              <span> The window for {election} is {window90.start} through {window90.end}. Today is {today}. </span>
-              <a className="why" href="#/law/blackout">Why?</a>
-            </div>
+            <IconBox id="federalBanner" icon="icon-calander" title="Federal 90-day window" role="status">
+              <p>
+                <b>Do not file bulk challenges. Refer leads instead.</b>
+                <span> The window for {election} is {window90.start} through {window90.end}. Today is {today}. </span>
+                <a className="why" href="#/law/blackout">Why?</a>
+              </p>
+            </IconBox>
           )}
           {idleWarn && <p className="warn" id="idleWarn" role="status">No activity for 28 minutes. JuryRoll will purge the loaded data and the audit log at 30 minutes. Download the log first if you need it.</p>}
           {resolved?.reason && <p className="banner" id="rulesFallback" role="status">{resolved.reason}</p>}
           {rules && (
-            <details className="state-brief" id="stateNotices">
-              <summary id="stateBrief">{stateName}: {gates?.allow_named_export ? 'named leads allowed. Referral only.' : 'counts only.'} Why?</summary>
+            <details className="state-brief sen-acc" id="stateNotices">
+              <summary><i className="icon-star" aria-hidden="true" /> <span id="stateBrief">{stateName}: {gates?.allow_named_export ? 'named leads allowed. Referral only.' : 'counts only.'} Why?</span></summary>
               {NON_SIGNAL[rules.state] && (
                 <p className="banner" id="nonSignalBanner" role="status">
                   {NON_SIGNAL[rules.state]} Match counts are {NON_SIGNAL_LABEL}. <a className="why" href="#/law/blackout">Why?</a>
@@ -998,12 +1005,12 @@ export function App() {
                     {policy.capBadge && <p className="note" id="tierCapBadge">{policy.capBadge}</p>}
                     <p id="excludedLine"><b>{policy.excludedLine}</b></p>
                     <p id="cannotCompareLine"><b>{policy.cannotCompareLine}</b></p>
-                    <details className="bucket">
-                      <summary>Excluded: registered after declaration ({policy.excludedAfterCount})</summary>
+                    <details className="bucket sen-acc">
+                      <summary><i className="icon-star" aria-hidden="true" /> Excluded: registered after declaration ({policy.excludedAfterCount})</summary>
                       <p>These pairs stay out of the to-explore pile. The voter registered after the jury declaration.</p>
                     </details>
-                    <details className="bucket">
-                      <summary>Cannot compare: no registration date ({policy.cannotCompareCount})</summary>
+                    <details className="bucket sen-acc">
+                      <summary><i className="icon-star" aria-hidden="true" /> Cannot compare: no registration date ({policy.cannotCompareCount})</summary>
                       <p>These pairs stay out of the to-explore pile. One of the dates is missing, so the order cannot be checked.</p>
                     </details>
                     <p className="small" id="regDateNote">Some voter files show the date of the latest registration change, not the first registration. That excludes more matches, which is the safe direction.</p>
@@ -1030,8 +1037,8 @@ export function App() {
                             <ResultsTable rows={removedRows} />
                           </div>
                         )}
-                        <details id="weakDetails">
-                          <summary>Weak matches ({policy.counts.Weak})</summary>
+                        <details className="sen-acc" id="weakDetails">
+                          <summary><i className="icon-star" aria-hidden="true" /> Weak matches ({policy.counts.Weak})</summary>
                           <label className="inline"><input id="showWeak" type="checkbox" checked={showWeak} onChange={(event) => setShowWeak(event.target.checked)} /> Show weak matches (name only)</label>
                           {showWeak && <p className="warn" id="weakWarn">{WEAK_CAUTION}</p>}
                           {showWeak && <LeadPile tier="Weak" rows={weakRows} history={voterHistory} />}
@@ -1084,18 +1091,31 @@ export function App() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      <div className="wrap">
-        <header className="topbar">
+      <header className="topbar navbar-area nav-style-01">
+        <div className="nav-container">
           <a className="brand" href="#/run">JuryRoll</a>
           <nav className="nav" aria-label="Sections">
             <a href="#/run" aria-current={section === 'home' ? 'page' : undefined}>Run a check</a>
             <a href="#/states" aria-current={section === 'states' ? 'page' : undefined}>State walkthroughs</a>
             <a href="#/law" aria-current={section === 'law' ? 'page' : undefined}>Law &amp; guidance</a>
             <a href="#/faq" aria-current={section === 'faq' ? 'page' : undefined}>FAQ</a>
-            <button id="purgeBtn" type="button" className="quiet" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge data</button>
           </nav>
-        </header>
-        <main id="main">{page}</main>
+          <div className="nav-actions">
+            <button id="purgeBtn" type="button" className="quiet purge-btn" onClick={() => { if (window.confirm('Purge the loaded data and the audit log now? Download the log first if you need it.')) purge('button'); }}>Purge data</button>
+            <div className="btn-wrapper">
+              <a className="boxed-btn btn-sanatory" href={runHref}>
+                Run a check
+                <i className="icon-paper-plan" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main id="main">
+        {banner && <PageBanner title={banner.title} crumbs={banner.crumbs} />}
+        {route.name === 'home' && <HomeHero />}
+        <div className="wrap">
+          {page}
         <section className="print-only" id="caveats">
           <h2>Read this before you use a result</h2>
           <ul className="caveats">
@@ -1117,8 +1137,15 @@ export function App() {
           <label className="inline"><input id="includeIdsInLog" type="checkbox" checked={includeIds} onChange={(event) => setIncludeIds(event.target.checked)} /> Include voter IDs in the export log entry</label>
           <button id="downloadLog" type="button" className="quiet" onClick={onDownloadLog}>Download audit log</button>
         </section>
-        <p className="foot" id="appFooter">JuryRoll {APP_VERSION} · build {__BUILD_ID__}. A match is a lead for officials. It is not proof.</p>
-      </div>
+        </div>
+      </main>
+      {route.name === 'home' && <SideTab />}
+      <footer className="footer-area">
+        <div className="footer-inner">
+          <p className="footer-privacy">All processing stays in this browser. No data leaves this computer. A match is a lead for officials. It is not proof.</p>
+          <p className="foot" id="appFooter">JuryRoll {APP_VERSION} · build {__BUILD_ID__}. A match is a lead for officials. It is not proof.</p>
+        </div>
+      </footer>
       <TranscriptionSheet />
       {modal && (
         <div className="modal-back">

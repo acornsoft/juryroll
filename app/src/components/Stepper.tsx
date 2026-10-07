@@ -104,7 +104,7 @@ export function Stepper({
                 ? (mode === 'guide' ? step.guideSummary : step.summary(facts))
                 : null;
           return (
-            <li key={step.id} className={`rail-item is-${status}`}>
+            <li key={step.id} className={`rail-item action-single-items is-${status}`}>
               <button
                 type="button"
                 id={`step-tab-${step.id}`}
@@ -114,7 +114,9 @@ export function Stepper({
                 disabled={!open}
                 onClick={() => go(step.id)}
               >
-                <span className="rail-index">{index + 1}</span>
+                <span className="action-shape" aria-hidden="true">
+                  <span className="rail-index">{String(index + 1).padStart(2, '0')}</span>
+                </span>
                 <span className="rail-copy">
                   <span className="rail-title">{step.title}</span>
                   <span className="rail-state">{status}</span>
