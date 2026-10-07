@@ -1,1 +1,1 @@
-| VA | Not known, so the app treats it as no | Yes, three voters petition the court (Va. Code 24.2-431) | Counts only. You cannot get the voter list (24.2-405) |
+| VA | Not known, so the app treats it as no. Only counsel in the case get the jury panel (Va. Code 8.01-353) | Yes, three voters petition the court (Va. Code 24.2-431) | Counts only. You cannot get the voter list (24.2-405) |

@@ -5,16 +5,28 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "No section of Va. Code title 8.01, chapter 11 (Juries) opens or closes records of persons disqualified as non-citizens. 8.01-337: 'All citizens over 18 years of age who have been residents of the Commonwealth one year, and of the county, city, or town in which they reside six months next preceding their being summoned to serve as such, and competent in other respects, except as hereinafter provided, shall be liable to serve as jurors.' 8.01-353(A) gives counsel of record a copy of the panel with 'name, age, address, occupation, and employer'. Status: null.",
     "holder": "Circuit court jury commissioners (Va. Code 8.01-345).",
     "fields_withheld": null,
-    "official_pipeline": "Not found for jury records. The official non-citizen pipeline is the DMV list (Va. Code 24.2-410.1, confidential, official use only) and SAVE checks; the general registrar mails notice and cancels after 14 days without a sworn citizenship statement (Va. Code 24.2-427(B)).",
+    "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-427/",
+    "source_url": "https://law.lis.virginia.gov/vacode/title8.01/chapter11/section8.01-337/",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "Va. Code 24.2-427 (cancellation after non-citizen report)",
+        "cite": "Va. Code 8.01-337 (jurors must be citizens)",
+        "url": "https://law.lis.virginia.gov/vacode/title8.01/chapter11/section8.01-337/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Va. Code 8.01-353(A) (copy of the jury panel to counsel of record only)",
+        "url": "https://law.lis.virginia.gov/vacode/title8.01/chapter11/section8.01-353/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Va. Code 24.2-427 (cancellation after non-citizen report; notice and 14 days)",
         "url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-427/",
         "verified_on": "2026-10-07",
         "kind": "statute"
@@ -77,7 +89,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://law.lis.virginia.gov/vacode/title24.2/chapter4/section24.2-431/",
@@ -101,18 +113,31 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Va. Code 2.2-3704 (Virginia Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the general registrar or the Department of Elections: per year, the number of registrants reported as non-citizens through the DMV lists (24.2-410.1) or SAVE, the number of notices mailed under 24.2-427(B), and the number of registrations cancelled after 14 days without a sworn citizenship statement.",
+    "counts_only": true,
+    "source_url": "https://law.lis.virginia.gov/vacode/title2.2/chapter37/section2.2-3704/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. The DMV lists are confidential and for official use only (24.2-410.1). No Virginia statute sends juror citizenship answers to election officials, so there is no jury count to ask for."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "The jury record status is unknown (null), and a private citizen cannot lawfully obtain the voter list (Va. Code 24.2-405). Strict gates: counts only."
+    "basis": "Jury records: no Virginia statute opens or closes records of non-citizen disqualifications (null), and a private citizen cannot lawfully obtain the voter list (Va. Code 24.2-405). Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (8.01-337, 8.01-353(A)); jury sources; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline set to null (ruled 2026-10-07, REQ-NOTE 49 closed; the DMV/SAVE text moved to notes). No voter_file value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "official_pipeline is null (ruled 2026-10-07, REQ-NOTE 49 closed). No Virginia statute sends juror non-citizen information to general registrars or the Department of Elections. Chapter 11 of title 8.01 (8.01-336 to 8.01-363) was searched; registrars appear only as an exemption from jury service. 24.2-404 names only 'reports from the Department of Motor Vehicles pursuant to § 24.2-410.1 or from the Department of Elections based on information received from the Systematic Alien Verification for Entitlements Program (SAVE Program)' as non-citizen sources. Under REQ-25 the A.5 letter has no pipeline quote and no 'is this process running' line for VA; it asks only the audit_path counts (DMV lists, SAVE, 24.2-427(B) notices and cancellations).",
+    "Non-jury route (moved from official_pipeline 2026-10-07): the official non-citizen route is the DMV list (Va. Code 24.2-410.1, confidential, official use only) and SAVE checks; the general registrar 'shall mail notice promptly to all persons listed in the report as not being a citizen of the United States prior to cancelling' and cancels if no sworn citizenship statement arrives 'within 14 days' (Va. Code 24.2-427(B)).",
+    "PA-style check: chapter 11 has no public list of disqualified persons. 8.01-353(A) gives the panel only to counsel of record in the case.",
     "Important: a private person is not an authorized recipient of Virginia voter lists (24.2-405). A user who holds a Virginia list must have obtained it under one of the listed purposes, and JuryRoll matching is not one of them. The app should warn Virginia users before loading a voter file.",
+    "Cancelled-voter file: no published Virginia cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Acts 2026, c. 1064 repealed 24.2-432 and 24.2-651 (poll challenges) effective July 1, 2026, and amended 24.2-431.",
     "24.2-410.1 has a version effective July 1, 2027. Re-verify before then.",
-    "jury_list.public is null: no Virginia statute on the confidentiality of juror non-citizen answers was found.",
-    "state_extra_days is 0: 24.2-431 sets no window."
+    "state_extra_days is 0: 24.2-431 sets no window.",
+    "Source note: law.lis.virginia.gov read with curl on 2026-10-07 (chapter 11 of title 8.01 searched for 'confidential', 'public inspection', 'not be disclosed' and 'citizen')."
   ]
 }
