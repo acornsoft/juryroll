@@ -34,6 +34,9 @@ jobs:
       - run: npm run build
       - name: Deploy to Azure Static Web Apps
         id: deploy
+        # The Free plan allows only a few named preview environments. A full
+        # quota must not fail the test job. A production deploy on main still does.
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository)
         uses: Azure/static-web-apps-deploy@v1
         with:
