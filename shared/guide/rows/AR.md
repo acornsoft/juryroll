@@ -1,1 +1,1 @@
-| AR | Not known, so the app treats it as no | Only at the polls (Ark. Code 7-5-312); not supported | Counts only |
+| AR | Not known, so the app treats it as no. The master juror list is closed (Ark. Code 16-32-103(e)(2)). The circuit clerk notifies the registrar, who cancels (amend. 51, sec. 11(e)) | Only at the polls (Ark. Code 7-5-312); not supported | Counts only. See 6.14 |
