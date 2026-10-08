@@ -5,13 +5,27 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "RSA 500-A:1, IV: 'Information contained in the master jury list shall be private and confidential and shall not be subject to RSA 91-A.' RSA 500-A:2: voter lists, Department of Safety lists, and the master jury list 'are confidential documents to be used ... only for purposes of jury selection.'",
+    "statute": "RSA 500-A:1, IV: 'Information contained in the master jury list shall be private and confidential and shall not be subject to RSA 91-A.' RSA 500-A:2: 'Voter lists and department of safety lists, as well as the master jury list, are confidential documents to be used by the office and the respective trial courts only for purposes of jury selection.' RSA 500-A:6, I: 'The names drawn on the list may be disclosed only to persons authorized to see the list under this chapter or upon specific order of the court.'",
     "holder": "Administrative Office of the Courts and clerks of the superior court.",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
     "source_url": "https://gc.nh.gov/rsa/html/LI/500-A/500-A-mrg.htm",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "RSA 500-A:1, IV; 500-A:2; 500-A:6, I (master jury list private and confidential; names drawn disclosed only as authorized)",
+        "url": "https://gc.nh.gov/rsa/html/LI/500-A/500-A-mrg.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "RSA 500-A:6, III(b)(1) (qualification form asks whether the person is a U.S. citizen)",
+        "url": "https://gc.nh.gov/rsa/html/LI/500-A/500-A-mrg.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any person may get a copy of the public checklist of a town or city from the supervisors of the checklist or the town or city clerk, for a fee (RSA 654:31, II). The full statewide list goes only to parties, political committees, and candidates (654:31, IV). Anyone may view statewide data at the state archives but may not print, duplicate, or transmit it (654:31, III).",
@@ -49,7 +63,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://gc.nh.gov/rsa/html/LXIII/654/654-44.htm",
@@ -74,6 +88,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "RSA 91-A:4 (Right-to-Know Law) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the supervisors of the checklist or the Secretary of State: per year, the number of names removed because the person was not a U.S. citizen, and the number of error reports received from the courts under RSA 500-A:2.",
+    "counts_only": true,
+    "source_url": "https://gc.nh.gov/rsa/html/VI/91-A/91-A-4.htm",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. RSA 500-A:2 error reports do not mention citizenship. Whether the Secretary of State keeps counts of them was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -82,7 +104,11 @@
     "basis": "Jury list data is confidential by law (RSA 500-A:1, IV and 500-A:2). Challenges exist only at the polls (RSA 659:27-a). Strict gates: counts only."
   },
   "notes": [
-    "RSA 500-A:2 (as amended 2025) says errors the court finds in voter-list data are reported to the Secretary of State. The text does not say this covers non-citizen juror answers, so official_pipeline stays null.",
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (500-A:1, IV; 500-A:2; 500-A:6, I); jury sources; audit_path; federal_source_url moved to govinfo. official_pipeline stays null (Optimus ruled 2026-10-07, REQ-NOTE 60 closed). No gate changes. No voter_file value changes.",
+    "official_pipeline = null (Optimus 2026-10-07; REQ-NOTE 60 closed). An error report to the secretary of state is not a citizenship pipeline unless the text says citizenship. RSA 500-A:2 (as amended 2025): 'Errors identified by the court in the data provided by voter lists and department of safety lists shall be reported to the secretary of state and the department of safety.' It does not mention citizenship. Under the RI ruling (REQ-NOTE 47), a notice that does not report citizenship is not a non-citizen pipeline, so official_pipeline stays null.",
+    "PA-style check: chapter 500-A keeps no public list of disqualified persons. The master jury list and names drawn are confidential.",
+    "The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list New Hampshire.",
+    "Cancelled-voter file: no published New Hampshire cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "The sos.nh.gov and doj.nh.gov sites refuse plain HTTP clients; the referral pages were checked in a browser.",
     "dob_in_public_file and registration_date_in_public_file are null: RSA 654:25 (public checklist contents) was not read in this batch."
   ]
