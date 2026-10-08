@@ -5,13 +5,33 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
-    "holder": "Circuit court clerks and jury commissions.",
+    "statute": "No section of the Jury Act (705 ILCS 305) opens or closes records of persons found not qualified as non-citizens. 705 ILCS 305/2(a)(4): jurors must be 'Citizens of the United States of America.' 305/8: if the clerk draws the name of a person who 'is legally disqualified to serve as a juror, the clerk shall report the name of such person to the county clerk'. Status: null.",
+    "holder": "Circuit court clerks, county clerks (jury box, 705 ILCS 305/7), and jury commissions or jury administrators under the Jury Commission Act (705 ILCS 310).",
     "fields_withheld": null,
-    "official_pipeline": null,
+    "official_pipeline": "705 ILCS 305/8: 'should the clerk draw from the box the name of a person who is known to be dead, to have been selected as a grand juror, a non-resident, absent from the State, unable to attend in consequence of illness, or that he is legally disqualified to serve as a juror, the clerk shall report the name of such person to the county clerk, and the clerk of such court shall draw other names until the required number have been selected'. The statute sends the names of legally disqualified persons to the county clerk. It does not mention citizenship or voter-list use.",
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://law.justia.com/codes/illinois/chapter-705/act-705-ilcs-305/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "705 ILCS 305/1 (jury list drawn from voter, driver's license and ID card, and unemployment claimant lists)",
+        "url": "https://law.justia.com/codes/illinois/chapter-705/act-705-ilcs-305/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "705 ILCS 305/2(a)(4) (jurors must be U.S. citizens)",
+        "url": "https://law.justia.com/codes/illinois/chapter-705/act-705-ilcs-305/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "705 ILCS 305/8 (names of drawn persons who are legally disqualified are reported to the county clerk)",
+        "url": "https://law.justia.com/codes/illinois/chapter-705/act-705-ilcs-305/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Electronic voter data goes only to political committees and governmental entities. Any person may view the statewide list on a screen at the State Board of Elections in Springfield (not in the 27 days before an election) but may not print, duplicate, transmit, or alter it (10 ILCS 5/4-8).",
@@ -49,7 +69,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -83,17 +103,30 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "5 ILCS 140 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county clerk: per year, the number of reports of legally disqualified drawn jurors received under 705 ILCS 305/8, and the number of any voter-list actions that resulted. From the county clerk or board of election commissioners: per year, the number of registrations cancelled because the registrant was not a U.S. citizen, and the number of applications filed under 10 ILCS 5/4-12 (or 5-15, 6-35) on that ground.",
+    "counts_only": true,
+    "source_url": "https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=85&ChapterID=2",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. 705 ILCS 305/8 sends the names of legally disqualified persons to the county clerk. It does not mention citizenship or voter-list use, so the letter must not say a non-citizen pipeline exists. Whether FOIA reaches court jury records was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. Illinois allows a sworn application on personal knowledge in a two-day window (10 ILCS 5/4-12). Private persons cannot get electronic voter data (5/4-8)."
+    "basis": "Jury records: no Illinois statute opens or closes records of non-citizen disqualifications (null), so counts only. Illinois allows a sworn application on personal knowledge in a two-day window (10 ILCS 5/4-12). Private persons cannot get electronic voter data (5/4-8). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute, holder, source_url and sources filled from the Jury Act (705 ILCS 305/1, 2, 7, 8); audit_path; federal_source_url moved to govinfo. jury_list.public stays null. No voter_file value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "CHANGED 2026-10-07 14:39 (user ruling on REQ-NOTE 41): official_pipeline null to an exact quote of 705 ILCS 305/8. The statute sends the names of legally disqualified persons to the county clerk. It does not mention citizenship or voter-list use. Behavior flag: the A.5 audit letter now runs for IL. It may ask the county clerk for counts of disqualified-juror reports received and any resulting voter-list actions, but it must not claim a non-citizen pipeline exists (REQ-NOTE 45). In many counties the county clerk is also the election authority; the statute does not say so.",
+    "PA-style check: no Illinois statute makes a list of non-citizen jury disqualifications public. 305/7 keeps the list of selected jurors in the county clerk's office but says nothing about public inspection.",
     "Private persons cannot lawfully obtain an Illinois voter file; they may only view it on screen in Springfield (10 ILCS 5/4-8). JuryRoll cannot be used lawfully by most Illinois private users.",
+    "Cancelled-voter file: no published Illinois cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "The 4-12 affidavit requires personal knowledge. A data match alone is unlikely to qualify.",
     "Article 6 (boards of election commissioners) has a parallel procedure that was not read in this batch.",
-    "one_per_affidavit is true: the statutory form names one person."
+    "one_per_affidavit is true: the statutory form names one person.",
+    "Source note: ilga.gov did not serve a verifiable certificate chain on 2026-10-07 (curl and the browser both failed TLS checks); the Jury Act was read on Justia (2025 ILCS). The Jury Commission Act (705 ILCS 310) was not read today."
   ]
 }
