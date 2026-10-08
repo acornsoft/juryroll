@@ -844,7 +844,10 @@ export function App() {
               rules={rules}
               today={today}
               clearedNote={clearedNote}
-              links={[]}
+              links={[
+                { id: 'recordsAuditRequest', href: `#/records-audit/${code.toLowerCase()}`, label: 'Request list-maintenance counts' },
+                { id: 'juryHandoffRequest', href: `#/jury-handoff-letter/${code.toLowerCase()}`, label: 'Ask about the jury handoff' },
+              ]}
               picker={(
                 <PlacePicker
                   stateCode={code}
