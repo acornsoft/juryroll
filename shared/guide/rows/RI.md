@@ -1,1 +1,1 @@
-| RI | Not known, so the app treats it as no | Yes, 20 days ahead, on personal knowledge (R.I. Gen. Laws 17-9.1-28) | Counts only |
+| RI | No. The jury commissioner's investigation record is not disclosed except by court order (R.I. Gen. Laws 9-9-23) | Yes, 20 days ahead, on personal knowledge (R.I. Gen. Laws 17-9.1-28) | Counts only |
