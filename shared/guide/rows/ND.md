@@ -1,1 +1,1 @@
-| ND | Not known, so the app treats it as no | None found | Counts only. No voter registration; private users cannot get the file (16.1-02-15) |
+| ND | Not known, so the app treats it as no. Names and forms of qualified jurors may be public; forms are exempt under court rule (N.D.C.C. 27-09.1-09(3); Admin. R. 41) | None found | Counts only. No voter registration; private users cannot get the file (16.1-02-15) |

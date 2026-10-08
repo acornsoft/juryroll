@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "N.D.C.C. 27-09.1-09(3): 'The names of qualified jurors and the contents of jury qualification forms completed by those jurors shall be made available to the public unless the court determines in any instance that this information in the interest of justice should be kept confidential or its use limited in whole or in part.' 27-09.1-12(4): other selection records 'not made public under this chapter shall not be disclosed, except in connection with the preparation or presentation of a motion under subsection 1, until after all persons selected to serve as jurors have been discharged.' N.D. Sup. Ct. Admin. R. 41 lists 'A record of the names of qualified or summoned jurors and contents of jury qualification forms' as exempt records, which 'may be open in the discretion of the court'. Status: null.",
     "holder": "Clerk of district court (N.D.C.C. 27-09.1-07, 27-09.1-08).",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -24,6 +24,24 @@
         "url": "https://ndlegis.gov/cencode/t27c09-1.pdf",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "N.D.C.C. 27-09.1-09(3) (names and forms of qualified jurors available to the public unless the court limits them)",
+        "url": "https://ndlegis.gov/cencode/t27c09-1.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.D.C.C. 27-09.1-12(4) (other selection records not disclosed until jurors are discharged)",
+        "url": "https://ndlegis.gov/cencode/t27c09-1.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "N.D. Sup. Ct. Admin. R. 41 (juror names and qualification forms are exempt records, open at the court's discretion; effective Dec. 1, 2025)",
+        "url": "https://www.ndcourts.gov/legal-resources/rules/ndsupctadminr/41",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
       }
     ]
   },
@@ -55,7 +73,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://ndlegis.gov/cencode/t16-1c02.pdf",
@@ -80,17 +98,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "N.D.C.C. 44-04-18 (open records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county auditor or the Secretary of State: per year, the number of persons removed from the central voter file because they were not U.S. citizens.",
+    "counts_only": true,
+    "source_url": "https://ndlegis.gov/cencode/t44c04.pdf",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. North Dakota has no voter registration, and the app stays counts only (H.7). No North Dakota statute sends juror citizenship answers to election officials. Whether counts by reason exist was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "North Dakota has no voter registration. Voters enter the central voter file after they vote (N.D.C.C. 16.1-02-05). Private users cannot get the file (16.1-02-15). Strict gates: counts only."
+    "basis": "North Dakota has no voter registration. Voters enter the central voter file after they vote (N.D.C.C. 16.1-02-05). Private users cannot get the file (16.1-02-15). Juror forms of qualified jurors are open by statute but exempt (court discretion) under Admin. R. 41; disqualified persons' records are not opened. Strict gates: counts only (H.7)."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted (27-09.1-09(3), 27-09.1-12(4), Admin. R. 41); jury sources; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No gate changes. Counts only (H.7). 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "Counts only (H.7): North Dakota stays counts only whatever the jury_list value.",
+    "Reopen candidate (Optimus 2026-10-07; REQ-NOTE 58 closed): jury_list.public = null. 27-09.1-09(3): 'The names of qualified jurors and the contents of jury qualification forms completed by those jurors shall be made available to the public unless the court determines in any instance that this information in the interest of justice should be kept confidential or its use limited in whole or in part.' That covers qualified jurors only. 27-09.1-12(4): records 'not made public under this chapter shall not be disclosed, except in connection with the preparation or presentation of a motion under subsection 1, until after all persons selected to serve as jurors have been discharged.' No section says what happens after discharge. Admin. R. 41 makes juror forms exempt records that 'may be open in the discretion of the court'. Counts only under H.7 in any case. See review/REOPEN.md.",
+    "official_pipeline is null: no North Dakota statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list North Dakota.",
     "No voter registration: N.D.C.C. 16.1-01-05.1 says its procedure 'may not be used to require the registration of electors'. The county auditor enters each person who voted into the central voter file after the election (16.1-02-05(1)).",
     "Logic impact: the EXCLUDE rule compares a registration date with a jury declaration date. North Dakota has no registration date. The app must not treat file-entry dates as registration dates.",
     "Date of birth is held in the file (16.1-02-12(8)) but is not among the fields released to candidates and parties, so dob_in_public_file is false.",
-    "jury_list.public is null: chapter 27-09.1 does not state whether qualification forms are public."
+    "Source note: ndlegis.gov PDFs and ndcourts.gov read with curl on 2026-10-07."
   ]
 }
