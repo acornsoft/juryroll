@@ -5,31 +5,67 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "Tex. Gov't Code 62.0132(f)-(g): information in a completed juror questionnaire 'is confidential and is not subject to Chapter 552' (Public Information Act); disclosure only to the judge, court personnel, litigants, and the voter registrar. Tex. Gov't Code 62.113(c)-(d): the clerk's list of persons disqualified for non-citizenship may not be used for any other purpose; violation is a Class C misdemeanor.",
-    "holder": null,
+    "statute": "Primary basis: Gov't Code 62.113(c): 'A list compiled under this section may not be used for a purpose other than a purpose described by Subsection (b) or Section 16.0332 or 18.068, Election Code.' 62.113(d): 'A person commits an offense if the person violates Subsection (c). An offense under this section is a Class C misdemeanor.' The Attorney General applied 62.113(c) in OR2018-06015 (Harris County Voter Registrar, 2018-03-15): the registrar's copies are 'confidential pursuant to section 62.113(c) of the Government Code and must be withheld under section 552.101'. Juror questionnaires: Gov't Code 62.0132(f): 'information contained in a completed questionnaire is confidential and is not subject to Chapter 552.'",
+    "holder": "The clerk of the court keeps the list (62.113(a)). Copies go each month to the county voter registrar, the Secretary of State, and the county or district attorney (62.113(b)). The clerk is part of the judiciary, which the Public Information Act excludes (552.003(1)(B)(i); 552.0035(a)). The registrar's copy is withheld under 552.101 (OR2018-06015). No Attorney General ruling on the Secretary of State's copy was found; the same 62.113(c) use limit applies to it.",
     "fields_withheld": null,
-    "official_pipeline": "Tex. Gov't Code 62.113(b): on the third business day of each month the clerk sends the list to the county voter registrar, the Secretary of State, and the county or district attorney. Tex. Elec. Code 16.0332: the registrar demands proof of citizenship and cancels after 30 days without it. Tex. Elec. Code 18.068: the Secretary of State compares the lists quarterly.",
-    "use_restriction": "Only the purposes in Gov't Code 62.113(b) and Elec. Code 16.0332 and 18.068 (Gov't Code 62.113(c)). Class C misdemeanor (62.113(d)).",
-    "source_url": "https://statutes.capitol.texas.gov/Docs/GV/htm/GV.62.htm#62.113",
+    "official_pipeline": "62.113(a)-(b): the clerk keeps 'the name and address of each person who is disqualified ... because the person is not a citizen' and, 'On the third business day of each month', sends the previous month's list to the voter registrar, the Secretary of State, and the county or district attorney 'for an investigation of whether the person committed an offense under Section 13.007, Election Code'. Elec. Code 16.0332(a)-(b): the registrar mails a notice requiring proof of citizenship and cancels if none arrives 'on or before the 30th day after the date the notice is mailed'. Elec. Code 18.068(a): the Secretary of State compares the lists to the statewide list quarterly and notifies registrars. 16.0332(e): the Secretary of State reports the number of cancellations to the legislature by December 31 each year.",
+    "use_restriction": "Only the purposes in Gov't Code 62.113(b) and Elec. Code 16.0332 and 18.068 (62.113(c)). 'A person commits an offense' (62.113(d)): the offense is not limited to officials. Class C misdemeanor.",
+    "source_url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.62.htm",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "Tex. Gov't Code 62.0132 (juror questionnaire confidential)",
-        "url": "https://statutes.capitol.texas.gov/Docs/GV/htm/GV.62.htm#62.0132",
+        "cite": "Tex. Gov't Code 62.113 (list of noncitizens; use limit; Class C offense; as amended by H.B. 2637, 2025)",
+        "url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.62.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "Tex. Elec. Code 16.0332 (cancellation because of citizenship status)",
-        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.0332",
+        "cite": "Tex. Gov't Code 62.0132(c)(5), (f)-(h) (juror questionnaire: citizenship status; confidential, 'not subject to Chapter 552'; (g)(4) registrar gets no information related to 62.102(a)(2), (3), (7), (8) or (9))",
+        "url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.62.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "Tex. Elec. Code 18.068 (quarterly comparison)",
-        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.068",
+        "cite": "Tex. Gov't Code 62.102(a)(2) (juror must be 'a citizen of the United States')",
+        "url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.62.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Tex. Gov't Code 552.003(1)(B)(i) (judiciary is not a governmental body), 552.0035(a) (judicial records governed by Supreme Court rules), 552.101 (information 'confidential by law' is excepted)",
+        "url": "https://tcss.legis.texas.gov/resources/GV/htm/GV.552.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Tex. R. Jud. Admin. 12.2(d) ('Judicial record' excludes records 'pertaining to its adjudicative function'; compiled rules eff. 07/01/2026)",
+        "url": "https://www.txcourts.gov/media/1462987/texas-rules-of-judicial-administration-07012026.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Texas Attorney General, Open Records Letter Ruling OR2018-06015 (Mar. 15, 2018), Harris County Voter Registrar: 62.113 lists and completed juror questionnaires must be withheld under 552.101",
+        "url": "https://www2.texasattorneygeneral.gov/opinions/openrecords/51paxton/orl/2018/pdf/or201806015.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Tex. Elec. Code 16.0332 (cancellation because of citizenship status; (a-1) DPS comparison uses only documents presented after registration; (e) annual report)",
+        "url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.16.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Tex. Elec. Code 18.068 (quarterly comparison by the Secretary of State)",
+        "url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.18.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "H.B. 2637, 89th Leg., R.S. (2025), enrolled, Sec. 7 and 13 (62.0132(g)(4); 62.113(a)-(b) 'excused or' struck)",
+        "url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/HB02637F.htm",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
       },
       {
         "cite": "Texas Secretary of State news release, 'Secretary Whitley Announces Settlement In Litigation On Voter Registration List Maintenance Activity' (2019-04-26)",
@@ -40,31 +76,37 @@
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person: statewide list from the Secretary of State on request with an affidavit (Elec. Code 18.066); county lists from the voter registrar (18.008).",
-    "permitted_uses": "Any use except 'in connection with advertising or promoting commercial products or services' (Elec. Code 18.066(d), 18.067, 18.009). Social Security numbers and protected residence addresses are excluded (18.066(b), 13.004(c)).",
+    "who_may_get": "Elec. Code 18.066(a): the Secretary of State 'shall furnish information in the statewide computerized voter registration list to any person on request not later than the 15th day after the date the request is received.' County lists are available from the registrar (18.008). Fees may not exceed actual cost (18.066(e)); the SOS form asks a $75 deposit.",
+    "permitted_uses": "18.066(d): the requester swears the information will not be used 'in connection with advertising or promoting commercial products or services'. No other purpose limit was found. 18.066(b): no Social Security numbers and no residence addresses that are confidential under 13.004.",
     "use_restriction": null,
     "no_online_posting": null,
-    "penalty": "Class A misdemeanor for commercial advertising use (Elec. Code 18.009, 18.067).",
+    "penalty": "18.067: using 18.066 information 'in connection with advertising or promoting commercial products or services' is a Class A misdemeanor. 18.009 has the same rule for county lists.",
     "dob_in_public_file": true,
-    "registration_date_in_public_file": null,
-    "attestation_required": "Affidavit that the information will not be used in connection with advertising or promoting commercial products or services (Elec. Code 18.066(d)).",
-    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.066",
+    "registration_date_in_public_file": true,
+    "attestation_required": "Notarized affidavit on the SOS form: 'I do solemnly swear that the information obtained from the copy of the State Master Voter File will not be used to advertise or promote commercial products or services.' (18.066(d)).",
+    "source_url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.18.htm",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "Tex. Elec. Code 18.005(a)(1) (lists contain date of birth)",
-        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.18.htm#18.005",
+        "cite": "Tex. Elec. Code 18.005(a)(1) (lists contain 'the voter's name, date of birth, and registration number')",
+        "url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.18.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "Tex. Elec. Code 13.004 (confidential registration information; (d) bars officials from posting DOB, phone, SSN, DL numbers on a website)",
-        "url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.13.htm#13.004",
+        "cite": "Tex. Elec. Code 18.066-18.067, 18.008-18.009 (access; affidavit; commercial-use offense)",
+        "url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.18.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "Texas Secretary of State - Voter Registration Public Information Request Form",
+        "cite": "Tex. Elec. Code 13.004(c)-(d) (SSN, DL and ID numbers and protected addresses confidential; (d) the registrar 'or other county official' may not post a date of birth on a website)",
+        "url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.13.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Texas Secretary of State, Voter Registration Public Information Request Form (rev. 11.30.16): notarized affidavit; record layout includes DOB (col. 228) and 'EDR (EFFECTIVE DATE OF REGISTRATION)' (col. 656); fixed-width text files",
         "url": "https://www.sos.state.tx.us/elections/forms/pi.pdf",
         "verified_on": "2026-10-07",
         "kind": "official_form"
@@ -73,68 +115,101 @@
   },
   "private_challenge": {
     "allowed": true,
-    "who": "A registered voter of the same county (Elec. Code 16.091).",
-    "form_or_statute": "Tex. Elec. Code 16.091-16.095: sworn statement filed with the voter registrar; hearing before the registrar for non-residence grounds.",
+    "who": "Elec. Code 16.091: 'a registered voter may challenge the registration of another voter of the same county at a hearing before the registrar.'",
+    "form_or_statute": "Elec. Code 16.092: the challenger 'must file with the registrar a sworn statement of the grounds for the challenge that: (1) identifies the voter whose registration is being challenged; and (2) states a specific qualification for registration that the challenged voter has not met based on the personal knowledge of the voter desiring to challenge the registration.' 16.093(a): a non-residence ground (such as citizenship) gets a hearing before the registrar.",
     "form_url": null,
     "one_per_affidavit": null,
-    "deadlines": "Registrar holds the hearing within 20 days after filing unless both parties agree to a later date (16.093(b)); 15 days' notice to the parties (16.094(a)); cancellation takes effect on the 31st day after the decision (16.095(c)). For residence grounds only, no confirmation notice goes out for statements filed after the 75th day before the November general election until after that election (16.0921(c)).",
+    "deadlines": "No filing deadline before an election was found in 16.091-16.095. 16.093(b): hearing 'not later than the 20th day after the date the statement is filed' unless both parties agree to a later date. 16.094(a): written notice to each party 'not later than the 15th day before the date of the hearing', with a copy of the sworn statement to the voter (16.094(c)). 16.095(c): a cancellation takes effect 'on the 31st day after the date the registrar's decision is issued'. 16.0921(c) (75 days) applies to residence grounds only. The federal 90-day window for Nov 3, 2026 has been open since Aug 5, 2026.",
     "deadline_days_before_election": null,
-    "evidence_standard": "The sworn statement must state a specific qualification the voter has not met 'based on the personal knowledge of the voter desiring to challenge the registration' (Elec. Code 16.092(2)).",
+    "evidence_standard": "16.092(2): the specific unmet qualification must be stated 'based on the personal knowledge of the voter desiring to challenge the registration.' A database match is not personal knowledge. 16.093(c): parties may offer evidence or argument in person or by affidavit.",
     "juryroll_lead_sufficient": false,
-    "false_statement_penalty": null,
-    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.092",
-    "verified_on": "2026-10-07"
+    "false_statement_penalty": "Penal Code 37.02: a false statement under oath 'with intent to deceive and with knowledge of the statement's meaning' is perjury, a Class A misdemeanor. A 16.092 statement is sworn by law. Felony exposure (aggravated perjury, 37.03) is null (Optimus 2026-10-07).",
+    "source_url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.16.htm",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Tex. Elec. Code 16.091-16.095 (challenge by a registered voter; sworn statement; hearing; notice; decision)",
+        "url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.16.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Tex. Penal Code 37.02 (perjury)",
+        "url": "https://tcss.legis.texas.gov/resources/PE/htm/PE.37.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
         "days_before_election": 75,
         "applies_to": "Residence-based challenges under Elec. Code 16.0921 (not citizenship)",
-        "effect": "No confirmation notice for a sworn statement filed after the 75th day before the November general election until after that election.",
+        "effect": "'The registrar may not deliver a confirmation notice resulting from a sworn statement filed after the 75th day before the date of the general election for state and county officers until after the date of that election.'",
         "statute": "Tex. Elec. Code 16.0921(c)",
-        "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.0921",
+        "source_url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.16.htm",
         "verified_on": "2026-10-07"
       }
     ],
-    "source_url": "https://statutes.capitol.texas.gov/Docs/EL/htm/EL.16.htm#16.0921",
+    "source_url": "https://tcss.legis.texas.gov/resources/EL/htm/EL.16.htm",
     "verified_on": "2026-10-07"
   },
   "referral_targets": {
     "county_board": {
       "name": "County voter registrars (Texas Secretary of State county directory)",
       "url": "https://www.sos.state.tx.us/elections/voter/county.shtml",
-      "verified_on": "2026-10-07"
+      "verified_on": "2026-10-07",
+      "note": "The registrar already receives the 62.113 list each month and must act under 16.0332. A referral should ask, in counts only, whether the county received the lists and sent the 16.0332 notices."
     },
     "state_election_office": {
       "name": "Texas Secretary of State - Elections Division",
       "url": "https://www.sos.state.tx.us/elections/index.shtml",
-      "verified_on": "2026-10-07"
+      "verified_on": "2026-10-07",
+      "note": "The Secretary of State receives every 62.113 list and compares it quarterly (18.068). The OAG page says complaints go to the Secretary of State by online form."
     },
     "ag": {
       "name": "Texas Attorney General - Election Integrity",
       "url": "https://www.texasattorneygeneral.gov/initiatives/election-integrity",
       "verified_on": "2026-10-07",
-      "note": "The OAG page directs election complaints to the Secretary of State, which refers credible criminal allegations to the OAG."
+      "note": "OAG page: 'An individual may submit an election complaint to the Texas Secretary of State through the use of an online form. The Secretary of State will refer complaints alleging criminal offenses to the Office of the Attorney General for investigation.'"
     },
     "other": []
+  },
+  "audit_path": {
+    "statute": "52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the county voter registrar for records of its non-citizen list-maintenance program: aggregate counts and outcomes. Do not ask for names. Do not ask for the 62.113 list; it is confidential (Gov't Code 62.113(c)-(d)).",
+    "counts_only": true,
+    "source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
+    "verified_on": "2026-10-07",
+    "note": "The scope of 20507(i) for records derived from jury lists is contested. Access to individual jury-derived data is null (Optimus 2026-10-07)."
   },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror questionnaires are confidential (Gov't Code 62.0132(f)) and the non-citizen list may be used only by officials for listed purposes, Class C misdemeanor (62.113(c)-(d)). A private challenge needs personal knowledge (Elec. Code 16.092(2)), which a JuryRoll match cannot supply. Aggregate audit mode only."
+    "basis": "allow_jury_list false. Primary basis: Gov't Code 62.113(c)-(d). The list may be used only for 62.113(b), Elec. Code 16.0332 or 18.068, and any other use is an offense by 'A person' (Class C). The Attorney General applied 62.113(c) to withhold the registrar's copy under 552.101 (OR2018-06015). Juror questionnaires are confidential (62.0132(f)). aggregate_only true and allow_named_export false follow from this. show_challenge_guidance false: a 16.092 challenge needs 'personal knowledge', and a JuryRoll match is not personal knowledge. Unchanged from the box file; no gate was loosened. Optimus-reviewed 2026-10-07."
   },
   "notes": [
-    "The official pipeline already sends every non-citizen jury disqualification to the registrar, the Secretary of State and the prosecutor each month (62.113(b)). An aggregate referral can ask whether each county clerk sends these lists on time.",
-    "LEGAL-REVIEW.md lists TX among 'no online posting (some fields)'. The only bar found is Elec. Code 13.004(d), which binds the registrar and other officials, not private recipients. no_online_posting stays null (treated as barred). JuryRoll never posts data.",
-    "Texas 2019: about 95,000 flagged, at least about 25,000 wrong; the advisory was rescinded (LEGAL-REVIEW.md).",
-    "registration_date_in_public_file is null: the record layout attached to the SoS request form was not reviewed. The request form offers a filter on the date voters became effective.",
-    "one_per_affidavit is null: 16.092 speaks of 'the voter whose registration is being challenged' but does not state a one-per-statement rule.",
-    "false_statement_penalty is null: the perjury provisions of the Penal Code were not checked in this pass.",
-    "Naturalization rule: the 2019 settlement in LULAC v. Whitley (W.D. Tex. 5:19-cv-00074) limited SoS referrals to 'individuals who registered to vote before identifying themselves as non-U.S. citizens' (Texas SoS news release, 2019-04-26). Elec. Code 16.0332(a-1) now codifies the same rule for DPS data. JuryRoll's EXCLUDE rule (LOGIC-CHANGES.md B) follows it."
+    "CHANGED 2026-10-07 (dossier, Optimus-reviewed 2026-10-07): gates unchanged (strict). Primary basis for jury_list.public false is Gov't Code 62.113(c)-(d); AG ruling OR2018-06015 applies it. Filled: jury_list.holder; voter_file.registration_date_in_public_file null -> true (SOS layout 'EDR'); private_challenge.false_statement_penalty null -> Penal Code 37.02 (37.03 stays null). Source URLs moved to tcss.legis.texas.gov, which serves the statute text; the statutes.capitol.texas.gov/Docs links return only the app shell to a script.",
+    "Why the list is closed. Primary basis: 62.113(c)-(d). The statute limits every use of the list to 62.113(b), 16.0332 and 18.068, and any other use is an offense. The Attorney General applied this in OR2018-06015: release of the registrar's copy 'would be for a purpose other than' the listed ones, so the lists are 'confidential pursuant to section 62.113(c)' and withheld under 552.101. The ruling says it 'must not be relied upon as a previous determination' for other facts. Clerk's copy: the judiciary is not a 'governmental body' under the PIA (552.003(1)(B)(i); 552.0035(a)). Whether Rule of Judicial Administration 12 reaches it is null (12.2(d) excludes records 'pertaining to its adjudicative function'). Secretary of State's copy: no ruling found; 62.113(c) applies to it. Treat all copies as closed.",
+    "Misuse offense. 62.113(d) says 'A person commits an offense', so it reaches private users, not only officials. Loading a 62.113 list into JuryRoll, matching it, or putting names in a referral is not a listed purpose. A volunteer who obtained a copy would risk a Class C misdemeanor. JuryRoll must not accept a Texas 62.113 list.",
+    "Contents. The 62.113 list holds 'the name and address' only. It has no date of birth and no disqualification date. Even if it were open, every pair would be Weak, and B.4 would put every pair in 'cannot compare'. Since H.B. 2637 (2025) the list covers persons 'disqualified' for non-citizenship; 'excused or' was struck.",
+    "Questionnaires. 62.0132(f) makes completed questionnaires confidential and 'not subject to Chapter 552'. Since 2025, 62.0132(g)(4) lets the registrar get questionnaire information other than information related to 62.102(a)(2), (3), (7), (8) or (9); (a)(2) is citizenship. The registrar gets citizenship data through the 62.113 list instead. OR2018-06015 also ordered completed questionnaires held by the registrar withheld.",
+    "LULAC v. Whitley, No. 5:19-cv-00074 (W.D. Tex.), settlement 2019-04-26. SOS release: the SOS 'will send to county voter registrars only the matching records of individuals who registered to vote before identifying themselves as non-U.S. citizens to DPS'. Settlement text (party counsel copy, https://campaignlegal.org/sites/default/files/2019-04/Agrmt%20all%20signatures.pdf; court copy not checked): para. 7 rescinds Advisory 2019-02 and its data files; para. 9 match keys are last name and first name plus full SSN, or DL/ID number, or last-4 SSN and DOB; para. 10 sends only voters whose 'effective date of voter registration is prior to, or no more than 30 calendar days after' the DPS issuance date; para. 21 limits the agreement to DPS data. It does not govern 62.113 jury lists. Elec. Code 16.0332(a-1) codifies the after-registration rule for DPS data. JuryRoll's EXCLUDE rule (LOGIC-CHANGES B) follows the same idea.",
+    "Texas 2019: about 95,000 flagged, at least about 25,000 wrong; the advisory was rescinded (LEGAL-REVIEW.md; not re-verified from a primary source).",
+    "Registration date. The SOS layout has 'EDR (EFFECTIVE DATE OF REGISTRATION)'. Under the 2019 settlement the effective date can be up to 30 days after the application. EDR may reflect the current registration, not the first one; that excludes more pairs, which is the safe direction. The files are fixed-width text, not CSV.",
+    "Challenges. 16.092(2) needs personal knowledge. A JuryRoll match is a database match and cannot support a sworn statement. The voter gets a copy of the sworn statement (16.094(c)). one_per_affidavit is null: 16.092 says 'identifies the voter' but states no one-per-statement rule. form_url is null: no SOS challenge form was found on the SOS forms page. deadline_days_before_election is null: no pre-election filing deadline was found.",
+    "VRA 11(b), 52 U.S.C. 10307(b): 'No person, whether acting under color of law or otherwise, shall intimidate, threaten, or coerce, or attempt to intimidate, threaten, or coerce any person for voting or attempting to vote'. JuryRoll never contacts voters.",
+    "DPPA. The jury wheel uses a DPS list of license and ID holders (62.001(a)(2)), and 16.0332(a-1) uses DPS data. 18 U.S.C. 2721(c) stays null. JuryRoll takes no DMV data (LOGIC-CHANGES F). No gate depends on this; the list is closed under state law anyway.",
+    "Pending case: LULAC v. Nelson, No. 1:26-cv-00729 (W.D. Tex.), filed 2026-03-26, challenges the SOS SAVE-based program under NVRA 8(b) and 8(i) (party filings via Campaign Legal Center; docket not checked on PACER). SOS release 2025-10-20 (https://www.sos.state.tx.us/about/newsreleases/2025/102025.shtml): 2,724 'potential noncitizens' sent to counties. Neither changes 62.113. Pending bills: none found for the 89th Legislature after the 2025 regular session (web search only; not verified on capitol.texas.gov).",
+    "NVRA 8(i), 52 U.S.C. 20507(i). Access to individual jury-derived data under 8(i) is null (Optimus 2026-10-07). Audit path: a person may ask the county registrar for records of its non-citizen list-maintenance program under 20507(i), limited to aggregate counts and outcomes (for example, notices sent under 16.0332 and registrations cancelled). The scope of 8(i) for these records is contested. JuryRoll never uses such records as juror input.",
+    "Volunteer practice. Presler asked TX legislators to act (2026-07-25, https://x.com/ScottPresler/status/2080806509240287359). An automated reply by the @grok account on X tells users generally (not Texas-specific) to file 'a public records request to the county court clerk or jury commission' (https://x.com/grok/status/2085448297313939758). For Texas this conflicts with the rules file: the clerk's list is outside the PIA, and using a copy for other purposes is an offense (62.113(d)). Flagged; no gate changed.",
+    "Audit mode. 16.0332(e) gives an official count: the SOS reports to the legislature by December 31 each year 'the number of voter registrations canceled under this section'. That is a usable aggregate for Texas audit mode.",
+    "no_online_posting is null. The only bar found is 13.004(d), which binds 'The voter registrar or other county official', not private recipients. The app treats null as barred. JuryRoll never posts data."
   ]
 }
