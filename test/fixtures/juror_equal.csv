@@ -1,2 +1,2 @@
-Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Equalson,Quin,12/12/1974,11 Main St,00001,Not a U.S. citizen,2020-03-03
+Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 11,Pat,12/12/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-03-03

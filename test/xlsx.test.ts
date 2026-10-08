@@ -23,9 +23,9 @@ assert.deepStrictEqual(jurorBook.sheetNames, ['Jurors']);
 assert.deepStrictEqual(voterBook.sheetNames, ['Voters']);
 const jurorCsv = jurorBook.csvBySheet.Jurors;
 const voterCsv = voterBook.csvBySheet.Voters;
-assert.ok(voterCsv.includes('00001'), 'leading zeros in ZIP must survive Excel');
-assert.ok(jurorCsv.includes('1980-03-14'), 'Excel date cells must become ISO dates');
-assert.ok(voterCsv.includes(',1990,'), 'a year-only value stays a year');
+assert.ok(voterCsv.includes('00000'), 'leading zeros in ZIP must survive Excel');
+assert.ok(jurorCsv.includes('1901-03-14'), 'Excel date cells must become ISO dates');
+assert.ok(voterCsv.includes(',1901,'), 'a year-only value stays a year');
 
 const jurorRecords = matchText(jurorCsv, 'juror');
 const voterRecords = matchText(voterCsv, 'voter');

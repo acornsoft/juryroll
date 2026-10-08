@@ -419,17 +419,17 @@ function readAuditDownload(file) {
   assert.match(summary, /Strong 0 \/ Probable 3 \/ Weak 2/);
   assert.match(summary, /Language 0 excluded/);
   assert.match(summary, /Non-resident 0 excluded/);
-  assert.ok(!summary.includes('Alpha'));
+  assert.ok(!summary.includes('Sample Juror 01'));
   assert.match(await main.page.locator('#summaryDisclaimer').innerText(), /leads for official verification/);
   assert.strictEqual(await main.page.locator('#countyRollup tbody tr').count(), 1);
   const rowsDefault = await main.page.locator('#results tr').count() - 1;
   assert.strictEqual(rowsDefault, 3, 'named leads are the pairs registered before the declaration');
   const namedText = await main.page.locator('#results').innerText();
-  assert.ok(namedText.includes('Alpha'));
-  assert.ok(!namedText.includes('Foxtrot'));
-  assert.ok(!namedText.includes('Lima'));
-  assert.ok(!namedText.includes('Fictitious'));
-  assert.ok(!namedText.includes('Echo'));
+  assert.ok(namedText.includes('Sample Juror 01'));
+  assert.ok(!namedText.includes('Sample Juror 06'));
+  assert.ok(!namedText.includes('Sample Juror 11'));
+  assert.ok(!namedText.includes('Sample Juror 04'));
+  assert.ok(!namedText.includes('Sample Juror 05'));
   assert.strictEqual(await main.page.locator('#exportWeak').count(), 0);
   pass('AT-08');
   pass('AT-09');
@@ -458,8 +458,8 @@ function readAuditDownload(file) {
   assert.ok(csv.includes('2 matches cannot compare: no registration date'));
   assert.ok(csv.includes('Official SAVE or naturalization check required before any action. A match is not proof. Do not publish. Do not contact the voter.'));
   assert.ok(!/^Weak,/m.test(csv));
-  assert.ok(csv.includes('Alpha'));
-  assert.ok(!csv.includes('Foxtrot'));
+  assert.ok(csv.includes('Sample Juror 01'));
+  assert.ok(!csv.includes('Sample Juror 06'));
   assert.ok(!csv.includes('V0011'));
   assert.ok(!csv.includes('V0005'));
   assert.ok(!csv.includes('V0007'));
@@ -504,10 +504,10 @@ function readAuditDownload(file) {
   assert.strictEqual(matchRun.data.county_fips, '37183');
   assert.strictEqual(entries.find((entry) => entry.type === 'export').data.county_fips, '37183');
   const logText = savedLog.text;
-  assert.ok(!logText.includes('Alpha'));
+  assert.ok(!logText.includes('Sample Juror 01'));
   assert.ok(!logText.includes('J-0001'));
   assert.ok(!logText.includes('sample_juror'));
-  assert.ok(!logText.includes('100 Example'));
+  assert.ok(!logText.includes('000 Sample Road'));
   pass('AT-22');
 
   await main.page.click('#purgeBtn');
@@ -538,8 +538,8 @@ function readAuditDownload(file) {
 
   const datesDir = path.join(shots, 'fixtures');
   fs.mkdirSync(datesDir, { recursive: true });
-  fs.writeFileSync(path.join(datesDir, 'juror.csv'), 'Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date\nJ1,Afterson,Ann,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15\nJ2,Keepson,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-06-01\nJ3,Missingson,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,\n');
-  fs.writeFileSync(path.join(datesDir, 'voter.csv'), 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county\nV1,Afterson,Ann,1980-03-14,1 Main St,00001,ACTIVE,2021-05-01,Wake\nV2,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01,Wake\nV3,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,,Wake\n');
+  fs.writeFileSync(path.join(datesDir, 'juror.csv'), 'Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date\nJ1,Sample Juror 01,Pat,03/14/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-01-15\nJ2,Sample Juror 02,Example,04/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-06-01\nJ3,Sample Juror 03,Pat,05/03/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,\n');
+  fs.writeFileSync(path.join(datesDir, 'voter.csv'), 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date,county\nV1,Sample Juror 01,Pat,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2021-05-01,Wake\nV2,Sample Juror 02,Example,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01,Wake\nV3,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,,Wake\n');
   const dates = await openPage(browser);
   await selectState(dates.page, 'NC');
   await attest(dates.page);
@@ -557,9 +557,9 @@ function readAuditDownload(file) {
   assert.ok(excluded.includes('1 matches excluded: registered after declaration'));
   assert.ok(cannot.includes('1 matches cannot compare: no registration date'));
   const bodyText = await dates.page.locator('body').innerText();
-  assert.ok(!bodyText.includes('Afterson'));
-  assert.ok(bodyText.includes('Keepson'));
-  assert.ok(!bodyText.includes('Missingson'));
+  assert.ok(!bodyText.includes('Sample Juror 01'));
+  assert.ok(bodyText.includes('Sample Juror 02'));
+  assert.ok(!bodyText.includes('Sample Juror 03'));
   assert.ok(bodyText.includes('Official SAVE / naturalization check required'));
   await openStep(dates.page, 'export');
   const [dateDownload] = await Promise.all([
@@ -569,9 +569,9 @@ function readAuditDownload(file) {
   const dateCsvPath = path.join(datesDir, 'out.csv');
   await dateDownload.saveAs(dateCsvPath);
   const dateCsv = fs.readFileSync(dateCsvPath, 'utf8');
-  assert.ok(!dateCsv.includes('Afterson'));
-  assert.ok(dateCsv.includes('Keepson'));
-  assert.ok(!dateCsv.includes('Missingson'));
+  assert.ok(!dateCsv.includes('Sample Juror 01'));
+  assert.ok(dateCsv.includes('Sample Juror 02'));
+  assert.ok(!dateCsv.includes('Sample Juror 03'));
   assert.ok(dateCsv.includes('1 matches excluded: registered after declaration'));
   assert.ok(dateCsv.includes('1 matches cannot compare: no registration date'));
   pass('AT-10');
@@ -584,7 +584,7 @@ function readAuditDownload(file) {
   await attest(refused.page);
   await openStep(refused.page, 'files');
   const ssnPath = path.join(datesDir, 'ssn.csv');
-  fs.writeFileSync(ssnPath, 'voter_id,name_last,name_first,ssn\n1,Ada,Bee,123-45-6789\n');
+  fs.writeFileSync(ssnPath, 'voter_id,name_last,name_first,data_note,ssn\nV1,Example,Pat,FICTIONAL SAMPLE DATA,123-45-6789\n');
   await refused.page.setInputFiles('#fileVoter', ssnPath);
   await refused.page.waitForSelector('#fileError');
   assert.ok((await refused.page.locator('#fileError').innerText()).toLowerCase().includes('ssn'));
@@ -680,7 +680,7 @@ function readAuditDownload(file) {
   await runPair(missing.page, 'juror_missing_reg.csv', 'voter_missing_reg.csv');
   assert.ok((await missing.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
   assert.ok((await missing.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
-  assert.ok(!(await missing.page.locator('body').innerText()).includes('Missingson'));
+  assert.ok(!(await missing.page.locator('body').innerText()).includes('Sample Juror 03'));
   await openStep(missing.page, 'export');
   const [missingDownload] = await Promise.all([
     missing.page.waitForEvent('download'),
@@ -689,7 +689,7 @@ function readAuditDownload(file) {
   const missingPath = path.join(shots, 'missing-reg.csv');
   await missingDownload.saveAs(missingPath);
   const missingCsv = fs.readFileSync(missingPath, 'utf8');
-  assert.ok(!missingCsv.includes('Missingson'));
+  assert.ok(!missingCsv.includes('Sample Juror 03'));
   assert.ok(missingCsv.includes('1 matches cannot compare: no registration date'));
   pass('AT-12-missing');
   await missing.context.close();
@@ -698,7 +698,7 @@ function readAuditDownload(file) {
   await runPair(equal.page, 'juror_equal.csv', 'voter_equal.csv');
   assert.ok((await equal.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
   assert.ok((await equal.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
-  assert.ok(!(await equal.page.locator('body').innerText()).includes('Equalson'));
+  assert.ok(!(await equal.page.locator('body').innerText()).includes('Sample Juror 11'));
   await openStep(equal.page, 'export');
   const [equalDownload] = await Promise.all([
     equal.page.waitForEvent('download'),
@@ -706,7 +706,7 @@ function readAuditDownload(file) {
   ]);
   const equalPath = path.join(shots, 'equal-date.csv');
   await equalDownload.saveAs(equalPath);
-  assert.ok(!fs.readFileSync(equalPath, 'utf8').includes('Equalson'));
+  assert.ok(!fs.readFileSync(equalPath, 'utf8').includes('Sample Juror 11'));
   pass('AT-12');
   await equal.context.close();
 
@@ -714,7 +714,7 @@ function readAuditDownload(file) {
   await runPair(before.page, 'juror_before_only.csv', 'voter_before_only.csv');
   assert.ok((await before.page.locator('#excludedLine').innerText()).includes('0 matches excluded: registered after declaration'));
   assert.ok((await before.page.locator('#cannotCompareLine').innerText()).includes('0 matches cannot compare: no registration date'));
-  assert.ok((await before.page.locator('#results').innerText()).includes('Keepson'));
+  assert.ok((await before.page.locator('#results').innerText()).includes('Sample Juror 02'));
   pass('AT-39');
   await before.context.close();
 
@@ -733,7 +733,9 @@ function readAuditDownload(file) {
   const noRegCsv = fs.readFileSync(noRegPath, 'utf8');
   assert.ok(noRegCsv.includes('3 matches cannot compare: no registration date'));
   assert.ok(noRegCsv.includes('0 matches excluded: registered after declaration'));
-  assert.ok(!noRegCsv.includes('Pellson'));
+  assert.ok(!noRegCsv.includes('Sample Juror 01'));
+  assert.ok(!noRegCsv.includes('Sample Juror 02'));
+  assert.ok(!noRegCsv.includes('Sample Juror 03'));
   assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(noRegCsv));
   await noReg.page.waitForSelector('#keepData');
   await noReg.page.click('#keepData');
@@ -755,7 +757,7 @@ function readAuditDownload(file) {
   const blankDecl = await openPage(browser);
   await runPair(blankDecl.page, 'juror_missing_decl.csv', 'voter_missing_decl.csv');
   assert.ok((await blankDecl.page.locator('#cannotCompareLine').innerText()).includes('1 matches cannot compare: no registration date'));
-  assert.ok(!(await blankDecl.page.locator('#results').innerText()).includes('Blankdecl'));
+  assert.ok(!(await blankDecl.page.locator('#results').innerText()).includes('Sample Juror 12'));
   pass('AT-40');
   await blankDecl.context.close();
 
@@ -1126,8 +1128,8 @@ function readAuditDownload(file) {
   fs.mkdirSync(paDir, { recursive: true });
   const paJuror = path.join(paDir, 'juror.csv');
   const paVoter = path.join(paDir, 'voter.csv');
-  fs.writeFileSync(paJuror, 'Last,First,Reason\nNamesonly,Ada,Not a U.S. citizen\n');
-  fs.writeFileSync(paVoter, 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Namesonly,Ada,1980-01-02,1 Main St,00001,ACTIVE,2019-01-01\n');
+  fs.writeFileSync(paJuror, 'Last,First,Reason,Note\nSample Juror 01,Pat,Not a U.S. citizen,FICTIONAL SAMPLE DATA\n');
+  fs.writeFileSync(paVoter, 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date\nV1,Sample Juror 01,Pat,1901-01-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01\n');
   await openStep(pa.page, 'files');
   await pa.page.setInputFiles('#fileJuror', paJuror);
   await pa.page.waitForSelector('#infoJuror');
@@ -1148,7 +1150,7 @@ function readAuditDownload(file) {
   assert.strictEqual(await pa.page.locator('#paNamesNote').innerText(), paNote);
   assert.strictEqual(await pa.page.locator('#countyUnchecked').innerText(), 'The county could not be checked.');
   assert.strictEqual(await pa.page.locator('#exportBtn').count(), 0);
-  assert.ok(!(await pa.page.locator('body').innerText()).includes('Namesonly'));
+  assert.ok(!(await pa.page.locator('body').innerText()).includes('Sample Juror 01'));
   pass('AT-41');
   assert.deepStrictEqual(pa.requests, [], 'PA page network: ' + pa.requests.join('; '));
   await pa.context.close();
@@ -1343,7 +1345,7 @@ function readAuditDownload(file) {
     };
     const slot = document.getElementById('voterSlot');
     const transfer = new DataTransfer();
-    transfer.items.add(new File(['voter_id,name_last\nV9,Zzznotreal\n'], 'voters.csv', { type: 'text/csv' }));
+    transfer.items.add(new File(['voter_id,name_last,data_note\nV9,Sample Voter 09,FICTIONAL SAMPLE DATA\n'], 'voters.csv', { type: 'text/csv' }));
     slot.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
   });
   assert.strictEqual(await usePage.page.evaluate(() => window.__reads), 0);
@@ -1353,7 +1355,7 @@ function readAuditDownload(file) {
   await usePage.page.evaluate(() => {
     const slot = document.getElementById('voterSlot');
     const transfer = new DataTransfer();
-    transfer.items.add(new File(['voter_id,name_last,name_first\nV9,Zzznotreal,Ada\n'], 'voters.csv', { type: 'text/csv' }));
+    transfer.items.add(new File(['voter_id,name_last,name_first,data_note\nV9,Sample Voter 09,Pat,FICTIONAL SAMPLE DATA\n'], 'voters.csv', { type: 'text/csv' }));
     slot.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
   });
   await usePage.page.waitForSelector('#infoVoter');
@@ -1371,7 +1373,7 @@ function readAuditDownload(file) {
   assert.strictEqual(useData.state, 'PA');
   assert.strictEqual(useData.text_sha256, crypto.createHash('sha256').update(paRules.voter_file.use_restriction).digest('hex'));
   assert.ok(!useLog.text.includes(paRules.voter_file.use_restriction));
-  assert.ok(!useLog.text.includes('Zzznotreal'));
+  assert.ok(!useLog.text.includes('Sample Voter 09'));
   await selectState(usePage.page, 'NC');
   await openStep(usePage.page, 'files');
   assert.strictEqual(await usePage.page.locator('#voterUsePanel').count(), 0);

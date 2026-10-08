@@ -1,2 +1,2 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county
-V1,Blankdecl,Rae,1975-01-02,12 Main St,00001,ACTIVE,2010-01-01,Wake
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date,county
+V1,Sample Juror 12,Example,1901-01-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2010-01-01,Wake
