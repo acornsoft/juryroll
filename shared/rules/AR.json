@@ -5,11 +5,14 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "Ark. Code 16-32-103(e)(2): 'The master list of jurors' names and addresses shall not be available for public inspection, publication, or copying', except examination before the circuit judge by litigants. 16-32-111(b): on application and a good-cause finding, juror information 'from which the identity of a particular juror can be determined is confidential and shall not be released', with listed exceptions. Whether the jury-book notation of a non-citizen dismissal (amend. 51, sec. 11(e)(1)(A)(ii)) or the clerk's notice to the registrar is public is not stated. Status unknown, so the strict default applies.",
     "holder": "Circuit clerk / court ('jury book').",
-    "fields_withheld": null,
-    "official_pipeline": "Ark. Const. amend. 51, sec. 11(e), as amended by Act 290 of 2019: when a court finds a person disqualified as a juror for not being a U.S. citizen, the name is set aside with a notation in the jury book; the circuit clerk promptly notifies the county permanent registrar, who promptly cancels the registration and sends notice. The person can re-register with proof of citizenship.",
-    "use_restriction": null,
+    "fields_withheld": [
+      "Master list of jurors' names and addresses (Ark. Code 16-32-103(e)(2))",
+      "Juror information from which a juror's identity can be determined, after an application and a good-cause finding (Ark. Code 16-32-111(b))"
+    ],
+    "official_pipeline": "Ark. Const. amend. 51, sec. 11(e), as amended by Act 290 of 2019: when a court finds a person disqualified as a juror for not being a U.S. citizen, the name is set aside with a notation in the jury book; the circuit clerk promptly notifies the county permanent registrar, who promptly cancels the registration and sends notice. The person can re-register with proof of citizenship. Amend. 51, sec. 11(f): within 10 days the registrar cancels and notes 'the reason for the cancellation' in the voter registration system. The State Board of Election Commissioners' 2025 audit says non-citizen records get status NUC ('Not US Citizen'), which makes the record 'Removable'.",
+    "use_restriction": "Disclosure of juror information is restricted by law (Ark. Code 16-32-111).",
     "source_url": "https://arkleg.state.ar.us/Acts/FTPDocument?ddBienniumSession=2019%2F2019R&file=290.pdf&path=%2FACTS%2F2019R%2FPublic%2F",
     "verified_on": "2026-10-07",
     "sources": [
@@ -18,20 +21,58 @@
         "url": "https://arkleg.state.ar.us/Acts/FTPDocument?ddBienniumSession=2019%2F2019R&file=290.pdf&path=%2FACTS%2F2019R%2FPublic%2F",
         "verified_on": "2026-10-07",
         "kind": "session_law"
+      },
+      {
+        "cite": "Ark. Code 16-32-103 (master list not open to public inspection) (Justia copy, 2025 code)",
+        "url": "https://law.justia.com/codes/arkansas/title-16/subtitle-3/chapter-32/subchapter-1/section-16-32-103/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ark. Code 16-32-111 (confidentiality of juror information; Class C misdemeanor) (Justia copy, 2025 code)",
+        "url": "https://law.justia.com/codes/arkansas/title-16/subtitle-3/chapter-32/subchapter-1/section-16-32-111/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ark. Const. amend. 51, sec. 11 (cancellation; 11(e) jury non-citizen; 11(f) reason recorded) (FindLaw copy)",
+        "url": "https://codes.findlaw.com/ar/arkansas-constitution-of-1874/ar-const-amend-51-sect-11/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Arkansas State Board of Election Commissioners, Voter Registration Data Audit Report 2025 (NUC status; removable-record counts by county)",
+        "url": "https://sbec.arkansas.gov/wp-content/uploads/2025-Voter-Registration-Audit.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any requester, from the county clerk, for a fee (Ark. Code 7-5-109). The list includes at least names, addresses, and precincts; secure-voter addresses are withheld.",
-    "permitted_uses": "No purpose restriction in 7-5-109.",
+    "who_may_get": "Any requester. County clerks provide the county list for a fee (Ark. Code 7-5-109); it includes at least names, addresses and precincts; secure-voter addresses are withheld. The Secretary of State provides the statewide VR, VH and VRVH files at no cost on the Data Request Form.",
+    "permitted_uses": "No state restriction on use. The Secretary of State says: 'Currently there are no state laws that place restrictions on the use of data that we release.' Some fields are never released (amend. 51, sec. 8(e)).",
     "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
-    "dob_in_public_file": null,
+    "dob_in_public_file": true,
     "registration_date_in_public_file": null,
     "attestation_required": null,
     "source_url": "https://law.justia.com/codes/arkansas/title-7/chapter-5/subchapter-1/section-7-5-109/",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Ark. Code 7-5-109 (county lists; fees) (Justia copy, 2025 code)",
+        "url": "https://law.justia.com/codes/arkansas/title-7/chapter-5/subchapter-1/section-7-5-109/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Arkansas Secretary of State, Voter Registration Data Request Policies and Instructions (form revised 05-2022): 'The VR file contains the Voter ID #, county of residence, voter name, address information (residential and/or mailing), phone number, DOB, precinct information, district information, party (if applicable), and the date last voted.'",
+        "url": "https://www.sos.arkansas.gov/uploads/elections/Data_Request_Form_05-2022_revised.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": null,
@@ -42,14 +83,14 @@
     "deadlines": null,
     "deadline_days_before_election": null,
     "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": "https://law.justia.com/codes/arkansas/title-7/chapter-5/subchapter-3/section-7-5-312/",
     "verified_on": "2026-10-07"
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://law.justia.com/codes/arkansas/title-7/chapter-5/subchapter-3/section-7-5-312/",
@@ -79,6 +120,14 @@
       }
     ]
   },
+  "audit_path": {
+    "statute": "Ark. Code 25-19-105 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: per county and per month, the number of amend. 51, sec. 11(e)(1)(B) notices the circuit clerk sent to the permanent registrar, and the number of registrations the registrar cancelled on that ground (status NUC). Also read the State Board of Election Commissioners' annual Voter Registration Data Audit Report, which gives removable-record counts by county and reason code.",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/arkansas/title-25/chapter-19/section-25-19-105/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names or for jury-book entries; they name jurors (Ark. Code 16-32-103(e)(2), 16-32-111). The FOIA right is for 'any citizen of the State of Arkansas' (25-19-105(a)(1)(A)); a non-resident can use the NVRA 20507(i) request instead."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -87,8 +136,13 @@
     "basis": "The status of jury non-citizen records is unknown (null). The constitution already routes them to the permanent registrar for cancellation. No private pre-election challenge was found. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute, fields_withheld and use_restriction (16-32-103, 16-32-111; wording ruled by Optimus); official_pipeline adds sec. 11(f) and the NUC status; voter_file who_may_get, permitted_uses and DOB; juryroll_lead_sufficient false; audit_path; federal_source_url moved to govinfo.",
     "Source note: the Arkansas Code is read from the Justia copy of the 2025 code; the constitutional pipeline is read from the enrolled Act 290 of 2019 on arkleg.state.ar.us.",
     "Duplication: the clerk-to-registrar pipeline is mandatory (amend. 51, sec. 11(e)).",
-    "dob_in_public_file and registration_date_in_public_file are null: not stated in 7-5-109."
+    "use_restriction wording ruled by Optimus 2026-10-07: 'Disclosure of juror information is restricted by law (Ark. Code 16-32-111).' 16-32-111(d)(1) bars re-disclosure by a person who got juror information under that section; 16-32-111(e) makes a disclosure in violation a Class C misdemeanor. The refusal shows this text, not the generic 'is an offense' wording (REQ-NOTE 31).",
+    "DOB: true as a fact about the Secretary of State's statewide VR file (Data Request Policies, form revised 05-2022). 'Has DOB' does not mean 'usable for JuryRoll'. The AR jury list is refused before matching (jury_list.public null; allow_jury_list false), so no strong-tier match is available in AR. See REQ-NOTE 30. registration_date_in_public_file stays null: the form does not list a registration date.",
+    "Reason code: the registrar records the cancellation reason (amend. 51, sec. 11(f)). The 2025 SBEC audit names status NUC ('Not US Citizen'). No published file of cancelled or removable voters with a NUC code was found; the Secretary of State's VR file is 'a list of all registered voters'. If a file with NUC rows appears, REQ-NOTE 27 drops those rows before matching and counts them only.",
+    "2025-2026 bills: HB 1422 of 2025 ('Only Citizens Vote Act') failed in the House on March 20, 2025 and died at sine die. No enacted 2025 or 2026 change to amend. 51, sec. 11(e) was found. News (October 30, 2025): the Secretary of State's SAVE review found about 240 potential non-citizen registrants. Not relied on.",
+    "juryroll_lead_sufficient is false: no private pre-election challenge exists (LEGAL-REVIEW: officials or party appointees only). This is the strict value; app behavior does not change from null."
   ]
 }
