@@ -1,1 +1,1 @@
-| AL | No (Ala. Code 12-16-59(a)) | No private challenge found | Counts only |
+| AL | Not known, so the app treats it as no. Sources conflict: the master list is open to the public and carries each juror's qualification determination (Ala. Code 12-16-57(c), 12-16-60(c)), but names drawn may not be disclosed without a court order (12-16-59(a)) | No private challenge found | Counts only |
