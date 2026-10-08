@@ -96,14 +96,20 @@ async function assertComingLater(page, code, stateName) {
   assert.strictEqual(await page.locator('#juryRefuse').count(), 0, code);
   assert.strictEqual(await page.locator('#comingLater details').count(), 1, `${code} disclosures`);
   assert.strictEqual(await page.locator('input[type="file"]').count(), 0, `${code} file inputs`);
+  const recordsLink = page.locator('#comingLater #recordsAuditRequest');
+  const handoffLink = page.locator('#comingLater #juryHandoffRequest');
+  assert.strictEqual(await recordsLink.count(), 1, `${code} records link`);
+  assert.strictEqual((await recordsLink.innerText()).trim(), 'Request list-maintenance counts', code);
+  assert.strictEqual(await recordsLink.getAttribute('href'), `#/records-audit/${code.toLowerCase()}`, code);
+  assert.strictEqual(await handoffLink.count(), 1, `${code} handoff link`);
+  assert.strictEqual((await handoffLink.innerText()).trim(), 'Ask about the jury handoff', code);
+  assert.strictEqual(await handoffLink.getAttribute('href'), `#/jury-handoff-letter/${code.toLowerCase()}`, code);
+  const whatNow = (await page.locator('#whatNow').innerText()).trim();
+  assert.match(whatNow, /What you can do now/, code);
   const audit = rules.audit_path;
   if (audit && audit.what_you_can_request) {
-    const whatNow = (await page.locator('#whatNow').innerText()).trim();
-    assert.match(whatNow, /What you can do now/, code);
     assert.ok(whatNow.includes(audit.what_you_can_request), `${code} audit request`);
     if (audit.note) assert.ok(whatNow.includes(audit.note), `${code} audit note`);
-  } else {
-    assert.strictEqual(await page.locator('#whatNow').count(), 0, `${code} what now`);
   }
   await page.locator('#comingLater details').evaluate((node) => { node.open = false; });
   const closed = await page.locator('#comingLater').innerText();
