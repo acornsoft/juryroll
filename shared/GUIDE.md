@@ -143,3 +143,15 @@ The North Carolina State Board's posted list has no date of birth, so matches st
 
 A null value means "not known". The app then uses the strictest rule.
 Do not guess the rule. Ask your county board of elections.
+
+## 8. Practice with fictional samples (planned, not live yet)
+
+This section describes a planned feature. It is not on the site yet.
+
+- Every state will be listed on the home page.
+- In Pennsylvania and North Carolina you can load real files, as you can today.
+- In every other state you can practice with fictional samples. You cannot load real files there.
+- A practice run is not a referral. Do not send it to anyone.
+- Practice runs use invented names, such as "Sample Juror 01", to teach the steps.
+- In a counts-only state, the names show on screen only. Practice downloads hold counts only.
+- In a counts-only state, real use stops at counts. A challenge needs your own knowledge of the voter, not this tool.
