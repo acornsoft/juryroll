@@ -4,15 +4,21 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
-    "holder": "Alaska Court System (jury management).",
+    "public": false,
+    "statute": "Alaska Administrative Rule 15(j)(1): 'Court Use Only. The following materials are for internal court use only: the statewide master jury list, local master jury lists, local term lists, and qualification questionnaires.' 15(j)(2): 'Trial questionnaires and trial panel lists are confidential.' Rule 15, 'Temporary Excusals by Clerk': if a qualification questionnaire shows a person is not qualified under AS 09.20.010 or 09.20.020, 'the clerk will excuse the person from service after verifying the disqualification.'",
+    "holder": "Alaska Court System (jury clerk; Administrative Rule 15).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=09.20.010&secEnd=09.20.010",
+    "source_url": "https://courts.alaska.gov/sco/docs/sco1860.pdf",
     "verified_on": "2026-10-07",
     "sources": [
+      {
+        "cite": "Alaska Administrative Rule 15(j) (master lists, term lists and qualification questionnaires for internal court use only), as readopted by Supreme Court Order No. 1860, eff. Oct. 15, 2015",
+        "url": "https://courts.alaska.gov/sco/docs/sco1860.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
+      },
       {
         "cite": "AS 09.20.010 (jurors must be U.S. citizens)",
         "url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=09.20.010&secEnd=09.20.010",
@@ -49,7 +55,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=15.07.130&secEnd=15.07.130",
@@ -74,16 +80,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "AS 40.25.110 (public records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the Division of Elections: per year, the number of registrations cancelled because the registrant was not a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://www.akleg.gov/basis/statutes.asp?media=print&secStart=40.25.110&secEnd=40.25.110",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Alaska statute sends juror citizenship answers to election officials. Whether the Division keeps counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. Questioning exists only at the polls (AS 15.15.210). Strict gates."
+    "basis": "Jury records: master lists, term lists and qualification questionnaires are 'for internal court use only' (Alaska Administrative Rule 15(j)(1)), so public is false and the app shows counts only. Questioning exists only at the polls (AS 15.15.210). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false (Administrative Rule 15(j), quoted exactly); holder; jury sources; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file value changes.",
+    "Source quality: Rule 15 was read in Supreme Court Order No. 1860 (eff. Oct. 15, 2015) on courts.alaska.gov. Later amendments to Rule 15, if any, were not checked.",
+    "PA-style check: Rule 15 keeps qualification questionnaires and all jury lists for court use only. No Alaska list of non-citizen disqualifications is public.",
+    "official_pipeline is null: no Alaska statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list Alaska.",
+    "Cancelled-voter file: no published Alaska cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "The voter's age and date of birth are confidential (AS 15.07.195(a)(1)), so dob_in_public_file is false. Matching on date of birth is not possible with public data.",
-    "official_pipeline is null: none found.",
     "law.alaska.gov shows a bot-check page to plain HTTP clients; it was checked in a browser."
   ]
 }
