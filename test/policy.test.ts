@@ -10,9 +10,10 @@ import { screenColumns } from '../shared/src/policy/blocked.ts';
 import { guessExtra } from '../shared/src/policy/columns.ts';
 import { toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
-import { voterUsePanelRequired, voterUseRestriction, voterUseShownText } from '../shared/src/policy/voterUse.ts';
+import { allCancelledRefusal, filterCancelledVoters } from '../shared/src/policy/cancelled.ts';
 import { auditLetter, quotedPipeline } from '../shared/src/policy/letter.ts';
 import { PA_CARRY_LEAD, PUBLIC_LIST_TAIL, auditPathCopy, checkPageRefusalLines, refusalBlock } from '../shared/src/policy/refusal.ts';
+import { voterUsePanelRequired, voterUseRestriction, voterUseShownText } from '../shared/src/policy/voterUse.ts';
 import { runMatch, type LoadedTable } from '../shared/src/policy/runMatch.ts';
 import { sha256HexSync } from '../shared/src/policy/sha256.ts';
 import { addDays, federalWindow, inRange, stateWindowDates } from '../shared/src/policy/windows.ts';
@@ -314,8 +315,10 @@ assert.ok(datedCsv.includes('Lowson'));
 assert.ok(dated.policy.rows.filter((row) => row.excluded).every((row) => row.section === 'excluded'));
 pass('AT-18-wrongful');
 
-assert.strictEqual(dated.policy.symmetric.noncitizenRemovals, 2);
-assert.strictEqual(dated.policy.symmetric.withoutStrongMatch, 1);
+assert.strictEqual(dated.cancelled.summary, '1 cancelled records skipped; 0 with a jury-related reason');
+assert.ok(!JSON.stringify(dated.policy.rows).includes('Nobody'));
+assert.strictEqual(dated.policy.symmetric.noncitizenRemovals, 1);
+assert.strictEqual(dated.policy.symmetric.withoutStrongMatch, 0);
 pass('AT-15');
 
 const ssnHeader = screenColumns(['voter_id', 'SSN'], [['1', '']]);
@@ -719,5 +722,57 @@ assert.deepStrictEqual(auditPathCopy({
   note: 'Ask for counts only.',
 }), ['Ask for counts only.']);
 pass('REQ-39-42-59');
+const mixedVoter = fs.readFileSync(path.join(root, 'test/fixtures/voter_mixed_cancelled.csv'), 'utf8');
+const pairJuror = fs.readFileSync(path.join(root, 'test/fixtures/juror_cancelled_pairs.csv'), 'utf8');
+const droppedNames = ['Zzjdalpha', 'Fjdzza', 'Zzjdother', 'Fjdzzb', 'Zzinbeta', 'Finzza', 'Zzinother', 'Finzzb'];
+for (const code of ['OK', 'NC', 'MI']) {
+  const matched = runMatch(table('juror', pairJuror), table('voter', mixedVoter), loadRules(`${code}.json`));
+  assert.strictEqual(matched.cancelled.summary, '4 cancelled records skipped; 2 with a jury-related reason', code);
+  assert.strictEqual(matched.cancelled.allCancelled, false, code);
+  assert.strictEqual(matched.warning, null, code);
+  assert.strictEqual(matched.coreResult.pairs.length, 1, code);
+  assert.strictEqual(matched.coreResult.counts.Strong, 1, code);
+  assert.ok(matched.coreResult.pairs[0].voterName.includes('Zzkeepgamma'), code);
+  const packed = JSON.stringify(matched);
+  for (const name of droppedNames) assert.ok(!packed.includes(name), `${code} ${name}`);
+  assert.ok(!matched.cancelled.csv.includes('Zzjdalpha'), code);
+}
+pass('AT-42');
+
+const allCancelled = fs.readFileSync(path.join(root, 'test/fixtures/voter_all_cancelled_ok.csv'), 'utf8');
+for (const code of ['OK', 'NC']) {
+  const refused = runMatch(table('juror', pairJuror), table('voter', allCancelled), loadRules(`${code}.json`));
+  assert.strictEqual(refused.coreResult.pairs.length, 0, code);
+  assert.strictEqual(refused.policy.counts.Strong + refused.policy.counts.Probable + refused.policy.counts.Weak, 0, code);
+  assert.strictEqual(refused.cancelled.allCancelled, true, code);
+  assert.strictEqual(refused.warning, allCancelledRefusal(4, 3), code);
+  const packed = JSON.stringify(refused);
+  for (const name of [...droppedNames, 'Zzjdthird', 'Fjdzzc']) assert.ok(!packed.includes(name), `${code} ${name}`);
+}
+pass('AT-43');
+
+const miCancel = `voter_id,name_last,name_first,date_of_birth,Status
+M1,Cancelmi,Ann,01/02/1980,Cancelled
+M2,Cancelmi2,Bea,03/04/1981,D
+`;
+const miJuror = `Juror Number,Last,First,Birth Date,Disqualification Reason,Disqualification Date
+J1,Cancelmi,Ann,01/02/1980,Not a U.S. citizen,2020-06-01
+`;
+const req63Codes = ['MI', 'VT', 'WY', 'ND', 'AL', 'NY', 'DE', 'ID', 'ME', 'NH', 'OR', 'MN', 'HI'];
+for (const code of req63Codes) {
+  const refused = runMatch(table('juror', miJuror), table('voter', miCancel), loadRules(`${code}.json`));
+  assert.strictEqual(refused.cancelled.juryRelated, 0, code);
+  assert.strictEqual(refused.cancelled.skipped, 2, code);
+  assert.strictEqual(refused.cancelled.allCancelled, true, code);
+  assert.strictEqual(refused.coreResult.pairs.length, 0, code);
+  assert.strictEqual(refused.warning, allCancelledRefusal(2, 0), code);
+  assert.ok(refused.warning !== null && !refused.warning.includes('Cancelmi'), code);
+  assert.ok(!JSON.stringify(refused.policy.rows).includes('Cancelmi'), code);
+  assert.ok(!refused.cancelled.csv.includes('Cancelmi'), code);
+}
+const statusOnly = filterCancelledVoters(miCancel, true);
+assert.strictEqual(statusOnly.juryRelated, 0);
+assert.ok(!statusOnly.csv.includes('Cancelmi'));
+pass('REQ-63');
 
 console.log('ALL POLICY TESTS PASSED');

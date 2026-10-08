@@ -42,6 +42,7 @@ import type { ExtraColumns } from '../../shared/src/policy/columns.ts';
 import { exportableRows, flagLabel, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
+import { allCancelledRefusal, cancelledSummary, filterCancelledVoters } from '../../shared/src/policy/cancelled.ts';
 import { CSV_CONVERT_MESSAGE, looksFixedWidth } from '../../shared/src/policy/refusal.ts';
 import { stateCopy } from '../../shared/src/policy/stateCopy/index.ts';
 import { runMatch } from '../../shared/src/policy/runMatch.ts';
@@ -59,6 +60,8 @@ type Held = AnalyzedFile & {
   order: string;
   reasons: Reason[];
   reasonFilter: Record<string, boolean>;
+  cancelledSkipped: number;
+  cancelledJury: number;
 };
 type Kind = 'juror' | 'voter';
 type PendingBook = { sha256: string; bytes: number; names: string[]; csvBySheet: Record<string, string> };
@@ -464,7 +467,37 @@ export function App() {
         setProtectedCount(0);
       }
     }
-    const analyzed = analyzeText(textToUse, hasHeader, kind, bytes, sha256);
+    let stored = textToUse;
+    let storedBytes = bytes;
+    let storedHash = sha256;
+    let cancelledSkipped = 0;
+    let cancelledJury = 0;
+    if (kind === 'voter') {
+      const filtered = filterCancelledVoters(textToUse, hasHeader);
+      if (filtered.allCancelled) {
+        setVoter(null);
+        setPolicy(null);
+        setCoreResult(null);
+        setProtectedCount(0);
+        setFileError(allCancelledRefusal(filtered.skipped, filtered.juryRelated));
+        await append('file_refused', {
+          kind,
+          reason: 'all_cancelled',
+          skipped: filtered.skipped,
+          jury_related: filtered.juryRelated,
+        });
+        return;
+      }
+      if (filtered.skipped > 0) {
+        stored = filtered.csv;
+        const encoded = new TextEncoder().encode(stored);
+        storedBytes = encoded.byteLength;
+        storedHash = await sha256Hex(encoded);
+        cancelledSkipped = filtered.skipped;
+        cancelledJury = filtered.juryRelated;
+      }
+    }
+    const analyzed = analyzeText(stored, hasHeader, kind, storedBytes, storedHash);
     if (!analyzed.ok) {
       if (kind === 'juror') setJuror(null);
       else setVoter(null);
@@ -485,12 +518,14 @@ export function App() {
       order: 'MDY',
       reasons,
       reasonFilter: kind === 'juror' ? filterFromMap(nextMap) : {},
+      cancelledSkipped,
+      cancelledJury,
     };
     if (kind === 'juror') setJuror(held);
     else setVoter(held);
     document.body.dataset.hasFiles = '1';
     delete document.body.dataset.purged;
-    await append('file_loaded', { kind, sha256, bytes, rows: analyzed.file.rows, headers: analyzed.file.headers });
+    await append('file_loaded', { kind, sha256: storedHash, bytes: storedBytes, rows: analyzed.file.rows, headers: analyzed.file.headers });
   }
 
   async function takeFile(kind: Kind, file: File) {
@@ -646,6 +681,13 @@ export function App() {
       },
       rules,
     );
+    if (matched.cancelled.allCancelled) {
+      setVoter(null);
+      setPolicy(null);
+      setCoreResult(null);
+      setFileError(matched.warning ?? allCancelledRefusal(matched.cancelled.skipped, matched.cancelled.juryRelated));
+      return;
+    }
     setCoreResult(matched.coreResult);
     setPolicy(matched.policy);
     setInvalidateNote('');
@@ -683,6 +725,8 @@ export function App() {
       cap_applied: matched.policy.capApplied,
       excluded_registered_after: matched.policy.excludedAfterCount,
       cannot_compare_no_reg_date: matched.policy.cannotCompareCount,
+      cancelled_skipped: voter.cancelledSkipped,
+      jury_related: voter.cancelledJury,
       county_name: selectedCounty.name,
       county_fips: selectedCounty.fips,
     });
@@ -979,6 +1023,7 @@ export function App() {
                       {juror && <p className="small" id="infoJuror">{juror.rows} rows. {juror.sheetName ?? 'Table loaded.'}</p>}
                     </div>
                     {voterSlot}
+                    {voter && voter.cancelledSkipped > 0 && <p className="note" id="cancelledSkipped">{cancelledSummary(voter.cancelledSkipped, voter.cancelledJury)}</p>}
                   </div>
                   <p className="file-alt">
                     <a href="#typePath">or type a printed list</a>
@@ -1073,6 +1118,7 @@ export function App() {
                 {policy && coreResult && (
                   <>
                     <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
+                    {voter && voter.cancelledSkipped > 0 && <p className="note" id="cancelledSummary">{cancelledSummary(voter.cancelledSkipped, voter.cancelledJury)}</p>}
                     <div className="cards">
                       <div id="countStrong" className="card"><span className="n">{policy.counts.Strong}</span> Strong</div>
                       <div id="countProbable" className="card"><span className="n">{policy.counts.Probable}</span> Probable</div>
