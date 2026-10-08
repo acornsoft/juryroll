@@ -4,14 +4,28 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
+    "public": false,
+    "statute": "Rule 1-047(C)(1) NMRA: 'All completed juror qualification and questionnaire forms, including any electronic copies, in the possession of the court, attorneys, parties, and any other individual or entity shall be kept confidential unless ordered unsealed under the provisions in Rule 1-079 NMRA'. (C)(2): court copies are destroyed 90 days after service. Criminal Rule 5-606(E) has the same duty (Form 9-513D).",
     "holder": "District courts (jury management).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://ruledex.com/new-mexico/new-mexico-rules-of-civil-procedure-for-the-district-courts/article-6-trials/1-047-jurors/",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Rule 1-047(C) NMRA (completed juror qualification and questionnaire forms kept confidential; destroyed; text read on RuleDex)",
+        "url": "https://ruledex.com/new-mexico/new-mexico-rules-of-civil-procedure-for-the-district-courts/article-6-trials/1-047-jurors/",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Form 9-513D NMRA (juror questionnaire privacy and destruction certification under Rules 5-606(E), 6-605(G), 7-605(G))",
+        "url": "https://nmcourts.gov/wp-content/uploads/sites/62/2023/12/9-513D-Juror-questionnaire-privacy-and-destruction-certification.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any requester who makes a written request and signs an affidavit (NMSA 1-4-5.5(A), (C)).",
@@ -49,7 +63,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 30,
     "state_windows": [
       {
@@ -83,17 +97,30 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "NMSA 14-2-1 (Inspection of Public Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county clerk or the Secretary of State: per year, the number of registrations cancelled because the registrant was not a U.S. citizen, and the number of NMSA 1-4-22 petitions filed and granted.",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/new-mexico/chapter-14/article-2/section-14-2-1/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No New Mexico statute sends juror citizenship answers to election officials. IPRA section text was not re-read today."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. No private challenge exists; only the Secretary of State may petition to cancel, and not within 120 days of a statewide election. Strict gates."
+    "basis": "Jury records: completed juror qualification and questionnaire forms 'shall be kept confidential unless ordered unsealed' (Rule 1-047(C)(1) NMRA), so public is false and the app shows counts only. No private challenge exists; only the Secretary of State may petition to cancel, and not within 120 days of a statewide election. Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false (Rule 1-047(C)(1), quoted); jury sources; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file or blackout value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "Source quality: the official NMOneSource site is a script-only application. Rule 1-047 was read on RuleDex (a commercial copy). The official Form 9-513D on nmcourts.gov confirms the 'confidentiality and destruction requirements in Rule [5-606(E)] [6-605(G)] [7-605(G)] NMRA'. Rule 1-047(C) quote: secondary copy; verify before display. A second try on NMOneSource (2026-10-07) did not reach the rule text (REQ-NOTE 52 closed).",
+    "PA-style check: forms are confidential and destroyed 90 days after service. No New Mexico list of non-citizen disqualifications is public.",
+    "official_pipeline is null: no New Mexico statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list New Mexico.",
+    "Cancelled-voter file: no published New Mexico cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Extra blackout: state_extra_days is 30 because NMSA 1-4-22 bars the Secretary of State's cancellation petitions within 120 days before a statewide election (120 - 90 = 30).",
     "Use limit: voter data may be used only for governmental or election campaign purposes, under affidavit (1-4-5.5). The Justia annotation reports a federal ruling that limited enforcement of New Mexico's online-publication restrictions against one organization; the ruling is not relied on, and JuryRoll never publishes data.",
-    "Source note: NMSA was read from the Justia copy of the 2025 statutes (the official NMOneSource site is a script-only application).",
-    "Voter data excludes day and month of birth (1-4-5.5(B)), so dob_in_public_file is false."
+    "Voter data excludes day and month of birth (1-4-5.5(B)), so dob_in_public_file is false.",
+    "Source note: NMSA was read from the Justia copy of the 2025 statutes."
   ]
 }
