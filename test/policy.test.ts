@@ -72,33 +72,33 @@ function comparableRules(): RulesFile {
   };
 }
 
-const jurorDates = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Afterson,Ann,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15
-J2,Keepson,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-06-01
-J3,Missingson,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,
-J4,Removedson,Dee,06/04/1983,4 Main St,00001,Not a U.S. citizen,2019-01-01
-J5,Wrongson,Eve,07/05/1984,5 Main St,00001,Not a U.S. citizen,2018-01-01
-J6,Probson,Pat,08/08/1970,6 Main St,00001,Not a U.S. citizen,2015-01-01
-J7,Inactson,Fay,09/09/1971,7 Main St,00001,Not a U.S. citizen,2010-01-01
-J8,Backson,Gia,10/10/1972,8 Main St,00001,Not a U.S. citizen,2020-01-01
-J10,Lowson,Hugh,11/11/1973,10 Main St,00001,Not a U.S. citizen,2020-01-01
-J11,Equalson,Quin,12/12/1974,11 Main St,00001,Not a U.S. citizen,2020-03-03
-J12,Blankdecl,Rae,01/02/1975,12 Main St,00001,Not a U.S. citizen,
+const jurorDates = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 01,Pat,03/14/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-01-15
+J2,Sample Juror 02,Example,04/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-06-01
+J3,Sample Juror 03,Pat,05/03/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,
+J4,Sample Juror 04,Example,06/04/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2019-01-01
+J5,Sample Juror 05,Pat,07/05/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2018-01-01
+J6,Sample Juror 06,Pat,08/08/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2015-01-01
+J7,Sample Juror 07,Example,09/09/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2010-01-01
+J8,Sample Juror 08,Pat,10/10/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-01-01
+J10,Sample Juror 10,Example,11/11/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-01-01
+J11,Sample Juror 11,Pat,12/12/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-03-03
+J12,Sample Juror 12,Example,01/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,
 `;
 
-const voterDates = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,status_reason,registration_date
-V1,Afterson,Ann,1980-03-14,1 Main St,00001,ACTIVE,,2021-05-01
-V2,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,,2019-01-01
-V3,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,,
-V4,Removedson,Dee,1983-06-04,4 Main St,00001,REMOVED,non-citizen,2018-01-01
-V5,Wrongson,Eve,1984-07-05,5 Main St,00001,REMOVED,moved,2022-01-01
-V6,Probson,Paul,1970-08-08,6 Main St,00001,ACTIVE,,2016-01-01
-V7,Inactson,Fay,1971-09-09,7 Main St,00001,INACTIVE,,2011-01-01
-V8,Backson,Gia,1972-10-10,8 Main St,00001,ACTIVE,reinstated,2010-01-01
-V9,Nobody,Zoe,1999-01-01,99 Other St,00009,CANCELLED,citizenship,2000-01-01
-V10,Lowson,Hank,1973-11-11,10 Main St,00001,REMOVED,moved,2010-01-01
-V11,Equalson,Quin,1974-12-12,11 Main St,00001,ACTIVE,,2020-03-03
-V12,Blankdecl,Rae,1975-01-02,12 Main St,00001,ACTIVE,,2010-01-01
+const voterDates = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,status_reason,data_note,registration_date
+V1,Sample Juror 01,Pat,1901-03-14,000 Sample Road,00000,ACTIVE,,FICTIONAL SAMPLE DATA,2021-05-01
+V2,Sample Juror 02,Example,1901-04-02,000 Sample Road,00000,ACTIVE,,FICTIONAL SAMPLE DATA,2019-01-01
+V3,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,,FICTIONAL SAMPLE DATA,
+V4,Sample Juror 04,Example,1901-06-04,000 Sample Road,00000,REMOVED,non-citizen,FICTIONAL SAMPLE DATA,2018-01-01
+V5,Sample Juror 05,Pat,1901-07-05,000 Sample Road,00000,REMOVED,moved,FICTIONAL SAMPLE DATA,2022-01-01
+V6,Sample Juror 06,Pat-Example,1901-08-08,000 Sample Road,00000,ACTIVE,,FICTIONAL SAMPLE DATA,2016-01-01
+V7,Sample Juror 07,Example,1901-09-09,000 Sample Road,00000,INACTIVE,,FICTIONAL SAMPLE DATA,2011-01-01
+V8,Sample Juror 08,Pat,1901-10-10,000 Sample Road,00000,ACTIVE,reinstated,FICTIONAL SAMPLE DATA,2010-01-01
+V9,Sample Voter 09,Example,1901-12-01,000 Sample Road,00000,CANCELLED,citizenship,FICTIONAL SAMPLE DATA,2000-01-01
+V10,Sample Juror 10,Example-Pat,1901-11-11,000 Sample Road,00000,REMOVED,moved,FICTIONAL SAMPLE DATA,2010-01-01
+V11,Sample Juror 11,Pat,1901-12-12,000 Sample Road,00000,ACTIVE,,FICTIONAL SAMPLE DATA,2020-03-03
+V12,Sample Juror 12,Example,1901-01-02,000 Sample Road,00000,ACTIVE,,FICTIONAL SAMPLE DATA,2010-01-01
 `;
 
 assert.deepStrictEqual(effective(shipped.DEFAULT), { allow_jury_list: false, aggregate_only: true, allow_named_export: false, show_challenge_guidance: false });
@@ -174,8 +174,8 @@ const sampleCsv = toCSV({
   dateStr: '2026-10-07',
 });
 assert.ok(!/^Weak,/m.test(sampleCsv));
-assert.ok(sampleCsv.includes('Alpha'));
-assert.ok(!sampleCsv.includes('Foxtrot'));
+assert.ok(sampleCsv.includes('Sample Juror 01'));
+assert.ok(!sampleCsv.includes('Sample Juror 06'));
 assert.ok(!sampleCsv.includes('V0011'));
 assert.ok(!sampleCsv.includes('V0005'));
 assert.ok(!sampleCsv.includes('V0007'));
@@ -222,13 +222,13 @@ const datedCsv = toCSV({
   county: 'Wake',
   dateStr: '2026-10-07',
 });
-assert.ok(!datedCsv.includes('Afterson'));
-assert.ok(!datedCsv.includes('Probson'));
-assert.ok(!datedCsv.includes('Wrongson'));
-assert.ok(!datedCsv.includes('Inactson'));
-assert.ok(!datedCsv.includes('Missingson'));
-assert.ok(!datedCsv.includes('Equalson'));
-assert.ok(!datedCsv.includes('Blankdecl'));
+assert.ok(!datedCsv.includes('Sample Juror 01'));
+assert.ok(!datedCsv.includes('Sample Juror 06'));
+assert.ok(!datedCsv.includes('Sample Juror 05'));
+assert.ok(!datedCsv.includes('Sample Juror 07'));
+assert.ok(!datedCsv.includes('Sample Juror 03'));
+assert.ok(!datedCsv.includes('Sample Juror 11'));
+assert.ok(!datedCsv.includes('Sample Juror 12'));
 assert.ok(datedCsv.includes(`4 ${EXCLUDE_PHRASE}`));
 assert.ok(datedCsv.includes(`3 ${CANNOT_COMPARE_PHRASE}`));
 pass('AT-11');
@@ -238,33 +238,33 @@ assert.strictEqual(kept.excluded, false);
 assert.strictEqual(kept.tier, 'Strong');
 assert.strictEqual(kept.section, 'main');
 assert.ok(kept.flags.includes('REGISTERED_BEFORE_DECLARATION'));
-assert.ok(datedCsv.includes('Keepson'));
+assert.ok(datedCsv.includes('Sample Juror 02'));
 
-const missingOnly = runMatch(table('juror', `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Missingson,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,2020-04-04
-`), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,
+const missingOnly = runMatch(table('juror', `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 03,Pat,05/03/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-04-04
+`), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date
+V1,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,
 `), shipped.NC);
 assert.strictEqual(missingOnly.policy.cannotCompareCount, 1);
 assert.strictEqual(missingOnly.policy.excludedAfterCount, 0);
 assert.strictEqual(missingOnly.policy.cannotCompareLine, `1 ${CANNOT_COMPARE_PHRASE}`);
 assert.strictEqual(missingOnly.policy.counts.Strong + missingOnly.policy.counts.Probable + missingOnly.policy.counts.Weak, 0);
 const missingCsv = toCSV({ allowNamedExport: true, result: missingOnly.policy, rules: shipped.NC, targets: [], county: 'Wake', dateStr: '2026-10-07' });
-assert.ok(!missingCsv.includes('Missingson'));
+assert.ok(!missingCsv.includes('Sample Juror 03'));
 assert.ok(!missingCsv.includes('V1'));
-assert.ok(!/2020-04-04|1982-05-03/.test(missingOnly.policy.cannotCompareLine + missingOnly.policy.excludedLine));
+assert.ok(!/2020-04-04|1901-05-03/.test(missingOnly.policy.cannotCompareLine + missingOnly.policy.excludedLine));
 assertBuckets(missingOnly.policy, 1);
 
-const equalOnly = runMatch(table('juror', `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Equalson,Quin,12/12/1974,11 Main St,00001,Not a U.S. citizen,2020-03-03
-`), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Equalson,Quin,1974-12-12,11 Main St,00001,ACTIVE,2020-03-03
+const equalOnly = runMatch(table('juror', `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 11,Pat,12/12/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-03-03
+`), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date
+V1,Sample Juror 11,Pat,1901-12-12,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2020-03-03
 `), shipped.NC);
 assert.strictEqual(equalOnly.policy.cannotCompareCount, 1);
 assert.strictEqual(equalOnly.policy.excludedAfterCount, 0);
 assert.strictEqual(equalOnly.policy.excludedLine, `0 ${EXCLUDE_PHRASE}`);
 const equalCsv = toCSV({ allowNamedExport: true, result: equalOnly.policy, rules: shipped.NC, targets: [], county: 'Wake', dateStr: '2026-10-07' });
-assert.ok(!equalCsv.includes('Equalson'));
+assert.ok(!equalCsv.includes('Sample Juror 11'));
 assert.ok(!equalCsv.includes('V1'));
 assert.ok(equalOnly.policy.rows[0].excluded);
 assert.ok(equalOnly.policy.rows[0].flags.includes('DATES_NOT_COMPARABLE'));
@@ -277,7 +277,7 @@ assert.strictEqual(missingDate.excluded, true);
 assert.strictEqual(missingDate.section, 'excluded');
 assert.ok(missingDate.flags.includes('DATES_NOT_COMPARABLE'));
 assert.ok(missingDate.notes.includes(SAVE_LINE));
-assert.ok(!datedCsv.includes('Missingson'));
+assert.ok(!datedCsv.includes('Sample Juror 03'));
 pass('AT-13-dates');
 
 const removed = byVoter('V4');
@@ -285,7 +285,7 @@ assert.strictEqual(removed.section, 'already-removed');
 assert.strictEqual(removed.excluded, false);
 assert.ok(!removed.flags.includes('POSSIBLE_WRONGFUL_REMOVAL'));
 assert.ok(datedCsv.includes('Already removed: confirm the removal was correct'));
-assert.ok(datedCsv.includes('Removedson'));
+assert.ok(datedCsv.includes('Sample Juror 04'));
 pass('AT-13');
 
 const wrongfulProbable = byVoter('V10');
@@ -293,7 +293,7 @@ assert.ok(wrongfulProbable.flags.includes('POSSIBLE_WRONGFUL_REMOVAL'));
 assert.strictEqual(wrongfulProbable.excluded, false);
 assert.strictEqual(wrongfulProbable.section, 'already-removed');
 assert.ok(wrongfulProbable.flags.includes('REGISTERED_BEFORE_DECLARATION'));
-assert.ok(datedCsv.includes('Lowson'));
+assert.ok(datedCsv.includes('Sample Juror 10'));
 pass('AT-14');
 
 const reinstated = byVoter('V8');
@@ -314,7 +314,7 @@ assert.strictEqual(wrongfulRemoved.excluded, true);
 assert.strictEqual(wrongfulRemoved.section, 'excluded');
 assert.ok(wrongfulProbable.flags.includes('POSSIBLE_WRONGFUL_REMOVAL'));
 assert.strictEqual(wrongfulProbable.section, 'already-removed');
-assert.ok(datedCsv.includes('Lowson'));
+assert.ok(datedCsv.includes('Sample Juror 10'));
 assert.ok(dated.policy.rows.filter((row) => row.excluded).every((row) => row.section === 'excluded'));
 pass('AT-18-wrongful');
 
@@ -336,21 +336,21 @@ const onePercent = screenColumns(['voter_id', 'Notes'], Array.from({ length: 100
 assert.strictEqual(onePercent.ok, true);
 pass('AT-21');
 
-const flag = screenColumns(['name_last', 'drivers_lic'], [['Ada', 'Y'], ['Bea', 'N'], ['Cy', '']]);
+const flag = screenColumns(['name_last', 'drivers_lic'], [['Example', 'Y'], ['Pat', 'N'], ['Sample', '']]);
 assert.strictEqual(flag.ok, true);
 if (flag.ok) {
   assert.deepStrictEqual(flag.dropColumns, [1]);
   assert.ok(flag.note && flag.note.includes('drivers_lic'));
 }
-const license = screenColumns(['name_last', 'drivers_lic'], [['Ada', 'D1234567']]);
+const license = screenColumns(['name_last', 'drivers_lic'], [['Example', 'D1234567']]);
 assert.strictEqual(license.ok, false);
 pass('AT-19');
 
-const broker = screenColumns(['Experian ID', 'name_last'], [['1', 'Ada']]);
+const broker = screenColumns(['Experian ID', 'name_last'], [['1', 'Example']]);
 assert.strictEqual(broker.ok, false);
-const l2 = screenColumns(['L2', 'name_last'], [['1', 'Ada']]);
+const l2 = screenColumns(['L2', 'name_last'], [['1', 'Example']]);
 assert.strictEqual(l2.ok, false);
-const l2score = screenColumns(['l2score', 'name_last'], [['1', 'Ada']]);
+const l2score = screenColumns(['l2score', 'name_last'], [['1', 'Example']]);
 assert.strictEqual(l2score.ok, true);
 pass('AT-23');
 
@@ -393,7 +393,7 @@ const letter = auditLetter(shipped.TX, referralTargets(shipped.TX, shipped.DEFAU
 assert.ok(letter.includes('Is this process running in Travis? How many records were received, reviewed, confirmed, and removed in the period?'));
 assert.ok(letter.includes('Travis board of elections'));
 assert.ok(letter.includes('Texas Secretary of State - Elections Division'));
-assert.ok(!/Afterson|Keepson|John Smith/.test(letter));
+assert.ok(!/Sample Juror 01|Sample Juror 02|John Smith/.test(letter));
 const wakeLetter = auditLetter(shipped.NC, referralTargets(shipped.NC, shipped.DEFAULT), {
   periodFrom: '',
   periodTo: '',
@@ -467,11 +467,11 @@ assert.strictEqual(lenientTxRow.excluded, true);
 assert.ok(lenientTxRow.flags.includes('REGISTERED_AFTER_DECLARATION'));
 pass('AT-lenient');
 
-const ndVoter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,last_voted
-V1,Signal,Sam,1980-03-14,1 Main St,00001,ACTIVE,2019-01-01
+const ndVoter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,last_voted
+V1,Sample Juror 01,Pat,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01
 `;
-const ndJuror = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Signal,Sam,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-01-15
+const ndJuror = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 01,Pat,03/14/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-01-15
 `;
 const ndVoterTable = table('voter', ndVoter);
 assert.strictEqual(ndVoterTable.extra.regDate, -1);
@@ -499,26 +499,26 @@ assert.strictEqual(noReg.policy.counts.Strong + noReg.policy.counts.Probable + n
 const noRegCsv = toCSV({ allowNamedExport: true, result: noReg.policy, rules: shipped.NC, targets: referralTargets(shipped.NC, shipped.DEFAULT), county: 'Wake', dateStr: '2026-10-07' });
 assert.ok(noRegCsv.includes(`3 ${CANNOT_COMPARE_PHRASE}`));
 assert.ok(noRegCsv.includes(`0 ${EXCLUDE_PHRASE}`));
-assert.ok(!noRegCsv.includes('Pellson'));
-assert.ok(!noRegCsv.includes('Quillson'));
-assert.ok(!noRegCsv.includes('Rennson'));
+assert.ok(!noRegCsv.includes('Sample Juror 01'));
+assert.ok(!noRegCsv.includes('Sample Juror 02'));
+assert.ok(!noRegCsv.includes('Sample Juror 03'));
 assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(noRegCsv));
 assertBuckets(noReg.policy, 3);
 pass('AT-37');
 
-const bucketJ = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Before,Ann,03/14/1980,1 Main St,00001,Not a U.S. citizen,2020-06-01
-J2,After,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-01-15
-J3,Equal,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,2020-03-03
-J4,Noreg,Dee,06/04/1983,4 Main St,00001,Not a U.S. citizen,2020-04-04
-J5,Nodecl,Eve,07/05/1984,5 Main St,00001,Not a U.S. citizen,
+const bucketJ = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 01,Pat,03/14/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-06-01
+J2,Sample Juror 02,Example,04/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-01-15
+J3,Sample Juror 03,Pat,05/03/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-03-03
+J4,Sample Juror 04,Example,06/04/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-04-04
+J5,Sample Juror 05,Pat,07/05/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,
 `;
-const bucketV = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Before,Ann,1980-03-14,1 Main St,00001,ACTIVE,2019-01-01
-V2,After,Bob,1981-04-02,2 Main St,00001,ACTIVE,2021-05-01
-V3,Equal,Cam,1982-05-03,3 Main St,00001,ACTIVE,2020-03-03
-V4,Noreg,Dee,1983-06-04,4 Main St,00001,ACTIVE,
-V5,Nodecl,Eve,1984-07-05,5 Main St,00001,ACTIVE,2010-01-01
+const bucketV = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date
+V1,Sample Juror 01,Pat,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01
+V2,Sample Juror 02,Example,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2021-05-01
+V3,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2020-03-03
+V4,Sample Juror 04,Example,1901-06-04,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,
+V5,Sample Juror 05,Pat,1901-07-05,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2010-01-01
 `;
 const ruleFiles = fs.readdirSync(rulesDir).filter((name) => name.endsWith('.json') && name !== 'schema.json');
 assert.strictEqual(ruleFiles.length, 52);
@@ -545,10 +545,10 @@ assert.strictEqual(pure.cannotCompare.length, 3);
 assert.strictEqual(pure.leads.length + pure.registeredAfter.length + pure.cannotCompare.length, 5);
 pass('AT-38');
 
-const beforeOnly = runMatch(table('juror', `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Keepson,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-06-01
-`), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01
+const beforeOnly = runMatch(table('juror', `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 02,Example,04/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-06-01
+`), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date
+V1,Sample Juror 02,Example,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01
 `), shipped.NC);
 assert.strictEqual(beforeOnly.policy.excludedLine, `0 ${EXCLUDE_PHRASE}`);
 assert.strictEqual(beforeOnly.policy.cannotCompareLine, `0 ${CANNOT_COMPARE_PHRASE}`);
@@ -560,7 +560,7 @@ const blankDecl = byVoter('V12');
 assert.strictEqual(blankDecl.excluded, true);
 assert.strictEqual(blankDecl.section, 'excluded');
 assert.ok(blankDecl.flags.includes('DATES_NOT_COMPARABLE'));
-assert.ok(!datedCsv.includes('Blankdecl'));
+assert.ok(!datedCsv.includes('Sample Juror 12'));
 pass('AT-40');
 
 const dcRules = loadRules('DC.json');
@@ -578,8 +578,8 @@ const openedDc = {
 assert.strictEqual(effective(openedDc).show_challenge_guidance, true);
 assert.strictEqual(uiGates(openedDc).show_challenge_guidance, false);
 assert.strictEqual(uiGates(openedDc).allow_named_export, false);
-const dcPair = runMatch(table('juror', ndJuror), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Signal,Sam,1980-03-14,1 Main St,00001,ACTIVE,2019-01-01
+const dcPair = runMatch(table('juror', ndJuror), table('voter', `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date
+V1,Sample Juror 01,Pat,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01
 `), dcRules);
 assert.strictEqual(dcPair.coreResult.counts.Strong, 1);
 assert.strictEqual(uiGates(dcRules).allow_named_export, false);
@@ -611,8 +611,8 @@ assert.deepStrictEqual(challengeStates, []);
 pass('AT-NC-only');
 
 const paNames = runMatch(
-  table('juror', 'Last,First,Reason\nNamesonly,Ada,Not a U.S. citizen\n'),
-  table('voter', 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date\nV1,Namesonly,Ada,1980-01-02,1 Main St,00001,ACTIVE,2019-01-01\n'),
+  table('juror', 'Last,First,Reason,Note\nSample Juror 01,Pat,Not a U.S. citizen,FICTIONAL SAMPLE DATA\n'),
+  table('voter', 'voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date\nV1,Sample Juror 01,Pat,1901-01-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01\n'),
   shipped.PA,
 );
 assert.strictEqual(paNames.policy.counts.Strong, 0);
@@ -630,7 +630,7 @@ const paCsv = toCSV({
   county: 'Adams',
   dateStr: '2026-10-07',
 });
-assert.ok(!paCsv.includes('Namesonly'));
+assert.ok(!paCsv.includes('Sample Juror 01'));
 assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paCsv));
 assert.strictEqual(effective(shipped.PA).show_challenge_guidance, false);
 pass('AT-41');
@@ -727,7 +727,7 @@ assert.deepStrictEqual(auditPathCopy({
 pass('REQ-39-42-59');
 const mixedVoter = fs.readFileSync(path.join(root, 'test/fixtures/voter_mixed_cancelled.csv'), 'utf8');
 const pairJuror = fs.readFileSync(path.join(root, 'test/fixtures/juror_cancelled_pairs.csv'), 'utf8');
-const droppedNames = ['Zzjdalpha', 'Fjdzza', 'Zzjdother', 'Fjdzzb', 'Zzinbeta', 'Finzza', 'Zzinother', 'Finzzb'];
+const droppedNames = ['Sample Juror 62', 'Sample Juror 63', 'Sample Juror 64', 'Sample Juror 65'];
 for (const code of ['OK', 'NC', 'MI']) {
   const matched = runMatch(table('juror', pairJuror), table('voter', mixedVoter), loadRules(`${code}.json`));
   assert.strictEqual(matched.cancelled.summary, '4 cancelled records skipped; 2 with a jury-related reason', code);
@@ -735,10 +735,10 @@ for (const code of ['OK', 'NC', 'MI']) {
   assert.strictEqual(matched.warning, null, code);
   assert.strictEqual(matched.coreResult.pairs.length, 1, code);
   assert.strictEqual(matched.coreResult.counts.Strong, 1, code);
-  assert.ok(matched.coreResult.pairs[0].voterName.includes('Zzkeepgamma'), code);
+  assert.ok(matched.coreResult.pairs[0].voterName.includes('Sample Juror 61'), code);
   const packed = JSON.stringify(matched);
   for (const name of droppedNames) assert.ok(!packed.includes(name), `${code} ${name}`);
-  assert.ok(!matched.cancelled.csv.includes('Zzjdalpha'), code);
+  assert.ok(!matched.cancelled.csv.includes('Sample Juror 62'), code);
 }
 pass('AT-42');
 
@@ -750,7 +750,7 @@ for (const code of ['OK', 'NC']) {
   assert.strictEqual(refused.cancelled.allCancelled, true, code);
   assert.strictEqual(refused.warning, allCancelledRefusal(4, 3), code);
   const packed = JSON.stringify(refused);
-  for (const name of [...droppedNames, 'Zzjdthird', 'Fjdzzc']) assert.ok(!packed.includes(name), `${code} ${name}`);
+  for (const name of [...droppedNames, 'Sample Juror 66']) assert.ok(!packed.includes(name), `${code} ${name}`);
 }
 pass('AT-43');
 

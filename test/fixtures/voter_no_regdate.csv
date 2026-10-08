@@ -1,4 +1,4 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,county
-V1,Pellson,Pia,1980-03-14,1 Main St,00001,ACTIVE,Wake
-V2,Quillson,Quinn,1981-04-02,2 Main St,00001,ACTIVE,Wake
-V3,Rennson,Rhea,1982-05-03,3 Main St,00001,ACTIVE,Wake
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,county
+V1,Sample Juror 01,Pat,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,Wake
+V2,Sample Juror 02,Example,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,Wake
+V3,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,Wake

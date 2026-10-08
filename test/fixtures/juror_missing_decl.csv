@@ -1,2 +1,2 @@
-Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Blankdecl,Rae,01/02/1975,12 Main St,00001,Not a U.S. citizen,
+Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 12,Example,01/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,

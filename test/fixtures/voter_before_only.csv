@@ -1,2 +1,2 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county
-V1,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2019-01-01,Wake
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date,county
+V1,Sample Juror 02,Example,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2019-01-01,Wake

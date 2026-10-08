@@ -1,2 +1,2 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county
-V1,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,,Wake
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date,county
+V1,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,,Wake

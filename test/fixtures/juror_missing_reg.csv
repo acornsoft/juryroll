@@ -1,2 +1,2 @@
-Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Missingson,Cam,05/03/1982,3 Main St,00001,Not a U.S. citizen,2020-04-04
+Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 03,Pat,05/03/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-04-04

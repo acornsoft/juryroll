@@ -37,20 +37,20 @@ function table(kind: 'juror' | 'voter', text: string, reasonMap?: ReasonMap): Lo
   };
 }
 
-const juror = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date,Age
-J1,Keepson,Bob,04/02/1981,2 Main St,00001,47,2019-01-01,44
-J2,Langson,Ann,03/14/1980,1 Main St,00001,12,2019-01-01,45
-J3,Homeson,Cam,05/03/1982,3 Main St,00001,9,2019-01-01,43
+const juror = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date,Age
+J1,Sample Juror 01,Pat,04/02/1901,000 Sample Road,00000,47,FICTIONAL SAMPLE DATA,2019-01-01,44
+J2,Sample Juror 02,Example,03/14/1901,000 Sample Road,00000,12,FICTIONAL SAMPLE DATA,2019-01-01,45
+J3,Sample Juror 03,Pat,05/03/1901,000 Sample Road,00000,9,FICTIONAL SAMPLE DATA,2019-01-01,43
 `;
-const voter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2018-01-01
-V2,Langson,Ann,1980-03-14,1 Main St,00001,ACTIVE,2018-01-01
-V3,Homeson,Cam,1982-05-03,3 Main St,00001,ACTIVE,2018-01-01
+const voter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date
+V1,Sample Juror 01,Pat,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2018-01-01
+V2,Sample Juror 02,Example,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2018-01-01
+V3,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2018-01-01
 `;
-const voterWithHistory = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,Voted
-V1,Keepson,Bob,1981-04-02,2 Main St,00001,ACTIVE,2018-01-01,2024 General
-V2,Langson,Ann,1980-03-14,1 Main St,00001,ACTIVE,2018-01-01,2022 Primary
-V3,Homeson,Cam,1982-05-03,3 Main St,00001,ACTIVE,2018-01-01,2020 General
+const voterWithHistory = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date,Voted
+V1,Sample Juror 01,Pat,1901-04-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2018-01-01,2024 General
+V2,Sample Juror 02,Example,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2018-01-01,2022 Primary
+V3,Sample Juror 03,Pat,1901-05-03,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2018-01-01,2020 General
 `;
 
 assert.equal(defaultChoice('Not a U.S. citizen'), 'Non-citizen');
@@ -81,15 +81,15 @@ assert.equal(applyPaPreset({ '12': 'Language' })['12'], 'Language');
 
 const filtered = runMatch(table('juror', juror, mapped), table('voter', voter), nc);
 const names = filtered.coreResult.pairs.map((pair) => pair.voterName);
-assert.deepEqual(names, ['Bob Keepson']);
-assert.ok(!names.some((name) => name.includes('Langson') || name.includes('Homeson')));
+assert.deepEqual(names, ['Pat Sample Juror 01']);
+assert.ok(!names.some((name) => name.includes('Sample Juror 02') || name.includes('Sample Juror 03')));
 assert.equal(filtered.policy.counts.Strong + filtered.policy.counts.Probable + filtered.policy.counts.Weak, filtered.coreResult.pairs.length);
 
-const plain = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Keepson,Bob,04/02/1981,2 Main St,00001,47,2019-01-01
+const plain = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 01,Pat,04/02/1901,000 Sample Road,00000,47,FICTIONAL SAMPLE DATA,2019-01-01
 `;
-const withAge = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date,Age
-J1,Keepson,Bob,04/02/1981,2 Main St,00001,47,2019-01-01,44
+const withAge = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date,Age
+J1,Sample Juror 01,Pat,04/02/1901,000 Sample Road,00000,47,FICTIONAL SAMPLE DATA,2019-01-01,44
 `;
 const ageOff = runMatch(table('juror', plain, { '47': 'Non-citizen' }), table('voter', voter), nc);
 const ageOn = runMatch(table('juror', withAge, { '47': 'Non-citizen' }), table('voter', voter), nc);
@@ -129,8 +129,8 @@ const row: CountyRun = {
 };
 const line = summaryLine(row);
 assert.match(line, /Wake County, North Carolina: 3 non-juror records entered, 1 coded non-citizen, 1 potential matches on the voter roll \(Strong 0 \/ Probable 1 \/ Weak 0\), 0 excluded, 0 cannot compare\. Language 1 excluded\. Non-resident 1 excluded\./);
-assert.ok(!line.includes('Keepson'));
-assert.ok(!line.includes('Langson'));
+assert.ok(!line.includes('Sample Juror 01'));
+assert.ok(!line.includes('Sample Juror 02'));
 assert.equal(summaryCopy([row]).endsWith(SUMMARY_DISCLAIMER), true);
 const second: CountyRun = { ...row, countyName: 'Durham County', countyFips: '37063', entered: 4 };
 const again: CountyRun = { ...row, entered: 9 };
@@ -138,15 +138,15 @@ const rollup = upsertCountyRun(upsertCountyRun([row], second), again);
 assert.deepEqual(rollup.map((item) => item.countyFips), ['37183', '37063']);
 assert.equal(rollup[0].entered, 9);
 
-const pasted = parsePaste('Last\tFirst\nAda\tBee\n');
+const pasted = parsePaste('Last\tFirst\tNote\nExample\tPat\tFICTIONAL SAMPLE DATA\n');
 assert.equal(pasted.length, 1);
-assert.equal(pasted[0][1], 'Ada');
-assert.equal(pasted[0][2], 'Bee');
+assert.equal(pasted[0][1], 'Example');
+assert.equal(pasted[0][2], 'Pat');
 const filled = applyPaste(blankGrid(), 0, 0, pasted);
-assert.equal(filled[0][1], 'Ada');
+assert.equal(filled[0][1], 'Example');
 assert.equal(rowAfterEnter(0, 1).rowCount, 2);
 const csv = gridToCsv(filled);
-assert.match(csv, /Ada/);
+assert.match(csv, /Example/);
 assert.doesNotMatch(csv, /localStorage/);
 for (const file of [
   'app/src/lib/transcribe.ts',

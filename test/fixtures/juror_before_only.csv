@@ -1,2 +1,2 @@
-Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
-J1,Keepson,Bob,04/02/1981,2 Main St,00001,Not a U.S. citizen,2020-06-01
+Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Note,Disqualification Date
+J1,Sample Juror 02,Example,04/02/1901,000 Sample Road,00000,Not a U.S. citizen,FICTIONAL SAMPLE DATA,2020-06-01

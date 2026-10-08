@@ -40,6 +40,86 @@ const expected = [
 const got = res.pairs.map((pair) => [pair.tier, pair.jurorId, pair.voterId]).sort().map(String);
 assert.deepStrictEqual(got, expected.slice().sort().map(String), 'planted pairs differ');
 assert.deepStrictEqual(JSON.parse(JSON.stringify(res.counts)), { Strong: 3, Probable: 4, Weak: 2 });
+assert.ok(!Object.values(jm).includes(jh.headers.indexOf('Note')), 'juror marker column is not a match field');
+assert.ok(!Object.values(vmap).includes(vh.headers.indexOf('data_note')), 'voter marker column is not a match field');
+const byPair = Object.fromEntries(res.pairs.map((pair) => [`${pair.jurorId}>${pair.voterId}`, pair]));
+assert.ok(byPair['J-0002>V0002'].jurorName.includes('Voter-Juror'));
+assert.ok(byPair['J-0002>V0002'].matched.includes('suffix'));
+assert.ok(byPair['J-0003>V0003'].jurorName.includes('Example'));
+assert.ok(byPair['J-0003>V0004'].matched.includes('suffix conflict'));
+assert.ok(byPair['J-0007>V0010'].matched.includes('DOB missing'));
+assert.ok(byPair['J-0011>V0011'].matched.includes('middle initial conflict'));
+for (const pair of res.pairs) {
+  assert.ok(!pair.voterName.includes('FICTIONAL'), pair.voterId);
+  assert.ok(!pair.jurorName.includes('FICTIONAL'), pair.jurorId);
+  assert.ok(!pair.matched.includes('FICTIONAL'), pair.voterId);
+}
+
+const declDates = {
+  'J-0001': '06/15/2004', 'J-0002': '07/20/2004', 'J-0003': '08/08/2005', 'J-0004': '01/15/2002',
+  'J-0005': '03/03/2002', 'J-0006': '04/04/2003', 'J-0007': '09/09/2003', 'J-0008': '01/01/2003',
+  'J-0009': '02/02/2003', 'J-0010': '03/03/2003', 'J-0011': '04/04/2004', 'J-0012': '05/05/2003',
+};
+const regDates = {
+  V0001: '2001-02-02', V0002: '2002-03-03', V0003: '2001-04-04', V0004: '2002-05-05', V0005: '2005-06-06',
+  V0006: '2003-01-15', V0007: '2005-09-09', V0008: '', V0009: '2003-02-15', V0010: '2001-01-01', V0011: '2004-04-04',
+};
+const jurorRows = [];
+const voterRows = [];
+core.iterCSV(jt, jh.delim, (row) => jurorRows.push(row));
+core.iterCSV(vt, vh.delim, (row) => voterRows.push(row));
+for (const row of jurorRows.slice(1)) assert.strictEqual(row[10], declDates[row[0]], row[0]);
+for (const row of voterRows.slice(1)) {
+  if (regDates[row[0]] !== undefined) assert.strictEqual(row[10], regDates[row[0]], row[0]);
+  else assert.strictEqual(row[10], '2003-06-15', row[0]);
+}
+
+const ALLOWED_NAME = /^(SAMPLE|JUROR|JURORS|VOTER|PAT|EXAMPLE|P|S|Q|R|A|B|C|D|E|F|JR|SR|II|III|\d+)$/;
+function nameTokens(value) {
+  return String(value || '').toUpperCase().replace(/['’`]/g, '').split(/[^A-Z0-9]+/).filter(Boolean);
+}
+function assertFictionalFile(text, label) {
+  const parsed = [];
+  core.iterCSV(text, core.detectDelimiter(text), (row) => parsed.push(row.map((cell) => cell.trim())));
+  const headers = parsed[0];
+  const marker = headers.findIndex((header) => ['note', 'data_note', 'sample_note'].includes(header.toLowerCase()));
+  assert.ok(marker >= 0, `${label} marker column`);
+  const nameCols = [];
+  const dobCols = [];
+  const streetCols = [];
+  const zipCols = [];
+  headers.forEach((header, index) => {
+    const key = header.toLowerCase();
+    if (/^(last|first|mi|sfx|name_last|name_first|name_middle|name_suffix)$/.test(key)) nameCols.push(index);
+    if (key === 'birth date' || key === 'date_of_birth') dobCols.push(index);
+    if (key === 'address' || key === 'res_street') streetCols.push(index);
+    if (key === 'zip' || key === 'res_zip') zipCols.push(index);
+  });
+  for (const row of parsed.slice(1)) {
+    if (row.every((cell) => cell === '')) continue;
+    assert.strictEqual(row[marker], 'FICTIONAL SAMPLE DATA', `${label} ${row[0]}`);
+    for (const index of nameCols) {
+      for (const token of nameTokens(row[index])) assert.ok(ALLOWED_NAME.test(token), `${label} ${row[0]} token ${token}`);
+    }
+    for (const index of dobCols) {
+      if (!row[index]) continue;
+      assert.match(row[index], /^(\d{1,2}\/\d{1,2}\/1901|1901-\d{2}-\d{2}|1901)$/, `${label} ${row[0]} dob`);
+    }
+    for (const index of streetCols) {
+      if (!row[index]) continue;
+      assert.match(row[index], /^(000 Sample (Road|Rd|Lane|Ln)( Apt 2|, Unit B)?|000 SAMPLE RD)$/, `${label} ${row[0]} address`);
+    }
+    for (const index of zipCols) {
+      if (!row[index]) continue;
+      assert.strictEqual(row[index], '00000', `${label} ${row[0]} zip`);
+    }
+  }
+}
+assertFictionalFile(jt, 'juror sample');
+assertFictionalFile(vt, 'voter sample');
+for (const name of fs.readdirSync(path.join(root, 'test/fixtures')).filter((name) => name.endsWith('.csv'))) {
+  assertFictionalFile(fs.readFileSync(path.join(root, 'test/fixtures', name), 'utf8'), name);
+}
 
 const csvDefault = core.toCSV(res.pairs, false, '2026-10-07');
 const csvWeak = core.toCSV(res.pairs, true, '2026-10-07');

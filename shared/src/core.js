@@ -78,12 +78,15 @@ var JuryRollCore = (function () {
 
   function normHeader(h) { return String(h).toLowerCase().replace(/[^a-z0-9]/g, ''); }
 
+  // Bundled samples mark every row. That column is not a name, date, or address.
+  var MARKER_HEADERS = { note: 1, datanote: 1, samplenote: 1, fictionalnote: 1, fictionalsampledata: 1, samplemarker: 1 };
+
   function guessMapping(headers, fieldKeys) {
     var nh = headers.map(normHeader), cand = [];
     fieldKeys.forEach(function (f) {
       var def = FIELDS[f];
       nh.forEach(function (h, idx) {
-        if (!h) return;
+        if (!h || MARKER_HEADERS[h]) return;
         def.pats.forEach(function (p, pi) {
           var sc = 0;
           if (h === p) sc = 1000 - pi;
