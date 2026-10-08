@@ -5,13 +5,31 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "RCW 2.36.072(4): 'Information provided to the court for preliminary determination of statutory qualification for jury duty may only be used for the term such person is summoned and may not be used for any other purpose', except that the court may report a change of address or nondelivery of summons to the county auditor.",
+    "statute": "RCW 2.36.072(4): 'Information provided to the court for preliminary determination of statutory qualification for jury duty may only be used for the term such person is summoned and may not be used for any other purpose', except that the court may report a change of address or nondelivery of summons to the county auditor. GR 31(j): 'Individual juror information, other than name, is presumed to be private.'",
     "holder": "Each superior court.",
-    "fields_withheld": null,
+    "fields_withheld": [
+      "Individual juror information other than name, presumed private; access only by petition after a trial on good cause (GR 31(j))",
+      "Master jury source list information other than name and address, presumed private (GR 31(k))",
+      "Qualification declarations, including citizenship answers: use limited to the jury term (RCW 2.36.072(4))"
+    ],
     "official_pipeline": null,
     "use_restriction": null,
     "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=2.36.072",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "RCW 2.36.070(2) (a person who 'Is not a citizen of the United States' is not competent to serve)",
+        "url": "https://app.leg.wa.gov/RCW/default.aspx?cite=2.36.070",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "GR 31(j)-(k) (juror information and master jury source list presumed private)",
+        "url": "https://www.courts.wa.gov/court_rules/pdf/GR/GA_GR_31_00_00.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any person. Precinct lists and current lists of registered voters are public records; the county auditor or Secretary of State furnishes them at reproduction cost (RCW 29A.08.720(3)).",
@@ -42,12 +60,12 @@
   "private_challenge": {
     "allowed": true,
     "who": "Another registered voter from the same county, or the county prosecuting attorney (RCW 29A.08.810(2)).",
-    "form_or_statute": "RCW 29A.08.810: separate challenge form for each voter, plus a separate hand-signed affidavit under penalty of perjury for each voter. Ground (1)(e): 'The challenged voter is not a citizen of the United States.' Filed with the county auditor (29A.08.820).",
+    "form_or_statute": "RCW 29A.08.810: separate challenge form for each voter, plus a separate hand-signed affidavit under penalty of perjury for each voter. Ground (1)(e): 'The challenged voter is not a citizen of the United States.' Filed with the county auditor (29A.08.820). Inactive voters who do not receive ballots are not subject to challenge (29A.08.810(4), as amended by 2026 c 212).",
     "form_url": null,
     "one_per_affidavit": true,
     "deadlines": "No later than 45 days before the election (RCW 29A.08.820(1)). Later challenges are allowed only for voters who registered or moved less than 60 days before the election, up to 10 days before it (29A.08.820(2)).",
     "deadline_days_before_election": 45,
-    "evidence_standard": "Must be based on personal knowledge, defined as 'firsthand knowledge through experience or observation'; the affidavit must state that the challenger exercised due diligence to personally verify the evidence; the challenge 'may not be based on unsupported allegations or allegations by third parties' (29A.08.810(1), (3)). All challenge documents are public records.",
+    "evidence_standard": "'Registration of a person as a voter is presumptive evidence of his or her right to vote' (29A.08.810(1)). The challenge must rest on personal knowledge, 'firsthand knowledge through experience or observation'; the affidavit swears the challenger exercised 'due diligence to personally verify the evidence'; it 'may not be based on unsupported allegations or allegations by third parties' (29A.08.810(1), (3)). All challenge documents are public records.",
     "juryroll_lead_sufficient": false,
     "false_statement_penalty": "Certification and affidavit under penalty of perjury (chapter 9A.72 RCW) (29A.08.810(3)).",
     "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=29A.08.810",
@@ -63,7 +81,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -97,14 +115,23 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "RCW 42.56.070; 52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the county auditor for existing records that count voter registration challenges filed on the citizenship ground (RCW 29A.08.810(1)(e)) and their outcomes. Agencies must make public records available unless an exemption applies (RCW 42.56.070). 52 U.S.C. 20507(i) is the federal counterpart. Ask for counts only. Do not ask for names.",
+    "counts_only": true,
+    "source_url": "https://app.leg.wa.gov/RCW/default.aspx?cite=42.56.070",
+    "verified_on": "2026-10-07",
+    "note": "Washington has no jury-to-election pipeline, so there is no jury-based removal count. Challenge documents are public records (29A.08.810(3)(b)) and name the challenger and the voter; JuryRoll never asks for them."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror qualification answers may be used only for the jury term and for no other purpose (RCW 2.36.072(4)). The challenge law demands firsthand personal knowledge (RCW 29A.08.810). Strict gates: counts only."
+    "basis": "jury_list.public is false: qualification answers may be used only for the jury term (RCW 2.36.072(4)), and juror information other than name is presumed private (GR 31(j)). allow_jury_list false, aggregate_only true, allow_named_export false. A challenge needs firsthand personal knowledge (RCW 29A.08.810), so show_challenge_guidance is false. Gates F/T/F/F, unchanged."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). Added GR 31(j)-(k) and fields_withheld; 2026 c 212 challenge change; audit_path; federal_source_url moved to govinfo. use_restriction left null: 2.36.072(4) limits use but sets no penalty, so the app must not call misuse 'an offense' (REQ-NOTE 5 wording).",
     "juryroll_lead_sufficient is false: RCW 29A.08.810 defines personal knowledge as firsthand experience or observation and bars allegations by third parties. A data match is not personal knowledge.",
     "All challenge documents are public records (29A.08.810(3)(b)), including the challenger's name and contact information.",
     "The public voter file gives year of birth only (29A.08.710(2)(a)), so dob_in_public_file is false.",
