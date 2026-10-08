@@ -1,6 +1,6 @@
 # JuryRoll logic changes: spec for Kyle
 
-Version 1.3.4, 2026-10-07 (G.1 and AT-45 to AT-47: voter-file use attestation where `voter_file.use_restriction` is non-null, per Optimus; REQ-NOTE 65. 1.3.3: AT-42 to AT-44: canceled-voter rows skipped before matching in every state, per Optimus; REQ-NOTE 27. 1.3.2: PA referral only per Optimus: show_challenge_guidance false, AT-41 expects no challenge panel. 1.3.1: PA re-check: PA jury list open for inspection under 42 Pa.C.S. 4523(a), so PA gates now match NC; AT-41 added. 1.3.0: B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
+Version 1.3.6, 2026-10-08 (K updated per Optimus ruling: practice mode shows invented names on screen in every state; counts-only states keep counts-only downloads; David chose yes. 1.3.5: K, planned learn-by-doing sandbox, a note for a later build, not for this change; AT-48 to AT-55 parked in K. 1.3.4, 2026-10-07: G.1 and AT-45 to AT-47: voter-file use attestation where `voter_file.use_restriction` is non-null, per Optimus; REQ-NOTE 65. 1.3.3: AT-42 to AT-44: canceled-voter rows skipped before matching in every state, per Optimus; REQ-NOTE 27. 1.3.2: PA referral only per Optimus: show_challenge_guidance false, AT-41 expects no challenge panel. 1.3.1: PA re-check: PA jury list open for inspection under 42 Pa.C.S. 4523(a), so PA gates now match NC; AT-41 added. 1.3.0: B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
 Source of the requirements: `LEGAL-REVIEW.md` (Optimus, 2026-10-07), "Required changes (ranked)".
 Rules data: `rules/schema.json`, `rules/default.json`, `rules/<XX>.json`. Validator: `rules/validate.py`.
 
@@ -413,3 +413,79 @@ Add to `test/core.test.js` (pure) and `test/ui.test.js` (headless Chrome). Fixtu
 - Nickname and fuzzy-name matching (v1 gap). Do not add it before the tier caps and B are in place; it raises false positives.
 - Hostname: **juryroll.doge.reviews** (decision 2026-10-07). Product name stays **JuryRoll**. Use this hostname in the Azure Static Web Apps custom-domain config, the README, the export header ("Made with JuryRoll, juryroll.doge.reviews"), and the print footer. Do not use juryroll.com (LEGAL-REVIEW item 8: conspiracy-forum history).
 - Rules content: all 50 states plus DC are delivered (`rules/<XX>.json`, 51 files) and pass `rules/validate.py`. Re-verify each file before every federal election; `verified_on` is 2026-10-07.
+
+---
+
+---
+
+## K. Planned: practice sandbox for every state (NOT for this build)
+
+Status: requirement note only. Do not build it yet. Requested by the caller on 2026-10-08. REQ-NOTE 66.
+Decision: David chose to show invented names in practice mode in every state. The conditions below are Optimus's ruling (2026-10-08) and are the basis.
+
+### K.1 Problem
+
+49 jurisdictions show only the "Coming later" card today. A user there cannot see how JuryRoll works.
+They cannot learn the steps before their state is supported.
+
+### K.2 Users
+
+- A volunteer in a counts-only state who wants to learn the tool.
+- A volunteer in PA or NC who wants to practice before using real files.
+- A trainer who teaches a group with one shared walkthrough.
+
+### K.3 Behavior
+
+1. The home page shows all 51 jurisdictions. No state is hidden.
+2. **PA and NC** (gate `allow_jury_list` true): starting templates plus the real-data path. The real-data path works as it does today.
+   Each template's column headers follow the source list described in `rules/PA.json` or `rules/NC.json` `jury_list`.
+3. **The other 49** (gate `allow_jury_list` false or null): blank templates plus the practice samples.
+   A "Practice with fictional samples" action runs the full flow on the bundled practice files only.
+4. The "Coming later" card stays. It gains the practice action. It still quotes `gates.basis`.
+
+### K.4 State gate it depends on (fixed app rule, no schema field)
+
+- `gates.allow_jury_list` and `gates.allow_named_export` govern real lists and real output only. Invented rows hold no one's personal data.
+- `allow_jury_list` decides the path. True means real data. False or null means practice only.
+- Practice mode loosens no gate. Real juror and voter file inputs stay disabled in the 49.
+- The only files that load in practice mode are the bundled practice files, identified by SHA-256.
+- Practice mode shows sample names on screen in every state.
+- When `allow_jury_list` or `allow_named_export` is false or null:
+  1. Show this header on every practice screen: "FICTIONAL PRACTICE RUN. Not a referral. These names are invented to teach the steps. In <State>, real data stays counts only: <gates.basis>."
+  2. Show names on screen only. Disable every named practice download. Practice downloads stay counts only.
+- One app rule, not 51 per-state flags. Flags can drift.
+
+### K.5 Must not change
+
+- No network requests. All data stays in the browser.
+- Practice output is never a referral. No referral CSV, no audit letter, no county name on any practice output.
+- The watermark "FICTIONAL PRACTICE RUN. Not a referral." appears in the screen header, on every result row, and in the header of every practice file.
+- Practice runs write no `match_run` entry to the audit log. They may log `practice_run` with the state code only.
+
+### K.6 Teaching text at the challenge step
+
+In states where `allow_jury_list` or `allow_named_export` is false or null, the practice challenge step says:
+"In <State>, real use stops at counts. A challenge needs your own knowledge of the voter, not this tool. <gates.basis>"
+It shows no challenge form and no steps for filing a challenge.
+
+### K.7 Practice sample files
+
+- Names are obviously fake, in a reserved style: "Sample Juror 01", "Sample Voter 01", "Pat Example". No realistic first and last name pairs.
+- Addresses are obviously fake: "000 Sample Road", zip 00000. No real street that could exist.
+- Dates of birth come from a reserved range that is plainly not real: 1901-01-01 to 1901-12-31.
+- Every row carries "FICTIONAL SAMPLE DATA".
+- The SHA-256 list in the app locks these files. Any change to a file needs a new hash in the same PR.
+- The current samples do not meet this rule. They use name pairs like "Alpha Example" and "Bravo O'Sampleton-Jones", DOBs like 1980-03-14, and addresses like "100 Example St". Replace them before practice mode ships. Keep the existing samples for the PA and NC tests until then.
+
+### K.8 Acceptance tests (parked; move to section I when the build is approved)
+
+| ID | Test | Expected |
+|---|---|---|
+| AT-48 | Load the home page | All 51 jurisdictions are listed in the state picker, on the map, and on the Every jurisdiction page; none hidden |
+| AT-49 | Select PA, then NC | Starting templates and the real-data file inputs are shown; behavior otherwise equals today's PA and NC tests (AT-40, AT-41) |
+| AT-50 | Select TX (`allow_jury_list` false) | "Coming later" card shows `gates.basis` and a "Practice with fictional samples" action; blank templates and practice samples are offered; real juror and voter inputs are disabled |
+| AT-51 | TX practice mode; drop a non-sample CSV on either slot | File refused before read (spy on `FileReader.readAsText` = 0 calls); message says only the practice samples load in this state |
+| AT-52 | TX practice mode; run the bundled samples | Match runs; sample names show on screen; header equals "FICTIONAL PRACTICE RUN. Not a referral. These names are invented to teach the steps. In Texas, real data stays counts only: " followed by TX `gates.basis` character for character; every result row carries "FICTIONAL PRACTICE RUN. Not a referral." |
+| AT-53 | TX practice mode; try every export and print control | No referral CSV, no audit letter, no county name; any download is counts only (no name from the samples appears in the file) and its header carries "FICTIONAL PRACTICE RUN. Not a referral." |
+| AT-54 | TX practice mode; open the challenge step; then read the audit log | Challenge step shows the K.6 text with TX `gates.basis`, no challenge form; audit log has no `match_run` entry and at most one `practice_run` entry with the state code only |
+| AT-55 | Core, run for every code in the bundle; plus a sample-file lint | Practice mode is offered for exactly the codes where `allow_jury_list` is not true, the real-data path for exactly PA and NC, and DEFAULT gets practice mode. The K.4 header and download block apply exactly where `allow_jury_list` or `allow_named_export` is not true. Every practice sample row matches the K.7 reserved name, address and DOB patterns, and every practice file's SHA-256 is in the app's list |
