@@ -5,8 +5,8 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
-    "holder": "D.C. Superior Court (jury system plan, D.C. Code 11-1904).",
+    "statute": "No D.C. Code section found opens or closes records of persons found not qualified as non-citizens. D.C. Code 11-1906(b)(3): 'Any determination regarding qualification for jury service shall be made on the basis of information provided in the juror qualification form and any other competent evidence.' 11-1904(a)(3): the jury system plan provides 'for the disclosure to the parties and the public of the names of individuals selected for jury service, except in cases in which the chief judge determines that confidentiality is required in the interest of justice'. Status: null.",
+    "holder": "Clerk of the D.C. Superior Court, under the jury system plan (D.C. Code 11-1904(b)).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
@@ -14,15 +14,21 @@
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "D.C. Code 11-1906 (jurors must be U.S. citizens)",
+        "cite": "D.C. Code 11-1906(b)(1)(B) (a juror must be 'a citizen of the United States')",
         "url": "https://code.dccouncil.gov/us/dc/council/code/sections/11-1906",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "D.C. Code 11-1904(a)(3) (public disclosure of names of individuals selected for jury service)",
+        "url": "https://code.dccouncil.gov/us/dc/council/code/sections/11-1904",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": null,
+    "who_may_get": "Any requester, on the Board of Elections data request form. The Board sends voter registration data as an Excel file at no charge; 'The entire voter registration list can only be obtained through a secure link.'",
     "permitted_uses": null,
     "use_restriction": null,
     "no_online_posting": null,
@@ -30,8 +36,22 @@
     "dob_in_public_file": null,
     "registration_date_in_public_file": null,
     "attestation_required": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://www.dcboe.org/getmedia/6e2e6a71-294c-43a5-8bb1-02c151372f7b/Data-Request-Form_2023.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "D.C. Board of Elections, Request for Voter Registration Data, Maps or Petition Signatures (rev. 3/7/23)",
+        "url": "https://www.dcboe.org/getmedia/6e2e6a71-294c-43a5-8bb1-02c151372f7b/Data-Request-Form_2023.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      },
+      {
+        "cite": "D.C. Board of Elections, Non-U.S. Citizen Resident of the District of Columbia Voter Registration Application ('Non-U.S. citizens can vote in DC local elections')",
+        "url": "https://www.dcboe.org/getmedia/538f114a-a6ce-400f-87fd-66d8e2df5e7f/VRF-Non-Citizen-YELLOW-checked-10212025_EN.PDF",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      }
+    ]
   },
   "private_challenge": {
     "allowed": true,
@@ -49,7 +69,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -83,17 +103,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "D.C. Code 2-532 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the D.C. Board of Elections: per year, the number of registrations cancelled because the person was not qualified, and the number of challenges filed under D.C. Code 1-1001.07.",
+    "counts_only": true,
+    "source_url": "https://code.dccouncil.gov/us/dc/council/code/sections/2-532",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. D.C. lets non-citizens vote in local elections (D.C. Code 1-1001.02(2)(B)), so these counts are not evidence of unlawful registration (LOGIC-CHANGES.md H.6)."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Key fact: in D.C., U.S. citizenship is not required to vote in local elections (D.C. Code 1-1001.02(2)(B)). A non-citizen juror record is therefore not evidence of an unlawful registration. Strict gates: counts only."
+    "basis": "Key fact: in D.C., U.S. citizenship is not required to vote in local elections (D.C. Code 1-1001.02(2)(B)). A non-citizen juror record is therefore not evidence of an unlawful registration. Counts only per LOGIC-CHANGES.md H.6. Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (11-1906(b)(3), 11-1904(a)(3)); holder; jury source 11-1904; voter_file who_may_get from the Board's data request form; audit_path; federal_source_url moved to govinfo. jury_list.public stays null. Counts only per LOGIC-CHANGES.md H.6.",
     "Important: D.C. Code 1-1001.02(2)(B) says the citizenship requirement 'shall not apply in a local election.' Non-citizen residents may lawfully register to vote in D.C. local elections. JuryRoll must not treat a D.C. juror non-citizen record as a lead, and must not suggest a challenge on that basis.",
     "juryroll_lead_sufficient is false for this reason, even though a private challenge procedure exists.",
-    "voter_file is all null: the D.C. voter list access rules were not read in this batch.",
-    "jury_list.public is null: D.C. Code 11-1904(a)(3) covers disclosure of names selected for service, not non-citizen disqualifications."
+    "PA-style check: no D.C. Code section makes a list of persons found not qualified as non-citizens public. 11-1904(a)(3) covers names of individuals 'selected for jury service', not persons found not qualified.",
+    "official_pipeline is null: no D.C. Code section sends juror qualification answers to the Board of Elections.",
+    "Cancelled-voter file: no published D.C. cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "voter_file: dob_in_public_file and registration_date_in_public_file stay null; the Board's form does not list the fields in the file. permitted_uses stays null; the form states no use limit. The Board has a separate 'NON-U.S. CITIZEN RESIDENT' registration form, so the D.C. file can hold lawful non-citizen local-election registrants."
   ]
 }
