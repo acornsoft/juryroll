@@ -1,15 +1,15 @@
-voter_id,name_last,name_first,date_of_birth,registration_date,Status,Deletion_Reason
-V1,Zzkeepgamma,Fkeepzz,02/03/1982,2019-01-01,A,
-V2,Activeone,Foneaa,02/03/1971,2019-01-01,A,
-V3,Activetwo,Ftwoaa,02/03/1972,2019-01-01,A,
-V4,Activethree,Fthreeaa,02/03/1973,2019-01-01,A,
-V5,Activefour,Ffouraa,02/03/1974,2019-01-01,A,
-V6,Activefive,Ffiveaa,02/03/1975,2019-01-01,A,
-V7,Activesix,Fsixaa,02/03/1976,2019-01-01,A,
-V8,Activeseven,Fsevenaa,02/03/1977,2019-01-01,A,
-V9,Activeeight,Feightaa,02/03/1978,2019-01-01,A,
-V10,Activenine,Fnineaa,02/03/1979,2019-01-01,A,
-V11,Zzjdalpha,Fjdzza,04/05/1983,2019-01-01,D,JD
-V12,Zzjdother,Fjdzzb,04/05/1970,2019-01-01,D,JD
-V13,Zzinbeta,Finzza,04/05/1971,2019-01-01,D,IN
-V14,Zzinother,Finzzb,04/05/1972,2019-01-01,D,IN
+voter_id,name_last,name_first,date_of_birth,registration_date,Status,Deletion_Reason,data_note
+V1,Sample Juror 61,Pat,1901-02-03,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V2,Sample Voter 71,Example,1901-02-04,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V3,Sample Voter 72,Pat,1901-02-05,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V4,Sample Voter 73,Example,1901-02-06,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V5,Sample Voter 74,Pat,1901-02-07,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V6,Sample Voter 75,Example,1901-02-08,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V7,Sample Voter 76,Pat,1901-02-09,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V8,Sample Voter 77,Example,1901-02-10,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V9,Sample Voter 78,Pat,1901-02-11,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V10,Sample Voter 79,Example,1901-02-12,2019-01-01,A,,FICTIONAL SAMPLE DATA
+V11,Sample Juror 62,Example,1901-04-05,2019-01-01,D,JD,FICTIONAL SAMPLE DATA
+V12,Sample Juror 63,Pat,1901-04-06,2019-01-01,D,JD,FICTIONAL SAMPLE DATA
+V13,Sample Juror 64,Example,1901-04-07,2019-01-01,D,IN,FICTIONAL SAMPLE DATA
+V14,Sample Juror 65,Pat,1901-04-08,2019-01-01,D,IN,FICTIONAL SAMPLE DATA

@@ -727,7 +727,7 @@ assert.deepStrictEqual(auditPathCopy({
 pass('REQ-39-42-59');
 const mixedVoter = fs.readFileSync(path.join(root, 'test/fixtures/voter_mixed_cancelled.csv'), 'utf8');
 const pairJuror = fs.readFileSync(path.join(root, 'test/fixtures/juror_cancelled_pairs.csv'), 'utf8');
-const droppedNames = ['Zzjdalpha', 'Fjdzza', 'Zzjdother', 'Fjdzzb', 'Zzinbeta', 'Finzza', 'Zzinother', 'Finzzb'];
+const droppedNames = ['Sample Juror 62', 'Sample Juror 63', 'Sample Juror 64', 'Sample Juror 65'];
 for (const code of ['OK', 'NC', 'MI']) {
   const matched = runMatch(table('juror', pairJuror), table('voter', mixedVoter), loadRules(`${code}.json`));
   assert.strictEqual(matched.cancelled.summary, '4 cancelled records skipped; 2 with a jury-related reason', code);
@@ -735,10 +735,10 @@ for (const code of ['OK', 'NC', 'MI']) {
   assert.strictEqual(matched.warning, null, code);
   assert.strictEqual(matched.coreResult.pairs.length, 1, code);
   assert.strictEqual(matched.coreResult.counts.Strong, 1, code);
-  assert.ok(matched.coreResult.pairs[0].voterName.includes('Zzkeepgamma'), code);
+  assert.ok(matched.coreResult.pairs[0].voterName.includes('Sample Juror 61'), code);
   const packed = JSON.stringify(matched);
   for (const name of droppedNames) assert.ok(!packed.includes(name), `${code} ${name}`);
-  assert.ok(!matched.cancelled.csv.includes('Zzjdalpha'), code);
+  assert.ok(!matched.cancelled.csv.includes('Sample Juror 62'), code);
 }
 pass('AT-42');
 
@@ -750,7 +750,7 @@ for (const code of ['OK', 'NC']) {
   assert.strictEqual(refused.cancelled.allCancelled, true, code);
   assert.strictEqual(refused.warning, allCancelledRefusal(4, 3), code);
   const packed = JSON.stringify(refused);
-  for (const name of [...droppedNames, 'Zzjdthird', 'Fjdzzc']) assert.ok(!packed.includes(name), `${code} ${name}`);
+  for (const name of [...droppedNames, 'Sample Juror 66']) assert.ok(!packed.includes(name), `${code} ${name}`);
 }
 pass('AT-43');
 

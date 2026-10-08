@@ -1,5 +1,5 @@
-voter_id,name_last,name_first,date_of_birth,Status,Deletion_Reason
-D1,Zzjdalpha,Fjdzza,01/02/1970,D,JD
-D2,Zzjdother,Fjdzzb,01/02/1971,Deleted,JD
-D3,Zzjdthird,Fjdzzc,01/02/1972,Cancelled,jd
-D4,Zzinbeta,Finzza,01/02/1973,Canceled,IN
+voter_id,name_last,name_first,date_of_birth,Status,Deletion_Reason,data_note
+D1,Sample Juror 62,Example,1901-01-02,D,JD,FICTIONAL SAMPLE DATA
+D2,Sample Juror 63,Pat,1901-01-03,Deleted,JD,FICTIONAL SAMPLE DATA
+D3,Sample Juror 66,Example,1901-01-04,Cancelled,jd,FICTIONAL SAMPLE DATA
+D4,Sample Juror 64,Pat,1901-01-05,Canceled,IN,FICTIONAL SAMPLE DATA
