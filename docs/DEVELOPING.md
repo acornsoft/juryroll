@@ -14,6 +14,24 @@ npm run build
 
 `npm run build` writes `app/dist`. Open `app/dist/index.html` from disk or host that folder. Paths are relative. `staticwebapp.config.json` is copied into the output and the build fills in the Content-Security-Policy header. The footer build id is the first 7 characters of `GITHUB_SHA` in CI, or of `git rev-parse HEAD` on a local build. It is injected with Vite `define`. The page does not look it up.
 
+## Deploying without GitHub Actions
+
+GitHub Actions on this account is blocked by a billing limit, so a production deploy runs on your machine. Previews are no longer created per PR.
+
+Get the deployment token with:
+
+```bash
+az staticwebapp secrets list --name swa-juryroll-dev-centralus-001 --resource-group rg-juryroll-dev-centralus-001 --query properties.apiKey -o tsv
+```
+
+The portal's Manage deployment token shows the same value. Put it in `.env.local` as `SWA_CLI_DEPLOYMENT_TOKEN=...`, or export `SWA_CLI_DEPLOYMENT_TOKEN`. Then run:
+
+```bash
+npm run deploy
+```
+
+The script stops if that variable is missing, and it does not print the token. It runs `python3 shared/rules/validate.py`, then `npm ci`, `npm test`, and `npm run build`, then deploys `app/dist`.
+
 ## What not to edit
 
 - `shared/src/core.js` is the version 1 matcher. Do not change its tier rules. Tests in `test/core.test.mjs` keep the original assertions.

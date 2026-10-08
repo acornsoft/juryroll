@@ -4,6 +4,7 @@ app/dist/
 dist/
 .env
 .env.*
+.env*.local
 *.csv
 *.xlsx
 *.xls
