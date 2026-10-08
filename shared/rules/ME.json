@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "14 M.R.S. 1254-A(1): 'The list of questionnaire recipients and the names drawn are confidential and may not be disclosed to any person, except as provided in this chapter.'",
+    "statute": "14 M.R.S. 1254-A(1): 'The list of questionnaire recipients and the names drawn are confidential and may not be disclosed to any person, except as provided in this chapter.' 1254-A(7): 'The names of prospective jurors and the contents of juror qualification forms are confidential and may not be disclosed except as provided in this chapter.' 1254-A(6): the clerk's qualification determination 'must be reflected on the juror qualification form or any other record designated by the court.'",
     "holder": "Clerks of court.",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -18,15 +18,21 @@
         "url": "https://legislature.maine.gov/statutes/14/title14sec1211.html",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "14 M.R.S. 1254-A(1), (6), (7), (9) (recipient list, names drawn and qualification forms confidential; recipients must keep confidentiality)",
+        "url": "https://legislature.maine.gov/statutes/14/title14sec1254-A.html",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Central voter registration data is confidential. Lists go only to political parties, people doing campaign-related or get-out-the-vote work, and current office holders (21-A M.R.S. 196-A(1)(B)).",
-    "permitted_uses": "Campaign-related or office-holder purposes listed in 196-A(1).",
+    "who_may_get": "Central voter registration data is confidential. Lists go to political parties, people doing campaign-related or get-out-the-vote work, and current office holders (21-A M.R.S. 196-A(1)(B)). Since PL 2025, c. 397, any person may buy a voter file 'to evaluate, monitor or seek compliance with laws relating to voting rights, election administration and voter registration' (196-A(1)(K)).",
+    "permitted_uses": "Campaign-related or office-holder purposes (196-A(1)(B)), or evaluating, monitoring or seeking compliance with voting, election administration and voter registration laws (196-A(1)(K)).",
     "use_restriction": "21-A M.R.S. 196-A(1)(K): 'A person may purchase, for the fee established in subsection 2, a voter file from the Department of the Secretary of State to evaluate, monitor or seek compliance with laws relating to voting rights, election administration and voter registration.' 196-A(1)(B): a person obtaining information under that paragraph may not '(1) Sell, transfer to another person or use the voter information or any part of the voter information for any purpose that is not directly related to activities of a political party, \"get out the vote\" efforts directly related to a campaign or other activities directly related to a campaign'. 196-A(6)(E) makes a civil violation of 'Any use of data from the central voter registration system purchased under subsection 1, paragraph B or subsection 1, paragraph K for purposes not authorized by those paragraphs.'",
     "no_online_posting": null,
-    "penalty": null,
+    "penalty": "Civil violation: a fine of not more than $1,000 for a first violation and not more than $5,000 for additional violations (196-A(6)), including use of a paragraph B or K file 'for purposes not authorized by those paragraphs' (196-A(6)(E)).",
     "dob_in_public_file": false,
     "registration_date_in_public_file": true,
     "attestation_required": null,
@@ -49,7 +55,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://legislature.maine.gov/statutes/21-A/title21-Asec673.html",
@@ -74,6 +80,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "1 M.R.S. 408-A (Freedom of Access Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the municipal registrar or the Secretary of State: per year, the number of registrations cancelled because the registrant was not a U.S. citizen, and the number of poll challenges on citizenship grounds (21-A M.R.S. 673).",
+    "counts_only": true,
+    "source_url": "https://legislature.maine.gov/statutes/1/title1sec408-A.html",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Maine statute sends juror citizenship answers to election officials. Whether registrars keep counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -82,8 +96,12 @@
     "basis": "Names drawn for jury service are confidential (14 M.R.S. 1254-A(1)). Central voter data is confidential except for campaign uses (21-A M.R.S. 196-A). Challenges exist only at the polls. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (14 M.R.S. 1254-A(1), (6), (7)); jury source; audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads. Later 2026-10-07: voter_file who_may_get, permitted_uses and penalty updated for 196-A(1)(K) and (6) (PL 2025, c. 397).",
+    "PA-style check: the qualification determination is kept on the form or a court-designated record (1254-A(6)), and forms are confidential (1254-A(7)). No Maine list of non-citizen disqualifications is public.",
+    "official_pipeline is null: no Maine statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list Maine.",
+    "Cancelled-voter file: no published Maine cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Purchasable lists show year of birth only and include date of registration (196-A(1)(B)).",
-    "Most private users cannot lawfully get Maine voter data (196-A).",
-    "official_pipeline is null: none found."
+    "Correction 2026-10-07: PL 2025, c. 397 added 196-A(1)(K). Any person may buy a voter file 'to evaluate, monitor or seek compliance with laws relating to voting rights, election administration and voter registration'. The file has the paragraph B fields and 'may include data concerning cancelled voters'. It may not include 'A voter's full date of birth' (196-A(1)(K)(2)(a)). No jury reason code is named. The earlier note that most private users cannot get Maine voter data was incomplete. No gate changes.",
+    "Source note: legislature.maine.gov read with curl on 2026-10-07."
   ]
 }
