@@ -1,1 +1,1 @@
-| AZ | No (A.R.S. 21-312) | Only at the polls (A.R.S. 16-591); not supported | Counts only |
+| AZ | No. Juror records are closed by state law (A.R.S. 21-312; Ariz. R. Sup. Ct. 123(e)(10)) | Only at the polls (A.R.S. 16-591); not supported | Counts only. Voter lists carry birth year only. See 6.4 |

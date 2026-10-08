@@ -5,10 +5,15 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "A.R.S. 21-312: juror records are closed (juror information and jury questionnaire answers are not public; release only as the statute or the court allows).",
+    "statute": "A.R.S. 21-312(A)-(B): the juror list and juror information 'shall not be released unless specifically required by law or ordered by the court'; records with juror biographical information are closed. Ariz. R. Sup. Ct. 123(e)(10) also makes questionnaire information confidential.",
     "holder": "Jury commissioner / superior court. Juror non-citizen notices go to the Secretary of State and county recorder (A.R.S. 21-314(F)).",
-    "fields_withheld": null,
-    "official_pipeline": "A.R.S. 21-314(F): the jury commissioner reports persons who say they are not U.S. citizens to the Secretary of State and the county recorder. A.R.S. 16-165(A)(10): the county recorder sends notice; if no satisfactory proof of citizenship within 35 days, the recorder cancels the registration and notifies the county attorney and the attorney general.",
+    "fields_withheld": [
+      "All juror biographical information (A.R.S. 21-312(B))",
+      "Dates of birth, addresses, phone numbers and e-mail (Ariz. R. Sup. Ct. 123(e)(10))",
+      "All questionnaire information that identifies a juror, including citizenship answers (Rule 123(e)(10))",
+      "Juror name list, unless law or a court order requires release (A.R.S. 21-312(A)); Rule 123(e)(10) exempts master-list names, but the statute still applies"
+    ],
+    "official_pipeline": "A.R.S. 21-314(F) (as amended by Laws 2022, ch. 370 (HB 2243)): the jury commissioner sends the Secretary of State and the county recorder a summary report of persons who say they are not U.S. citizens or do not live in the county. A.R.S. 16-165(A)(10): the recorder sends a forwardable notice; with no satisfactory evidence of citizenship within 35 days, the recorder cancels and notifies the county attorney and the attorney general. Federal court: cancellation under 16-165(A)(10) is enjoined within 90 days before a federal election (Mi Familia Vota v. Fontes, D. Ariz. final judgment May 2, 2024; aff'd 9th Cir. Feb. 25, 2025; cert. granted June 29, 2026, No. 25-1017).",
     "use_restriction": null,
     "source_url": "https://www.azleg.gov/ars/21/00312.htm",
     "verified_on": "2026-10-07",
@@ -24,16 +29,46 @@
         "url": "https://www.azleg.gov/ars/16/00165.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Laws 2022, ch. 370 (HB 2243), sec. 3: amends 21-314(F) from a redacted copy of the questionnaire to a 'summary report'",
+        "url": "https://www.azleg.gov/legtext/55leg/2R/laws/0370.htm",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
+      },
+      {
+        "cite": "Ariz. R. Sup. Ct. 123(e)(10) (juror records confidential), Order R-24-0049",
+        "url": "https://www.azcourts.gov/Portals/0/20/2008-2025%20Rule%20Minutes-Orders/2024%20Rules/R-24-0049%20Final%20Order%20Re%20Adopting%20Amendments%20On%20A%20Permanent%20Basis.PDF",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Mi Familia Vota v. Fontes, No. CV-22-00509-PHX-SRB (D. Ariz. May 2, 2024), Final Judgment (Doc. 720)",
+        "url": "https://www.democracydocket.com/wp-content/uploads/2022/03/7202024-05-02-Final-Judgment-dckt-720_0.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
+      },
+      {
+        "cite": "Mi Familia Vota v. Petersen, No. 24-3188 (9th Cir. Feb. 25, 2025), 129 F.4th 691",
+        "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2025/02/25/24-3188.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
+      },
+      {
+        "cite": "RNC v. Mi Familia Vota, No. 25-1017 (U.S.), cert. granted June 29, 2026; argument Dec. 8, 2026",
+        "url": "https://www.supremecourt.gov/docket/docketfiles/html/public/25-1017.html",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person, on request to the county recorder or Secretary of State, but only for a use the statute allows (A.R.S. 16-168(E)).",
+    "who_may_get": "Any person, on request to the county recorder or Secretary of State, but only for a use the statute allows (A.R.S. 16-168(E)). Public lists carry name, party, registration date and address (16-168(B)); party-chair copies carry birth year only (16-168(C)(8)).",
     "permitted_uses": "Political, campaign, election and redistricting purposes, or other uses authorized by law. Commercial use is barred (A.R.S. 16-168(E)).",
     "use_restriction": "A.R.S. 16-168(E): 'Precinct registers and other lists and information derived from registration forms may be used only for purposes relating to a political or political party activity, a political campaign or an election, for revising election district boundaries or for any other purpose specifically authorized by law and may not be used for a commercial purpose as defined in section 39-121.03.'",
     "no_online_posting": true,
     "penalty": "A.R.S. 16-168(F): a person who posts precinct lists or registration data on the internet, or who uses or allows use for a purpose not authorized, is guilty of a class 6 felony.",
-    "dob_in_public_file": null,
+    "dob_in_public_file": false,
     "registration_date_in_public_file": true,
     "attestation_required": null,
     "source_url": "https://www.azleg.gov/ars/16/00168.htm",
@@ -42,7 +77,7 @@
   "private_challenge": {
     "allowed": null,
     "who": "At the polls only: any qualified elector of the county may orally challenge a person offering to vote (A.R.S. 16-591). That is contact with the voter at a polling place. JuryRoll does not support it.",
-    "form_or_statute": "A.R.S. 16-591, 16-592 (challenge at the polls); A.R.S. 16-121.01(B) (presumption of valid registration; clear and convincing evidence to overcome it).",
+    "form_or_statute": "A.R.S. 16-591, 16-592 (oral challenge at the polls); 16-552(C)-(E) (written early-ballot challenges by party-appointed challengers; burden on the challenger); 16-121.01(B) (presumption of valid registration; clear and convincing evidence to rebut).",
     "form_url": null,
     "one_per_affidavit": null,
     "deadlines": null,
@@ -64,12 +99,18 @@
         "url": "https://www.azleg.gov/ars/16/00592.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "A.R.S. 16-552(C)-(E) (early-ballot challenges by party representatives)",
+        "url": "https://www.azleg.gov/ars/16/00552.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.azleg.gov/ars/16/00591.htm",
@@ -95,18 +136,33 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "A.R.S. 16-165(M)(3); 52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the Secretary of State for its quarterly reports to the legislature under A.R.S. 16-165(M). Paragraph 3 gives 'the number of persons who have stated on a jury questionnaire that the person is not a United States citizen, the number of notices sent' and 'the number of registrations that have been canceled as a result of those notices.' Ask the county recorder for list-maintenance records under 52 U.S.C. 20507(i). Ask for counts only. Do not ask for names.",
+    "counts_only": true,
+    "source_url": "https://www.azleg.gov/ars/16/00165.htm",
+    "verified_on": "2026-10-07",
+    "note": "A request for an existing public record goes under A.R.S. 39-121. Whether the 21-314(F) summary report itself is open is unverified (null); it names persons, so JuryRoll never asks for it. The county recorder also posts counts of registrants without proof of citizenship (A.R.S. 16-161(B))."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror records are closed (A.R.S. 21-312), so the jury list is not available to a private person. No pre-election private registration challenge statute was found; the only private challenge is at the polls (A.R.S. 16-591), which JuryRoll does not support. Strict gates: counts only."
+    "basis": "Juror records are closed (A.R.S. 21-312; Ariz. R. Sup. Ct. 123(e)(10)), so jury_list.public is false: no jury list, counts only. The only private challenge is oral, at the polls (A.R.S. 16-591), and the presumption of valid registration yields only to clear and convincing evidence (16-121.01(B)). allowed stays null. Gates F/T/F/F."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). Strict choices: dob_in_public_file false; openness of the 21-314(F) report null; a jury-report cancellation under 16-165(A)(10) is treated as inside the 90-day ban; private_challenge.allowed null. RNC v. Mi Familia Vota, No. 25-1017 (cert. granted June 29, 2026; argument Dec. 8, 2026) is pending. Open questions are in review/NULLS-SUMMARY.md. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
     "allowed is null: Arizona law lets an elector challenge at the polls (A.R.S. 16-591). No written pre-election challenge by a private person was found. The app treats null as no challenge guidance.",
     "Duplication: the official pipeline already exists (A.R.S. 21-314(F) and 16-165(A)(10)). Aggregate referral should ask whether it ran.",
-    "dob_in_public_file is null: 16-168 restricts some identifying data; the exact DOB rule for purchased lists was not confirmed. The app treats null as no DOB.",
     "Posting registration data on the internet is a class 6 felony (A.R.S. 16-168(F)). JuryRoll never posts data.",
-    "state_extra_days is 0: no state window that starts before day 90 was found in the reviewed challenge statutes."
+    "state_extra_days is 0: no state window that starts before day 90 was found in the reviewed challenge statutes.",
+    "dob_in_public_file is false: precinct lists sold to any person carry name, party, registration date and address (16-168(B)). Party chairs get birth year only (16-168(C)(8)). Month and day of birth are not accessible except to the voter, officials, NVRA agencies, petition checks, 'for election purposes', news gathering or by court order (16-168(F)). Whether a private person can claim 'election purposes' is an Optimus question. Best tier on a lawful public list: name + birth year, which is not a strong match.",
+    "No lawful named-data path for a private person was found. The jury list is closed (21-312). The 21-314(F) report names persons; its openness under 39-121 is unverified, and it would carry 16-168 use limits if derived from registration data. Posting or misusing voter data is a class 6 felony (16-168(F)).",
+    "No private-complaint provision exists in 16-165, HB 2243 (Laws 2022, ch. 370) or HB 2492 (ch. 99). Verified 2026-10-07 by text search of both session laws.",
+    "Mi Familia Vota final judgment (May 2, 2024): 16-165(A)(10) cancellation is enjoined within 90 days before a federal election; 16-165(I) ('reason to believe' SAVE checks of registered voters) is permanently enjoined. The 9th Circuit affirmed (Feb. 25, 2025); rehearing en banc denied Sept. 22, 2025. Cert. granted June 29, 2026 (No. 25-1017) on two questions: state-form proof of citizenship, and the 90-day cancellation program. 16-165(I) is not in the questions presented. Argument Dec. 8, 2026.",
+    "Federal-only voters: registrants without satisfactory evidence of citizenship (16-166) vote federal races only, not in presidential elections or by mail (16-127(A)); the final judgment enjoins those two limits as preempted by NVRA sec. 6. The recorder posts their count (16-161(B)). This status is not proof of non-citizenship.",
+    "Pending: HB 4067 (2026, 57th Leg. 2R) would add a pollbook status for registrants who self-report as noncitizen or nonresident on a jury questionnaire (16-583). Enactment status: null (unverified).",
+    "90-day ban: JuryRoll treats every 16-165(A)(10) cancellation, including one based on a 21-314(F) jury report, as inside the injunction's 90-day ban. Whether a jury-report cancellation is 'individualized' is open (review/NULLS-SUMMARY.md)."
   ]
 }
