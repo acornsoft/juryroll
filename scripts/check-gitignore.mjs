@@ -26,6 +26,8 @@ try {
   if (ignored('shared/templates/juror-template.csv')) throw new Error('shared/templates CSV must stay trackable');
   if (ignored('test/fixtures/voter_no_regdate.csv')) throw new Error('test/fixtures CSV must stay trackable');
   if (!ignored('node_modules')) throw new Error('node_modules must be ignored');
+  if (!ignored('.env.local')) throw new Error('.env.local must be ignored');
+  if (!ignored('.envfoo.local')) throw new Error('.env*.local must be ignored');
   console.log('GITIGNORE CHECK PASSED');
 } finally {
   fs.unlinkSync(rootCsv);
