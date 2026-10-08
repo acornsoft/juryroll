@@ -4,14 +4,46 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
-    "holder": "Clerk of courts / Unified Judicial System.",
+    "public": false,
+    "statute": "SDCL 16-13-31.1: 'All records, lists, papers, tickets, and other materials used in all stages of the jury selection process shall be preserved in the custody of the clerk of courts for four years or for such longer period as may be required by the court and shall, upon court order, be available for inspection for the purpose of determining the validity of the selection of any jury.' 16-13-15: 'The clerk of courts shall record with the list of jurors the reasons for disqualification of any person stricken from the master jury list.'",
+    "holder": "Clerk of courts (SDCL 16-13-15, 16-13-31.1); the jury selection list is prepared by the state court administrator's office (16-13-4.1).",
     "fields_withheld": null,
-    "official_pipeline": null,
-    "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "official_pipeline": "SDCL 12-4-57: 'Within fifteen days after the close of each month, each clerk of court shall forward to the county auditor of the clerk's county information on any individual called for jury duty who is excused from jury duty because the individual has moved, has been convicted of a felony, has been declared mentally incompetent, is deceased, or is not a citizen of the United States. Upon receipt of the information, the county auditor shall investigate to determine if the reported individual is listed in the county's master registration file and whether the individual is eligible to be registered as a voter.' The auditor shall remove 'The names of those who are not citizens of the United States.'",
+    "use_restriction": "SDCL 16-13-4.1: 'The jury selection list may not be distributed, sold, or duplicated for any other purpose.'",
+    "source_url": "https://sdlegislature.gov/Statutes/16-13-31.1",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "SDCL 16-13-31.1 (jury selection records open only on court order, to test the validity of a jury selection)",
+        "url": "https://sdlegislature.gov/Statutes/16-13-31.1",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SDCL 16-13-15 (clerk strikes unqualified persons and records the reasons)",
+        "url": "https://sdlegislature.gov/Statutes/16-13-15",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SDCL 16-13-10 (a juror must be a 'citizen of this state')",
+        "url": "https://sdlegislature.gov/Statutes/16-13-10",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SDCL 16-13-4.1 (jury selection list from voter, driver license and ID lists; no other use)",
+        "url": "https://sdlegislature.gov/Statutes/16-13-4.1",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "SDCL 12-4-57 (clerk of court reports jurors excused as non-citizens to the county auditor monthly; auditor investigates and removes non-citizens)",
+        "url": "https://sdlegislature.gov/Statutes/12-4-57",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Anyone. The Secretary of State posts the complete statewide voter registration file on its website every Monday, with a free five-year archive (SDCL 12-4-37, 12-4-37.1).",
@@ -58,12 +90,18 @@
         "url": "https://sdlegislature.gov/Statutes/12-4-61",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "SDCL 12-4-58 (challenges for disqualification under 12-4-18 or death; 30 days before the election; no citizenship ground)",
+        "url": "https://sdlegislature.gov/Statutes/12-4-58",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -97,17 +135,31 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "SDCL 1-27-1 (public records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county auditor: per month or year, the number of 12-4-57 reports received from the clerk of court for jurors excused as not citizens, the number found in the master registration file, and the number removed.",
+    "counts_only": true,
+    "source_url": "https://sdlegislature.gov/Statutes/1-27-1",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. 12-4-57 reports cover five reasons (moved, felony, incompetent, deceased, not a citizen); ask for the citizenship count separately if the auditor keeps it. Whether auditors keep counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "The jury record status is unknown (null), so the app shows counts only. A private citizenship challenge exists (SDCL 12-4-59) but needs personal verification and documents, and it closes on day 90. Guidance stays off while the jury list is not available."
+    "basis": "Jury selection records are open only 'upon court order' and only 'for the purpose of determining the validity of the selection of any jury' (SDCL 16-13-31.1), so public is false and the app shows counts only. Non-citizen excusals already go to the county auditor by law (12-4-57). A private citizenship challenge exists (12-4-59) but needs personal verification and documents, and it closes on day 90. Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false (16-13-31.1, quoted exactly); official_pipeline null -> SDCL 12-4-57 quoted exactly; use_restriction null -> 16-13-4.1 quoted exactly; holder and jury sources; challenge source 12-4-58; audit_path; federal_source_url moved to govinfo. No gate changes.",
+    "Correction: the box note 'official_pipeline is null: SDCL 12-4-18 covers incompetency, felony, and death, not jury citizenship. No jury pipeline was found.' was wrong. SDCL 12-4-57 (SL 2023, ch 44, sec. 18) sends jurors excused as non-citizens to the county auditor. This now matches LEGAL-REVIEW.md, which lists SD among pipeline-by-law states.",
+    "PA-style check: 16-13-15 requires a record of 'the reasons for disqualification of any person stricken from the master jury list', but 16-13-31.1 opens jury selection records only on court order and only to test a jury's selection. Not a public list.",
+    "use_restriction: 16-13-4.1 bars any other use of the jury selection list. The app does not take jury lists for SD (public false).",
+    "Cancelled-voter file: no published South Dakota cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "The voter file is posted publicly by the state, but re-posting it for unrestricted internet access is a Class 1 misdemeanor (12-4-41). JuryRoll never posts data.",
+    "dob_in_public_file stays false: 12-4-9 says 'month and day of birth is not open to public inspection'.",
     "false_statement_penalty is null: 12-4-60 penalizes publishing confidential identifiers (Class 2 misdemeanor), not false statements; general perjury law may apply.",
-    "official_pipeline is null: SDCL 12-4-18 covers incompetency, felony, and death, not jury citizenship. No jury pipeline was found.",
-    "For the November 3, 2026 election the 12-4-59 deadline (August 5, 2026) has passed."
+    "For the November 3, 2026 election the 12-4-59 deadline (August 5, 2026) has passed.",
+    "Source note: sdlegislature.gov API pages read with curl on 2026-10-07."
   ]
 }

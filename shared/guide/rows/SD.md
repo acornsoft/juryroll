@@ -1,1 +1,1 @@
-| SD | Not known, so the app treats it as no | Yes, until day 90, with personal checks (SDCL 12-4-59, 12-4-60) | Counts only |
+| SD | No. Jury selection records open only on court order, to test a jury selection (SDCL 16-13-31.1). Clerks send non-citizen excusals to the county auditor (12-4-57) | Yes, until day 90, with personal checks (SDCL 12-4-59, 12-4-60) | Counts only |
