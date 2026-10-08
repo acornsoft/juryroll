@@ -5,16 +5,30 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "Wis. Stat. 756.04(11)(a): completed juror qualification forms are confidential and released only on court order for good cause.",
+    "statute": "Wis. Stat. 756.04(11)(a): 'All completed juror qualification forms mailed to prospective jurors under sub. (6) (am) and supplemental information obtained under sub. (6) (cm) shall be confidential and shall be released only upon order of the court upon a showing of good cause.' 756.04(9)(a): the clerk 'shall strike' from the list 'the name of any person whose returned juror qualification form shows that the person is not qualified for jury service under s. 756.02.' 756.04(9)(b): the clerk 'shall keep for public inspection a certified copy of the jury array under par. (a), indicating the city, village, or town of residence of each prospective qualified juror.' 756.04(9)(c): 'names of prospective jurors not qualified or not summoned at the end of a jury year shall be discarded.'",
     "holder": "Clerk of circuit court; Director of State Courts (master list).",
     "fields_withheld": [
-      "completed juror qualification forms",
+      "completed juror qualification forms and supplemental information (756.04(11)(a))",
       "social security numbers (756.04(2)(f))"
     ],
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://docs.legis.wisconsin.gov/document/statutes/756.04",
-    "verified_on": "2026-10-07"
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/756.pdf",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Wis. Stat. 756.04 (chapter 756 PDF, current statutes)",
+        "url": "https://docs.legis.wisconsin.gov/statutes/statutes/756.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Wis. Stat. 756.02 (juror must be a U.S. citizen)",
+        "url": "https://docs.legis.wisconsin.gov/statutes/statutes/756.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Any person (Wis. Stat. 6.36(1)(b)1: the official registration list is open to public inspection and electronically accessible). The Elections Commission sells list extracts.",
@@ -44,7 +58,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://docs.legis.wisconsin.gov/document/statutes/6.48",
@@ -69,16 +83,28 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Wis. Stat. 19.35 (public records) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the Wisconsin Elections Commission or a municipal clerk: per municipality and per month, the number of registrations made inactive or cancelled because the voter was not a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://docs.legis.wisconsin.gov/statutes/statutes/19/ii/35",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Wisconsin statute sends juror non-citizen answers to election officials, so there is no jury count to ask for. Juror qualification forms are confidential (756.04(11)(a)), and names of persons not qualified are discarded at the end of each jury year (756.04(9)(c))."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Juror qualification forms are confidential (Wis. Stat. 756.04(11)(a)), so the jury list is not available. Strict gates: counts only."
+    "basis": "Juror qualification forms are confidential (Wis. Stat. 756.04(11)(a)). The public jury array lists qualified jurors only (756.04(9)(b)). Strict gates: counts only."
   },
   "notes": [
-    "official_pipeline is null: no Wisconsin statute sending juror non-citizen answers to election officials was found.",
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (756.04(9)(a)-(c), (11)(a)); fields_withheld wording; source_url now the chapter 756 PDF; audit_path; federal_source_url moved to govinfo. jury_list.public stays false. official_pipeline stays null. No voter_file value changes.",
+    "PA-style check: the only public jury list in Wisconsin is the certified jury array, and it lists 'each prospective qualified juror' with city, village, or town (756.04(9)(b)). Names of persons found not qualified are struck (9)(a) and discarded at year end (9)(c). No statute makes a list of non-citizen disqualifications public.",
+    "official_pipeline is null: no Wisconsin statute sends juror non-citizen answers to election officials. 2021 AB 1001 / SB 945 proposed one; neither was enacted. No 2025-26 act adds one.",
     "The voter list is public but date of birth is restricted to election staff (6.36(1)(b)1.a). Matching is capped below the full-DOB tier.",
+    "Cancelled-voter file: no published Wisconsin cancelled-voter file with a jury or non-citizen reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "Context: on July 7, 2026 the U.S. Department of Justice wrote to all states about non-citizens on voter lists. On July 9, 2026 the Elections Commission chair replied that 'Other than in very limited circumstances, WEC has no authority to remove voters' and that municipal clerks decide removals. https://wislawjournal.com/2026/07/10/doj-warns-wisconsin-over-noncitizen-voter-rolls/",
     "false_statement_penalty is null: 6.48 has no specific penalty clause; general false-swearing law may apply.",
     "state_extra_days is 0: 6.48 sets no window that starts before day 90."
   ]
