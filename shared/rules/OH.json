@@ -4,32 +4,92 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
-    "holder": "Commissioners of jurors and clerk of the court of common pleas (R.C. 2313.06).",
+    "public": false,
+    "statute": "No statutory non-citizen jury list; juror records not public (Bond, 2002-Ohio-7117); Parisi (2019-Ohio-5157): 149.43 doesn't reach jury commissioners.",
+    "holder": "Commissioners of jurors, who 'shall be officers of the courts of common pleas' (R.C. 2313.01(A)). They keep the annual jury source list, which records each person's 'place of residence, date of birth, and citizenship ... as nearly as they can be ascertained' (2313.06(C)), with a duplicate filed with the clerk of the court of common pleas. They also keep 'a record ... of all persons who are granted an excuse or postponement, and of the time of and reasons for each excuse' (2313.14(G)). No statute creates a list of persons disqualified for non-citizenship.",
     "fields_withheld": null,
-    "official_pipeline": "No jury-to-election pipeline found. The Secretary of State reviews the statewide database monthly against BMV and SAVE data, reports non-citizens to boards for cancellation, and refers each to the election integrity unit (R.C. 3503.152).",
+    "official_pipeline": "No jury-to-election pipeline found in R.C. Chapter 2313. The Secretary of State reviews the statewide database 'on at least a monthly basis' against BMV data and SAVE (3503.152(A)), sends each board a report of persons shown as non-citizens, and the board 'promptly shall cancel the person's voter registration' (3503.152(B)(1); 3503.21(A)(9)). The SOS also directs the election integrity unit to investigate each person (3503.152(B)(2)) and reports violations 'to the attorney general or prosecuting attorney, or both, for prosecution' (3501.05(N)(1)).",
     "use_restriction": null,
-    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.152",
+    "source_url": "https://www.supremecourt.ohio.gov/rod/docs/pdf/0/2002/2002-Ohio-7117.pdf",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "R.C. 3503.152 (monthly non-citizen review)",
+        "cite": "R.C. 2313.01(A) (commissioners of jurors are officers of the court of common pleas)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.01",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.C. 2313.06 (annual jury source list from the board of elections list and the BMV list; BMV list includes 'citizenship'; (C) list records citizenship)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.06",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.C. 2313.09 (annual jury list records residence, date of birth and citizenship)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.09",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.C. 2313.14(A), (G) (excuse grounds; record of each excuse and its reasons; citizenship is not an excuse ground)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.14",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.C. 2313.17(A) (juror must be 'an elector or would be an elector if the person were registered to vote')",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.17",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ohio Const. art. V, sec. 1 ('Only a citizen of the United States ... has the qualifications of an elector')",
+        "url": "https://codes.ohio.gov/ohio-constitution/section-5.1",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "R.C. 2313.18(B) (questionnaire legend on the right to an in-camera hearing on privacy interests)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.18",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "State ex rel. Beacon Journal Publishing Co. v. Bond, 2002-Ohio-7117, syllabus: 'Juror names, addresses, and questionnaire responses are not \"public records\" as contemplated by R.C. 149.43'; qualified First Amendment access applies",
+        "url": "https://www.supremecourt.ohio.gov/rod/docs/pdf/0/2002/2002-Ohio-7117.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
+      },
+      {
+        "cite": "Sup.R. 11.09-11.16 (former Sup.R. 44-47, renumbered July 1, 2026): court records presumed open (11.10); 'administrative document' excludes information 'exempt from disclosure under state, federal, or the common law' (11.09(G)(2)(a)); remedy is mandamus (11.16(B))",
+        "url": "https://www.supremecourt.ohio.gov/docs/LegalResources/Rules/superintendence/Superintendence.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "State ex rel. Parisi v. Dayton Bar Assn. Certified Grievance Commt., 2019-Ohio-5157: 'the Rules of Superintendence are the sole vehicle by which a party may seek to obtain such records'",
+        "url": "https://www.supremecourt.ohio.gov/rod/docs/pdf/0/2019/2019-ohio-5157.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_order"
+      },
+      {
+        "cite": "R.C. 3503.152 (monthly SOS non-citizen review using BMV and SAVE; report to boards; referral to the election integrity unit), eff. 2026-03-20",
         "url": "https://codes.ohio.gov/ohio-revised-code/section-3503.152",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "R.C. 2313.06 (jury source list)",
-        "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.06",
+        "cite": "R.C. 4501.27(C) (an authorized recipient of BMV personal information 'may resell or redisclose' it only for permitted uses)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-4501.27",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person. Registration forms and the statewide database are public records (R.C. 3503.13(A)); the Secretary of State posts weekly voter files for download.",
-    "permitted_uses": "No purpose restriction found in R.C. 3503.13 or 3503.26.",
+    "who_may_get": "R.C. 3503.13(A)(1): 'voter registration forms submitted by applicants and the statewide voter registration database ... are public records subject to disclosure under section 149.43'. The SOS posts county and statewide voter files, 'updated every week', in comma-delimited format (SOS Voter Files Download Page).",
+    "permitted_uses": "No purpose limit found in 3503.13 or 3503.26. Not disclosed (3503.13(A)(2)): SSN, driver's license or state ID number, telephone number, email, confidential voter records (111.44), redacted public-service-worker addresses, 'An elector's proof of citizenship', and other information barred by law.",
     "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
@@ -40,13 +100,13 @@
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "Ohio SoS Voter Files Download Page (layout: Date Of Birth, Registration Date, Voter Status)",
+        "cite": "Ohio SOS Voter Files Download Page (weekly; comma-delimited; county files dated 03-OCT-26) and Voter File Layout (last updated April 12, 2018): 'Date Of Birth' (YYYY-MM-DD) and 'Registration Date' ('Date voter registered')",
         "url": "https://www6.ohiosos.gov/ords/f?p=VOTERFTP:HOME",
         "verified_on": "2026-10-07",
         "kind": "official_page"
       },
       {
-        "cite": "R.C. 3503.26 (registration lists open to public inspection)",
+        "cite": "R.C. 3503.26 ((A) registration lists open to inspection; (B) list-maintenance records open for inspection and copying for two years)",
         "url": "https://codes.ohio.gov/ohio-revised-code/section-3503.26",
         "verified_on": "2026-10-07",
         "kind": "statute"
@@ -55,21 +115,35 @@
   },
   "private_challenge": {
     "allowed": true,
-    "who": "Any qualified elector (R.C. 3503.24(A)).",
-    "form_or_statute": "R.C. 3503.24: challenge of the right to vote filed with the county board of elections on the Secretary of State form (Form 257, 'Challenge of Right to Vote and Correction of Registration List'), with reasons, signed under penalty of election falsification. The board decides on its records or holds a hearing within 10 days.",
-    "form_url": "https://www.ohiosos.gov/elections/elections-administration/forms-and-petitions",
+    "who": "R.C. 3503.24(A): a challenge 'of the right to vote of any registered elector may be made by any qualified elector at the office of the board of elections'.",
+    "form_or_statute": "R.C. 3503.24(A): filed 'on a form prescribed by the secretary of state' and 'signed under penalty of election falsification'. SOS Form 257 (03-19), 'Challenge of Right to Vote and Correction of Registration List'. 3503.24(B): the board decides on its records, or holds a hearing within 10 days; 'All witnesses shall testify under oath.'",
+    "form_url": "https://www.ohiosos.gov/assets/257.pdf",
     "one_per_affidavit": null,
-    "deadlines": "Not later than the 30th day before the election (R.C. 3503.24(A)). For November 3, 2026 that was October 4, 2026.",
+    "deadlines": "R.C. 3503.24(A): 'not later than the thirtieth day before the day of the election.' For November 3, 2026 that was October 4, 2026; it has passed. 3503.24(B): hearing and decision 'no later than ten days after the board receives the application or challenge'; notice to the voter by first class mail 'no later than three days before' the hearing. The federal 90-day window has been open since August 5, 2026.",
     "deadline_days_before_election": 30,
-    "evidence_standard": "The board grants or denies on its records, or after a hearing with sworn testimony (R.C. 3503.24(B)).",
-    "juryroll_lead_sufficient": null,
-    "false_statement_penalty": "Signed under penalty of election falsification (R.C. 3503.24(A)).",
+    "evidence_standard": "No standard is stated in 3503.24. The board grants or denies 'solely on the basis of the records maintained by the board' if it can; otherwise after a hearing with sworn witnesses (3503.24(B)). Form 257: 'I hereby declare under penalty of election falsification that the statements above are true based on my personal knowledge, information or belief.' The form also lists grounds that 'alone' are 'insufficient' (returned mail or NCOA, foreclosure, 'active-confirmation' status).",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": "R.C. 3599.36: 'Whoever violates this section is guilty of election falsification, a felony of the fifth degree.' Form 257 repeats: 'WHOEVER COMMITS ELECTION FALSIFICATION IS GUILTY OF A FELONY OF THE FIFTH DEGREE.'",
     "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
-    "verified_on": "2026-10-07"
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Ohio SOS Form 257 (03-19), Challenge of Right to Vote and Correction of Registration List",
+        "url": "https://www.ohiosos.gov/assets/257.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_form"
+      },
+      {
+        "cite": "R.C. 3599.36 (election falsification, fifth-degree felony)",
+        "url": "https://codes.ohio.gov/ohio-revised-code/section-3599.36",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -93,26 +167,47 @@
     "state_election_office": {
       "name": "Ohio Secretary of State - Elections",
       "url": "https://www.ohiosos.gov/elections",
-      "verified_on": "2026-10-07"
+      "verified_on": "2026-10-07",
+      "note": "The SOS election integrity unit must 'Allow the public to submit allegations of violations of Title XXXV' (R.C. 3501.055(B)(2))."
     },
     "ag": {
       "name": "Ohio Attorney General",
       "url": "https://www.ohioattorneygeneral.gov/",
-      "verified_on": "2026-10-07"
+      "verified_on": "2026-10-07",
+      "note": "The SOS reports election-law violations 'to the attorney general or prosecuting attorney, or both, for prosecution' (R.C. 3501.05(N)(1)). Non-citizen cases reach the SOS election integrity unit through the monthly review in R.C. 3503.152(B)(2)."
     },
     "other": []
+  },
+  "audit_path": {
+    "statute": "R.C. 3503.26(B); 52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the county board of elections for records of its list-maintenance programs: counts and outcomes of non-citizen cancellations under R.C. 3503.21(A)(9). R.C. 3503.26(B) opens 'all records concerning the implementation of programs and activities conducted for the purpose of ensuring the accuracy and currency of voter registration lists' for two years. 52 U.S.C. 20507(i) is the federal counterpart. Do not ask for names.",
+    "counts_only": true,
+    "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.26",
+    "verified_on": "2026-10-07",
+    "note": "The SOS election integrity unit's yearly report, due January 15, gives counts of allegations received, investigated and referred (R.C. 3501.055(B)(3))."
   },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "The jury record status is unknown (null), so the app treats it as confidential and shows counts only. The voter file is public with DOB and registration date. A private challenge exists (R.C. 3503.24) but guidance stays off without a jury list."
+    "basis": "allow_jury_list false: jury_list.public is false. Ohio law creates no non-citizen jury list. Juror names and addresses 'are not \"public records\"' under R.C. 149.43 (Beacon Journal v. Bond, 2002-Ohio-7117), and 149.43 does not reach jury commissioners' records (Parisi, 2019-Ohio-5157). aggregate_only true and allow_named_export false follow. show_challenge_guidance false: no jury list, the 3503.24 deadline for Nov 3, 2026 passed on Oct 4, 2026, and the federal 90-day window is open. Unchanged from the box file; no gate was loosened. Optimus-reviewed 2026-10-07."
   },
   "notes": [
-    "jury_list.public is null: no Ohio statute or Rule of Superintendence on juror citizenship answers was confirmed.",
-    "The R.C. 3503.24 deadline for the November 3, 2026 election (October 4, 2026) has passed as of verified_on.",
-    "The voter file layout document is from 2018; field names were read from the official download page on verified_on.",
-    "state_extra_days is 0: the 30-day cutoff falls inside the federal 90-day window."
+    "CHANGED 2026-10-07 (Optimus-reviewed): gates unchanged (strict). jury_list.public set to false: no statutory non-citizen jury list; juror records not public (Bond, 2002-Ohio-7117); Parisi (2019-Ohio-5157): 149.43 doesn't reach jury commissioners. juryroll_lead_sufficient set to false. audit_path added (R.C. 3503.26(B); 52 U.S.C. 20507(i)). Also filled or corrected: jury_list.holder, official_pipeline (adds 3503.21(A)(9) and 3501.05(N)(1)), form_url (Form 257 PDF), evidence_standard (form text), false_statement_penalty (3599.36, fifth-degree felony), federal_source_url (govinfo). New sources: Bond, Parisi, Sup.R. 11.09-11.16, 2313.01/.09/.14/.17, Ohio Const. art. V sec. 1, 4501.27.",
+    "Sup.R. renumbering. Sup.R. 44-47 were renumbered Sup.R. 11.09-11.16 in the July 1, 2026 restructuring (commentary to each rule). The text is unchanged. Court decisions still cite 44-47.",
+    "Public records answer. R.C. 149.43 does not reach court records: 'the Rules of Superintendence are the sole vehicle by which a party may seek to obtain such records' (Parisi, 2019-Ohio-5157). Administrative documents are covered 'regardless of when the documents were created' (State ex rel. Parker Bey v. Byrd, 2020-Ohio-2766). Juror names, addresses and questionnaire responses 'are not \"public records\"' under 149.43 (Bond, 2002-Ohio-7117, syllabus). Bond found a qualified First Amendment right of access to juror names, addresses and questionnaires in a criminal trial; it did not address a list of disqualified non-citizens. jury_list.public is false (Optimus 2026-10-07).",
+    "Citizenship in jury records. Non-citizens are not qualified jurors: a juror must be 'an elector or would be an elector' (2313.17(A)), and only a citizen 'has the qualifications of an elector' (Ohio Const. art. V, sec. 1). Citizenship is not an excuse ground in 2313.14(A). The annual jury source list records citizenship (2313.06(C)), partly from the BMV list (2313.06(A)(2)(a)). No section requires commissioners to report non-citizens to a board, the SOS or a prosecutor.",
+    "Questionnaires. No Ohio statute makes juror questionnaires confidential. 2313.18(B) requires a legend on the right to an in-camera hearing about privacy. The Ohio Trial Court Jury Use and Management Standards (Sup.R. Appendix B, commentary to former Standard 7, renumbered in the 2026 restructuring) say: 'The questionnaire shall be handled in a manner to ensure privacy.'",
+    "DPPA and BMV data. The BMV list that commissioners receive includes 'citizenship' (2313.06(A)(2)(a)). R.C. 4501.27(C) lets an authorized recipient 'resell or redisclose' BMV personal information only for permitted uses. 18 U.S.C. 2721(c) has a similar rule. Whether either reaches a disclosure of jury records is null. JuryRoll takes no DMV data (LOGIC-CHANGES F).",
+    "Voter file. Layout (April 12, 2018): 'Date Of Birth' in YYYY-MM-DD and 'Registration Date' ('Date voter registered'). The download page says the files are comma-delimited and updated weekly. The current header row was not checked, because that would mean downloading voter data.",
+    "Audit path. R.C. 3503.26(B): the board 'shall maintain and make available for public inspection and copying at a reasonable cost all records concerning the implementation of programs and activities conducted for the purpose of ensuring the accuracy and currency of voter registration lists', kept for two years. This is the Ohio counterpart to 52 U.S.C. 20507(i). Ask for counts and outcomes of non-citizen cancellations under 3503.21(A)(9). The SOS election integrity unit reports by January 15 each year to the governor and the General Assembly the number of allegations received, investigated and 'referred to another agency for further investigation or prosecution' (3501.055(B)(3)). See audit_path.",
+    "Challenges. 3503.24(A) lets 'any qualified elector' challenge. LEGAL-REVIEW.md (from NCSL) lists Ohio under 'Officials or party appointees only'. That conflicts with the statute; LEGAL-REVIEW.md should be corrected. The 30-day deadline for Nov 3, 2026 was Oct 4, 2026. Form 257 asks for 'personal knowledge, information or belief'. juryroll_lead_sufficient is false (Optimus 2026-10-07). Ohio has no jury list input, and the deadline has passed.",
+    "SOS referral practice. 3503.152(B) (eff. 2026-03-20): monthly BMV and SAVE review, report to boards, mandatory cancellation, and referral to the election integrity unit. 3501.05(N)(1): the SOS reports violations 'to the attorney general or prosecuting attorney, or both, for prosecution'. Referrals cite only these two sections (Optimus 2026-10-07).",
+    "Duplication. The SOS already checks the whole database monthly against BMV and SAVE (3503.152). A JuryRoll referral should ask, in counts only, whether that review and the board cancellations happened. It should not re-assert a match.",
+    "VRA 11(b), 52 U.S.C. 10307(b): 'No person, whether acting under color of law or otherwise, shall intimidate, threaten, or coerce, or attempt to intimidate, threaten, or coerce any person for voting or attempting to vote'. JuryRoll never contacts voters.",
+    "Pending: H.B. 964 (136th G.A., as introduced) would amend 2313.06 to require BMV names on the annual jury source list. It creates no non-citizen reporting. Status not checked beyond 'As Introduced' (https://search-prod.lis.state.oh.us/api/v2/general_assembly_136/legislation/hb964/00_IN/html/). Pending cases: none found on Ohio jury records. Treat both as not fully verified.",
+    "Volunteer practice. (1) An Ohio check modeled on Presler's PA work (https://x.com/Christo69536449/status/2099497374909419796, 2026-09-14). Ohio has no statutory non-citizen excusal list like PA 4523, so a PA-style match has no Ohio jury input. (2) A post says 'Ohio allows access to jury rolls' (https://x.com/AngelAu13729802/status/2107562588171010526, 2026-10-06). That conflicts with Bond (names and addresses are not 149.43 public records); juror records are not public (jury_list.public false). (3) A post says 'You have to be a registered voter to serve on a jury' in Ohio (https://x.com/CynthiaMeyerson/status/2078089694634512756, 2026-07-17). 2313.17(A) says 'regardless of whether the person actually is registered to vote'. Flagged; no gate changed.",
+    "no_online_posting, penalty and attestation_required are null: no bar, misuse penalty or signed statement for voter files was found in 3503.13 or 3503.26."
   ]
 }
