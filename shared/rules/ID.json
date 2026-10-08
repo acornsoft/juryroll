@@ -5,7 +5,7 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "Idaho Code 2-213(4): the contents of records or papers used by the jury commissioner or clerk in the selection process, and not made public under 2-206(5), 'shall not be disclosed' except for a jury-selection motion. 2-208(1): neither the names drawn nor the list shall be disclosed except on order of the presiding judge. 2-208(7): questionnaire contents are confidential as provided by Supreme Court rule.",
+    "statute": "Idaho Code 2-213(4): 'The contents of any records or papers used by the jury commissioner or the clerk in connection with the selection process and not made public under section 2-206 (5), Idaho Code, shall not be disclosed, except in connection with the preparation or presentation of a motion under subsection (1) of this section.' 2-208(1): 'Neither the names drawn nor the list shall be disclosed to any person except upon specific order of the presiding judge.' 2-208(7): 'The contents of the juror qualification questionnaire form shall be confidential to the extent provided by rules of the Idaho supreme court.'",
     "holder": "County jury commission / clerk of the district court.",
     "fields_withheld": null,
     "official_pipeline": null,
@@ -16,6 +16,18 @@
       {
         "cite": "Idaho Code 2-208 (qualification questionnaire asks about citizenship; names drawn not disclosed; contents confidential per court rule)",
         "url": "https://legislature.idaho.gov/statutesrules/idstat/Title2/T2CH2/SECT2-208/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Idaho Code 2-213(4) (selection records not disclosed except for a jury-selection motion)",
+        "url": "https://legislature.idaho.gov/statutesrules/idstat/Title2/T2CH2/SECT2-213/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Idaho Code 2-206(5) (master and county jury lists open to the public as provided by supreme court rule)",
+        "url": "https://legislature.idaho.gov/statutesrules/idstat/Title2/T2CH2/SECT2-206/",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -57,7 +69,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://legislature.idaho.gov/statutesrules/idstat/Title34/T34CH4/SECT34-431/",
@@ -82,6 +94,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Idaho Code 74-102 (Public Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the county clerk: per year, the number of registrations suspended or cancelled because the registrant was not a U.S. citizen (Idaho Code 34-419), and the number of election-day 34-431 challenges on citizenship grounds.",
+    "counts_only": true,
+    "source_url": "https://legislature.idaho.gov/statutesrules/idstat/Title74/T74CH1/SECT74-102/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Idaho statute sends juror citizenship answers to election officials. Whether clerks keep counts by reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -90,7 +110,11 @@
     "basis": "Juror selection records may not be disclosed (Idaho Code 2-213(4), 2-208). The only private challenge is at the time of an election (34-431). Strict gates: counts only."
   },
   "notes": [
-    "official_pipeline is null: no jury-to-clerk non-citizen statute was found. Idaho Code 34-419 tells the county clerk to suspend any registration that appears, from the clerk's own records, not to be a citizen's.",
-    "dob_in_public_file and registration_date_in_public_file are null: 34-437 lists names and addresses only and does not address other fields."
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly (2-213(4), 2-208(1), 2-208(7)); jury sources 2-213 and 2-206(5); audit_path; federal_source_url moved to govinfo. official_pipeline stays null. No gate changes. No voter_file value changes.",
+    "PA-style check: 2-206(5) opens 'The master and county jury lists' to the public 'as provided by supreme court rule'. Those lists show people who may be called, not who was disqualified or why. Hint copy as in REQ-42 (REQ-NOTE 59). The supreme court rule was not read.",
+    "official_pipeline is null: no jury-to-clerk non-citizen statute was found. Idaho Code 34-419 tells the county clerk to suspend any registration that appears, from the clerk's own records, not to be a citizen's. The NCSL table (updated Sept. 1, 2026) does not list Idaho.",
+    "Cancelled-voter file: no published Idaho cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "dob_in_public_file and registration_date_in_public_file are null: 34-437 lists names and addresses only and does not address other fields.",
+    "Source note: legislature.idaho.gov read with curl on 2026-10-07."
   ]
 }
