@@ -5,10 +5,10 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": false,
-    "statute": "Conn. Gen. Stat. 51-232(c)(1): the juror confirmation form and confidential juror questionnaire are held in confidence; 'Such completed questionnaires shall not constitute a public record.'",
+    "statute": "Conn. Gen. Stat. 51-232(c)(1): 'Except for disclosure made during voir dire or unless the court orders otherwise, information inserted by jurors shall be held in confidence by the court, the parties, counsel and their authorized agents. Such completed questionnaires shall not constitute a public record.'",
     "holder": "Jury Administrator (Judicial Branch).",
     "fields_withheld": null,
-    "official_pipeline": null,
+    "official_pipeline": "Conn. Gen. Stat. 9-19l (P.A. 24-148, effective July 1, 2025): 'Not later than thirty days after the Jury Administrator compiles the list of all qualified jurors in the state pursuant to subsection (c) of section 51-222a, the Jury Administrator shall make such list available to the Secretary of the State for the purpose of verifying the information contained in the system for online voter registration established and maintained pursuant to section 9-19k.' 9-19k(b) says the Secretary 'shall' cross reference online applicants' information with that list 'in order to attempt to verify such submitted information.' This is the qualified-juror list, which includes lawful permanent residents (51-217(a)). It is not a list of jurors excused as non-citizens.",
     "use_restriction": null,
     "source_url": "https://www.cga.ct.gov/current/pub/chap_884.htm",
     "verified_on": "2026-10-07",
@@ -18,11 +18,17 @@
         "url": "https://www.cga.ct.gov/current/pub/chap_884.htm",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Conn. Gen. Stat. 9-19l and 9-19k(b) as amended by P.A. 24-148 (qualified-juror list to the Secretary of the State for online registration checks)",
+        "url": "https://www.cga.ct.gov/current/pub/chap_143.htm",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Lists of additions, restorations, removals, and name or address changes (with name, address, voting district, party) are available to the public under the Freedom of Information Act, 1-210 (Conn. Gen. Stat. 9-50a).",
+    "who_may_get": "Conn. Gen. Stat. 9-50a: registrars compile lists of persons added, restored, removed or erased from the registry lists, name or address changes, and NVRA notices, including 'name, former name, address, former address, voting district, and party affiliation', and 'shall make each such list available to the public in accordance with the provisions of section 1-210.'",
     "permitted_uses": "No purpose restriction found in chapter 143.",
     "use_restriction": null,
     "no_online_posting": null,
@@ -57,7 +63,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.cga.ct.gov/current/pub/chap_146.htm",
@@ -87,6 +93,14 @@
       }
     ]
   },
+  "audit_path": {
+    "statute": "Conn. Gen. Stat. 1-210 (Freedom of Information Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the Secretary of the State: per year, the number of online voter registration applications checked against the qualified-juror list under 9-19k(b) and 9-19l, and the number that could not be verified. From each town's registrars: the number of names removed from the registry list, by month.",
+    "counts_only": true,
+    "source_url": "https://www.cga.ct.gov/current/pub/chap_014.htm",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. Connecticut lets lawful permanent residents serve on juries (51-217(a)), so these counts are not evidence of unlawful registration (LOGIC-CHANGES.md H.6). Juror questionnaires are not public records (51-232(c)(1))."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -95,8 +109,11 @@
     "basis": "Juror questionnaires are not public records (Conn. Gen. Stat. 51-232(c)(1)). Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted exactly; official_pipeline null to 9-19l and 9-19k(b) (P.A. 24-148, effective July 1, 2025); voter_file who_may_get quotes 9-50a; audit_path; federal_source_url moved to govinfo. jury_list.public stays false. Counts only per LOGIC-CHANGES.md H.6.",
     "Important: Connecticut lets lawful permanent residents serve as jurors (51-217(a)). A Connecticut juror record does not show who is or is not a citizen in the way other states' records do. The app should not treat Connecticut jury data as a non-citizen signal at all.",
-    "Source note: cga.ct.gov sends no intermediate certificate. On 2026-10-07 chapters 884, 143, 146 were re-fetched with TLS verification on. The chain was completed with GoDaddy's G2 intermediate and verified to a system root. The text matches every value in this file.",
-    "official_pipeline is null: no jury-to-registrar non-citizen pipeline was found."
+    "Behavior flag: official_pipeline is now non-null, so the A.5 audit letter would quote 9-19l. That list is the qualified-juror list, not a non-citizen excusal list (see REQ-NOTE on CT audit letter copy). This matches LEGAL-REVIEW.md, which lists CT among jury-to-election-official pipeline states.",
+    "PA-style check: no Connecticut statute makes a list of jury disqualifications public. 51-217(c) lets the Jury Administrator keep an exclusion list (disability, age 75 or older, certain officials, persons excused under 51-217a); non-citizens are not on it, and no statute makes it public.",
+    "Cancelled-voter file: 9-50a lists of persons 'removed or erased' are public under 1-210. The statute lists no reason field, so no jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
+    "Source note: cga.ct.gov sends no intermediate certificate. On 2026-10-07 chapters 884 and 143 were re-fetched with TLS verification on, using GoDaddy's G2 intermediate chained to a system root. Chapter 146 was not re-fetched today (timeout); the private_challenge values are unchanged from the earlier check."
   ]
 }
