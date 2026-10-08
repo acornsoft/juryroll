@@ -1,0 +1,1 @@
+| NM | Not known, so the app treats it as no | No private challenge (NMSA 1-12-20, 1-4-22) | Counts only. 30 extra blackout days. Voter data use is limited (1-4-5.5) |

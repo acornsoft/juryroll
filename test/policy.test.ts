@@ -11,7 +11,8 @@ import { guessExtra } from '../shared/src/policy/columns.ts';
 import { toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
 import { voterUsePanelRequired, voterUseRestriction, voterUseShownText } from '../shared/src/policy/voterUse.ts';
-import { auditLetter } from '../shared/src/policy/letter.ts';
+import { auditLetter, quotedPipeline } from '../shared/src/policy/letter.ts';
+import { PA_CARRY_LEAD, PUBLIC_LIST_TAIL, auditPathCopy, checkPageRefusalLines, refusalBlock } from '../shared/src/policy/refusal.ts';
 import { runMatch, type LoadedTable } from '../shared/src/policy/runMatch.ts';
 import { sha256HexSync } from '../shared/src/policy/sha256.ts';
 import { addDays, federalWindow, inRange, stateWindowDates } from '../shared/src/policy/windows.ts';
@@ -656,5 +657,66 @@ assert.ok(!panelCodes.includes('DEFAULT'));
 assert.strictEqual(voterUsePanelRequired({ voter_file: {} }), false);
 assert.strictEqual(voterUsePanelRequired({ voter_file: { use_restriction: null } }), false);
 pass('AT-47');
+
+assert.strictEqual(quotedPipeline(null), null);
+assert.strictEqual(quotedPipeline('None in force. Counties cancel a registration.'), null);
+assert.strictEqual(quotedPipeline('  '), null);
+assert.ok(quotedPipeline("Tex. Gov't Code 62.113(b)"));
+const nonePipeline = {
+  ...shipped.TX,
+  jury_list: { ...shipped.TX.jury_list, official_pipeline: 'None in force. Counties cancel a registration.' },
+};
+const noneLetter = auditLetter(nonePipeline, referralTargets(nonePipeline, shipped.DEFAULT), {
+  periodFrom: '', periodTo: '', juryCount: '', jurySource: '', removals: '', removalSource: '', county: 'Travis',
+});
+assert.ok(!noneLetter.includes('Is this process running'));
+assert.ok(!noneLetter.includes('The law already describes an official path'));
+const auditLetterText = auditLetter({
+  ...shipped.TX,
+  audit_path: {
+    statute: '52 U.S.C. 20507(i)',
+    what_you_can_request: 'Ask for counts only.',
+    counts_only: true,
+    source_url: 'https://www.justice.gov/',
+    verified_on: '2026-10-07',
+  },
+}, referralTargets(shipped.TX, shipped.DEFAULT), {
+  periodFrom: '', periodTo: '', juryCount: '', jurySource: '', removals: '', removalSource: '', county: 'Travis',
+});
+assert.ok(auditLetterText.includes('You can ask for counts of list-maintenance outcomes under 52 U.S.C. 20507(i).'));
+assert.ok(auditLetterText.includes('Ask for counts only.'));
+pass('REQ-25-audit-path');
+
+const publicList = new Set(['CO', 'MA', 'MS', 'DC', 'MT', 'MO', 'VT', 'ND', 'DE', 'ID']);
+for (const name of ruleFiles) {
+  const rules = loadRules(name);
+  const block = refusalBlock(rules, '2026-10-07');
+  if (uiGates(rules).allow_jury_list) {
+    assert.strictEqual(block.carryOver, null, rules.state);
+    assert.strictEqual(block.lawLine, null, rules.state);
+    continue;
+  }
+  assert.strictEqual(block.carryOver, `${PA_CARRY_LEAD} ${rules.name}.`, rules.state);
+  assert.ok(block.lawLine && block.lawLine.length > 0, rules.state);
+  if (publicList.has(rules.state)) assert.strictEqual(block.publicList, `${rules.name}'s ${PUBLIC_LIST_TAIL}`, rules.state);
+  else assert.strictEqual(block.publicList, null, rules.state);
+}
+assert.strictEqual(refusalBlock(shipped.PA, '2026-10-07').carryOver, null);
+assert.strictEqual(refusalBlock(shipped.NC, '2026-10-07').carryOver, null);
+const gaLaw = refusalBlock(shipped.GA, '2026-10-07').lawLine ?? '';
+const hiddenLaw = checkPageRefusalLines(shipped.GA, gaLaw, '2026-10-07');
+assert.ok(!hiddenLaw.some((line) => line.id === 'refusalLaw'));
+assert.ok(hiddenLaw.some((line) => line.id === 'paCarry'));
+assert.deepStrictEqual(checkPageRefusalLines(shipped.PA, shipped.PA.gates.basis, '2026-10-07'), []);
+assert.deepStrictEqual(auditPathCopy(null), []);
+assert.deepStrictEqual(auditPathCopy({
+  statute: 'Example statute',
+  what_you_can_request: 'Ask for counts only.',
+  counts_only: true,
+  source_url: 'https://example.test/counts',
+  verified_on: '2026-10-07',
+  note: 'Ask for counts only.',
+}), ['Ask for counts only.']);
+pass('REQ-39-42-59');
 
 console.log('ALL POLICY TESTS PASSED');

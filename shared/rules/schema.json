@@ -116,6 +116,10 @@
         "other": { "type": "array", "items": { "$ref": "#/$defs/target" } }
       }
     },
+    "audit_path": {
+      "description": "Optional. A lawful way to ask officials for list-maintenance records, counts and outcomes only. null or absent = none known.",
+      "oneOf": [ { "type": "null" }, { "$ref": "#/$defs/auditPath" } ]
+    },
     "gates": {
       "description": "What the app may do in this state. null = strict default: allow_jury_list=false, aggregate_only=true, allow_named_export=false, show_challenge_guidance=false. The app also derives gates from the facts above and uses whichever is stricter (LOGIC-CHANGES A.3).",
       "type": "object",
@@ -162,6 +166,19 @@
       }
     },
     "targetOrNull": { "oneOf": [ { "type": "null" }, { "$ref": "#/$defs/target" } ] },
+    "auditPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statute", "what_you_can_request", "counts_only", "source_url", "verified_on"],
+      "properties": {
+        "statute": { "type": "string", "minLength": 1 },
+        "what_you_can_request": { "type": "string", "minLength": 1 },
+        "counts_only": { "type": "boolean", "const": true },
+        "source_url": { "$ref": "#/$defs/url" },
+        "verified_on": { "$ref": "#/$defs/date" },
+        "note": { "type": "string" }
+      }
+    },
     "citedIfKnown_public": {
       "if": { "properties": { "public": { "type": "boolean" } } },
       "then": { "properties": { "source_url": { "$ref": "#/$defs/url" }, "verified_on": { "$ref": "#/$defs/date" }, "statute": { "type": "string" } } }

@@ -1,0 +1,1 @@
+| MA | Not known, so the app treats it as no | Yes, sworn complaint to registrars, 14 days ahead in cities (M.G.L. c. 51, sec. 48) | Counts only. Statewide voter registry is not public (c. 51, sec. 47C) |

@@ -94,14 +94,44 @@ async function assertComingLater(page, code, stateName) {
   assert.strictEqual(await page.locator('#auditMode').count(), 0, code);
   assert.strictEqual(await page.locator('#auditLetter').count(), 0, code);
   assert.strictEqual(await page.locator('#juryRefuse').count(), 0, code);
+  assert.strictEqual(await page.locator('#comingLater details').count(), 1, `${code} disclosures`);
   assert.strictEqual(await page.locator('input[type="file"]').count(), 0, `${code} file inputs`);
+  const audit = rules.audit_path;
+  if (audit && audit.what_you_can_request) {
+    const whatNow = (await page.locator('#whatNow').innerText()).trim();
+    assert.match(whatNow, /What you can do now/, code);
+    assert.ok(whatNow.includes(audit.what_you_can_request), `${code} audit request`);
+    if (audit.note) assert.ok(whatNow.includes(audit.note), `${code} audit note`);
+  } else {
+    assert.strictEqual(await page.locator('#whatNow').count(), 0, `${code} what now`);
+  }
   await page.locator('#comingLater details').evaluate((node) => { node.open = false; });
   const closed = await page.locator('#comingLater').innerText();
   assert.ok(!closed.includes(basis), `${code} basis visible before Why?`);
   await page.locator('#comingLater details').evaluate((node) => { node.open = true; });
   assert.strictEqual((await page.locator('#stepBasis').innerText()).trim(), basis, `${code} missing explanation`);
+  const carry = (await page.locator('#comingLater #paCarry').innerText()).trim();
+  const law = (await page.locator('#comingLater #refusalLaw').innerText()).trim();
+  assert.ok(carry.startsWith('Pennsylvania opens its list of disqualified jurors'), `${code} carry-over`);
+  assert.ok(carry.endsWith(stateName + '.'), `${code} carry-over state`);
+  assert.ok(!closed.includes(carry), `${code} carry-over visible before Why?`);
+  assert.ok(!closed.includes(law), `${code} law line visible before Why?`);
+  assert.ok(law.length > 0, `${code} law line`);
+  const publicList = new Set(['CO', 'MA', 'MS', 'DC', 'MT', 'MO', 'VT', 'ND', 'DE', 'ID']);
+  if (publicList.has(code)) {
+    const hint = (await page.locator('#comingLater #publicListHint').innerText()).trim();
+    assert.strictEqual(hint, `${stateName}'s public jury lists name people picked for jury service. They do not show who was excused or why.`, code);
+  } else {
+    assert.strictEqual(await page.locator('#comingLater #publicListHint').count(), 0, code);
+  }
   const opened = await page.locator('#comingLater').evaluate((node) => node.textContent || '');
   assert.strictEqual(opened.split(basis).length - 1, 1, `${code} basis shown more than once`);
+  assert.strictEqual(opened.split(carry).length - 1, 1, `${code} carry-over shown more than once`);
+  assert.strictEqual(opened.split(law).length - 1, 1, `${code} law line shown more than once`);
+  if (audit && audit.what_you_can_request) {
+    assert.strictEqual(opened.split(audit.what_you_can_request).length - 1, 1, `${code} audit request shown more than once`);
+    if (audit.note) assert.strictEqual(opened.split(audit.note).length - 1, 1, `${code} audit note shown more than once`);
+  }
 }
 
 async function assertFits(page, width, label) {
@@ -1060,10 +1090,17 @@ function readAuditDownload(file) {
 
   const paNote = 'Pennsylvania county lists usually hold only names and reasons. Without a date of birth or address, matches stay Weak and are not exported, so you will mostly see counts. Leads go to the county board of elections, the Department of State, or the Attorney General.';
   const guideMd = fs.readFileSync(path.join(root, 'shared/GUIDE.md'), 'utf8');
+  const guideHtml = fs.readFileSync(path.join(root, 'app/public/guide.html'), 'utf8');
   assert.ok(guideMd.includes(paNote));
-  assert.ok(guideMd.includes('| NC | Yes, the State Board list (G.S. 9-6.2(b)). It has no date of birth | Not through JuryRoll. A database match is not individualized evidence (State Board form) | Referral only. The list gives no named rows |'));
-  assert.ok(guideMd.includes("| PA | Yes. You can inspect the list of disqualified jurors and reasons on site (42 Pa.C.S. 4523(a)). Copies are at the county's discretion | Not through JuryRoll. A 1329 challenge must name one registrant under oath. The list has names and reasons only | Referral only. A list with names only gives no named rows |"));
-  assert.ok(guideMd.includes("| TX | No (Gov't Code 62.0132, 62.113) | Yes, but personal knowledge is necessary (Elec. Code 16.092) | Counts only |"));
+  for (const code of ['NC', 'PA', 'TX']) {
+    const row = fs.readFileSync(path.join(root, 'shared/guide/rows', `${code}.md`), 'utf8').trim();
+    assert.ok(row.startsWith(`| ${code} |`), row);
+    const cells = row.split('|').slice(2, -1).map((cell) => cell.trim());
+    for (const cell of cells) {
+      const plain = cell.replace(/`([^`]+)`/g, '$1');
+      assert.ok(guideHtml.includes(plain), `${code} guide cell missing: ${plain}`);
+    }
+  }
   const pa = await openPage(browser);
   const paBase = pa.page.url().split('#')[0];
   await pa.page.goto(`${paBase}#/state/pa`);

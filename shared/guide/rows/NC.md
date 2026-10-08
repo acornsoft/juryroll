@@ -1,0 +1,1 @@
+| NC | Yes, the State Board list (G.S. 9-6.2(b)). It has no date of birth | Not through JuryRoll. A database match is not individualized evidence (State Board form) | Referral only. The list gives no named rows |

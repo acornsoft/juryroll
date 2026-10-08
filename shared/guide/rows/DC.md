@@ -1,0 +1,1 @@
+| DC | Not known, so the app treats it as no | Yes, until day 45 (D.C. Code 1-1001.07), but see the note | Counts only. Non-citizens may vote in D.C. local elections (1-1001.02(2)(B)), so a match is not a lead |

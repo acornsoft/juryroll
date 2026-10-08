@@ -85,5 +85,8 @@ must_fail("gate looser than facts", lambda r: r["gates"].update(allow_jury_list=
 must_fail("unknown field", lambda r: r.update(extra=1))
 must_fail("bad date", lambda r: r.update(verified_on="10/07/2026"))
 
+must_fail("audit_path not counts-only", lambda r: r.update(audit_path={"statute": "x", "what_you_can_request": "x", "counts_only": False, "source_url": "https://example.gov/", "verified_on": "2026-10-07"}))
+must_fail("audit_path without source_url", lambda r: r.update(audit_path={"statute": "x", "what_you_can_request": "x", "counts_only": True, "source_url": None, "verified_on": "2026-10-07"}))
+
 print("\nRESULT:", "ALL PASS" if not failed else f"{failed} FAILURE(S)")
 sys.exit(1 if failed else 0)
