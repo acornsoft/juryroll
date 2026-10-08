@@ -1,1 +1,1 @@
-| UT | Not known, so the app treats it as no | Yes, until day 45, with personal checks (Utah Code 20A-3a-804) | Counts only. Voter list use is limited (20A-2-607) |
+| UT | No. Prospective juror names are private and jury list identity data is safeguarded (Utah CJA Rule 4-202.02) | Yes, until day 45, with personal checks (Utah Code 20A-3a-804) | Counts only. Voter list use is limited (20A-2-607) |

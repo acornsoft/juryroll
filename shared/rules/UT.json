@@ -4,14 +4,28 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
+    "public": false,
+    "statute": "Utah Code of Judicial Administration Rule 4-202.02 (eff. 5/18/2026): '(4) Private Court Records. The following court records are private: ... (4)(Y) name of a prospective juror summoned to attend court, unless classified by the judge as safeguarded'. '(8) Safeguarded Court Records. ... (8)(D) location information, contact information, and identity information of prospective jurors on the master jury list or the qualified jury list'. Only the name of a juror empaneled to try a case is public, 10 days after discharge (2)(S).",
     "holder": "Administrative Office of the Courts (master jury list, Utah Code 78B-1-106).",
     "fields_withheld": null,
-    "official_pipeline": null,
+    "official_pipeline": "Utah Code 20A-2-502(4): 'The lieutenant governor shall seek to enter into an agreement with the federal courts to provide that, in exchange for receiving information from the state's voter registration list or from a list maintained by the Driver License Division to use in relation to federal juries, the federal courts will notify the lieutenant governor or a county clerk when an individual disclosed from one of the lists is disqualified from jury service due to a conviction or non-citizenship.' The statute covers federal juries only and requires the lieutenant governor to seek an agreement. Whether an agreement exists was not confirmed.",
     "use_restriction": null,
-    "source_url": null,
-    "verified_on": null
+    "source_url": "https://legacy.utcourts.gov/rules/view.php?rule=4-202.02&type=ucja",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Utah CJA Rule 4-202.02(4)(Y), (8)(D) (prospective juror names private; master and qualified jury list identity information safeguarded)",
+        "url": "https://legacy.utcourts.gov/rules/view.php?rule=4-202.02&type=ucja",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Utah Code 20A-2-502(4) (lieutenant governor to seek agreement for federal courts to report jurors disqualified for conviction or non-citizenship)",
+        "url": "https://law.justia.com/codes/utah/title-20a/chapter-2/part-5/section-502/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "voter_file": {
     "who_may_get": "Utah Code 20A-2-607(3) (2026): a person may only obtain or use the voter list for a political purpose, a purpose expressly permitted by Part 6, or a purpose permitted by other law or court order.",
@@ -49,7 +63,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -82,17 +96,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "Utah Code 63G-2-201 (Government Records Access and Management Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the lieutenant governor or the county clerk: whether an agreement under 20A-2-502(4) is in force; per year, the number of federal-court notices of jurors disqualified for non-citizenship received under it, and the number of resulting cancellations; and the number of 20A-3a-804 challenges on citizenship grounds and their outcomes.",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/utah/title-63g/chapter-2/part-2/section-201/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Utah statute sends state-court juror citizenship answers to election officials; 20A-2-502(4) covers federal juries only. Do not say a federal agreement exists unless the office confirms it."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury record status unknown (null): counts only. Utah limits voter-list use to political and other expressly permitted purposes (20A-2-607), and a private challenge needs personal verification (20A-3a-804)."
+    "basis": "Jury records: prospective juror names are private and master-list identity information is safeguarded (Utah CJA Rule 4-202.02(4)(Y), (8)(D)), so public is false and the app shows counts only. Utah limits voter-list use to political and other expressly permitted purposes (20A-2-607), and a private challenge needs personal verification (20A-3a-804). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list.public null -> false (CJA Rule 4-202.02, quoted exactly); official_pipeline null -> Utah Code 20A-2-502(4) quoted exactly, with a note that it covers federal juries and an agreement to be sought; jury sources; audit_path; federal_source_url moved to govinfo. No gate changes. No voter_file value changes. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
+    "PA-style check: Rule 4-202.02 makes public only 'the name of a juror empaneled to try a case, but only 10 days after the jury is discharged' (2)(S). No Utah rule or statute makes a list of persons disqualified as non-citizens public.",
+    "official_pipeline: 20A-2-502(4) is a duty to seek a federal-court agreement, not a state-court reporting duty. LEGAL-REVIEW.md lists UT among pipeline-by-law states; this is the statute it rests on (NCSL table). The A.5 letter should ask whether the agreement exists. See REQ-NOTE 48.",
+    "Cancelled-voter file: no published Utah cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Use limit: JuryRoll matching may not be a 'political purpose' under 20A-2-607(3). The app should warn Utah users before loading a voter file.",
     "Utah allows several challenged individuals in one statement (one_per_affidavit false), but each needs its own facts and personal verification.",
-    "Source note: le.utah.gov sends no intermediate certificate. On 2026-10-07, 20A-2-607 (effective 3/18/2026), 20A-3a-803, 20A-3a-804 and 78B-1-106 were re-fetched with TLS verification on. The chain was completed with Sectigo's OV R36 intermediate and verified to a system root. The text matches every value in this file.",
+    "Source note: le.utah.gov sends no intermediate certificate. On 2026-10-07, 20A-2-607 (effective 3/18/2026), 20A-3a-803, 20A-3a-804 and 78B-1-106 were re-fetched with TLS verification on. 20A-2-502 and 63G-2-201 were read on Justia (2025 code, effective 5/7/2025); 2026 amendments, if any, were not checked. Rule 4-202.02 was read on legacy.utcourts.gov.",
     "dob_in_public_file and registration_date_in_public_file are null: not confirmed."
   ]
 }
