@@ -1,2 +1,2 @@
-voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
-V1,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county
+V1,Missingson,Cam,1982-05-03,3 Main St,00001,ACTIVE,,Wake

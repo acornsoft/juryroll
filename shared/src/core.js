@@ -186,7 +186,7 @@ var JuryRollCore = (function () {
     var counts = {}, first = true;
     if (idx < 0) return [];
     iterCSV(text, delim, function (r) { if (first && hasHeader) { first = false; return; } first = false; var v = (r[idx] || '').trim(); counts[v] = (counts[v] || 0) + 1; });
-    return Object.keys(counts).sort().map(function (v) { return { value: v, count: counts[v], auto: NONCITIZEN_RE.test(v) }; });
+    return Object.keys(counts).sort().map(function (v) { return { value: v, count: counts[v], auto: !/^[=+\-@\t\r]/.test(v) && NONCITIZEN_RE.test(v) }; });
   }
 
   /* opts: { order, reasonFilter: null | {value:true} } */
@@ -196,7 +196,11 @@ var JuryRollCore = (function () {
     iterCSV(text, delim, function (r) {
       if (first && hasHeader) { first = false; return; } first = false;
       total++;
-      if (rf && rix !== undefined && rix >= 0) { var v = (r[rix] || '').trim(); if (!rf[v]) return; }
+      if (rf && rix !== undefined && rix >= 0) {
+        var v = (r[rix] || '').trim();
+        var keep = typeof rf === 'function' ? rf(v) : rf[v];
+        if (!keep) return;
+      }
       kept++;
       var rec = makeRecord(r, map, opts.order);
       rec.rowNum = total;
@@ -255,7 +259,7 @@ var JuryRollCore = (function () {
     ['jurorId','Juror record ID'],['reason','Disqualification reason'],['matched','Matched fields'],['jurorName','Juror name (as recorded)'],['jurorDob','Juror DOB (as recorded)']];
   function csvCell(v) {
     var s = v === undefined || v === null ? '' : String(v);
-    if (/^[=+@\t\r]/.test(s) || (/^-/.test(s) && !/^-?\d/.test(s))) s = "'" + s;
+    if (!/^-?\d+(\.\d+)?$/.test(s) && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
     return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   }
   function toCSV(pairs, includeWeak, dateStr) {

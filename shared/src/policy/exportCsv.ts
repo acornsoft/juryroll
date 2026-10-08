@@ -1,9 +1,9 @@
 import { SAVE_EXPORT_LINE, type PolicyResult, exportableRows } from './apply.ts';
+import { neutralizeFormulaCell } from './formula.ts';
 import { collectSourceUrls, type RulesFile, type Target } from './gates.ts';
 
-function csvCell(value: unknown): string {
-  let text = value === undefined || value === null ? '' : String(value);
-  if (/^[=+@\t\r]/.test(text) || (/^-/.test(text) && !/^-?\d/.test(text))) text = `'${text}`;
+export function exportCell(value: unknown): string {
+  const text = neutralizeFormulaCell(value === undefined || value === null ? '' : String(value));
   return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 }
 
@@ -41,16 +41,16 @@ export function toCSV(input: {
   const cites = collectSourceUrls(input.rules).join(' ');
   const targetLine = input.targets.map((target) => `${target.name} ${target.url}`).join(' | ');
   const lines = [
-    csvCell('Referral for official verification'),
-    csvCell(input.result.excludedLine),
-    csvCell(input.result.cannotCompareLine),
-    csvCell(`State: ${input.rules.state}. Rules verified on ${input.rules.verified_on}.`),
-    csvCell(`Cites: ${cites}`),
-    csvCell(`Referral targets: ${targetLine}`),
-    csvCell(SAVE_EXPORT_LINE),
-    csvCell(`County: ${input.county}${input.fips ? ` (${input.fips})` : ''}. Date: ${input.dateStr}.`),
+    exportCell('Referral for official verification'),
+    exportCell(input.result.excludedLine),
+    exportCell(input.result.cannotCompareLine),
+    exportCell(`State: ${input.rules.state}. Rules verified on ${input.rules.verified_on}.`),
+    exportCell(`Cites: ${cites}`),
+    exportCell(`Referral targets: ${targetLine}`),
+    exportCell(SAVE_EXPORT_LINE),
+    exportCell(`County: ${input.county}${input.fips ? ` (${input.fips})` : ''}. Date: ${input.dateStr}.`),
     '',
-    COLS.map((col) => csvCell(col[1])).join(','),
+    COLS.map((col) => exportCell(col[1])).join(','),
   ];
   const pushRow = (row: ReturnType<typeof exportableRows>['main'][number]) => {
     const record: Record<string, string> = {
@@ -70,11 +70,11 @@ export function toCSV(input: {
       flags: row.flags.join('|'),
       notes: row.notes.join(' '),
     };
-    lines.push(COLS.map((col) => csvCell(record[col[0]] ?? '')).join(','));
+    lines.push(COLS.map((col) => exportCell(record[col[0]] ?? '')).join(','));
   };
   main.forEach(pushRow);
   lines.push('');
-  lines.push(csvCell('Already removed: confirm the removal was correct'));
+  lines.push(exportCell('Already removed: confirm the removal was correct'));
   removed.forEach(pushRow);
   return `${lines.join('\r\n')}\r\n`;
 }

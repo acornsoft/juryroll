@@ -8,13 +8,16 @@ import { CANNOT_COMPARE_PHRASE, EXCLUDE_PHRASE, SAVE_EXPORT_LINE, SAVE_LINE, UI_
 import { appendEntry, auditLogFile, canonicalJson, verifyChain } from '../shared/src/policy/audit.ts';
 import { screenColumns } from '../shared/src/policy/blocked.ts';
 import { guessExtra } from '../shared/src/policy/columns.ts';
-import { toCSV } from '../shared/src/policy/exportCsv.ts';
+import { exportCell, toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
 import { allCancelledRefusal, filterCancelledVoters } from '../shared/src/policy/cancelled.ts';
+import { neutralizeFormulaCell } from '../shared/src/policy/formula.ts';
 import { auditLetter, quotedPipeline } from '../shared/src/policy/letter.ts';
+import { COUNTY_UNCHECKED_BANNER } from '../shared/src/policy/place.ts';
+import { classifyReason, countReasonRows, summarizeReasons } from '../shared/src/policy/reasons.ts';
 import { PA_CARRY_LEAD, PUBLIC_LIST_TAIL, auditPathCopy, checkPageRefusalLines, refusalBlock } from '../shared/src/policy/refusal.ts';
+import { namedExportAllowed, runMatch, type LoadedTable } from '../shared/src/policy/runMatch.ts';
 import { voterUsePanelRequired, voterUseRestriction, voterUseShownText } from '../shared/src/policy/voterUse.ts';
-import { runMatch, type LoadedTable } from '../shared/src/policy/runMatch.ts';
 import { sha256HexSync } from '../shared/src/policy/sha256.ts';
 import { addDays, federalWindow, inRange, stateWindowDates } from '../shared/src/policy/windows.ts';
 
@@ -774,5 +777,120 @@ const statusOnly = filterCancelledVoters(miCancel, true);
 assert.strictEqual(statusOnly.juryRelated, 0);
 assert.ok(!statusOnly.csv.includes('Cancelmi'));
 pass('REQ-63');
+const formulaPayload = "-2+3+cmd|' /C calc'!A0";
+assert.strictEqual(exportCell(formulaPayload), `'${formulaPayload}`);
+assert.strictEqual(exportCell('-5'), '-5');
+assert.strictEqual(exportCell('-5.25'), '-5.25');
+assert.strictEqual(exportCell('=1+1'), "'=1+1");
+assert.strictEqual(exportCell('+1'), "'+1");
+assert.strictEqual(exportCell('@cmd'), "'@cmd");
+assert.strictEqual(neutralizeFormulaCell('\tcmd'), "'\tcmd");
+assert.strictEqual(neutralizeFormulaCell('\rcmd'), "'\rcmd");
+assert.strictEqual(exportCell('\rcmd'), '"\'\rcmd"');
+pass('GAP-EXPORT-1');
+
+const countyJuror = `Juror Number,Last,First,Birth Date,Address,Zip,Disqualification Reason,Disqualification Date
+J1,Qxkeep,Ada,02/03/1982,1 Main St,00001,Not a U.S. citizen,2020-06-01
+J2,Qxcounty,Bea,04/05/1983,2 Main St,00001,Not a U.S. citizen,2020-06-01
+J3,Qxstate,Cam,06/07/1984,3 Main St,00001,Not a U.S. citizen,2020-06-01
+`;
+const countyVoter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date,county,state
+V1,Qxkeep,Ada,1982-02-03,1 Main St,00001,ACTIVE,2019-01-01,Bucks,PA
+V2,Qxcounty,Bea,1983-04-05,2 Main St,00001,ACTIVE,2019-01-01,Philadelphia,PA
+V3,Qxstate,Cam,1984-06-07,3 Main St,00001,ACTIVE,2019-01-01,Bucks,OH
+`;
+const countyRun = runMatch(table('juror', countyJuror), table('voter', countyVoter), shipped.PA, {
+  place: { countyName: 'Bucks County', countyFips: '42017' },
+});
+const countyJson = JSON.stringify({ pairs: countyRun.coreResult.pairs, rows: countyRun.policy.rows, notes: countyRun.notes });
+assert.strictEqual(countyRun.coreResult.pairs.length, 1);
+assert.strictEqual(countyRun.coreResult.pairs[0].voterName.includes('Qxkeep'), true);
+assert.strictEqual(countyRun.notes.differentCountyLine, '1 same-name matches in a different county: excluded');
+assert.strictEqual(countyRun.notes.stateDropped, 1);
+assert.ok(!countyJson.includes('Qxcounty'));
+assert.ok(!countyJson.includes('Qxstate'));
+assert.strictEqual(countyRun.notes.countyChecked, true);
+assert.strictEqual(countyRun.notes.countyBanner, null);
+pass('GAP-STATE-1');
+
+const noCountyVoter = `voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,registration_date
+V1,Qxkeep,Ada,1982-02-03,1 Main St,00001,ACTIVE,2019-01-01
+`;
+const noCountyRun = runMatch(table('juror', countyJuror), table('voter', noCountyVoter), shipped.PA, {
+  place: { countyName: 'Bucks County', countyFips: '42017' },
+});
+assert.ok(noCountyRun.coreResult.pairs.length >= 1);
+assert.strictEqual(noCountyRun.notes.countyChecked, false);
+assert.strictEqual(noCountyRun.notes.countyBanner, COUNTY_UNCHECKED_BANNER);
+assert.strictEqual(namedExportAllowed(effective(shipped.PA).allow_named_export, noCountyRun.notes.countyChecked), false);
+pass('GAP-STATE-1-banner');
+
+assert.strictEqual(classifyReason('047', 'PA').key, '47');
+assert.strictEqual(classifyReason('0047', 'PA').autoNonCitizen, true);
+assert.strictEqual(classifyReason('47a', 'PA').autoNonCitizen, false);
+assert.strictEqual(classifyReason('4 7', 'PA').blankOrUnrecognized, true);
+assert.strictEqual(classifyReason('047', 'NC').autoNonCitizen, false);
+const paReasons = countReasonRows(['047', '', '47a', '4 7', 'Not a U.S. citizen'], 'PA');
+assert.strictEqual(paReasons.unrecognizedLine, '3 rows with a blank or unrecognized reason: not counted');
+const paReasonJuror = `Last,First,Birth Date,Reason
+Qxcode,Ada,02/03/1982,047
+Qxblank,Bea,04/05/1983,
+`;
+const paReasonVoter = `voter_id,name_last,name_first,date_of_birth,county
+V1,Qxcode,Ada,1982-02-03,Bucks
+V2,Qxblank,Bea,1983-04-05,Bucks
+`;
+const paSummary = summarizeReasons(paReasonJuror, ',', true, 3, 'PA');
+const paFilter = Object.fromEntries(paSummary.map((reason) => [reason.value, reason.auto && !reason.formula]));
+const paHeadJ = core.readHead(paReasonJuror, true);
+const paHeadV = core.readHead(paReasonVoter, true);
+const paCodeRun = runMatch(
+  {
+    text: paReasonJuror,
+    delim: ',',
+    hasHeader: true,
+    headers: paHeadJ.headers,
+    map: core.guessMapping(paHeadJ.headers, core.JUROR_FIELDS),
+    extra: guessExtra('juror', paHeadJ.headers),
+    order: 'MDY',
+    reasonFilter: paFilter,
+  },
+  {
+    text: paReasonVoter,
+    delim: ',',
+    hasHeader: true,
+    headers: paHeadV.headers,
+    map: core.guessMapping(paHeadV.headers, core.VOTER_FIELDS),
+    extra: guessExtra('voter', paHeadV.headers),
+    order: 'MDY',
+    reasonFilter: null,
+  },
+  shipped.PA,
+  { place: { countyName: 'Bucks County', countyFips: '42017' } },
+);
+assert.strictEqual(paCodeRun.coreResult.pairs.length, 1);
+assert.ok(paCodeRun.coreResult.pairs[0].voterName.includes('Qxcode'));
+assert.strictEqual(paCodeRun.notes.unrecognizedReasonLine, '1 rows with a blank or unrecognized reason: not counted');
+assert.ok(!JSON.stringify(paCodeRun.coreResult.pairs).includes('Qxblank'));
+pass('GAP-PA-REASON');
+
+const formulaJuror = `Last,First,Birth Date,Reason
+Qxformula,Ada,02/03/1982,=Non-citizen
+Qxplain,Bea,04/05/1983,Not a U.S. citizen
+`;
+const formulaVoter = `voter_id,name_last,name_first,date_of_birth
+V1,Qxformula,Ada,1982-02-03
+V2,Qxplain,Bea,1983-04-05
+`;
+const formulaRun = runMatch(table('juror', formulaJuror), table('voter', formulaVoter), shipped.NC);
+assert.strictEqual(formulaRun.notes.formulaReasonLine, '1 reason cells had a formula prefix: not counted');
+assert.strictEqual(formulaRun.coreResult.pairs.length, 1);
+assert.ok(formulaRun.coreResult.pairs[0].voterName.includes('Qxplain'));
+assert.ok(!JSON.stringify(formulaRun.coreResult.pairs).includes('Qxformula'));
+assert.ok(!JSON.stringify(formulaRun.policy.rows).includes('Qxformula'));
+assert.strictEqual(classifyReason('=Non-citizen', 'NC').display, 'Non-citizen');
+assert.strictEqual(classifyReason('=Non-citizen', 'NC').autoNonCitizen, false);
+assert.strictEqual(formulaRun.notes.unrecognizedReasonCount, 0);
+pass('GAP-FORMULA-REASON');
 
 console.log('ALL POLICY TESTS PASSED');
