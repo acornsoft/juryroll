@@ -1,1 +1,1 @@
-| OK | Not known, so the app treats it as no | No private challenge found | Counts only |
+| OK | No (38 O.S. 36(B)). Court clerks send a monthly non-citizen juror list to the county election board (26 O.S. 4-120.5(B)) | No private challenge found | Counts only. JD cancellation counts by county and month. See 6.10 |
