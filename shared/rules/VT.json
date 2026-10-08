@@ -5,12 +5,12 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "Vermont Jury Rule 4(c): 'All information provided in a potential juror’s written responses to questionnaires related to jury service, requested pursuant to applicable rules, other than a juror’s name and town of residence, is excepted from public access, absent a finding of good cause for disclosure by the court.' Rule 4(d): 'The court shall keep for a period of two years a record of the reason for disqualification of any potential juror.' Rule 10(a): 'The names of potential jurors and their towns of residence shall be disclosed to the public upon request.' No rule says whether the Rule 4(d) record is public. Status: null.",
     "holder": "Superior Court clerks; questionnaire access is governed by Court Administrator rules (4 V.S.A. 955).",
     "fields_withheld": null,
     "official_pipeline": null,
     "use_restriction": null,
-    "source_url": "https://legislature.vermont.gov/statutes/fullchapter/04/025",
+    "source_url": "https://www.courtrules.net/vermont/vermont-jury-selection/rule-4",
     "verified_on": "2026-10-07",
     "sources": [
       {
@@ -18,18 +18,42 @@
         "url": "https://legislature.vermont.gov/statutes/fullchapter/04/025",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Vermont Rules Governing Qualification, List, Selection and Summoning of All Jurors, Rule 4(b)-(d) (questionnaire responses other than name and town excepted from public access; record of reason for disqualification kept two years; text read on courtrules.net)",
+        "url": "https://www.courtrules.net/vermont/vermont-jury-selection/rule-4",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Vermont Jury Rule 10(a) (names and towns of potential jurors disclosed to the public; further information excepted; text read on courtrules.net)",
+        "url": "https://www.courtrules.net/vermont/vermont-jury-selection/rule-10",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Vermont Court Administrator, Administrative Directive SG-1, 2022 update to appendices to PACR Rules 5 and 6 (juror questionnaire information 'is not publicly accessible', citing Jury Rules 4(c) and 10)",
+        "url": "https://www.vermontjudiciary.org/media/14384",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "4 V.S.A. 962(a)(1) (a juror must be 'a citizen of the United States')",
+        "url": "https://legislature.vermont.gov/statutes/fullchapter/04/025",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "The checklist is a public record except confidential fields (17 V.S.A. 2154(b)(1)).",
-    "permitted_uses": null,
+    "who_may_get": "The checklist is a public record except confidential fields (17 V.S.A. 2154(b)(1)). A person who wants a copy of the whole statewide checklist must file a sworn affirmation with the Secretary of State (2154(c)).",
+    "permitted_uses": "Not for commercial purposes (17 V.S.A. 2154(c)(1)(A)). Not to be knowingly disclosed to a foreign government or a federal agency in circumvention of 2154(b)(2) (2154(c)(1)(B)).",
     "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,
     "registration_date_in_public_file": null,
-    "attestation_required": null,
+    "attestation_required": "For a copy of all of the statewide checklist: swear or affirm, 'under penalty of perjury pursuant to 13 V.S.A. chapter 65', that the person will not use it for commercial purposes or disclose it as barred; the affirmation is filed with the Secretary of State (2154(c)).",
     "source_url": "https://legislature.vermont.gov/statutes/section/17/043/02154",
     "verified_on": "2026-10-07"
   },
@@ -49,7 +73,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -83,16 +107,29 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "1 V.S.A. 316 (Public Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only, from the town clerk or the Secretary of State: per year, the number of names removed from the checklist because the person was not a U.S. citizen.",
+    "counts_only": true,
+    "source_url": "https://legislature.vermont.gov/statutes/section/01/005/00316",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. No Vermont statute sends juror citizenship answers to election officials. Whether towns keep counts by removal reason was not confirmed."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury records: status unknown (null), so counts only. Polling-place challenges cannot raise citizenship (17 V.S.A. 2564). Strict gates."
+    "basis": "Jury records: questionnaire answers other than name and town are 'excepted from public access' (Jury Rule 4(c)); no rule opens the record of disqualification reasons (Rule 4(d)), so public stays null and the app shows counts only. Polling-place challenges cannot raise citizenship (17 V.S.A. 2564). Strict gates."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). jury_list statute quoted (Jury Rules 4(c), 4(d), 10(a)); jury sources; voter_file who_may_get, permitted_uses and attestation_required filled from 17 V.S.A. 2154(c); audit_path; federal_source_url moved to govinfo. jury_list.public stays null. official_pipeline stays null. No gate changes.",
+    "Source quality: Jury Rules 4 and 10 were read on courtrules.net (a commercial copy). Quotes: secondary copy; verify before display. The official Administrative Directive SG-1 (vermontjudiciary.org) confirms that juror questionnaire information 'is not publicly accessible' under Rules 4(c) and 10.",
+    "Reopen candidate (Optimus 2026-10-07; REQ-NOTE 57 closed): jury_list.public = null. Rule 4(d): 'The court shall keep for a period of two years a record of the reason for disqualification of any potential juror.' No rule opens or closes that record. Rule 10(a): 'The names of potential jurors and their towns of residence shall be disclosed to the public upon request.' That opens names and towns only, with no reasons. Null keeps counts only. See review/REOPEN.md.",
+    "official_pipeline is null: no Vermont statute sends juror citizenship information to election officials. The NCSL table of jury-list pipelines (updated Sept. 1, 2026) does not list Vermont.",
+    "Cancelled-voter file: no published Vermont cancelled-voter file with a jury reason code was found. REQ-NOTE 27 drops cancelled rows before matching.",
     "Month and day of birth are confidential (17 V.S.A. 2154(b)(1)), so dob_in_public_file is false.",
-    "17 V.S.A. 2154(b)(2) bars public agencies from giving full checklists to foreign governments or federal agencies; it does not address private requesters.",
-    "official_pipeline is null: none found."
+    "17 V.S.A. 2154(b)(2) bars public agencies from giving full checklists to foreign governments or federal agencies for listed purposes. JuryRoll never sends data anywhere.",
+    "Source note: legislature.vermont.gov read with curl on 2026-10-07."
   ]
 }
