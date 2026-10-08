@@ -1,1 +1,1 @@
-| MS | Not known, so the app treats it as no | Yes, appeal to county commissioners (Miss. Code 23-15-63) | Counts only |
+| MS | Not known, so the app treats it as no. Names drawn for jury service are public (Miss. Code 13-5-32), but no list of jurors excused as non-citizens was found | Yes, appeal to county commissioners (Miss. Code 23-15-63) | Counts only |
