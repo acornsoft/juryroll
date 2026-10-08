@@ -72,6 +72,37 @@ async function openStateNotices(page) {
   if (await notices.count()) await notices.evaluate((node) => { node.open = true; });
 }
 
+async function assertComingLater(page, code, stateName) {
+  const rules = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8'));
+  const basis = rules.gates.basis;
+  assert.ok(await page.locator('#comingLater').isVisible(), `${code} coming later card`);
+  assert.strictEqual((await page.locator('#comingLater h2').innerText()).trim(), stateName, code);
+  assert.match(await page.locator('#comingLaterPlan').innerText(), /doesn't support this state yet/);
+  assert.match(await page.locator('#comingLaterPlan').innerText(), /planned for a future release/);
+  const reason = (await page.locator('#comingReason').innerText()).trim();
+  assert.match(reason, /counts only/);
+  assert.ok(!reason.includes(basis), `${code} short reason repeated the basis`);
+  assert.strictEqual(await page.locator('#stepper').count(), 0, `${code} progress row`);
+  assert.strictEqual(await page.locator('#stepNext').count(), 0, `${code} next button`);
+  assert.strictEqual(await page.locator('#fileJuror').count(), 0, code);
+  assert.strictEqual(await page.locator('#fileVoter').count(), 0, code);
+  assert.strictEqual(await page.locator('#sampleBtn').count(), 0, code);
+  assert.strictEqual(await page.locator('#runBtn').count(), 0, code);
+  assert.strictEqual(await page.locator('#exportBtn').count(), 0, code);
+  assert.strictEqual(await page.locator('#typePath').count(), 0, code);
+  assert.strictEqual(await page.locator('#auditMode').count(), 0, code);
+  assert.strictEqual(await page.locator('#auditLetter').count(), 0, code);
+  assert.strictEqual(await page.locator('#juryRefuse').count(), 0, code);
+  assert.strictEqual(await page.locator('input[type="file"]').count(), 0, `${code} file inputs`);
+  await page.locator('#comingLater details').evaluate((node) => { node.open = false; });
+  const closed = await page.locator('#comingLater').innerText();
+  assert.ok(!closed.includes(basis), `${code} basis visible before Why?`);
+  await page.locator('#comingLater details').evaluate((node) => { node.open = true; });
+  assert.strictEqual((await page.locator('#stepBasis').innerText()).trim(), basis, `${code} missing explanation`);
+  const opened = await page.locator('#comingLater').evaluate((node) => node.textContent || '');
+  assert.strictEqual(opened.split(basis).length - 1, 1, `${code} basis shown more than once`);
+}
+
 async function assertFits(page, width, label) {
   const report = await page.evaluate((limit) => {
     const scrollWidth = document.documentElement.scrollWidth;
@@ -260,49 +291,33 @@ function readAuditDownload(file) {
   pass('AT-41-downloads');
 
   await selectState(first.page, 'NY');
-  await openStep(first.page, 'files');
+  await first.page.waitForSelector('#comingLater');
   await first.page.screenshot({ path: path.join(shots, '07-blackout-aggregate.png'), fullPage: true });
-  assert.strictEqual(await first.page.locator('#fileJuror').count(), 0);
-  assert.strictEqual(await first.page.locator('#fileVoter').count(), 0);
-  assert.strictEqual(await first.page.locator('#sampleBtn').count(), 0);
-  assert.strictEqual(await first.page.locator('#runBtn').count(), 0);
-  assert.strictEqual(await first.page.locator('#exportBtn').count(), 0);
-  assert.strictEqual(await first.page.locator('#typePath').count(), 0);
-  assert.strictEqual(await first.page.locator('#results tr').count(), 0);
-  assert.ok(await first.page.isVisible('#auditMode'));
-  assert.ok(await first.page.isVisible('#auditLetter'));
-  const nyRules = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/NY.json'), 'utf8'));
-  const nyRefuse = await first.page.locator('#juryRefuse').innerText();
-  assert.ok(nyRefuse.includes(nyRules.gates.basis), nyRefuse);
+  await assertComingLater(first.page, 'NY', 'New York');
   assert.ok((await first.page.locator('#federalBanner').innerText()).includes('Federal 90-day window'));
+  await selectState(first.page, 'PA');
+  await first.page.waitForSelector('#stepper');
+  await first.page.waitForSelector('#fileJuror', { state: 'attached' });
+  assert.strictEqual(await first.page.locator('#comingLater').count(), 0);
+  assert.strictEqual(await first.page.locator('#fileJuror').count(), 1);
+  assert.strictEqual(await first.page.locator('#fileVoter').count(), 1);
+  assert.strictEqual(await first.page.locator('#sampleBtn').count(), 1);
+  await selectState(first.page, 'NC');
+  await first.page.waitForSelector('#fileJuror', { state: 'attached' });
+  assert.strictEqual(await first.page.locator('#comingLater').count(), 0);
+  assert.strictEqual(await first.page.locator('#stepNext').count(), 1);
   pass('AT-06');
 
   await selectState(first.page, 'WY');
-  await openStep(first.page, 'files');
+  await first.page.waitForSelector('#comingLater');
   assert.strictEqual(await first.page.locator('#rulesFallback').count(), 0);
-  assert.strictEqual(await first.page.locator('#fileJuror').count(), 0);
-  assert.ok(await first.page.isVisible('#auditMode'));
+  await assertComingLater(first.page, 'WY', 'Wyoming');
   pass('AT-03-live-wy');
 
   await selectState(first.page, 'TX');
-  await openStep(first.page, 'files');
-  const blocked = await first.page.locator('#juryBlocked').innerText();
-  assert.ok(blocked.includes('confidential'));
-  assert.ok(blocked.includes("Gov't Code 62.0132"));
-  await first.page.evaluate(() => {
-    const proto = FileReader.prototype;
-    const original = proto.readAsText;
-    window.__reads = 0;
-    proto.readAsText = function readAsTextSpy(...args) {
-      window.__reads += 1;
-      return original.apply(this, args);
-    };
-    const slot = document.getElementById('jurorSlot');
-    const transfer = new DataTransfer();
-    transfer.items.add(new File(['Juror Number,Last\n1,Smith'], 'people.csv', { type: 'text/csv' }));
-    slot.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
-  });
-  assert.strictEqual(await first.page.evaluate(() => window.__reads), 0);
+  await first.page.waitForSelector('#comingLater');
+  await assertComingLater(first.page, 'TX', 'Texas');
+  assert.strictEqual(await first.page.locator('#jurorSlot').count(), 0);
   assert.strictEqual(await first.page.locator('#infoJuror').count(), 0);
   pass('AT-05');
   assert.deepStrictEqual(first.requests, [], 'network requests: ' + first.requests.join('; '));
@@ -819,17 +834,14 @@ function readAuditDownload(file) {
   assert.strictEqual(await switched.page.locator('#infoJuror').count(), 1);
   assert.strictEqual(await switched.page.locator('#jurorCleared').count(), 0);
   await selectState(switched.page, 'NY');
-  await openStep(switched.page, 'files');
+  await switched.page.waitForSelector('#comingLater');
   await switched.page.waitForSelector('#jurorCleared');
   assert.strictEqual(await switched.page.locator('#infoJuror').count(), 0);
-  assert.strictEqual(await switched.page.locator('#sampleBtn').count(), 0);
-  assert.strictEqual(await switched.page.locator('#runBtn').count(), 0);
-  assert.strictEqual(await switched.page.locator('#fileVoter').count(), 0);
   const switchedBasis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/NY.json'), 'utf8')).gates.basis;
-  assert.ok((await switched.page.locator('#juryRefuse').innerText()).includes(switchedBasis));
-  assert.ok((await switched.page.locator('#jurorCleared').innerText()).includes(switchedBasis));
-  assert.match(await switched.page.locator('#jurorCleared').innerText(), /cleared/i);
-  assert.ok(await switched.page.isVisible('#auditLetter'));
+  await assertComingLater(switched.page, 'NY', 'New York');
+  const clearedNote = await switched.page.locator('#jurorCleared').innerText();
+  assert.match(clearedNote, /cleared/i);
+  assert.ok(!clearedNote.includes(switchedBasis), clearedNote);
   await selectState(switched.page, 'NC');
   await openStep(switched.page, 'files');
   await switched.page.waitForSelector('#fileJuror');
@@ -850,7 +862,7 @@ function readAuditDownload(file) {
     await walk.page.waitForFunction((expected) => {
       const sel = document.querySelector('#stateSel');
       if (!sel || sel.value !== expected) return false;
-      return Boolean(document.querySelector('#sampleBtn') || document.querySelector('#juryRefuse'));
+      return Boolean(document.querySelector('#sampleBtn') || document.querySelector('#comingLater'));
     }, code);
     const sampleCount = await walk.page.locator('#sampleBtn').count();
     if (sampleCount > 0) {
@@ -861,6 +873,8 @@ function readAuditDownload(file) {
       await openStep(walk.page, 'files');
       assert.strictEqual(await walk.page.locator('#sampleBtn').isEnabled(), true, `${code} sample button disabled`);
       assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
+      assert.strictEqual(await walk.page.locator('#comingLater').count(), 0, code);
+      assert.strictEqual(await walk.page.locator('#fileJuror').count(), 1, code);
       assert.strictEqual(await walk.page.locator('#juryRefuse').count(), 0, code);
       if (!loaded) {
         await walk.page.click('#sampleBtn');
@@ -884,19 +898,14 @@ function readAuditDownload(file) {
       loaded = true;
       ran.push(code);
     } else {
-      await openStep(walk.page, 'files');
-      assert.strictEqual(await walk.page.locator('#runBtn').count(), 0, `${code} run button still present`);
-      assert.strictEqual(await walk.page.locator('#fileJuror').count(), 0, code);
-      assert.strictEqual(await walk.page.locator('#fileVoter').count(), 0, code);
-      const basis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates.basis;
-      const refuse = (await walk.page.locator('#juryRefuse').innerText()).trim();
-      assert.ok(refuse.includes(basis), `${code} missing explanation`);
-      assert.ok(await walk.page.locator('#auditLetterBtn').isVisible(), code);
+      const stateName = await walk.page.locator('#comingLater h2').innerText();
+      await assertComingLater(walk.page, code, stateName.trim());
       assert.strictEqual(await walk.page.locator('#challengePanel').count(), 0, `${code} challenge panel`);
       if (loaded) {
         const cleared = await walk.page.locator('#jurorCleared').innerText();
         assert.match(cleared, /cleared/i, code);
-        assert.ok(cleared.includes(basis), `${code} did not explain the cleared jury file`);
+        const basis = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules', `${code}.json`), 'utf8')).gates.basis;
+        assert.ok(!cleared.includes(basis), `${code} repeated the basis on the cleared note`);
         loaded = false;
       }
     }
@@ -930,30 +939,14 @@ function readAuditDownload(file) {
   await pickCounty(counties.page);
   assert.strictEqual(await counties.page.locator('#countyRequired').count(), 0);
   await selectState(counties.page, 'NY');
+  await counties.page.waitForSelector('#comingLater');
   assert.strictEqual(await counties.page.locator('#county').inputValue(), '');
   assert.ok(await counties.page.locator('#countyRequired').isVisible());
-  await openStep(counties.page, 'files');
-  assert.match(await counties.page.locator('#auditLetter').innerText(), /Choose a county/);
-  assert.strictEqual(await counties.page.locator('#auditLetterBtn').isDisabled(), true);
-  await counties.page.evaluate(() => { document.getElementById('auditLetterBtn').disabled = false; });
-  await counties.page.click('#auditLetterBtn');
-  assert.match(await counties.page.locator('#auditLetter').innerText(), /Choose a county/);
-  await openStep(counties.page, 'where');
+  await assertComingLater(counties.page, 'NY', 'New York');
   await counties.page.selectOption('#county', '36047');
-  await openStep(counties.page, 'files');
-  const nyLetter = await counties.page.locator('#auditLetter').innerText();
-  assert.ok(nyLetter.includes('Kings County (36047)'));
-  assert.ok(nyLetter.includes('Kings County board of elections'));
-  assert.ok(nyLetter.includes('New York State Board of Elections'));
-  const [nyDownload] = await Promise.all([
-    counties.page.waitForEvent('download'),
-    counties.page.click('#auditLetterBtn'),
-  ]);
-  const nyPath = path.join(shots, 'ny-audit.txt');
-  await nyDownload.saveAs(nyPath);
-  const nyText = fs.readFileSync(nyPath, 'utf8');
-  assert.ok(nyText.includes('Kings County (36047)'));
-  assert.ok(nyText.includes('Kings County board of elections'));
+  assert.strictEqual(await counties.page.locator('#county').inputValue(), '36047');
+  assert.strictEqual(await counties.page.locator('#fileJuror').count(), 0);
+  assert.strictEqual(await counties.page.locator('#auditLetterBtn').count(), 0);
   await selectState(counties.page, 'NC');
   await counties.page.waitForSelector('#sampleBtn', { state: 'attached' });
   await attest(counties.page);
@@ -1003,7 +996,9 @@ function readAuditDownload(file) {
     const panel = document.getElementById('logPanel');
     return Boolean(panel && panel.innerText.includes('2 entries on this computer'));
   });
-  assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').isDisabled(), true);
+  await logOnly.page.waitForSelector('#comingLater');
+  assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').count(), 0);
+  assert.strictEqual(await logOnly.page.locator('#fileJuror').count(), 0);
   assert.strictEqual(await logOnly.page.locator('#exportBtn').count(), 0);
   assert.strictEqual(await logOnly.page.locator('#downloadLog').isDisabled(), false);
   const [stillBare] = await Promise.all([
@@ -1017,9 +1012,8 @@ function readAuditDownload(file) {
   assert.strictEqual(still.header.county_fips, null);
   assert.ok(still.text.includes('No county selected'));
   assert.deepStrictEqual(still.entries.map((entry) => entry.type), ['session_start', 'rules_loaded']);
-  await openStep(logOnly.page, 'where');
   await logOnly.page.selectOption('#county', '36047');
-  assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').isDisabled(), false);
+  assert.strictEqual(await logOnly.page.locator('#auditLetterBtn').count(), 0);
   const [kingsDownload] = await Promise.all([
     logOnly.page.waitForEvent('download'),
     logOnly.page.click('#downloadLog'),
@@ -1203,7 +1197,17 @@ function readAuditDownload(file) {
     await mapShots.page.locator('#usMap').evaluate((node) => node.scrollIntoView({ block: 'start' }));
     await mapShots.page.screenshot({ path: path.join(shots, name) });
   }
-  await mapShots.page.waitForSelector('#usMap path[data-code="PA"]');
+  await mapShots.page.waitForSelector('#usMap path.is-available[data-code="PA"]');
+  await mapShots.page.waitForSelector('#usMap path.is-later[data-code="GA"]');
+  const legend = await mapShots.page.locator('.map-legend').innerText();
+  assert.match(legend, /Available/);
+  assert.match(legend, /Coming later/);
+  const optionText = await mapShots.page.$$eval('#stateSel option', (opts) => opts.map((opt) => opt.textContent || ''));
+  const pennsylvania = optionText.indexOf('Pennsylvania');
+  const georgia = optionText.findIndex((text) => text.startsWith('Georgia'));
+  assert.ok(pennsylvania > 0 && georgia > pennsylvania, optionText.join(' | '));
+  assert.match(optionText[georgia], /\(coming later\)/);
+  assert.strictEqual(await mapShots.page.locator('#stateSel option[value="GA"]').isEnabled(), true);
   await mapShots.page.waitForTimeout(200);
   await shootMap('map-us-1280.png');
   await mapShots.page.locator('#usMap path[data-code="PA"]').click();
@@ -1223,6 +1227,11 @@ function readAuditDownload(file) {
   await mapShots.page.waitForFunction(() => document.querySelector('#county').value === '' && document.querySelector('#stateSel').value === 'PA');
   await mapShots.page.click('#mapBackUs');
   await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === '');
+  await mapShots.page.locator('#usMap path[data-code="GA"]').click();
+  await mapShots.page.waitForSelector('#usMap[data-level="state"] path.is-later');
+  assert.strictEqual(await mapShots.page.locator('#usMap path.is-available').count(), 0);
+  await mapShots.page.click('#mapBackUs');
+  await mapShots.page.waitForSelector('#usMap[data-level="us"] path.is-available[data-code="PA"]');
   await mapShots.page.locator('#usMap path[data-code="DE"]').focus();
   await mapShots.page.keyboard.press('Enter');
   await mapShots.page.waitForFunction(() => document.querySelector('#stateSel').value === 'DE');

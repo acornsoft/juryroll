@@ -82,9 +82,16 @@ export function HomeHero() {
   );
 }
 
-export function SideTab() {
+export function CheckTitle({ notice }: { notice: ReactNode }) {
   return (
-    <a className="side-tab" href="#stepper">Run a check</a>
+    <div className="check-title">
+      <div className="check-title-copy">
+        <p className="check-kicker">Run a check</p>
+        <h1>Check a jury list</h1>
+        <p className="check-sub">A match is a referral for official verification. It is not proof.</p>
+      </div>
+      {notice}
+    </div>
   );
 }
 

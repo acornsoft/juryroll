@@ -1,4 +1,5 @@
 import type { County } from '../../../shared/src/counties.ts';
+import { juryListAllowed } from '../lib/availability.ts';
 import { STATES } from '../states.ts';
 
 type PlacePickerProps = {
@@ -10,13 +11,19 @@ type PlacePickerProps = {
 };
 
 export function PlacePicker({ stateCode, countyFips, counties, onState, onCounty }: PlacePickerProps) {
+  const ordered = STATES.map(([abbr, name]) => ({ abbr, name, later: !juryListAllowed(abbr) }))
+    .sort((a, b) => Number(a.later) - Number(b.later) || a.name.localeCompare(b.name));
   return (
     <div id="placePicker" className="place-fields">
       <label>
         State
         <select id="stateSel" value={stateCode} onChange={(event) => onState(event.target.value)}>
           <option value="">Choose a state</option>
-          {STATES.map(([abbr, name]) => <option key={abbr} value={abbr}>{name}</option>)}
+          {ordered.map(({ abbr, name, later }) => (
+            <option key={abbr} value={abbr} className={later ? 'is-later' : 'is-available'}>
+              {later ? `${name} (coming later)` : name}
+            </option>
+          ))}
         </select>
       </label>
       <label id="countyPicker">

@@ -12,8 +12,9 @@ import {
   ZOOM_MS,
 } from '../map/frame.ts';
 import { loadMapData } from '../map/loadData.ts';
-import type { CountyShape, Geography, MapLevel, ViewBox } from '../map/mapTypes.ts';
+import type { Bounds, CountyShape, Geography, MapLevel, ViewBox } from '../map/mapTypes.ts';
 import { projectMap } from '../map/project.ts';
+import { juryListAllowed } from '../lib/availability.ts';
 import { STATES } from '../states.ts';
 import type { County } from '../../../shared/src/counties.ts';
 
@@ -34,10 +35,6 @@ function stateNameOf(code: string): string {
 function targetView(geo: Geography, stateCode: string, countyFips: string): ViewBox {
   const aspect = geo.width / geo.height;
   const level = mapLevel(stateCode, countyFips);
-  if (level === 'county') {
-    const county = geo.counties.find((item) => item.fips === countyFips);
-    if (county) return frameBox(county.bounds, aspect, 0.22);
-  }
   if (level === 'state' || level === 'county') {
     const stateFips = geo.states.find((item) => item.code === stateCode)?.fips;
     const mine = geo.counties.filter((item) => item.stateFips === stateFips);
@@ -60,6 +57,8 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
   const viewRef = useRef(US_VIEW);
   const frameRef = useRef(0);
   const ready = useRef(false);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [svgWidth, setSvgWidth] = useState(0);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -84,6 +83,16 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
       cancel = true;
     };
   }, []);
+
+  useEffect(() => {
+    const node = svgRef.current;
+    if (!node) return undefined;
+    const measure = () => setSvgWidth(node.getBoundingClientRect().width);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [geo, stateCode, countyFips]);
 
   useEffect(() => {
     if (!geo) return;
@@ -125,6 +134,8 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
 
   const level = mapLevel(stateCode, countyFips);
   const stateName = stateNameOf(stateCode);
+  const stateLater = Boolean(stateCode) && !juryListAllowed(stateCode);
+  const pinScale = svgWidth > 0 ? view.w / svgWidth : 0.2;
   const countyName = counties.find((item) => item.fips === countyFips)?.name ?? '';
   const selected = byFips.get(countyFips);
   const stateTotal = selected ? geo.statePop[selected.stateFips] : undefined;
@@ -140,14 +151,18 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
 
   return (
     <div className="us-map-column">
-      <div className="map-nav">
-        <MapBack level={level} onState={onState} onCounty={onCounty} />
+      <div className="map-head">
+        {level !== 'us' && <h3 className="map-state">{stateName}</h3>}
+        <div className="map-nav">
+          <MapBack level={level} onState={onState} onCounty={onCounty} />
+        </div>
       </div>
       <p id="mapHelp" className="visually-hidden">
         Choose a state, then a county. The lists beside the map do the same thing. Enter or Space selects a focused shape.
       </p>
       <svg
         id="usMap"
+        ref={svgRef}
         viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         role="group"
         aria-label={label}
@@ -155,29 +170,35 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
         data-level={level}
         data-motion={reduced ? 'reduced' : 'animated'}
       >
-        {level === 'us' && geo.states.map((shape) => (
-          <path
-            key={shape.code}
-            d={shape.d}
-            data-code={shape.code}
-            tabIndex={0}
-            role="button"
-            aria-label={stateNameOf(shape.code)}
-            onClick={() => onState(shape.code)}
-            onKeyDown={(event) => onShapeKey(event, () => onState(shape.code))}
-          >
-            <title>{stateNameOf(shape.code)}</title>
-          </path>
-        ))}
+        {level === 'us' && geo.states.map((shape) => {
+          const later = !juryListAllowed(shape.code);
+          const name = stateNameOf(shape.code);
+          return (
+            <path
+              key={shape.code}
+              d={shape.d}
+              data-code={shape.code}
+              className={later ? 'is-later' : 'is-available'}
+              tabIndex={0}
+              role="button"
+              aria-label={later ? `${name}, coming later` : name}
+              onClick={() => onState(shape.code)}
+              onKeyDown={(event) => onShapeKey(event, () => onState(shape.code))}
+            >
+              <title>{later ? `${name} (coming later)` : name}</title>
+            </path>
+          );
+        })}
         {level !== 'us' && visibleCounties.map((shape) => {
           const name = counties.find((item) => item.fips === shape.fips)?.name ?? shape.fips;
           const selectedCounty = shape.fips === countyFips;
+          const countyClass = [stateLater ? 'is-later' : '', selectedCounty ? 'is-selected' : ''].filter(Boolean).join(' ');
           return (
             <path
               key={shape.fips}
               d={shape.d}
               data-fips={shape.fips}
-              className={selectedCounty ? 'is-selected' : undefined}
+              className={countyClass || undefined}
               tabIndex={0}
               role="button"
               aria-label={`${name}, ${stateName}`}
@@ -189,7 +210,16 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
             </path>
           );
         })}
+        {level !== 'us' && selected && countyName && (
+          <CountyPin bounds={selected.bounds} name={countyName} view={view} scale={pinScale} />
+        )}
       </svg>
+      {level === 'us' && (
+        <ul className="map-legend" aria-label="Map legend">
+          <li><span className="swatch is-available" aria-hidden="true" /> Available</li>
+          <li><span className="swatch is-later" aria-hidden="true" /> Coming later</li>
+        </ul>
+      )}
       {level === 'county' && selected && countyName && stateTotal !== undefined && (
         <aside id="populationCard" className="population-card" aria-live="polite">
           <p id="populationCardText">{populationSentence(countyName, stateName, selected.pop, stateTotal)}</p>
@@ -197,6 +227,29 @@ export function UsMap({ stateCode, countyFips, counties, onState, onCounty }: Us
         </aside>
       )}
     </div>
+  );
+}
+
+function CountyPin({ bounds, name, view, scale }: { bounds: Bounds; name: string; view: ViewBox; scale: number }) {
+  const [x0, y0, x1, y1] = bounds;
+  const cx = (x0 + x1) / 2;
+  const cy = (y0 + y1) / 2;
+  const font = 13 * scale;
+  const padX = 8 * scale;
+  const padY = 5 * scale;
+  const textW = name.length * font * 0.56;
+  const gap = 14 * scale;
+  const height = font + padY * 2;
+  const toLeft = cx > view.x + view.w * 0.68;
+  const x2 = toLeft ? cx - gap : cx + gap;
+  const rectX = toLeft ? x2 - textW - padX * 2 : x2;
+  const textX = toLeft ? x2 - padX : x2 + padX;
+  return (
+    <g className="county-pin" pointerEvents="none">
+      <line x1={cx} y1={cy} x2={x2} y2={cy} stroke="#04072E" strokeWidth={1.5 * scale} />
+      <rect x={rectX} y={cy - height / 2} width={textW + padX * 2} height={height} rx={4 * scale} fill="#04072E" />
+      <text x={textX} y={cy} textAnchor={toLeft ? 'end' : 'start'} dominantBaseline="middle" fill="#fff" fontSize={font} fontFamily="Roboto, sans-serif" fontWeight={600}>{name}</text>
+    </g>
   );
 }
 
