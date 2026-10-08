@@ -5,9 +5,11 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": "O.C.G.A. 21-2-231(a.1): each superior court clerk sends the Secretary of State, by the tenth day of each month, a list of all persons 'who identify themselves as not being citizens of the United States during their qualification to serve as a juror'. No statute making the list public was found.",
+    "statute": "O.C.G.A. 21-2-231(a.1): each superior court clerk sends the Secretary of State, by the tenth day of each month, a list of all persons 'who identify themselves as not being citizens of the United States during their qualification to serve as a juror'. No statute makes this list public. O.C.G.A. 50-18-72(a)(6): public disclosure is not required for 'Jury list data' collected and used by the Council of Superior Court Clerks for master jury lists, except data a judge orders for a challenge to the jury array. No Open Records Act exemption names the Secretary of State's copy of the (a.1) list, and no source says it is open. Status of that copy: unknown, so the strict default applies.",
     "holder": null,
-    "fields_withheld": null,
+    "fields_withheld": [
+      "Jury list data used by the Council of Superior Court Clerks for state-wide and county master jury lists, including names, dates of birth, addresses, ages, race, gender, telephone numbers and social security numbers: disclosure not required (O.C.G.A. 50-18-72(a)(6))"
+    ],
     "official_pipeline": "Superior court clerks report self-identified non-citizen jurors monthly to the Secretary of State (21-2-231(a.1)). The Secretary sends names on the list of electors to the county board of registrars, which removes them and mails a notice (21-2-231(c)(1)). Registrars must act within 60 days (21-2-231(f)).",
     "use_restriction": null,
     "source_url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-231/",
@@ -30,6 +32,18 @@
         "url": "https://mvp.sos.ga.gov/s/qualifications-for-electors",
         "verified_on": "2026-10-07",
         "kind": "official_page"
+      },
+      {
+        "cite": "O.C.G.A. 50-18-72(a)(6) (jury list data exempt from public disclosure) - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-50/chapter-18/article-4/section-50-18-72/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "O.C.G.A. 15-12-40.1(b) (driver data for the master jury list excludes persons 'identified as not being citizens of the United States') - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-15/chapter-12/article-3/section-15-12-40-1/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
@@ -73,8 +87,8 @@
     "one_per_affidavit": false,
     "deadlines": "21-2-229: hearing set within 10 business days after notice; appeal to superior court within 10 days. 21-2-230: before the challenged elector votes (absentee: before 5:00 p.m. the day before scanning starts); any challenge within 45 days of a primary, runoff or election is postponed until certification (21-2-230(b)(1), SB 189 (2024)).",
     "deadline_days_before_election": null,
-    "evidence_standard": "21-2-229(c): burden on the challenging elector to prove the person is not qualified. 21-2-230(b): registrars must find probable cause or deny the challenge.",
-    "juryroll_lead_sufficient": null,
+    "evidence_standard": "21-2-229(c): burden on the challenging elector to prove the person is not qualified. 21-2-230(b): registrars must find probable cause or deny the challenge. Probable cause includes, among others, a deceased elector, registration or voting in another jurisdiction, a homestead exemption elsewhere, or a nonresidential address confirmed by government sources (21-2-230(b)). Self-identified non-citizen jurors are removed by the official 21-2-231 process, not by private challenge.",
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": "https://gov.georgia.gov/document/2021-signed-legislation/sb-202/download",
     "verified_on": "2026-10-07",
@@ -90,12 +104,18 @@
         "url": "https://gov.georgia.gov/document/2021-signed-legislation/sb-202/download",
         "verified_on": "2026-10-07",
         "kind": "session_law"
+      },
+      {
+        "cite": "O.C.G.A. 21-2-229 and 21-2-230 (current text) - Justia copy of the 2025 Georgia Code",
+        "url": "https://law.justia.com/codes/georgia/title-21/chapter-2/article-6/section-21-2-230/",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [
       {
@@ -128,6 +148,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "O.C.G.A. 50-18-71 (Open Records Act) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: per county and per month, the number of persons on the 21-2-231(a.1) lists the clerk sent to the Secretary of State; the number the Secretary of State forwarded to the county board of registrars under 21-2-231(c)(1); the number removed; and the number of removal notices mailed. Ask whether each county filed a report each month.",
+    "counts_only": true,
+    "source_url": "https://law.justia.com/codes/georgia/title-50/chapter-18/article-4/section-50-18-71/",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. Jury list data held by the council and the clerks is exempt (50-18-72(a)(6))."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -136,12 +164,15 @@
     "basis": "No source found that makes the juror non-citizen list available to a private person (jury_list.public is null, so the strict default applies). Without a lawful jury list there are no named leads. Aggregate audit mode only: ask officials whether the 21-2-231(a.1) monthly reports are filed and processed."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). Added 50-18-72(a)(6) and 15-12-40.1(b) to jury_list; fields_withheld; juryroll_lead_sufficient false; audit_path; federal_source_url moved to govinfo; HB 397 note corrected (not enacted). jury_list.public stays null: no source says the Secretary of State's copy of the (a.1) list is open or closed. use_restriction stays null: 50-18-72 sets no penalty.",
     "The official pipeline already exists: clerks report monthly to the Secretary of State (21-2-231(a.1)). The best private action is an aggregate referral that asks whether each county files and processes these reports.",
+    "The (a.1) list goes one way: clerk to Secretary of State to registrars. Registrars must remove a listed elector and mail a notice of removal (21-2-231(c)(1)). The statute gives no pre-removal notice or hearing for this list. Data that the Secretary of State sends back to the clerks' council may be used only for jury lists (21-2-231(g)).",
     "Source status: 21-2-229 and 21-2-230 were read from enrolled session laws (SB 202 of 2021, SB 189 of 2024) on gov.georgia.gov. 21-2-231, 21-2-225 and 21-2-601 were re-read on 2026-10-07 from the Justia copy of the 2025 Georgia Code, the source LEGAL-REVIEW steering allows for GA. The text matches the earlier official-page summaries.",
-    "UNVERIFIED, not relied on: a secondary summary says HB 397 (2025-2026 session) did not add new challenge rules (proposed 21-2-230.1). No rule value uses it. Re-check against the enrolled act.",
+    "HB 397 (2025-2026 session) was not enacted. LegiScan shows the Senate passed a substitute on 2025-04-02 and the bill then died. The Senate substitute had already dropped the plan to send challenge appeals to the State Election Board. No rule value uses it.",
     "The public voter list has no date of birth. If the jury gate ever opens in GA, matches would be capped at Probable (LOGIC-CHANGES.md A.4).",
     "Federal cases: Majority Forward v. Ben Hill County, 512 F. Supp. 3d 1354 (M.D. Ga. 2021) (mass private challenges in the 90-day window need individualized inquiry); Fair Fight v. True the Vote (N.D. Ga. 2024) (about 364,000 challenges; list 'utterly lacking reliability') (LEGAL-REVIEW.md).",
-    "false_statement_penalty is null: not determined in this pass.",
-    "Georgia 2024 audit: 20 noncitizens among 8.2 million registrants (LEGAL-REVIEW.md)."
+    "false_statement_penalty is null: 21-2-229 and 21-2-230 set no penalty for a false challenge. Whether the general false-statement law (O.C.G.A. 16-10-20) reaches a challenge was not checked.",
+    "Georgia 2024 audit: 20 noncitizens among 8.2 million registrants (LEGAL-REVIEW.md).",
+    "juryroll_lead_sufficient is false: the challenger carries the burden of proof (21-2-229(c)), and federal courts found mass-matched lists unreliable (Fair Fight v. True the Vote). This is the strict value; app behavior does not change from null."
   ]
 }
