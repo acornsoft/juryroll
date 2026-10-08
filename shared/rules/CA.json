@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Candidates, ballot-measure committees, and any person for election, scholarly, journalistic, political, or governmental purposes as determined by the Secretary of State (Elec. Code 2194(a)(3)), after a written application under penalty of perjury (Elec. Code 2188).",
     "permitted_uses": "Election, scholarly, journalistic, political, or governmental purposes. Not for any personal, private, or commercial purpose, and not for reproduction or display on the internet (2194(a)(2)).",
+    "use_restriction": "Elec. Code 2194(a): the affidavit of voter registration information '(2) Shall not be used for any personal, private, or commercial purpose, including, but not limited to: (A) The harassment of any voter or voter’s household. (B) The advertising, solicitation, sale, or marketing of products or services to any voter or voter’s household. (C) Reproduction in print, broadcast visual or audio, or display on the internet or any computer terminal unless pursuant to paragraph (3). (3) Shall be provided with respect to any voter, subject to the provisions of Sections 2166, 2166.5, 2166.7, 2166.8, 2166.9, and 2188, to any candidate for federal, state, or local office, to any committee for or against any initiative or referendum measure for which legal publication is made, and to any person for election, scholarly, journalistic, or political purposes, or for governmental purposes, as determined by the Secretary of State.'",
     "no_online_posting": true,
     "penalty": null,
     "dob_in_public_file": null,

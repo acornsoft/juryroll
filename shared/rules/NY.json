@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any person, by FOIL request to the county board of elections or the NYS Board of Elections Records Access Officer, with a written statement that the data will be used for an 'elections purpose'.",
     "permitted_uses": "Election purposes only. Election Law 3-103(5): 'The information contained in the statewide voter registration list shall not be used for non-election purposes.' The State Board says 'elections purpose' has traditionally been read to include campaigning, voter outreach, fundraising and academic research.",
+    "use_restriction": "Election Law 3-103(5): 'The information contained in the statewide voter registration list shall not be used for non-election purposes.'",
     "no_online_posting": null,
     "penalty": "Knowing and wilful violation of the Election Law not otherwise covered is a misdemeanor (Election Law 17-168); county FOIL forms apply this to 3-103(5).",
     "dob_in_public_file": null,

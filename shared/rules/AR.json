@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any requester, from the county clerk, for a fee (Ark. Code 7-5-109). The list includes at least names, addresses, and precincts; secure-voter addresses are withheld.",
     "permitted_uses": "No purpose restriction in 7-5-109.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

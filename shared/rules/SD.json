@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Anyone. The Secretary of State posts the complete statewide voter registration file on its website every Monday, with a free five-year archive (SDCL 12-4-37, 12-4-37.1).",
     "permitted_uses": "May not be sold or used for any commercial purpose (campaign and political polling are not commercial) (SDCL 12-4-41).",
+    "use_restriction": null,
     "no_online_posting": true,
     "penalty": "Class 1 misdemeanor and a civil penalty up to $2,000 per violation (SDCL 12-4-41).",
     "dob_in_public_file": false,

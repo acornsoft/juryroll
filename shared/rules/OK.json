@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Free electronic copy to bona fide Oklahoma residents who are U.S. citizens, recognized parties, candidates, or others authorized by law, after an application with an attestation under penalty of perjury (26 O.S. 7-103.2(B)).",
     "permitted_uses": "Not for commercial marketing or advertising (campaign, party, government and polling use is not commercial). May not be given to a foreign national, foreign commercial interest, or foreign government (7-103.2(B)(3)-(4)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": "Unlawful use under 7-103.2(B)(3)-(4); penalty clause not stated in the section.",
     "dob_in_public_file": null,

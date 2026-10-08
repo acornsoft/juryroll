@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Any requester who makes a written request and signs an affidavit (NMSA 1-4-5.5(A), (C)).",
     "permitted_uses": "Governmental or election and election campaign purposes only (1-4-5.5(C), (E)).",
+    "use_restriction": "NMSA 1-4-5.5(C): 'Each requester of voter data, mailing labels or special voter lists shall sign an affidavit that the voter data, mailing labels and special voter lists shall be used for governmental or election and election campaign purposes only and shall not be made available or used for unlawful purposes.' 1-4-5.5(E): '(1) \"election campaign purposes\" means relating in any way to a campaign in an election conducted by a federal, state or local government; (2) \"governmental purposes\" means noncommercial purposes relating in any way to the structure, operation or decision-making of a federal, state or local government'.",
     "no_online_posting": true,
     "penalty": "Fourth degree felony plus $100 per line of voter information, including making voter data that identifies a voter publicly available on the internet (NMSA 1-4-5.6).",
     "dob_in_public_file": false,

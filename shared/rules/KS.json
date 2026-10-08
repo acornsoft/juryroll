@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any person may examine and get copies of the registration books from the county election officer, at cost (K.S.A. 25-2320(a)).",
     "permitted_uses": "No purpose restriction in 25-2320. SSN and license numbers are removed (25-2320(b)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

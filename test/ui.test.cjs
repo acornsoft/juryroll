@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 
 const root = path.join(__dirname, '..');
@@ -1087,6 +1088,7 @@ function readAuditDownload(file) {
   await openStep(pa.page, 'files');
   await pa.page.setInputFiles('#fileJuror', paJuror);
   await pa.page.waitForSelector('#infoJuror');
+  await pa.page.check('#voterUseCheck');
   await pa.page.setInputFiles('#fileVoter', paVoter);
   await pa.page.waitForSelector('#infoVoter');
   await openStep(pa.page, 'run');
@@ -1271,6 +1273,96 @@ function readAuditDownload(file) {
   await reducedPage.page.waitForTimeout(250);
   assert.strictEqual(await reducedPage.page.locator('#usMap').getAttribute('viewBox'), jumped);
   await reducedPage.context.close();
+
+  const ONLY_LINE = 'JuryRoll supports one use only: counting matches and referring them to election officials.';
+  const paRules = JSON.parse(fs.readFileSync(path.join(root, 'shared/rules/PA.json'), 'utf8'));
+  const usePage = await openPage(browser);
+  await selectState(usePage.page, 'PA');
+  await attest(usePage.page);
+  await openStep(usePage.page, 'files');
+  const panelBeforeSlot = await usePage.page.evaluate(() => {
+    const panel = document.getElementById('voterUsePanel');
+    const slot = document.getElementById('voterSlot');
+    if (!panel || !slot) return false;
+    return Boolean(panel.compareDocumentPosition(slot) & Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  assert.strictEqual(panelBeforeSlot, true);
+  assert.strictEqual(await usePage.page.locator('#voterUseText').evaluate((el) => el.textContent), paRules.voter_file.use_restriction);
+  assert.strictEqual(await usePage.page.locator('#voterUseSource').getAttribute('href'), paRules.voter_file.source_url);
+  assert.ok((await usePage.page.locator('#voterUseOnly').innerText()).includes(ONLY_LINE));
+  assert.strictEqual(await usePage.page.locator('#voterUseCheck').isChecked(), false);
+  assert.strictEqual(await usePage.page.locator('#fileVoter').isEnabled(), false);
+  await usePage.page.setViewportSize({ width: 390, height: 844 });
+  await assertFits(usePage.page, 390, 'PA voter use panel');
+  await usePage.page.setViewportSize({ width: 1360, height: 900 });
+  pass('AT-45');
+
+  await usePage.page.evaluate(() => {
+    const proto = FileReader.prototype;
+    const original = proto.readAsText;
+    window.__reads = 0;
+    proto.readAsText = function readAsTextSpy(...args) {
+      window.__reads += 1;
+      return original.apply(this, args);
+    };
+    const slot = document.getElementById('voterSlot');
+    const transfer = new DataTransfer();
+    transfer.items.add(new File(['voter_id,name_last\nV9,Zzznotreal\n'], 'voters.csv', { type: 'text/csv' }));
+    slot.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+  });
+  assert.strictEqual(await usePage.page.evaluate(() => window.__reads), 0);
+  assert.strictEqual(await usePage.page.locator('#infoVoter').count(), 0);
+  assert.strictEqual(await usePage.page.locator('#fileVoter').isEnabled(), false);
+  await usePage.page.check('#voterUseCheck');
+  await usePage.page.evaluate(() => {
+    const slot = document.getElementById('voterSlot');
+    const transfer = new DataTransfer();
+    transfer.items.add(new File(['voter_id,name_last,name_first\nV9,Zzznotreal,Ada\n'], 'voters.csv', { type: 'text/csv' }));
+    slot.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: transfer }));
+  });
+  await usePage.page.waitForSelector('#infoVoter');
+  const [useLogDownload] = await Promise.all([
+    usePage.page.waitForEvent('download'),
+    usePage.page.click('#downloadLog'),
+  ]);
+  const useLogPath = path.join(shots, 'voter-use-audit.jsonl');
+  await useLogDownload.saveAs(useLogPath);
+  const useLog = readAuditDownload(useLogPath);
+  const useEntries = useLog.entries.filter((entry) => entry.type === 'voter_use_attested');
+  assert.strictEqual(useEntries.length, 1);
+  const useData = useEntries[0].data;
+  assert.deepStrictEqual(Object.keys(useData).sort(), ['state', 'text_sha256']);
+  assert.strictEqual(useData.state, 'PA');
+  assert.strictEqual(useData.text_sha256, crypto.createHash('sha256').update(paRules.voter_file.use_restriction).digest('hex'));
+  assert.ok(!useLog.text.includes(paRules.voter_file.use_restriction));
+  assert.ok(!useLog.text.includes('Zzznotreal'));
+  await selectState(usePage.page, 'NC');
+  await openStep(usePage.page, 'files');
+  assert.strictEqual(await usePage.page.locator('#voterUsePanel').count(), 0);
+  assert.strictEqual(await usePage.page.locator('#fileVoter').isEnabled(), true);
+  await selectState(usePage.page, 'PA');
+  await openStep(usePage.page, 'files');
+  assert.strictEqual(await usePage.page.locator('#voterUseCheck').isChecked(), false);
+  assert.strictEqual(await usePage.page.locator('#fileVoter').isEnabled(), false);
+  await usePage.page.check('#voterUseCheck');
+  await usePage.page.click('#purgeBtn');
+  await usePage.page.waitForFunction(() => document.body.dataset.purged === '1');
+  assert.strictEqual(await usePage.page.locator('#voterUseCheck').isChecked(), false);
+  assert.strictEqual(await usePage.page.locator('#fileVoter').isEnabled(), false);
+  pass('AT-46');
+  assert.deepStrictEqual(usePage.requests, [], 'voter use network: ' + usePage.requests.join('; '));
+  assert.deepStrictEqual(usePage.errors, [], 'voter use errors: ' + usePage.errors.join('; '));
+  await usePage.context.close();
+
+  const ga = await openPage(browser);
+  await selectState(ga.page, 'GA');
+  await ga.page.waitForSelector('#comingLater');
+  await assertComingLater(ga.page, 'GA', 'Georgia');
+  assert.strictEqual(await ga.page.locator('#voterUsePanel').count(), 0);
+  assert.strictEqual(await ga.page.locator('#voterUseCheck').count(), 0);
+  pass('AT-47');
+  assert.deepStrictEqual(ga.requests, [], 'GA network: ' + ga.requests.join('; '));
+  await ga.context.close();
 
   await browser.close();
   console.log('ALL UI TESTS PASSED');

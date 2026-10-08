@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any individual, from the county clerk, at reproduction cost (Idaho Code 34-437(1)). The list holds names and addresses by precinct.",
     "permitted_uses": "Not for mailing or delivering advertisements, offers, or solicitations for money or anything of value; any political purpose is allowed (34-437(2)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

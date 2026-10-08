@@ -36,6 +36,7 @@
   "voter_file": {
     "who_may_get": "The statewide central registry names and addresses 'shall not be a matter of public record'; they go to state party committees, statewide candidate and ballot committees, the jury commissioner, and others the Secretary designates by regulation (M.G.L. c. 51, sec. 47C). Local lists were not researched.",
     "permitted_uses": null,
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

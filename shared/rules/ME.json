@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Central voter registration data is confidential. Lists go only to political parties, people doing campaign-related or get-out-the-vote work, and current office holders (21-A M.R.S. 196-A(1)(B)).",
     "permitted_uses": "Campaign-related or office-holder purposes listed in 196-A(1).",
+    "use_restriction": "21-A M.R.S. 196-A(1)(K): 'A person may purchase, for the fee established in subsection 2, a voter file from the Department of the Secretary of State to evaluate, monitor or seek compliance with laws relating to voting rights, election administration and voter registration.' 196-A(1)(B): a person obtaining information under that paragraph may not '(1) Sell, transfer to another person or use the voter information or any part of the voter information for any purpose that is not directly related to activities of a political party, \"get out the vote\" efforts directly related to a campaign or other activities directly related to a campaign'. 196-A(6)(E) makes a civil violation of 'Any use of data from the central voter registration system purchased under subsection 1, paragraph B or subsection 1, paragraph K for purposes not authorized by those paragraphs.'",
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

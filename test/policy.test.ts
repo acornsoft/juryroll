@@ -10,6 +10,7 @@ import { screenColumns } from '../shared/src/policy/blocked.ts';
 import { guessExtra } from '../shared/src/policy/columns.ts';
 import { toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
+import { voterUsePanelRequired, voterUseRestriction, voterUseShownText } from '../shared/src/policy/voterUse.ts';
 import { auditLetter } from '../shared/src/policy/letter.ts';
 import { runMatch, type LoadedTable } from '../shared/src/policy/runMatch.ts';
 import { sha256HexSync } from '../shared/src/policy/sha256.ts';
@@ -633,5 +634,27 @@ pass('AT-02-bundle');
 
 assert.ok(ND_REGISTRATION_NOTE.includes('North Dakota has no voter registration'));
 pass('AT-35-copy');
+
+const USE_RESTRICTION_CODES = ['AZ', 'CA', 'HI', 'IA', 'IL', 'IN', 'MD', 'ME', 'MN', 'ND', 'NE', 'NM', 'NY', 'PA', 'TN', 'UT', 'VA', 'WY'];
+const panelCodes: string[] = [];
+for (const name of ruleFiles) {
+  const rules = loadRules(name);
+  const restriction = voterUseRestriction(rules);
+  if (voterUsePanelRequired(rules)) {
+    if (restriction === null) throw new Error(`${rules.state} panel required without text`);
+    assert.strictEqual(voterUseShownText(restriction), restriction);
+    assert.strictEqual(restriction, rules.voter_file.use_restriction);
+    panelCodes.push(rules.state);
+  } else {
+    assert.ok(rules.voter_file.use_restriction === null || rules.voter_file.use_restriction === undefined, rules.state);
+  }
+}
+panelCodes.sort();
+assert.deepStrictEqual(panelCodes, USE_RESTRICTION_CODES);
+assert.strictEqual(panelCodes.length, 18);
+assert.ok(!panelCodes.includes('DEFAULT'));
+assert.strictEqual(voterUsePanelRequired({ voter_file: {} }), false);
+assert.strictEqual(voterUsePanelRequired({ voter_file: { use_restriction: null } }), false);
+pass('AT-47');
 
 console.log('ALL POLICY TESTS PASSED');

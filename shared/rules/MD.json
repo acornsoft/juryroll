@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "A Maryland registered voter, on written application and a statement under oath (Md. Code, Elec. Law 3-506(a)(1)).",
     "permitted_uses": "Not for commercial solicitation or any other purpose not related to the electoral process (3-506(a)(1)).",
+    "use_restriction": "Elec. Law 3-506(a)(1): a list is provided on receipt of '(ii) a statement, signed under oath, that the list is not intended to be used for: 1. commercial solicitation; or 2. any other purpose not related to the electoral process.' 3-506(c): 'A person who knowingly allows a list of registered voters, under the person’s control, to be used for any purpose not related to the electoral process is guilty of a misdemeanor and, on conviction, is subject to the penalties under Title 16 of this article.'",
     "no_online_posting": null,
     "penalty": "Misdemeanor to knowingly allow a list to be used for a purpose not related to the electoral process (3-506(c)).",
     "dob_in_public_file": null,

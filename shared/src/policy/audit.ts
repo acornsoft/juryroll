@@ -11,6 +11,7 @@ export type AuditType =
   | 'session_start'
   | 'rules_loaded'
   | 'attestation_signed'
+  | 'voter_use_attested'
   | 'file_loaded'
   | 'file_refused'
   | 'mapping_set'

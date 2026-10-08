@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Any person, on request to the county recorder or Secretary of State, but only for a use the statute allows (A.R.S. 16-168(E)).",
     "permitted_uses": "Political, campaign, election and redistricting purposes, or other uses authorized by law. Commercial use is barred (A.R.S. 16-168(E)).",
+    "use_restriction": "A.R.S. 16-168(E): 'Precinct registers and other lists and information derived from registration forms may be used only for purposes relating to a political or political party activity, a political campaign or an election, for revising election district boundaries or for any other purpose specifically authorized by law and may not be used for a commercial purpose as defined in section 39-121.03.'",
     "no_online_posting": true,
     "penalty": "A.R.S. 16-168(F): a person who posts precinct lists or registration data on the internet, or who uses or allows use for a purpose not authorized, is guilty of a class 6 felony.",
     "dob_in_public_file": null,

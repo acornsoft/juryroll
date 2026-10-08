@@ -30,6 +30,7 @@
   "voter_file": {
     "who_may_get": "Any person who certifies on a state form that the list will be used for political purposes (T.C.A. 2-2-138(b)(1)); in large counties, any interested citizen (2-2-138(c)).",
     "permitted_uses": "Political purposes (2-2-138(b)(1)).",
+    "use_restriction": "T.C.A. 2-2-138(b)(1): 'This list shall be available to any person who certifies on a form provided by the state election commission that such list will be used for political purposes.' 2-2-138(e): 'This list shall be available for purchase to any person who certifies on a form provided by the state election commission that such list will be used for political purposes only.'",
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

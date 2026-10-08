@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Any person, on payment of cost (Iowa Code 48A.38(1)).",
     "permitted_uses": "No purpose restriction in 48A.38. The registrar logs every recipient; the log is public (48A.38(3)).",
+    "use_restriction": "Iowa Code 48A.39: 'Information about individual registrants obtained from voter registration records shall be used only to request the registrant’s vote at an election, or for another genuine political purpose, or for a bona fide official purpose by an elected official, or for bona fide political research, but shall not be used for any commercial purposes.'",
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": null,

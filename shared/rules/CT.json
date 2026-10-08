@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Lists of additions, restorations, removals, and name or address changes (with name, address, voting district, party) are available to the public under the Freedom of Information Act, 1-210 (Conn. Gen. Stat. 9-50a).",
     "permitted_uses": "No purpose restriction found in chapter 143.",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,

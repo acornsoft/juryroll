@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Any person. Precinct lists and current lists of registered voters are public records; the county auditor or Secretary of State furnishes them at reproduction cost (RCW 29A.08.720(3)).",
     "permitted_uses": "Not for commercial advertising, offers, or solicitations of money or anything of value; any political purpose is allowed (29A.08.720(3)(a)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": "Class C felony for commercial misuse, plus $5 liability per item (RCW 29A.08.740(1)).",
     "dob_in_public_file": false,

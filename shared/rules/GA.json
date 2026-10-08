@@ -36,6 +36,7 @@
   "voter_file": {
     "who_may_get": "Any person, by purchase from the Secretary of State (per the Secretary of State's official order page and online store).",
     "permitted_uses": "Any use except commercial purposes: 'Such data may not be used by any person for commercial purposes' (O.C.G.A. 21-2-225(c)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": "Misdemeanor for intentional commercial use of the list of electors (O.C.G.A. 21-2-601).",
     "dob_in_public_file": false,

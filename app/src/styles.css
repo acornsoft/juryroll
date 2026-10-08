@@ -1214,6 +1214,10 @@ select:focus {
 }
 input[type="checkbox"] { width: 1.15rem; height: 1.15rem; accent-color: var(--main-color-one); }
 input[type="file"] { font: 15px var(--body-font); max-width: 100%; }
+.voter-file-block { min-width: 0; }
+#voterUsePanel,
+#voterUsePanel a,
+#voterUseText { overflow-wrap: anywhere; }
 #jurorSlot,
 #voterSlot {
   background: var(--wash);

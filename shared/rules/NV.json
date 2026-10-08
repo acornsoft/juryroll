@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Any person, at the county clerk's office, for 1 cent per name (NRS 293.440(1)). Lists include address, date of birth, phone, and application serial number (293.440(2)), except fields withheld under 293.558.",
     "permitted_uses": null,
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": true,

@@ -42,6 +42,7 @@
   "voter_file": {
     "who_may_get": "Any person: statewide list from the Secretary of State on request with an affidavit (Elec. Code 18.066); county lists from the voter registrar (18.008).",
     "permitted_uses": "Any use except 'in connection with advertising or promoting commercial products or services' (Elec. Code 18.066(d), 18.067, 18.009). Social Security numbers and protected residence addresses are excluded (18.066(b), 13.004(c)).",
+    "use_restriction": null,
     "no_online_posting": null,
     "penalty": "Class A misdemeanor for commercial advertising use (Elec. Code 18.009, 18.067).",
     "dob_in_public_file": true,

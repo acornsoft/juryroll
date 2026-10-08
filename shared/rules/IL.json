@@ -16,6 +16,7 @@
   "voter_file": {
     "who_may_get": "Electronic voter data goes only to political committees and governmental entities. Any person may view the statewide list on a screen at the State Board of Elections in Springfield (not in the 27 days before an election) but may not print, duplicate, transmit, or alter it (10 ILCS 5/4-8).",
     "permitted_uses": "Bona fide political purposes, under sworn affidavit by the committee representative; never for commercial solicitation or other business purposes (10 ILCS 5/4-8).",
+    "use_restriction": "10 ILCS 5/4-8: 'The individual representing a political committee requesting copies of such tapes shall make a sworn affidavit that the information shall be used only for bona fide political purposes, including by or for candidates for office or incumbent office holders. Such tapes, discs or other electronic data shall not be used under any circumstances by any political committee or individuals for purposes of commercial solicitation or other business purposes.'",
     "no_online_posting": null,
     "penalty": "Class 4 felony for commercial or business use (10 ILCS 5/4-8).",
     "dob_in_public_file": null,

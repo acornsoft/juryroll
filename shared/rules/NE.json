@@ -24,6 +24,7 @@
   "voter_file": {
     "who_may_get": "Any person who gives name, address, phone, email, organization, and reason, and signs an oath (Neb. Rev. Stat. 32-330(2), (4)).",
     "permitted_uses": "Solely for purposes related to elections, political activities, voter registration, law enforcement, or jury selection. Not to be posted, displayed, used commercially, or made accessible on the Internet (32-330(2)).",
+    "use_restriction": "Neb. Rev. Stat. 32-330(2): 'Lists shall be used solely for purposes related to elections, political activities, voter registration, law enforcement, or jury selection. Lists shall not be posted, displayed, or used for commercial purposes or made accessible on the Internet.'",
     "no_online_posting": true,
     "penalty": "The oath is sworn under penalty of election falsification, a Class IV felony (32-330(4)).",
     "dob_in_public_file": false,
