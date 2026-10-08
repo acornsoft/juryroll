@@ -4,32 +4,98 @@
   "schema_version": "1.0.0",
   "verified_on": "2026-10-07",
   "jury_list": {
-    "public": null,
-    "statute": null,
-    "holder": "Clerk of the circuit court (jury). Supervisors of elections and the Department of State (voter list maintenance).",
+    "public": false,
+    "statute": "Fla. Stat. 40.01, 40.011(2), 40.013, 40.022: Florida keeps no non-citizen jury list. The DHSMV source list holds only 'citizens of the United States' (40.011(2)), and no statute creates or reports a list of non-citizen disqualifications. Context only: AGO 2005-61 (advisory) and Kever v. Gilliam, 886 So. 2d 263 (Fla. 1st DCA 2004), treat a clerk's jury list of names and addresses as open, but they cover names and addresses only and predate 119.0712(2)(b) (DHSMV personal information confidential under the DPPA).",
+    "holder": "Clerk of the circuit court. The clerk generates the juror candidate lists (Fla. Stat. 40.011(1)) and 'shall be responsible for preserving the security of the source and juror candidate lists' (40.02(3)). Under Rule 2.420(b)(2), the clerk 'when acting as an arm of the court' is part of the judicial branch; the chief judge is custodian of the court's administrative records (2.420(b)(3)). No statute creates a list of persons disqualified for non-citizenship.",
     "fields_withheld": null,
-    "official_pipeline": "Fla. Stat. 98.093(9): the Department of State and supervisors may receive information from federal courts' jury coordinators about persons excused for non-citizenship, for list maintenance. Fla. Stat. 98.075(6)-(7): the supervisor gives notice, the voter has 30 days to respond, and the supervisor decides after a hearing if requested. No state-court jury-excusal report duty was found in current text.",
+    "official_pipeline": "In force today: no state-court jury-to-election pipeline. The clerk reports to the Department of State only jury-notice responses showing 'a change of address' (98.093(3)(b)). DHSMV reports weekly persons who 'presented evidence of non-United States citizenship' at license or ID issuance (98.093(8)(b)). Information from 'any governmental entity' that a voter 'is not a United States citizen' goes through the 98.075(7) notice-and-hearing process; 'All determinations of eligibility must be based on a preponderance of the evidence' (98.075(7)(b)1.). Not current law; from January 1, 2027 (ch. 2026-26, ss. 8, 9, 34, https://laws.flrules.org/2026/26): new 98.093(9) has the Department use information from a federal 'jury coordinator' about persons disqualified for 'not having United States citizenship', and new 98.075(6)(a) has the Department make 'an initial determination as to whether the information is credible and reliable' before notifying the supervisor.",
     "use_restriction": null,
-    "source_url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.093.html",
+    "source_url": "https://www.flsenate.gov/Laws/Statutes/2026/40.011",
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "Fla. Stat. 98.093 (duty of officials to furnish information; (9) federal jury coordinators)",
-        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.093.html",
+        "cite": "Fla. Stat. 40.01 (jurors must be 'citizens of the United States')",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/40.01",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "Fla. Stat. 98.075 (registration records maintenance; notice and hearing)",
-        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.075.html",
+        "cite": "Fla. Stat. 40.011(2) (DHSMV delivers quarterly a list of residents 'who are citizens of the United States')",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/40.011",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 40.013 (disqualifications and excuses; citizenship is not listed)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/40.013",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 40.02(1), (3) (final list of names 'with their addresses'; clerk preserves the security of the lists)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/40.02",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 40.022 (clerk purges lists of the mentally incompetent, felons and the deceased; no citizenship purge)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/40.022",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. R. Gen. Prac. & Jud. Admin. 2.420 (a), (b), (c), (m) (July 1, 2026 compilation)",
+        "url": "https://www-media.floridabar.org/uploads/2026/08/2027_01-JULY-Florida-Rules-of-General-Practice-and-Judicial-Administration-7-1-2026.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "court_rule"
+      },
+      {
+        "cite": "Att'y Gen. Op. 2005-61 (Nov. 21, 2005): s. 322.20(9) 'does not operate to exempt from public disclosure jurors' names and addresses appearing on a jury list compiled by the clerk of court' (citing Kever v. Gilliam, 886 So. 2d 263 (Fla. 1st DCA 2004))",
+        "url": "https://www.myfloridalegal.com/ag-opinions/records-disclosure-of-jurors-names",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Fla. Stat. 322.20(9) (DHSMV list to courts with 'names, addresses, and birth dates'; a court 'may not sell, give away, or allow the copying of such information')",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/322.20",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 119.0712(2)(b) (personal information in a motor vehicle record 'is confidential pursuant to' the DPPA)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/119.0712",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 98.093 (2026 text; (3)(b) jury-notice address changes; (8)(b) DHSMV non-citizen evidence; (9) federal jury coordinators, effective Jan. 1, 2027); (9) added by ch. 2026-26, s. 9, https://laws.flrules.org/2026/26",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/98.093",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 98.093 (2025 text, in force until Jan. 1, 2027; no jury-coordinator subsection)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2025/98.093",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 98.075 (2025 text, in force until Jan. 1, 2027; (6) other bases, (7) removal procedure, (8) certification)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2025/98.075",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Ch. 2026-26, Laws of Fla. (CS/CS/HB 991), ss. 8, 9 and 34 ('this act shall take effect January 1, 2027' unless expressly provided)",
+        "url": "https://laws.flrules.org/2026/26",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "Any person. The Division of Elections provides the statewide voter extract on request (Fla. Stat. 98.0981; Division voter extract page).",
-    "permitted_uses": "No purpose restriction was found in Florida statute for the public extract. Exempt records (Fla. Stat. 97.0585, e.g. protected addresses) are removed.",
+    "who_may_get": "Any person. Division of Elections: 'Voter registration and voting history information is public record under Florida law.' The monthly extract is mailed on disk on request; 'This information IS NOT available by email or online.' Fla. Stat. 119.07(1)(a): a custodian 'shall permit the record to be inspected and copied by any person'.",
+    "permitted_uses": "No purpose limit found in statute for the public extract. Withheld: information in 97.0585 (declinations, place of registration, SSN, driver license and Florida ID numbers, preregistered 16-17 year olds; signatures not copied), 119.071 exemptions, and Address Confidentiality Program participants (layout). For a voter who requested a public records exemption, name, addresses and birth date are 'not included' (layout field 7).",
     "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
@@ -40,20 +106,26 @@
     "verified_on": "2026-10-07",
     "sources": [
       {
-        "cite": "Florida voter extract file layout (rev. 2026-05-04): includes Birth Date, Registration Date, Voter Status",
+        "cite": "Voter Extract File Layout (Updated May 2026): monthly, 'tab-delimited ASCII text'; field 22 'Birth Date' MM/DD/YYYY (protected for exemption requesters); field 23 'Registration Date' MM/DD/YYYY; field 29 'Voter Status'",
         "url": "https://files.floridados.gov/media/710644/final-voter-extract-disk-file-layout-rev-20260504.pdf",
         "verified_on": "2026-10-07",
         "kind": "official_page"
       },
       {
-        "cite": "Fla. Stat. 97.0585 (public records exemptions for voter information)",
-        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0097/Sections/0097.0585.html",
+        "cite": "Fla. Stat. 97.0585 (public records exemption; information regarding voters)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/97.0585",
         "verified_on": "2026-10-07",
         "kind": "statute"
       },
       {
-        "cite": "Fla. Stat. 98.0981 (voter registration and voting history data)",
-        "url": "https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0000-0099/0098/Sections/0098.0981.html",
+        "cite": "Fla. Stat. 98.0981 (statewide voter registration system information includes 'Each qualified voter's date of registration')",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/98.0981",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 119.07(1)(a) (inspection and copying by any person)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/119.07",
         "verified_on": "2026-10-07",
         "kind": "statute"
       }
@@ -61,36 +133,52 @@
   },
   "private_challenge": {
     "allowed": true,
-    "who": "Any registered elector or poll watcher of the county (Fla. Stat. 101.111(1)).",
-    "form_or_statute": "Fla. Stat. 101.111: a written oath on the statutory form, naming the challenged person and the reasons, filed with the clerk or inspector at the polls, or in advance with the supervisor of elections. The challenged voter casts a provisional ballot.",
+    "who": "Fla. Stat. 101.111(1)(a): 'Any registered elector or poll watcher of a county may challenge the right of a person to vote in that county.'",
+    "form_or_statute": "Fla. Stat. 101.111(1)(a): the challenge 'must be in writing and contain the following oath', delivered to the clerk or inspector. The statutory oath: 'I have reason to believe that ___ is attempting to vote illegally and the reasons for my belief are set forth herein'. The challenged voter casts a provisional ballot (101.111(1)(b)1.). This challenges a vote at one election. It does not remove a registration; only the supervisor removes, under 98.075(7).",
     "form_url": null,
     "one_per_affidavit": true,
-    "deadlines": "An advance challenge may be filed with the supervisor no sooner than 30 days before the election (Fla. Stat. 101.111(1)(b)). The challenge is to the person's right to vote at that election, not a registration removal.",
+    "deadlines": "At the polls, or 'filed in advance with the supervisor of elections no sooner than 30 days before an election' (101.111(1)(c)). For November 3, 2026, advance filing opened October 4, 2026. The statute sets no last day before the election. The federal 90-day window has been open since August 5, 2026.",
     "deadline_days_before_election": null,
-    "evidence_standard": "The challenger swears that the person is attempting to vote illegally and gives the reasons (Fla. Stat. 101.111(1)(a)).",
-    "juryroll_lead_sufficient": null,
-    "false_statement_penalty": "A frivolous challenge is a first-degree misdemeanor (Fla. Stat. 101.111(3)). The oath is made under penalty of perjury.",
-    "source_url": "https://flsenate.gov/Laws/Statutes/2026/101.111",
-    "verified_on": "2026-10-07"
+    "evidence_standard": "The challenger swears to 'reason to believe' that the person 'is attempting to vote illegally' and states the reasons (101.111(1)(a)). For removal, the supervisor decides on 'a preponderance of the evidence' (98.075(7)(b)1.).",
+    "juryroll_lead_sufficient": false,
+    "false_statement_penalty": "Fla. Stat. 104.011(1): 'A person who willfully swears or affirms falsely to any oath or affirmation, in connection with or arising out of voting or elections commits a felony of the third degree'. Fla. Stat. 101.111(2): a 'frivolous challenge' is 'a misdemeanor of the first degree'; each one 'constitutes a separate offense'; no liability 'for any action taken in good faith'.",
+    "source_url": "https://www.flsenate.gov/Laws/Statutes/2026/101.111",
+    "verified_on": "2026-10-07",
+    "sources": [
+      {
+        "cite": "Fla. Stat. 104.011 (false swearing, third-degree felony)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/104.011",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      },
+      {
+        "cite": "Fla. Stat. 98.0755 (voter's appeal of a supervisor's ineligibility determination to circuit court; not a private challenge)",
+        "url": "https://www.flsenate.gov/Laws/Statutes/2026/98.0755",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
+      }
+    ]
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
-    "source_url": "https://flsenate.gov/Laws/Statutes/2026/101.111",
+    "source_url": "https://media.ca11.uscourts.gov/opinions/pub/files/201215738.op2.pdf",
     "verified_on": "2026-10-07"
   },
   "referral_targets": {
     "county_board": {
       "name": "County Supervisors of Elections (Division of Elections directory)",
       "url": "https://dos.fl.gov/elections/contacts/supervisor-of-elections/",
-      "verified_on": "2026-10-07"
+      "verified_on": "2026-10-07",
+      "note": "Under Arcia, a systematic program to remove voters must finish 90 days before a federal election. Removals based on individualized information may continue."
     },
     "state_election_office": {
       "name": "Florida Department of State - Division of Elections",
       "url": "https://dos.fl.gov/elections/",
-      "verified_on": "2026-10-07"
+      "verified_on": "2026-10-07",
+      "note": "Under Arcia, a systematic program to remove voters must finish 90 days before a federal election. Removals based on individualized information may continue. The Office of Election Crimes and Security in the Department receives 'notices and reports generated by government officials or any other person regarding alleged occurrences of election law violations' (Fla. Stat. 97.022(1)(a)). Complaint page: https://dos.fl.gov/elections/contacts/elections-fraud-complaint/"
     },
     "ag": {
       "name": "Florida Attorney General",
@@ -101,22 +189,42 @@
       {
         "name": "Division of Elections - Elections Fraud Complaint",
         "url": "https://dos.fl.gov/elections/contacts/elections-fraud-complaint/",
-        "verified_on": "2026-10-07"
+        "verified_on": "2026-10-07",
+        "note": "Part of the Department of State, the chief state election office (Fla. Stat. 97.012, 97.022(5))."
       }
     ]
+  },
+  "audit_path": {
+    "statute": "Fla. Stat. 98.075(8); Fla. Stat. 119.07(1); 52 U.S.C. 20507(i)",
+    "what_you_can_request": "Ask the Department of State or the county supervisor for the supervisor's twice-yearly list-maintenance certification. It must include 'the number of persons to whom notices were sent', responses, hearings, 'and the number of persons removed from the statewide voter registration system and the reasons for such removals' (98.075(8)(a)). Ask for counts and outcomes only. Do not ask for names.",
+    "counts_only": true,
+    "source_url": "https://www.flsenate.gov/Laws/Statutes/2025/98.075",
+    "verified_on": "2026-10-07",
+    "note": "Due July 31 and January 31 each year. The Office of Election Crimes and Security reports by January 15 each year the number of complaints received and referred (97.022(7)). The scope of 20507(i) for jury-derived records is contested. Approved by Optimus 2026-10-07."
   },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
     "allow_named_export": false,
     "show_challenge_guidance": false,
-    "basis": "Jury non-qualification records were not shown to be public (null), so the app treats them as confidential and shows counts only. The voter extract is public. A private challenge exists (Fla. Stat. 101.111) but challenge guidance stays off while the jury list is not available."
+    "basis": "jury_list.public is false: Florida keeps no non-citizen jury list. The DHSMV source list holds only citizens (40.011(2)), and no statute creates a record of citizenship disqualifications. AGO 2005-61 and Kever v. Gilliam are context only: advisory, names and addresses only, and earlier than 119.0712(2)(b). allow_jury_list false, aggregate_only true, allow_named_export false. show_challenge_guidance false: no jury list; a 101.111 challenge is to one vote, needs a sworn 'reason to believe', and a false oath is a third-degree felony (104.011(1)); juryroll_lead_sufficient is false. Gates unchanged (F/T/F/F)."
   },
   "notes": [
-    "jury_list.public is null: no Florida statute or court rule was found that makes juror non-citizenship excusal records public, and none was found that closes them. Default: confidential.",
-    "Fla. Stat. 101.111 is a challenge to a vote at one election (provisional ballot), not a removal from the rolls. It cannot start sooner than 30 days before the election.",
-    "Check: Florida 2026 HB 991 was reported to change jury-related voter list maintenance. The current Online Sunshine text of 98.075 and 98.093 was used. Re-verify after any 2026 changes take effect.",
-    "no_online_posting and penalty are null: no ban on re-posting the extract was found. The app treats null as barred.",
-    "state_extra_days is 0: 101.111 sets no window that starts before day 90."
+    "CHANGED 2026-10-07 (Optimus-approved): jury_list.public set to false (was null; no gate change). juryroll_lead_sufficient false. audit_path approved. Referral notes cite Arcia. Corrected: 101.111 citations (advance filing is (1)(c), frivolous challenge is (2)); 'under penalty of perjury' replaced by 104.011(1); official_pipeline separates law in force from ch. 2026-26 changes effective January 1, 2027. federal_source_url moved to govinfo.",
+    "DATED NOTE (2026-10-07): 98.093(9) (federal jury coordinators) and the 98.075(6)(a) 'credible and reliable' step take effect January 1, 2027 (ch. 2026-26, ss. 8, 9, 34; https://laws.flrules.org/2026/26). They are not current law. Re-check on or after January 1, 2027.",
+    "Jury list law. Jurors must be 'citizens of the United States' (40.01). DHSMV delivers only persons 'who are citizens of the United States' (40.011(2)). Others join by sworn affidavit that they are citizens (40.011(3)-(4)). 40.013 lists disqualifications and excuses; citizenship is not among them. 40.022 purges only the mentally incompetent, felons and the deceased. No section creates or reports a list of non-citizen disqualifications.",
+    "No state-court reporting duty. The clerk reports to the Department of State only jury-notice responses showing 'a change of address' (98.093(3)(b)). No 2023-2026 law adds a state-court non-citizen reporting duty: ch. 2023-120 (SB 7050) has no jury provision, and no 2025 law appears in the histories of 40.011, 40.013, 40.022, 98.075 or 98.093. Ch. 2026-26 (HB 991) adds only federal jury coordinators (98.093(9)), effective January 1, 2027.",
+    "Court records. Chapter 119 reaches an 'agency' (119.011). Records of the judicial branch, including the clerk 'when acting as an arm of the court', are governed by Rule 2.420 (2.420(b)(2)). 'The public has access to all records of the judicial branch of government, except as provided below' (2.420(a)). Confidential: records made confidential by Florida or federal law (2.420(c)(7)) and records 'presently deemed to be confidential' by statute or prior case law (2.420(c)(8)). Requests go in writing to the custodian; 'The reason for the request is not required to be disclosed' (2.420(m)(1)).",
+    "AGO 2005-61. The Attorney General found no rule 'that makes a jury list confidential' and concluded that jurors' names and addresses on a clerk's jury list are not exempt (citing Kever v. Gilliam, 886 So. 2d 263 (Fla. 1st DCA 2004), read only through the opinion). AG opinions are advisory. The opinion predates 119.0712(2)(b), which now says DHSMV personal information 'is confidential pursuant to' the DPPA. 322.20(9) still bars a court from letting the DHSMV list be copied. Neither source addresses a record of non-citizen disqualifications. Optimus 2026-10-07: jury_list.public is false; AGO 2005-61 and Kever are context only.",
+    "Match value. Even if a Florida jury list were open, the final juror candidate list holds 'names, with their addresses' (40.02(1)). Name plus address alone gives Weak pairs, which are never exported. The DHSMV list sent to courts can include birth dates (322.20(9)), but a court may not allow it to be copied.",
+    "Removal standard. Today (98.075 as in force until January 1, 2027): information from any governmental entity that a voter 'is not a United States citizen' triggers the supervisor's notice under 98.075(7): notice by mail within 7 days, 30 days to respond, a hearing on request, a decision on 'a preponderance of the evidence' (98.075(7)(b)1.), and an appeal to circuit court (98.0755). From January 1, 2027: the Department first makes 'an initial determination as to whether the information is credible and reliable' (98.075(6)(a), ch. 2026-26 s. 8). A private person is not a 'governmental entity', so a private lead does not start this process.",
+    "Arcia v. Fla. Sec'y of State, 772 F.3d 1335 (11th Cir. 2014): Florida's 2012 program 'did not rely upon individualized information or investigation' but 'used a mass computerized datamatching process', and violated the 90 Day Provision. The court said the provision 'would not bar a state from investigating potential non-citizens and removing them on the basis of individualized information, even within the 90-day window.' For November 3, 2026 the window opened August 5, 2026.",
+    "Voter file. Monthly extract, 'tab-delimited ASCII text', one file per county (layout, Updated May 2026). Field 22 'Birth Date' MM/DD/YYYY and field 23 'Registration Date' MM/DD/YYYY. For voters who requested a public records exemption, name, addresses and birth date are not included. The layout lists fields by position and does not mention a header row. No voter file was downloaded.",
+    "Challenges. 101.111 lets any registered elector or poll watcher of the county challenge a person's right to vote, at the polls or in advance 'no sooner than 30 days before an election'. The result is a provisional ballot, not a removal. juryroll_lead_sufficient is false: there is no Florida jury input, the oath needs 'reason to believe' about one person, a frivolous challenge is a misdemeanor, and a false oath is a felony (104.011(1)). Stricter than the box value (null); for Optimus.",
+    "Audit path. 98.075(8)(a): each supervisor certifies twice a year the number of notices, responses, hearings and removals 'and the reasons for such removals'. These are agency records open under 119.07(1). The Office of Election Crimes and Security reports by January 15 each year the number of complaints received and referred (97.022(7)). Federal counterpart: 52 U.S.C. 20507(i), scope contested.",
+    "Pending lawsuits (both pending; not read): UnidosUS v. Byrd, No. 1:26-cv-22257 (S.D. Fla., filed April 1, 2026), challenging HB 991's citizenship provisions (complaint: https://storage.courtlistener.com/recap/gov.uscourts.flsd.710842/gov.uscourts.flsd.710842.1.0.pdf). Black Voters Matter Fund v. Byrd, No. 1:26-cv-26047 (S.D. Fla., filed September 2, 2026), challenging HB 991 ss. 8-9 (98.075, 98.093) under the NVRA, per the plaintiffs' counsel's page. No rule value relies on either case. Pending bills: the 2026 session ended; none found.",
+    "Volunteer practice. Scott Presler asked legislators in every state, Florida first, to sponsor bills on 'non-juror lists' (https://x.com/ScottPresler/status/2080806509240287359, 2026-07-25). That is advocacy for new law, not a practice that conflicts with the rules file. No Florida volunteer use of jury records was found. Risk to flag: a request to a clerk for a 'non-citizen juror list' would ask for a record no statute requires.",
+    "VRA 11(b), 52 U.S.C. 10307(b): no intimidation of voters. JuryRoll never contacts voters.",
+    "no_online_posting, penalty and attestation_required are null: no bar on re-posting the extract, misuse penalty, or signed statement was found."
   ]
 }
