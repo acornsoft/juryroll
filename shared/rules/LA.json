@@ -5,10 +5,12 @@
   "verified_on": "2026-10-07",
   "jury_list": {
     "public": null,
-    "statute": null,
+    "statute": "C.Cr.P. art. 794.1(A)(1) (Act 284 of 2026, prospective only): 'The identity, name, address, telephone number, email address, image, or likeness of a juror shall not be a public record unless released pursuant to Paragraph B'. Paragraph B allows release on motion and a finding of good cause. Whether 'a juror' includes a person excused as a non-citizen is not stated. No statute opens or closes the R.S. 18:178(B) notices held by the Department of State or the registrars. Status unknown, so the strict default applies.",
     "holder": "Clerk of court (or the entity that handles jury notices).",
-    "fields_withheld": null,
-    "official_pipeline": "R.S. 18:178(B): by the 10th of each month the clerk of court notifies the Department of State of returned jury notices or questionnaires showing the person is not a U.S. citizen; the Department sends them to the parish registrar. R.S. 18:178(C): federal district courts do the same after each panel.",
+    "fields_withheld": [
+      "Identity, name, address, telephone number, email address, image or likeness of a juror: not a public record unless a court releases it on motion and good cause (C.Cr.P. art. 794.1; R.S. 44:4.1(B)(39); Act 284 of 2026, prospective)"
+    ],
+    "official_pipeline": "R.S. 18:178(B): by the 10th of each month the clerk of court notifies the Department of State in writing of returned jury notices or questionnaires showing the person cannot serve because he is not a U.S. citizen; the Department sends them to the parish registrar. R.S. 18:178(C): federal district courts do the same after each panel. 18:178 does not say what the registrar does next. R.S. 18:193(G) covers a registrant no longer qualified for a reason other than residence: notice by first-class mail; 21 days to appear and show cause; cancellation if the registrant does not appear.",
     "use_restriction": null,
     "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81504",
     "verified_on": "2026-10-07",
@@ -18,17 +20,29 @@
         "url": "https://www.legis.la.gov/Legis/Law.aspx?d=81504",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Act 284 of 2026 (HB 55): C.Cr.P. art. 794.1 (juror identity not a public record; fine up to $1,000 or 6 months, not applicable to a public body) and R.S. 44:4.1(B)(39)",
+        "url": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1479515",
+        "verified_on": "2026-10-07",
+        "kind": "session_law"
+      },
+      {
+        "cite": "La. R.S. 18:193(G) (registrar notice; 21 days to show cause; cancellation)",
+        "url": "https://www.legis.la.gov/Legis/Law.aspx?d=81519",
+        "verified_on": "2026-10-07",
+        "kind": "statute"
       }
     ]
   },
   "voter_file": {
-    "who_may_get": "A person who obtains the consent of the Secretary of State or the registrar and pays actual cost (R.S. 18:175(C)). Registrar records are public for inspection (R.S. 18:154(A)).",
+    "who_may_get": "A person who obtains the consent of the Secretary of State or the registrar and pays actual cost (R.S. 18:175(C)); lists are sold through the Secretary of State's voter list portal. Registrar records are public for inspection (R.S. 18:154(A)); copying needs a written request by 25 or more qualified voters of the parish, except listed cases (18:154(B)).",
     "permitted_uses": "No purpose restriction found in 18:175. Officials and agencies may not disclose SSN, license number, day and month of birth, mother's maiden name, or assistance status (R.S. 18:154(C)).",
     "use_restriction": null,
     "no_online_posting": null,
     "penalty": null,
     "dob_in_public_file": false,
-    "registration_date_in_public_file": null,
+    "registration_date_in_public_file": true,
     "attestation_required": null,
     "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81501",
     "verified_on": "2026-10-07",
@@ -38,6 +52,18 @@
         "url": "https://www.legis.la.gov/Legis/Law.aspx?d=81488",
         "verified_on": "2026-10-07",
         "kind": "statute"
+      },
+      {
+        "cite": "Secretary of State, Commercial Requests Record Format for Text File Voter Lists (fields include Personal_Age, Registration_VoterStatus, Registration_Date; no date of birth)",
+        "url": "https://www.sos.la.gov/media/gskba10t/record-format-sheet.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
+      },
+      {
+        "cite": "Secretary of State, Voter List Charges and Other Information (Rev. 07/2024): list content includes Age, Voter Status, Registration Date",
+        "url": "https://www.sos.la.gov/media/lyqhymkj/voter-list-charges-and-info.pdf",
+        "verified_on": "2026-10-07",
+        "kind": "official_page"
       }
     ]
   },
@@ -50,7 +76,7 @@
     "deadlines": null,
     "deadline_days_before_election": null,
     "evidence_standard": null,
-    "juryroll_lead_sufficient": null,
+    "juryroll_lead_sufficient": false,
     "false_statement_penalty": null,
     "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81646",
     "verified_on": "2026-10-07",
@@ -65,7 +91,7 @@
   },
   "blackout": {
     "federal_90_day": true,
-    "federal_source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title52-section20507&num=0&edition=prelim",
+    "federal_source_url": "https://www.govinfo.gov/link/uscode/52/20507?type=usc&year=mostrecent&link-type=html",
     "state_extra_days": 0,
     "state_windows": [],
     "source_url": "https://www.legis.la.gov/Legis/Law.aspx?d=81519",
@@ -90,6 +116,14 @@
     },
     "other": []
   },
+  "audit_path": {
+    "statute": "R.S. 44:31 (Public Records Law) and 52 U.S.C. 20507(i) (NVRA public inspection of list-maintenance records)",
+    "what_you_can_request": "Counts only: per parish and per month, the number of R.S. 18:178(B) jury non-citizen notices the Department of State received from clerks and sent to the registrar; the number of R.S. 18:193(G) notices the registrar mailed on that ground; and the number of cancellations. Also read the Secretary of State's annual report under R.S. 18:18(A)(4), which must give the number of registrants challenged and cancelled as non-citizens (R.S. 18:49.2(E), Act 6 of 2026).",
+    "counts_only": true,
+    "source_url": "https://legis.la.gov/Legis/Law.aspx?d=99688",
+    "verified_on": "2026-10-07",
+    "note": "Do not ask for names. Registrar notice lists under 18:193(F) and (G)(4) name people; JuryRoll never asks for them, and drops any canceled row before matching (REQ-NOTE 27)."
+  },
   "gates": {
     "allow_jury_list": false,
     "aggregate_only": true,
@@ -98,7 +132,14 @@
     "basis": "Jury non-citizen notices go to the Department of State (R.S. 18:178); public status unknown (null). No current private pre-election challenge was found. Strict gates: counts only."
   },
   "notes": [
+    "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). Added C.Cr.P. art. 794.1 (Act 284 of 2026) and fields_withheld; 18:193(G) next step; registration_date_in_public_file true (SOS record format); juryroll_lead_sufficient false; audit_path; federal_source_url moved to govinfo. use_restriction stays null: the 794.1(C) penalty covers juror identity, and it is not clear that it covers the 18:178(B) notices.",
     "Duplication: the clerk-to-Department pipeline runs monthly (R.S. 18:178(B)).",
-    "Acts 2024, No. 2 repealed parts of R.S. 18:193 effective March 31, 2025. Text read on verified_on."
+    "Acts 2024, No. 2 repealed parts of R.S. 18:193 effective March 31, 2025. Text read on verified_on.",
+    "registration_date_in_public_file changed from null to true: the Secretary of State's purchased list has Registration_Date. This changes app behavior: date comparison runs instead of 'cannot compare'. No gate changes. The list has age, not date of birth; day and month of birth may not be disclosed (18:154(C)(1)(d)), so dob_in_public_file stays false.",
+    "Act 6 of 2026 (HB 691, R.S. 18:49.2, effective Aug. 1, 2026): annual SAVE check before each federal general election; verified matches go to the registrar for a challenge under 18:193; the annual report gives counts of challenges and non-citizen cancellations.",
+    "18:193(F) and (G)(4): lists of persons sent registrar notices, and whether each responded, are open to inspection and copying under 18:154. These are official actions, not leads. No published canceled-voter file with a jury or non-citizen reason code was found.",
+    "Secondary, not relied on: news reports (March 2026) say a 2025-2026 SAVE review found 403 registered non-citizens out of 2.96 million voters, 83 of whom had voted.",
+    "juryroll_lead_sufficient is false: no private pre-election challenge exists. This is the strict value; app behavior does not change from null.",
+    "Volunteer conflict (flagged 2026-10-07): public X posts (July 15, July 20 and August 3, 2026) urge Orleans Parish volunteers to email a request for the parish 'non-juror list' and call it 'a list of illegals who are potentially voting'. This rules file refuses any LA jury list (allow_jury_list false). Art. 794.1 may close juror identity, and no statute opens the 18:178(B) notices. Do not loosen the gate; Optimus to decide."
   ]
 }

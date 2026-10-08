@@ -1,1 +1,1 @@
-| LA | Not known, so the app treats it as no | Only at the polls (R.S. 18:565); not supported | Counts only |
+| LA | Not known, so the app treats it as no. Clerks send monthly non-citizen jury notices to the Department of State (R.S. 18:178(B)) | Only at the polls (R.S. 18:565); not supported | Counts only. See 6.11 |
