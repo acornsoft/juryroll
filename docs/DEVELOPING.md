@@ -30,7 +30,7 @@ The portal's Manage deployment token shows the same value. Put it in `.env.local
 npm run deploy
 ```
 
-The script stops if that variable is missing, and it does not print the token. It runs `python3 shared/rules/validate.py`, then `npm ci`, `npm test`, and `npm run build`, then deploys `app/dist`.
+The script stops if that variable is missing, and it does not print the token. It does not pass the token with `--deployment-token` either, because a command-line argument shows in the process list. The SWA CLI reads `SWA_CLI_DEPLOYMENT_TOKEN` from the environment. It runs `python3 shared/rules/validate.py`, then `npm ci`, `npm test`, and `npm run build`, then deploys `app/dist`.
 
 ## What not to edit
 
