@@ -740,6 +740,7 @@ export function App() {
     namedExport: Boolean(gates?.allow_named_export),
   };
   const nextEnabled = stepById(activeStep).complete(facts) && !stepById(activeStep).blocked(facts);
+  const section = route.name === 'state' ? 'states' : route.name;
   const bannerState = route.name === 'state'
     ? (STATES.find((item) => item[0] === route.code)?.[1] ?? route.code)
     : '';
