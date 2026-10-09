@@ -1409,7 +1409,7 @@ function readAuditDownload(file) {
   // The population card shows the county's share of the state population (Census), not a share of juror rows.
   const pageText = (page) => page.evaluate(() => {
     const clone = document.body.cloneNode(true);
-    clone.querySelectorAll('#populationCardText').forEach((node) => node.remove());
+    clone.querySelectorAll('#populationCardText, script, style, noscript, template').forEach((node) => node.remove());
     clone.querySelectorAll('details').forEach((node) => node.setAttribute('open', ''));
     return clone.textContent || '';
   });
