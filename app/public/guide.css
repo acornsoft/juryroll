@@ -18,6 +18,26 @@ body {
   color: #5c6161;
   font: 16px/1.6 Roboto, sans-serif;
 }
+.demo-banner {
+  margin: 0;
+  padding: 10px 16px;
+  background: #04072E;
+  color: #fff;
+  text-align: center;
+  font-family: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
+  font-weight: 600;
+  line-height: 1.35;
+  border-bottom: 3px solid #DD131A;
+}
+.demo-banner a { color: #fff; font-weight: 700; }
+.guide-disclaimer {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  font-family: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
 main { max-width: 46rem; margin: 0 auto; padding: 32px 20px 64px; }
 h1, h2, h3 {
   color: #04072E;

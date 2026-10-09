@@ -3,7 +3,7 @@ import { StepPanel, Stepper } from '../components/Stepper.tsx';
 import { COUNTIES } from '../../../shared/src/counties.ts';
 import { buildGuide, guideFacts } from '../lib/guide.ts';
 import type { StepId } from '../lib/flow.ts';
-import { NC_LIST_NOTE, PA_NAMES_ONLY_NOTE } from '../../../shared/src/content/copy.ts';
+import { DEMO_SIGN_NOTE, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE } from '../../../shared/src/content/copy.ts';
 import { referralTargets, resolveRules, uiGates, type RulesFile } from '../../../shared/src/policy/gates.ts';
 import { refusalBlock } from '../../../shared/src/policy/refusal.ts';
 import { federalWindow, localISO, nextFederalElection } from '../../../shared/src/policy/windows.ts';
@@ -131,6 +131,7 @@ export function StatePage({ code }: { code: string }) {
           </StepPanel>
           <StepPanel id="sign">
             <p>You sign the same five statements on every state, then enter your initials. The statements are the use rules, not a substitute for the statute.</p>
+            <p>{DEMO_SIGN_NOTE}</p>
           </StepPanel>
           <StepPanel id="files">
             {named ? (

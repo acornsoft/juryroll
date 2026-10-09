@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Start page plays the JuryRoll explainer from a file on this site.
+- Every page says JuryRoll is a demonstration tool still in development and is not a government website. The disclaimer page states the limits of the tool.
+
 ## 2.0.0 - 2026-10-07
 
 - Field-ready browser app for volunteers. The version 1 matcher and tier rules are unchanged.
