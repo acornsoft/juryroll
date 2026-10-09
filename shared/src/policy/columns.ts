@@ -34,3 +34,12 @@ export function guessExtra(kind: 'juror' | 'voter', headers: string[]): ExtraCol
     statusDate: guess(headers, STATUS_DATE),
   };
 }
+
+/**
+ * LOGIC-CHANGES L.2: a juror file is names-only when no column maps to a date of birth (or birth year)
+ * or to an address (street or house number). A ZIP code alone cannot lift a pair above Weak.
+ */
+export function namesOnly(map: Record<string, number>): boolean {
+  const has = (field: string) => (map[field] ?? -1) >= 0;
+  return !has('dob') && !has('street') && !has('house_no');
+}

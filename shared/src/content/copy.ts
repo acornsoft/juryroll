@@ -29,6 +29,12 @@ export const PA_NAMES_ONLY_NOTE = 'Pennsylvania county lists usually hold only n
 
 export const NC_LIST_NOTE = 'The North Carolina State Board\'s posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.';
 
+// LOGIC-CHANGES L.2 (REQ-NOTE 68). Shown before the run when the juror file has no DOB, birth-year or address column.
+export const NAMES_ONLY_NOTICE = 'This list has names only. Many people share a name. A name-only match is not a lead and is never exported. If you copied the list by hand, check it against the original.';
+
+// LOGIC-CHANGES L.2: the Weak count's label on the counts screen. No screen, download or letter shows it as a share of the juror list.
+export const SAME_NAME_LABEL = 'Same-name pairs (not leads)';
+
 export const ATTEST_LINES = [
   'I got each file from an official source, and I obey its use rules.',
   'I will send leads only to the offices in the referral list.',

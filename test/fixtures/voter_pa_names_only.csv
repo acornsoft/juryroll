@@ -1,0 +1,4 @@
+voter_id,name_last,name_first,date_of_birth,res_street,res_zip,status,data_note,registration_date,county
+V31,Sample Juror 31,Pat,1901-01-02,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2010-01-01,Adams
+V31B,Sample Juror 31,Pat,1901-09-09,000 Sample Lane,00000,ACTIVE,FICTIONAL SAMPLE DATA,2012-01-01,Adams
+V32,Sample Juror 32,Example,1901-03-04,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2011-01-01,Adams

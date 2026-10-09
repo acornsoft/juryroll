@@ -17,8 +17,9 @@ export type CountyRun = {
 };
 
 export function summaryLine(row: CountyRun): string {
-  const matches = row.strong + row.probable + row.weak;
-  return `${row.countyName}, ${row.stateName}: ${row.entered} non-juror records entered, ${row.nonCitizen} coded non-citizen, ${matches} potential matches on the voter roll (Strong ${row.strong} / Probable ${row.probable} / Weak ${row.weak}), ${row.excluded} excluded, ${row.cannotCompare} cannot compare. Language ${row.language} excluded. Non-resident ${row.nonResident} excluded.`;
+  // LOGIC-CHANGES L.2: same-name (Weak) pairs are not matches and are never shown as a share of the juror list.
+  const matches = row.strong + row.probable;
+  return `${row.countyName}, ${row.stateName}: ${row.entered} non-juror records entered, ${row.nonCitizen} coded non-citizen, ${matches} potential matches on the voter roll (Strong ${row.strong} / Probable ${row.probable}), ${row.weak} same-name pairs (not leads), ${row.excluded} excluded, ${row.cannotCompare} cannot compare. Language ${row.language} excluded. Non-resident ${row.nonResident} excluded.`;
 }
 
 export function summaryCopy(rows: readonly CountyRun[]): string {

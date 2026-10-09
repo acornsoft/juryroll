@@ -31,14 +31,14 @@ import jurorTemplateUrl from '../../shared/templates/juror-template.csv?url';
 import voterTemplateUrl from '../../shared/templates/voter-template.csv?url';
 import jurorTemplateXlsxUrl from '../../shared/templates/juror-template.xlsx?url';
 import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url';
-import { ATTEST_LINES, CAVEATS, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
+import { ATTEST_LINES, CAVEATS, NAMES_ONLY_NOTICE, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, SAME_NAME_LABEL, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
 import { COUNTIES } from '../../shared/src/counties.ts';
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, auditLogFile, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
-import type { ExtraColumns } from '../../shared/src/policy/columns.ts';
+import { namesOnly, type ExtraColumns } from '../../shared/src/policy/columns.ts';
 import { exportableRows, flagLabel, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
@@ -799,6 +799,7 @@ export function App() {
   const weakRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'weak') : [];
   const removedRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'removed') : [];
   const columnNote = [juror?.note, voter?.note].filter(Boolean).join(' ');
+  const jurorNamesOnly = Boolean(juror && namesOnly(juror.map));
   const voterHistory = voter
     ? historyByVoterId(voter.text, voter.delim, voter.hasHeader, voter.headers, voter.map.voter_id ?? -1)
     : {};
@@ -1049,6 +1050,7 @@ export function App() {
                   </p>
                   {(juror || voter) && <p className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</p>}
                   {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
+                  {jurorNamesOnly && <p className="banner" id="namesOnlyNotice" role="status">{NAMES_ONLY_NOTICE}</p>}
                   <p className="local-note"><b>Runs only in your browser.</b> Nothing is uploaded.</p>
                 </fieldset>
                 <div id="typePath">
@@ -1115,6 +1117,7 @@ export function App() {
                   <fieldset className="panel" id="step3" disabled={!ready}>
                     <legend>Map reason codes</legend>
                     <ReasonMap rows={reasonRows} value={reasonMap} onChange={onReasonCategory} onPreset={onPaPreset} />
+                    {jurorNamesOnly && <p className="banner" id="namesOnlyNoticeRun" role="status">{NAMES_ONLY_NOTICE}</p>}
                     <p className="row">
                       <button id="runBtn" className="btn-primary" type="button" disabled={!canRun} onClick={() => { void onRun(); }}>Run the match</button>
                       <span id="runMsg" className="small">{policy ? 'Match finished. Review the to-explore pile.' : 'The match stays on this computer.'}</span>
@@ -1135,12 +1138,12 @@ export function App() {
                 {rules?.state === 'NC' && <p id="ncNamesNote">{NC_LIST_NOTE}</p>}
                 {policy && coreResult && (
                   <>
-                    <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, Weak {coreResult.counts.Weak}.</p>
+                    <p id="matcherCounts">Matcher before state rules: Strong {coreResult.counts.Strong}, Probable {coreResult.counts.Probable}, {SAME_NAME_LABEL.toLowerCase()} {coreResult.counts.Weak}.</p>
                     {voter && voter.cancelledSkipped > 0 && <p className="note" id="cancelledSummary">{cancelledSummary(voter.cancelledSkipped, voter.cancelledJury)}</p>}
                     <div className="cards">
                       <div id="countStrong" className="card"><span className="n">{policy.counts.Strong}</span> Strong</div>
                       <div id="countProbable" className="card"><span className="n">{policy.counts.Probable}</span> Probable</div>
-                      <div id="countWeak" className="card"><span className="n">{policy.counts.Weak}</span> Weak</div>
+                      <div id="countWeak" className="card"><span className="n">{policy.counts.Weak}</span> {SAME_NAME_LABEL}</div>
                     </div>
                     {policy.capBadge && <p className="note" id="tierCapBadge">{policy.capBadge}</p>}
                     <p id="excludedLine"><b>{policy.excludedLine}</b></p>
@@ -1182,8 +1185,8 @@ export function App() {
                           </div>
                         )}
                         <details className="sen-acc" id="weakDetails">
-                          <summary><i className="icon-star" aria-hidden="true" /> Weak matches ({policy.counts.Weak})</summary>
-                          <label className="inline"><input id="showWeak" type="checkbox" checked={showWeak} onChange={(event) => setShowWeak(event.target.checked)} /> Show weak matches (name only)</label>
+                          <summary><i className="icon-star" aria-hidden="true" /> {SAME_NAME_LABEL}: {policy.counts.Weak}</summary>
+                          <label className="inline"><input id="showWeak" type="checkbox" checked={showWeak} onChange={(event) => setShowWeak(event.target.checked)} /> Show same-name pairs (not leads)</label>
                           {showWeak && <p className="warn" id="weakWarn">{WEAK_CAUTION}</p>}
                           {showWeak && <LeadPile tier="Weak" rows={weakRows} history={voterHistory} />}
                           {showWeak && <ResultsTable rows={weakRows} />}
