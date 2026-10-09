@@ -19,7 +19,7 @@ var JuryRollCore = (function () {
     fullname: { label:'Full name (only if no first/last columns)', pats:['name','fullname','jurorname','votername','personname'], exact:true },
     dob:      { label:'Date of birth (or birth year)', pats:['dob','dateofbirth','birthdate','birthdt','birthday','dobdate','birthyear','yearofbirth','yob'] },
     house_no: { label:'House number (only if separate)', pats:['housenumber','houseno','streetnumber','housenum','resnumber','addressnumber','resstreetnum'] },
-    street:   { label:'Street address', pats:['streetaddress','address','resstreet','residentialaddress','resaddress','address1','addressline1','residenceaddress','street','streetname','resaddr','addr'] },
+    street:   { label:'Street address', pats:['streetaddress','address','resstreet','residentialaddress','resaddress','address1','addressline1','residenceaddress','street','streetname','resaddr','addr','adrress1'] },
     zip:      { label:'ZIP code', pats:['zip','zipcode','postalcode','reszip','zip5','postcode','zipcd','reszipcode'] },
     reason:   { label:'Disqualification reason', pats:['disqualificationreason','reason','disqualreason','disqualifyreason','excusereason','reasoncode','disqualification','exemptionreason','disqualified','status'] }
   };

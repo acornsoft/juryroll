@@ -7,7 +7,7 @@ import { ATTEST_LINES } from '../shared/src/content/copy.ts';
 import { CANNOT_COMPARE_PHRASE, EXCLUDE_PHRASE, SAVE_EXPORT_LINE, SAVE_LINE, UI_DATE_STRICTNESS, applyDateRule, type PolicyResult } from '../shared/src/policy/apply.ts';
 import { appendEntry, auditLogFile, canonicalJson, verifyChain } from '../shared/src/policy/audit.ts';
 import { screenColumns } from '../shared/src/policy/blocked.ts';
-import { guessExtra } from '../shared/src/policy/columns.ts';
+import { guessExtra, resultDateOnly, safeDeclIndex, sanitizeExtra, unusedColumns, MARKER_HEADERS } from '../shared/src/policy/columns.ts';
 import { exportCell, toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
 import { allCancelledRefusal, filterCancelledVoters } from '../shared/src/policy/cancelled.ts';
@@ -892,5 +892,53 @@ assert.strictEqual(classifyReason('=Non-citizen', 'NC').display, 'Non-citizen');
 assert.strictEqual(classifyReason('=Non-citizen', 'NC').autoNonCitizen, false);
 assert.strictEqual(formulaRun.notes.unrecognizedReasonCount, 0);
 pass('GAP-FORMULA-REASON');
+
+// LOGIC-CHANGES L.1 (REQ-NOTE 67): NC header variants and "Result Date/Time".
+const fieldHeader = (t: LoadedTable, field: string) => (t.map[field] >= 0 ? t.headers[t.map[field]] : null);
+const variantsJ = table('juror', fs.readFileSync(path.join(root, 'test/fixtures/headers/juror_nc_header_variants.csv'), 'utf8'));
+assert.deepStrictEqual(variantsJ.headers, ['First Name', 'Last Name', 'Middle Name', 'Adrress 1', 'Address 2', 'City', 'Date of Birth', 'Date of Excusal']);
+assert.strictEqual(fieldHeader(variantsJ, 'first'), 'First Name');
+assert.strictEqual(fieldHeader(variantsJ, 'last'), 'Last Name');
+assert.strictEqual(fieldHeader(variantsJ, 'middle'), 'Middle Name');
+assert.strictEqual(fieldHeader(variantsJ, 'street'), 'Adrress 1');
+assert.strictEqual(fieldHeader(variantsJ, 'dob'), 'Date of Birth');
+assert.strictEqual(variantsJ.headers[variantsJ.extra.declDate], 'Date of Excusal');
+assert.strictEqual(resultDateOnly(variantsJ.headers, variantsJ.extra), null);
+assert.deepStrictEqual(unusedColumns(variantsJ.headers, variantsJ.map, variantsJ.extra, MARKER_HEADERS), ['Address 2', 'City']);
+const variantsV = table('voter', fs.readFileSync(path.join(root, 'test/fixtures/voter_nc_header_variants.csv'), 'utf8'));
+const variantsRun = runMatch(variantsJ, variantsV, shipped.NC);
+assert.strictEqual(variantsRun.coreResult.counts.Strong, 2);
+assert.strictEqual(variantsRun.policy.cannotCompareCount, 0);
+assert.strictEqual(variantsRun.policy.excludedAfterCount, 0);
+pass('AT-56-mapping');
+
+const resultJ = table('juror', fs.readFileSync(path.join(root, 'test/fixtures/headers/juror_nc_result_date.csv'), 'utf8'));
+assert.strictEqual(resultJ.extra.declDate, -1, 'Result Date/Time is never guessed as the declaration date');
+assert.strictEqual(resultDateOnly(resultJ.headers, resultJ.extra), 'Result Date/Time');
+assert.strictEqual(fieldHeader(resultJ, 'first'), 'First Name');
+assert.strictEqual(fieldHeader(resultJ, 'middle'), 'Middle Name');
+assert.strictEqual(fieldHeader(resultJ, 'last'), 'Last Name');
+assert.strictEqual(fieldHeader(resultJ, 'street'), 'Address');
+assert.strictEqual(fieldHeader(resultJ, 'dob'), 'DOB');
+const resultIdx = resultJ.headers.indexOf('Result Date/Time');
+assert.strictEqual(safeDeclIndex(resultJ.headers, resultIdx), -1);
+assert.strictEqual(sanitizeExtra('juror', resultJ.headers, { ...resultJ.extra, declDate: resultIdx }).declDate, -1);
+assert.strictEqual(guessExtra('juror', ['Last', 'First', 'Result Date/Time', 'Date Of Excusal']).declDate, 3);
+assert.strictEqual(resultDateOnly(['Last', 'First', 'Result Date/Time', 'Date Of Excusal'], guessExtra('juror', ['Last', 'First', 'Result Date/Time', 'Date Of Excusal'])), null);
+const resultV = table('voter', fs.readFileSync(path.join(root, 'test/fixtures/voter_nc_result_date.csv'), 'utf8'));
+// A manual choice of Result Date/Time is dropped by runMatch too.
+for (const juror of [resultJ, { ...resultJ, extra: { ...resultJ.extra, declDate: resultIdx } }]) {
+  const run = runMatch(juror, resultV, shipped.NC);
+  assert.strictEqual(run.coreResult.counts.Strong, 3, 'last and middle names are not swapped');
+  assert.strictEqual(run.policy.cannotCompareCount, 3);
+  assert.strictEqual(run.policy.cannotCompareLine, `3 ${CANNOT_COMPARE_PHRASE}`);
+  assert.strictEqual(run.policy.counts.Strong + run.policy.counts.Probable + run.policy.counts.Weak, 0);
+  assertBuckets(run.policy, 3);
+  const csv = toCSV({ allowNamedExport: true, result: run.policy, rules: shipped.NC, targets: referralTargets(shipped.NC, shipped.DEFAULT), county: 'Wake', dateStr: '2026-10-09' });
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(csv));
+  for (const name of ['Sample Juror 21', 'Sample Juror 22', 'Sample Juror 23']) assert.ok(!csv.includes(name));
+}
+assert.strictEqual(shipped.NC.gates.allow_jury_list, true);
+pass('AT-57-policy');
 
 console.log('ALL POLICY TESTS PASSED');
