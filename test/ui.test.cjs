@@ -1442,8 +1442,8 @@ function readAuditDownload(file) {
   await openStep(notice.page, 'sign');
   assert.match(await notice.page.locator('#demoSignNote').innerText(), /demonstration tool still in development/);
   assert.match(await notice.page.locator('#demoSignNote').innerText(), /not a government website/i);
-  const rail = await notice.page.locator('#stepper').boundingBox();
-  assert.ok(rail && rail.y < 800, `stepper starts at ${rail && rail.y}`);
+  const noticeRail = await notice.page.locator('#stepper').boundingBox();
+  assert.ok(noticeRail && noticeRail.y < 800, `stepper starts at ${noticeRail && noticeRail.y}`);
   assert.deepStrictEqual(notice.requests, [], 'disclaimer page network: ' + notice.requests.join('; '));
   assert.deepStrictEqual(notice.errors, [], 'disclaimer page errors: ' + notice.errors.join('; '));
   await notice.context.close();
