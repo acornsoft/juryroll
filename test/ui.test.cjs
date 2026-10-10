@@ -411,7 +411,7 @@ function readAuditDownload(file) {
   const counts = await main.page.evaluate(() => ['Strong', 'Probable', 'Weak'].map((tier) => Number(document.querySelector(`#count${tier} .n`).textContent)));
   console.log('UI tier counts [Strong, Probable, Weak]:', counts);
   assert.deepStrictEqual(counts, [0, 3, 2]);
-  assert.ok((await main.page.locator('#matcherCounts').innerText()).includes('Strong 3, Probable 4, Weak 2'));
+  assert.ok((await main.page.locator('#matcherCounts').innerText()).includes('Strong 3, Probable 4, same-name pairs (not leads) 2'));
   assert.ok((await main.page.locator('#tierCapBadge').innerText()).includes('North Carolina'));
   assert.ok((await main.page.locator('#excludedLine').innerText()).includes('2 matches excluded: registered after declaration'));
   assert.ok((await main.page.locator('#cannotCompareLine').innerText()).includes('2 matches cannot compare: no registration date'));
@@ -421,7 +421,7 @@ function readAuditDownload(file) {
   const summary = await main.page.locator('#countySummary').innerText();
   assert.match(summary, /Wake County, North Carolina:/);
   assert.match(summary, /coded non-citizen/);
-  assert.match(summary, /Strong 0 \/ Probable 3 \/ Weak 2/);
+  assert.match(summary, /3 potential matches on the voter roll \(Strong 0 \/ Probable 3\), 2 same-name pairs \(not leads\)/);
   assert.match(summary, /Language 0 excluded/);
   assert.match(summary, /Non-resident 0 excluded/);
   assert.ok(!summary.includes('Sample Juror 01'));
@@ -611,7 +611,7 @@ function readAuditDownload(file) {
   await xlsx.page.waitForSelector('#matcherCounts');
   const xlsxCounts = await xlsx.page.evaluate(() => ['Strong', 'Probable', 'Weak'].map((tier) => Number(document.querySelector(`#count${tier} .n`).textContent)));
   assert.deepStrictEqual(xlsxCounts, [0, 3, 2]);
-  assert.ok((await xlsx.page.locator('#matcherCounts').innerText()).includes('Strong 3, Probable 4, Weak 2'));
+  assert.ok((await xlsx.page.locator('#matcherCounts').innerText()).includes('Strong 3, Probable 4, same-name pairs (not leads) 2'));
   assert.deepStrictEqual(xlsx.errors, [], 'xlsx page errors: ' + xlsx.errors.join('; '));
   console.log('XLSX UI counts [Strong, Probable, Weak]:', xlsxCounts);
   pass('AT-XLSX');
@@ -765,6 +765,88 @@ function readAuditDownload(file) {
   assert.ok(!(await blankDecl.page.locator('#results').innerText()).includes('Sample Juror 12'));
   pass('AT-40');
   await blankDecl.context.close();
+
+  // LOGIC-CHANGES L.1 (REQ-NOTE 67): NC header variants and "Result Date/Time".
+  const headerFixtures = path.join(fixtures, 'headers');
+  const resultDateMessage = "This file's date column is 'Result Date/Time'. The State Board does not say what it means. JuryRoll will not use it as the excusal date.";
+  async function loadNcPair(page, jurorPath, voterName) {
+    await selectState(page, 'NC');
+    await attest(page);
+    await pickCounty(page);
+    await openStep(page, 'files');
+    await page.setInputFiles('#fileJuror', jurorPath);
+    await page.waitForSelector('#infoJuror');
+    await page.setInputFiles('#fileVoter', path.join(fixtures, voterName));
+    await page.waitForSelector('#infoVoter');
+  }
+  async function mappedHeader(page, label) {
+    const select = page.locator(`#mapJuror select[aria-label="${label}"]`);
+    const value = await select.inputValue();
+    if (value === '-1') return null;
+    return (await select.locator(`option[value="${value}"]`).innerText()).trim();
+  }
+
+  const variants = await openPage(browser);
+  await loadNcPair(variants.page, path.join(headerFixtures, 'juror_nc_header_variants.csv'), 'voter_nc_header_variants.csv');
+  assert.strictEqual(await variants.page.locator('#resultDateNote').count(), 0);
+  assert.strictEqual(await variants.page.locator('#unusedJuror').innerText(), 'Columns JuryRoll does not use in this file: Address 2, City. Check that none of them is a name, date of birth, address, or excusal date.');
+  await openStep(variants.page, 'run');
+  assert.strictEqual(await mappedHeader(variants.page, 'First name'), 'First Name');
+  assert.strictEqual(await mappedHeader(variants.page, 'Last name'), 'Last Name');
+  assert.strictEqual(await mappedHeader(variants.page, 'Middle name / initial'), 'Middle Name');
+  assert.strictEqual(await mappedHeader(variants.page, 'Street address'), 'Adrress 1');
+  assert.strictEqual(await mappedHeader(variants.page, 'Date of birth (or birth year)'), 'Date of Birth');
+  assert.strictEqual(await mappedHeader(variants.page, 'Declaration date'), 'Date of Excusal');
+  await variants.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await variants.page.click('#runBtn');
+  await variants.page.waitForSelector('#cannotCompareLine');
+  assert.ok((await variants.page.locator('#matcherCounts').innerText()).includes('Strong 2'));
+  assert.ok((await variants.page.locator('#cannotCompareLine').innerText()).includes('0 matches cannot compare: no registration date'));
+  const variantsResults = await variants.page.locator('#results').innerText();
+  assert.ok(variantsResults.includes('Sample Juror 21') && variantsResults.includes('Sample Juror 22'));
+  assert.deepStrictEqual(variants.errors, [], 'AT-56 page errors: ' + variants.errors.join('; '));
+  pass('AT-56');
+  await variants.context.close();
+
+  const resultDate = await openPage(browser);
+  await loadNcPair(resultDate.page, path.join(headerFixtures, 'juror_nc_result_date.csv'), 'voter_nc_result_date.csv');
+  assert.strictEqual(await resultDate.page.locator('#resultDateNote').innerText(), resultDateMessage);
+  assert.strictEqual(await resultDate.page.locator('#unusedJuror').innerText(), 'Columns JuryRoll does not use in this file: City, Result Date/Time. Check that none of them is a name, date of birth, address, or excusal date.');
+  await resultDate.page.locator('#resultDateNote').scrollIntoViewIfNeeded();
+  await resultDate.page.screenshot({ path: path.join(shots, 'req67-result-date-note.png') });
+  await openStep(resultDate.page, 'run');
+  assert.strictEqual(await resultDate.page.locator('#resultDateNoteMap').innerText(), resultDateMessage);
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Declaration date'), null);
+  assert.strictEqual(await mappedHeader(resultDate.page, 'First name'), 'First Name');
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Middle name / initial'), 'Middle Name');
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Last name'), 'Last Name');
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Date of birth (or birth year)'), 'DOB');
+  const blockedOption = resultDate.page.locator('#mapJuror-declDate option', { hasText: 'Result Date/Time' });
+  assert.strictEqual(await blockedOption.count(), 1);
+  assert.strictEqual(await blockedOption.isDisabled(), true, 'Result Date/Time cannot be chosen by hand');
+  await resultDate.page.locator('#resultDateNoteMap').scrollIntoViewIfNeeded();
+  await resultDate.page.screenshot({ path: path.join(shots, 'req67-mapping.png') });
+  await resultDate.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await resultDate.page.click('#runBtn');
+  await resultDate.page.waitForSelector('#cannotCompareLine');
+  assert.ok((await resultDate.page.locator('#matcherCounts').innerText()).includes('Strong 3'), 'last and middle names are not swapped');
+  assert.ok((await resultDate.page.locator('#cannotCompareLine').innerText()).includes('3 matches cannot compare: no registration date'));
+  assert.strictEqual(await resultDate.page.locator('#results tbody tr').count(), 0);
+  await openStep(resultDate.page, 'export');
+  const [resultDateDownload] = await Promise.all([
+    resultDate.page.waitForEvent('download'),
+    resultDate.page.click('#exportBtn'),
+  ]);
+  const resultDatePath = path.join(shots, 'result-date.csv');
+  await resultDateDownload.saveAs(resultDatePath);
+  const resultDateCsv = fs.readFileSync(resultDatePath, 'utf8');
+  assert.ok(resultDateCsv.includes('3 matches cannot compare: no registration date'));
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(resultDateCsv), 'named export has zero rows');
+  for (const name of ['Sample Juror 21', 'Sample Juror 22', 'Sample Juror 23']) assert.ok(!resultDateCsv.includes(name), name);
+  assert.deepStrictEqual(resultDate.errors, [], 'AT-57 page errors: ' + resultDate.errors.join('; '));
+  assert.deepStrictEqual(resultDate.requests, [], 'AT-57 network: ' + resultDate.requests.join('; '));
+  pass('AT-57');
+  await resultDate.context.close();
 
   const dc = await openPage(browser);
   await selectState(dc.page, 'DC');
@@ -1447,6 +1529,129 @@ function readAuditDownload(file) {
   assert.deepStrictEqual(notice.requests, [], 'disclaimer page network: ' + notice.requests.join('; '));
   assert.deepStrictEqual(notice.errors, [], 'disclaimer page errors: ' + notice.errors.join('; '));
   await notice.context.close();
+
+  // LOGIC-CHANGES L.2 (REQ-NOTE 68): names-only notice, same-name label, and no match rate anywhere.
+  const namesOnlyNotice = 'This list has names only. Many people share a name. A name-only match is not a lead and is never exported. If you copied the list by hand, check it against the original.';
+  const sameNameLabel = 'Same-name pairs (not leads)';
+  const ratioRe = /%|\b1\s+in\s+\d+|\bmatch(?:ing)?\s+rate\b|\bper\s?cent\b/i;
+  // The population card shows the county's share of the state population (Census), not a share of juror rows.
+  const pageText = (page) => page.evaluate(() => {
+    const clone = document.body.cloneNode(true);
+    clone.querySelectorAll('#populationCardText, script, style, noscript, template').forEach((node) => node.remove());
+    clone.querySelectorAll('details').forEach((node) => node.setAttribute('open', ''));
+    return clone.textContent || '';
+  });
+  function assertNoRatio(text, label) {
+    const hit = text.match(ratioRe);
+    assert.ok(!hit, `${label} shows a ratio: ${hit && text.slice(Math.max(0, hit.index - 60), hit.index + 20)}`);
+  }
+  const req68Dir = path.join(shots, 'req68');
+  fs.mkdirSync(req68Dir, { recursive: true });
+
+  const paNames = await openPage(browser);
+  const paNamesBase = paNames.page.url().split('#')[0];
+  await paNames.page.goto(`${paNamesBase}#/run/pa`);
+  await paNames.page.waitForFunction(() => document.querySelector('#stateSel') && document.querySelector('#stateSel').value === 'PA');
+  await openStep(paNames.page, 'sign');
+  await attest(paNames.page);
+  await openStep(paNames.page, 'where');
+  await paNames.page.selectOption('#county', '42001');
+  await openStep(paNames.page, 'files');
+  await paNames.page.setInputFiles('#fileJuror', path.join(fixtures, 'juror_pa_names_only.csv'));
+  await paNames.page.waitForSelector('#infoJuror');
+  assert.strictEqual(await paNames.page.locator('#namesOnlyNotice').innerText(), namesOnlyNotice);
+  await paNames.page.locator('#namesOnlyNotice').scrollIntoViewIfNeeded();
+  await paNames.page.screenshot({ path: path.join(req68Dir, 'req68-names-only-notice.png') });
+  await paNames.page.check('#voterUseCheck');
+  await paNames.page.setInputFiles('#fileVoter', path.join(fixtures, 'voter_pa_names_only.csv'));
+  await paNames.page.waitForSelector('#infoVoter');
+  await openStep(paNames.page, 'run');
+  assert.strictEqual(await paNames.page.locator('#namesOnlyNoticeRun').innerText(), namesOnlyNotice);
+  assert.ok(await paNames.page.locator('#namesOnlyNoticeRun').isVisible(), 'notice shows before the run');
+  await paNames.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await paNames.page.locator('#namesOnlyNoticeRun').scrollIntoViewIfNeeded();
+  await paNames.page.screenshot({ path: path.join(req68Dir, 'req68-before-run.png') });
+  await paNames.page.click('#runBtn');
+  await paNames.page.waitForSelector('#countWeak');
+  assert.strictEqual(await paNames.page.locator('#countStrong .n').innerText(), '0');
+  assert.strictEqual(await paNames.page.locator('#countProbable .n').innerText(), '0');
+  // A 4523 list has no declaration date, so B.4 puts every same-name pair in "cannot compare" (as in AT-41).
+  assert.ok((await paNames.page.locator('#matcherCounts').innerText()).includes('Strong 0, Probable 0, same-name pairs (not leads) 3'));
+  const paNamesWeak = Number(await paNames.page.locator('#countWeak .n').innerText());
+  const paNamesCannot = Number((await paNames.page.locator('#cannotCompareLine').innerText()).match(/^(\d+)/)[1]);
+  assert.strictEqual(paNamesWeak + paNamesCannot, 3);
+  assert.ok((await paNames.page.locator('#countWeak').innerText()).includes(sameNameLabel));
+  assert.ok((await paNames.page.locator('#weakDetails summary').innerText()).includes(`${sameNameLabel}: ${paNamesWeak}`));
+  assert.strictEqual(await paNames.page.locator('#results tbody tr').count(), 0);
+  const paSummary = await paNames.page.locator('#countySummary').innerText();
+  assert.match(paSummary, new RegExp(`0 potential matches on the voter roll \\(Strong 0 \\/ Probable 0\\), ${paNamesWeak} same-name pairs \\(not leads\\), 0 excluded, ${paNamesCannot} cannot compare`));
+  assertNoRatio(paSummary, 'PA county summary');
+  await paNames.page.locator('#countWeak').scrollIntoViewIfNeeded();
+  await paNames.page.screenshot({ path: path.join(req68Dir, 'req68-same-name-pairs.png') });
+  assertNoRatio(await pageText(paNames.page), 'PA counts screen');
+  await openStep(paNames.page, 'export');
+  const [paNamesDownload] = await Promise.all([
+    paNames.page.waitForEvent('download'),
+    paNames.page.click('#exportBtn'),
+  ]);
+  const paNamesCsvPath = path.join(req68Dir, 'pa-names-only.csv');
+  await paNamesDownload.saveAs(paNamesCsvPath);
+  const paNamesCsv = fs.readFileSync(paNamesCsvPath, 'utf8');
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paNamesCsv), 'zero exported rows');
+  for (const name of ['Sample Juror 31', 'Sample Juror 32']) assert.ok(!paNamesCsv.includes(name), name);
+  assertNoRatio(paNamesCsv, 'PA export');
+  pass('AT-58');
+  await paNames.page.waitForSelector('#keepData');
+  await paNames.page.click('#keepData');
+  const [paNamesLog] = await Promise.all([
+    paNames.page.waitForEvent('download'),
+    paNames.page.click('#downloadLog'),
+  ]);
+  const paNamesLogPath = path.join(req68Dir, 'pa-names-only-audit.jsonl');
+  await paNamesLog.saveAs(paNamesLogPath);
+  assertNoRatio(fs.readFileSync(paNamesLogPath, 'utf8'), 'PA audit log');
+  assertNoRatio(await pageText(paNames.page), 'PA page after export');
+  assert.deepStrictEqual(paNames.errors, [], 'AT-58 page errors: ' + paNames.errors.join('; '));
+  assert.deepStrictEqual(paNames.requests, [], 'AT-58 network: ' + paNames.requests.join('; '));
+  await paNames.context.close();
+
+  const tx = await openPage(browser);
+  const txBase = tx.page.url().split('#')[0];
+  await selectState(tx.page, 'TX');
+  await tx.page.waitForSelector('#comingLater');
+  assertNoRatio(await pageText(tx.page), 'TX check page');
+  await tx.page.goto(`${txBase}#/records-audit/tx`);
+  await tx.page.waitForSelector('#recordsLetter');
+  await tx.page.selectOption('#recordsCounty', { index: 1 });
+  for (const [id, value] of [['#countDeath', '40'], ['#countAddress', '10'], ['#countInactive', '4'], ['#countNotices', '1']]) await tx.page.fill(id, value);
+  assertNoRatio(await tx.page.locator('#recordsLetter').innerText(), 'TX records letter');
+  assertNoRatio(await pageText(tx.page), 'TX records page');
+  const [txRecords] = await Promise.all([
+    tx.page.waitForEvent('download'),
+    tx.page.click('#recordsDownload'),
+  ]);
+  const txRecordsPath = path.join(req68Dir, 'tx-records.txt');
+  await txRecords.saveAs(txRecordsPath);
+  assertNoRatio(fs.readFileSync(txRecordsPath, 'utf8'), 'TX records download');
+  await tx.page.goto(`${txBase}#/jury-handoff-letter/tx`);
+  await tx.page.waitForSelector('#handoffState');
+  if (await tx.page.locator('#handoffCounty').count()) await tx.page.selectOption('#handoffCounty', { index: 1 });
+  assertNoRatio(await pageText(tx.page), 'TX handoff page');
+  if (await tx.page.locator('#handoffDownload').count() && await tx.page.locator('#handoffDownload').isEnabled()) {
+    assertNoRatio(await tx.page.locator('#handoffLetter').innerText(), 'TX handoff letter');
+    const [txHandoff] = await Promise.all([
+      tx.page.waitForEvent('download'),
+      tx.page.click('#handoffDownload'),
+    ]);
+    const txHandoffPath = path.join(req68Dir, 'tx-handoff.txt');
+    await txHandoff.saveAs(txHandoffPath);
+    assertNoRatio(fs.readFileSync(txHandoffPath, 'utf8'), 'TX handoff download');
+    console.log('AT-59 TX handoff letter checked');
+  }
+  assert.deepStrictEqual(tx.errors, [], 'AT-59 TX page errors: ' + tx.errors.join('; '));
+  assert.deepStrictEqual(tx.requests, [], 'AT-59 TX network: ' + tx.requests.join('; '));
+  await tx.context.close();
+  pass('AT-59');
 
   await browser.close();
   console.log('ALL UI TESTS PASSED');

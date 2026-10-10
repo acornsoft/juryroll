@@ -1,5 +1,5 @@
 import core from '../core.js';
-import { guessExtra, type ExtraColumns } from './columns.ts';
+import { guessExtra, sanitizeExtra, type ExtraColumns } from './columns.ts';
 import { applyPolicy, UI_DATE_STRICTNESS, type DateStrictness, type PolicyResult } from './apply.ts';
 import { allCancelledRefusal, filterCancelledVoters, type CancelledCounts } from './cancelled.ts';
 import type { RulesFile } from './gates.ts';
@@ -74,6 +74,7 @@ export function runMatch(
   rules: RulesFile,
   options?: { dateStrictness?: DateStrictness; place?: RunPlace },
 ): { coreResult: MatchResult; policy: PolicyResult; cancelled: CancelledCounts; warning: string | null; notes: RunNotes } {
+  juror = { ...juror, extra: sanitizeExtra('juror', juror.headers, juror.extra) };
   const filtered = filterCancelledVoters(voter.text, voter.hasHeader);
   const voterText = filtered.skipped > 0 ? filtered.csv : voter.text;
   const dateStrictness = options?.dateStrictness ?? UI_DATE_STRICTNESS;

@@ -1,4 +1,5 @@
 import { SUMMARY_DISCLAIMER, summaryLine, type CountyRun } from '../lib/summary.ts';
+import { SAME_NAME_LABEL } from '../../../shared/src/content/copy.ts';
 
 export function CountySummary({
   rows,
@@ -34,7 +35,7 @@ export function CountySummary({
               <th>Non-resident excluded</th>
               <th>Strong</th>
               <th>Probable</th>
-              <th>Weak</th>
+              <th>{SAME_NAME_LABEL}</th>
               <th>Excluded</th>
               <th>Cannot compare</th>
             </tr>

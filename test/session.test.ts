@@ -128,8 +128,12 @@ const row: CountyRun = {
   cannotCompare: 0,
 };
 const line = summaryLine(row);
-assert.match(line, /Wake County, North Carolina: 3 non-juror records entered, 1 coded non-citizen, 1 potential matches on the voter roll \(Strong 0 \/ Probable 1 \/ Weak 0\), 0 excluded, 0 cannot compare\. Language 1 excluded\. Non-resident 1 excluded\./);
+assert.match(line, /Wake County, North Carolina: 3 non-juror records entered, 1 coded non-citizen, 1 potential matches on the voter roll \(Strong 0 \/ Probable 1\), 0 same-name pairs \(not leads\), 0 excluded, 0 cannot compare\. Language 1 excluded\. Non-resident 1 excluded\./);
 assert.ok(!line.includes('Sample Juror 01'));
+// LOGIC-CHANGES L.2: same-name pairs are never a share of the juror rows.
+const weakLine = summaryLine({ ...row, entered: 4, weak: 1, probable: 0 });
+assert.match(weakLine, /0 potential matches on the voter roll \(Strong 0 \/ Probable 0\), 1 same-name pairs \(not leads\)/);
+assert.ok(!/%|\b1\s+in\s+\d+|match(?:ing)?\s+rate/i.test(weakLine));
 assert.ok(!line.includes('Sample Juror 02'));
 assert.equal(summaryCopy([row]).endsWith(SUMMARY_DISCLAIMER), true);
 const second: CountyRun = { ...row, countyName: 'Durham County', countyFips: '37063', entered: 4 };

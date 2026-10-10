@@ -7,7 +7,7 @@ import { ATTEST_LINES } from '../shared/src/content/copy.ts';
 import { CANNOT_COMPARE_PHRASE, EXCLUDE_PHRASE, SAVE_EXPORT_LINE, SAVE_LINE, UI_DATE_STRICTNESS, applyDateRule, type PolicyResult } from '../shared/src/policy/apply.ts';
 import { appendEntry, auditLogFile, canonicalJson, verifyChain } from '../shared/src/policy/audit.ts';
 import { screenColumns } from '../shared/src/policy/blocked.ts';
-import { guessExtra } from '../shared/src/policy/columns.ts';
+import { guessExtra, resultDateOnly, safeDeclIndex, sanitizeExtra, unusedColumns, MARKER_HEADERS, namesOnly } from '../shared/src/policy/columns.ts';
 import { exportCell, toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
 import { allCancelledRefusal, filterCancelledVoters } from '../shared/src/policy/cancelled.ts';
@@ -892,5 +892,82 @@ assert.strictEqual(classifyReason('=Non-citizen', 'NC').display, 'Non-citizen');
 assert.strictEqual(classifyReason('=Non-citizen', 'NC').autoNonCitizen, false);
 assert.strictEqual(formulaRun.notes.unrecognizedReasonCount, 0);
 pass('GAP-FORMULA-REASON');
+
+// LOGIC-CHANGES L.1 (REQ-NOTE 67): NC header variants and "Result Date/Time".
+const fieldHeader = (t: LoadedTable, field: string) => (t.map[field] >= 0 ? t.headers[t.map[field]] : null);
+const variantsJ = table('juror', fs.readFileSync(path.join(root, 'test/fixtures/headers/juror_nc_header_variants.csv'), 'utf8'));
+assert.deepStrictEqual(variantsJ.headers, ['First Name', 'Last Name', 'Middle Name', 'Adrress 1', 'Address 2', 'City', 'Date of Birth', 'Date of Excusal']);
+assert.strictEqual(fieldHeader(variantsJ, 'first'), 'First Name');
+assert.strictEqual(fieldHeader(variantsJ, 'last'), 'Last Name');
+assert.strictEqual(fieldHeader(variantsJ, 'middle'), 'Middle Name');
+assert.strictEqual(fieldHeader(variantsJ, 'street'), 'Adrress 1');
+assert.strictEqual(fieldHeader(variantsJ, 'dob'), 'Date of Birth');
+assert.strictEqual(variantsJ.headers[variantsJ.extra.declDate], 'Date of Excusal');
+assert.strictEqual(resultDateOnly(variantsJ.headers, variantsJ.extra), null);
+assert.deepStrictEqual(unusedColumns(variantsJ.headers, variantsJ.map, variantsJ.extra, MARKER_HEADERS), ['Address 2', 'City']);
+const variantsV = table('voter', fs.readFileSync(path.join(root, 'test/fixtures/voter_nc_header_variants.csv'), 'utf8'));
+const variantsRun = runMatch(variantsJ, variantsV, shipped.NC);
+assert.strictEqual(variantsRun.coreResult.counts.Strong, 2);
+assert.strictEqual(variantsRun.policy.cannotCompareCount, 0);
+assert.strictEqual(variantsRun.policy.excludedAfterCount, 0);
+pass('AT-56-mapping');
+
+const resultJ = table('juror', fs.readFileSync(path.join(root, 'test/fixtures/headers/juror_nc_result_date.csv'), 'utf8'));
+assert.strictEqual(resultJ.extra.declDate, -1, 'Result Date/Time is never guessed as the declaration date');
+assert.strictEqual(resultDateOnly(resultJ.headers, resultJ.extra), 'Result Date/Time');
+assert.strictEqual(fieldHeader(resultJ, 'first'), 'First Name');
+assert.strictEqual(fieldHeader(resultJ, 'middle'), 'Middle Name');
+assert.strictEqual(fieldHeader(resultJ, 'last'), 'Last Name');
+assert.strictEqual(fieldHeader(resultJ, 'street'), 'Address');
+assert.strictEqual(fieldHeader(resultJ, 'dob'), 'DOB');
+const resultIdx = resultJ.headers.indexOf('Result Date/Time');
+assert.strictEqual(safeDeclIndex(resultJ.headers, resultIdx), -1);
+assert.strictEqual(sanitizeExtra('juror', resultJ.headers, { ...resultJ.extra, declDate: resultIdx }).declDate, -1);
+assert.strictEqual(guessExtra('juror', ['Last', 'First', 'Result Date/Time', 'Date Of Excusal']).declDate, 3);
+assert.strictEqual(resultDateOnly(['Last', 'First', 'Result Date/Time', 'Date Of Excusal'], guessExtra('juror', ['Last', 'First', 'Result Date/Time', 'Date Of Excusal'])), null);
+const resultV = table('voter', fs.readFileSync(path.join(root, 'test/fixtures/voter_nc_result_date.csv'), 'utf8'));
+// A manual choice of Result Date/Time is dropped by runMatch too.
+for (const juror of [resultJ, { ...resultJ, extra: { ...resultJ.extra, declDate: resultIdx } }]) {
+  const run = runMatch(juror, resultV, shipped.NC);
+  assert.strictEqual(run.coreResult.counts.Strong, 3, 'last and middle names are not swapped');
+  assert.strictEqual(run.policy.cannotCompareCount, 3);
+  assert.strictEqual(run.policy.cannotCompareLine, `3 ${CANNOT_COMPARE_PHRASE}`);
+  assert.strictEqual(run.policy.counts.Strong + run.policy.counts.Probable + run.policy.counts.Weak, 0);
+  assertBuckets(run.policy, 3);
+  const csv = toCSV({ allowNamedExport: true, result: run.policy, rules: shipped.NC, targets: referralTargets(shipped.NC, shipped.DEFAULT), county: 'Wake', dateStr: '2026-10-09' });
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(csv));
+  for (const name of ['Sample Juror 21', 'Sample Juror 22', 'Sample Juror 23']) assert.ok(!csv.includes(name));
+}
+assert.strictEqual(shipped.NC.gates.allow_jury_list, true);
+pass('AT-57-policy');
+// LOGIC-CHANGES L.2 (REQ-NOTE 68): names-only juror lists and no match rate.
+const RATIO_RE = /%|\b1\s+in\s+\d+|\bmatch(?:ing)?\s+rate\b|\bper\s?cent\b/i;
+const paNamesJ = table('juror', fs.readFileSync(path.join(root, 'test/fixtures/juror_pa_names_only.csv'), 'utf8'));
+const paNamesV = table('voter', fs.readFileSync(path.join(root, 'test/fixtures/voter_pa_names_only.csv'), 'utf8'));
+assert.strictEqual(namesOnly(paNamesJ.map), true);
+assert.strictEqual(namesOnly(table('juror', fs.readFileSync(path.join(root, 'shared/samples/sample_juror_disqualifications.csv'), 'utf8')).map), false);
+assert.strictEqual(namesOnly({ last: 0, first: 1, dob: -1, street: -1, house_no: -1, zip: 2 }), true, 'a ZIP code alone does not lift a pair above Weak');
+assert.strictEqual(namesOnly({ last: 0, first: 1, dob: 2, street: -1, house_no: -1 }), false);
+assert.strictEqual(namesOnly({ last: 0, first: 1, dob: -1, street: 2, house_no: -1 }), false);
+const paNamesRun = runMatch(paNamesJ, paNamesV, shipped.PA, { place: { countyName: 'Adams County', countyFips: '42001' } });
+assert.strictEqual(paNamesRun.coreResult.counts.Strong + paNamesRun.coreResult.counts.Probable, 0);
+assert.strictEqual(paNamesRun.coreResult.counts.Weak, 3);
+assert.strictEqual(paNamesRun.policy.counts.Strong + paNamesRun.policy.counts.Probable, 0);
+assert.strictEqual(paNamesRun.policy.counts.Weak + paNamesRun.policy.cannotCompareCount, 3, 'no declaration date: B.4 bucket');
+assert.strictEqual(paNamesRun.notes.countyChecked, true);
+const paNamesCsv = toCSV({ allowNamedExport: true, result: paNamesRun.policy, rules: shipped.PA, targets: referralTargets(shipped.PA, shipped.DEFAULT), county: 'Adams County', fips: '42001', dateStr: '2026-10-09' });
+assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paNamesCsv), 'zero exported rows');
+for (const name of ['Sample Juror 31', 'Sample Juror 32']) assert.ok(!paNamesCsv.includes(name), name);
+assert.ok(!RATIO_RE.test(paNamesCsv), 'PA export has no ratio');
+assert.strictEqual(shipped.PA.gates.allow_jury_list, true);
+pass('AT-58-policy');
+for (const [code, rules] of [['TX', shipped.TX], ['PA', shipped.PA], ['NC', shipped.NC]] as const) {
+  const text = auditLetter(rules, referralTargets(rules, shipped.DEFAULT), {
+    periodFrom: '2026-01-01', periodTo: '2026-06-01', juryCount: '40', jurySource: 'clerk summary', removals: '10', removalSource: 'county report', county: 'Sample',
+  });
+  assert.ok(!RATIO_RE.test(text), `${code} audit letter has no ratio`);
+}
+assert.ok(!RATIO_RE.test(JSON.stringify(paNamesRun.policy.counts)));
+pass('AT-59-policy');
 
 console.log('ALL POLICY TESTS PASSED');

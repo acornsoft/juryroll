@@ -1,0 +1,4 @@
+voter_id,name_last,name_first,name_middle,date_of_birth,res_street,res_zip,status,data_note,registration_date,county
+V21,Sample Juror 21,Pat,A,1901-03-14,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2010-01-01,Wake
+V22,Sample Juror 22,Example,B,1901-05-03,000 Sample Lane,00000,ACTIVE,FICTIONAL SAMPLE DATA,2011-01-01,Wake
+V23,Sample Juror 23,Pat,C,1901-07-05,000 Sample Road,00000,ACTIVE,FICTIONAL SAMPLE DATA,2012-01-01,Wake
