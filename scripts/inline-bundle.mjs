@@ -78,6 +78,7 @@ const csp = [
   `script-src 'self' ${scriptHashes.join(' ')}`.trim(),
   `style-src 'self' ${styleHashes.join(' ')}`.trim(),
   "img-src 'self' data:",
+  "media-src 'self'",
   "font-src 'self'",
   "connect-src 'none'",
   "form-action 'none'",

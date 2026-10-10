@@ -123,6 +123,11 @@ export function bannerFor(route: AppRoute, stateLabel: string): { title: string;
         title: 'Help & FAQ',
         crumbs: [{ href: '#/run', label: 'Home' }, { label: 'Help & FAQ' }],
       };
+    case 'disclaimer':
+      return {
+        title: 'Disclaimer',
+        crumbs: [{ href: '#/run', label: 'Home' }, { label: 'Disclaimer' }],
+      };
     case 'records-audit':
       return {
         title: 'List-maintenance records',

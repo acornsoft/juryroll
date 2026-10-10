@@ -5,7 +5,8 @@ export type AppRoute =
   | { name: 'law'; topic: string | null }
   | { name: 'faq' }
   | { name: 'records-audit'; code: string | null }
-  | { name: 'jury-handoff'; code: string | null };
+  | { name: 'jury-handoff'; code: string | null }
+  | { name: 'disclaimer' };
 
 export function parseRoute(hash: string): AppRoute {
   const path = (hash.replace(/^#/, '') || '/').split('?')[0];
@@ -20,6 +21,7 @@ export function parseRoute(hash: string): AppRoute {
   }
   if (parts[0] === 'law') return { name: 'law', topic: parts[1] ?? null };
   if (parts[0] === 'faq') return { name: 'faq' };
+  if (parts[0] === 'disclaimer') return { name: 'disclaimer' };
   if (parts[0] === 'records-audit') {
     const picked = parts[1] && /^[a-z]{2}$/i.test(parts[1]) ? parts[1].toUpperCase() : null;
     return { name: 'records-audit', code: picked };

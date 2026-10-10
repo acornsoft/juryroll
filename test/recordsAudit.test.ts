@@ -155,6 +155,8 @@ pass('RA-summary');
 assert.deepStrictEqual(parseRoute('#records-audit'), { name: 'records-audit', code: null });
 assert.deepStrictEqual(parseRoute('#/records-audit'), { name: 'records-audit', code: null });
 assert.deepStrictEqual(parseRoute('#/records-audit/oh'), { name: 'records-audit', code: 'OH' });
+assert.deepStrictEqual(parseRoute('#/disclaimer'), { name: 'disclaimer' });
+assert.deepStrictEqual(parseRoute('#disclaimer'), { name: 'disclaimer' });
 assert.deepStrictEqual(parseRoute('#records-audit/wy'), { name: 'records-audit', code: 'WY' });
 pass('RA-route');
 

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type DragEvent, type ReactNode } from 'react';
 import core from '../../shared/src/core.js';
 import { bannerFor, CheckTitle, IconBox, PageBanner } from './components/Chrome.tsx';
+import { DemoBanner } from './components/DemoBanner.tsx';
+import { Explainer } from './components/Explainer.tsx';
 import { VoterFileSlot } from './components/VoterFileSlot.tsx';
 import { CountySummary } from './components/CountySummary.tsx';
 import { ComingLater } from './components/ComingLater.tsx';
@@ -15,6 +17,7 @@ import { summaryCopy, upsertCountyRun, type CountyRun } from './lib/summary.ts';
 import { blankGrid, gridToCsv } from './lib/transcribe.ts';
 import { historyByVoterId } from './lib/voterContext.ts';
 import { FaqPage, LawPage } from './pages/Background.tsx';
+import { DisclaimerPage } from './pages/Disclaimer.tsx';
 import { JuryHandoff } from './pages/JuryHandoff.tsx';
 import { RecordsAudit } from './pages/RecordsAudit.tsx';
 import { StateIndex, StatePage } from './pages/StateGuide.tsx';
@@ -31,7 +34,7 @@ import jurorTemplateUrl from '../../shared/templates/juror-template.csv?url';
 import voterTemplateUrl from '../../shared/templates/voter-template.csv?url';
 import jurorTemplateXlsxUrl from '../../shared/templates/juror-template.xlsx?url';
 import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url';
-import { ATTEST_LINES, CAVEATS, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, RESULT_DATE_MESSAGE, TIER_RULES, WEAK_CAUTION, APP_VERSION, unusedColumnsLine, NAMES_ONLY_NOTICE, SAME_NAME_LABEL } from '../../shared/src/content/copy.ts';
+import { ATTEST_LINES, CAVEATS, DEMO_SIGN_NOTE, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, TIER_RULES, WEAK_CAUTION, APP_VERSION, RESULT_DATE_MESSAGE, unusedColumnsLine, NAMES_ONLY_NOTICE, SAME_NAME_LABEL } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
 import { COUNTIES } from '../../shared/src/counties.ts';
@@ -872,6 +875,9 @@ export function App() {
     case 'faq':
       page = <FaqPage />;
       break;
+    case 'disclaimer':
+      page = <DisclaimerPage />;
+      break;
     case 'records-audit':
       page = <RecordsAudit code={route.code} />;
       break;
@@ -901,6 +907,8 @@ export function App() {
               ) : fileError}
             </p>
           )}
+
+          <Explainer />
 
           {code && !juryListAllowed(code) ? (
             <ComingLater
@@ -984,6 +992,7 @@ export function App() {
               </section>
             </StepPanel>
             <StepPanel id="sign">
+              <p className="note" id="demoSignNote">{DEMO_SIGN_NOTE}</p>
               {rules?.voter_file.permitted_uses && <p className="small" id="permittedUses">{rules.voter_file.permitted_uses}</p>}
               {ATTEST_LINES.map((line, index) => (
                 <label className="inline" key={line}>
@@ -1290,6 +1299,7 @@ export function App() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
+      <DemoBanner />
       <header className="topbar navbar-area nav-style-01">
         <div className="nav-container">
           <a className="brand" href="#/run">JuryRoll</a>
@@ -1336,6 +1346,7 @@ export function App() {
       <footer className="footer-area">
         <div className="footer-inner">
           <p className="footer-privacy">All processing stays in this browser. No data leaves this computer. A match is a lead for officials. It is not proof.</p>
+          <p className="footer-disclaimer" id="footerDisclaimer"><a href="#/disclaimer">Disclaimer</a></p>
           <p className="foot" id="appFooter">JuryRoll {APP_VERSION} · build {__BUILD_ID__}. A match is a lead for officials. It is not proof.</p>
         </div>
       </footer>

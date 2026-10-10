@@ -129,6 +129,64 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .skip:focus { top: 8px; }
 
+.demo-banner {
+  margin: 0;
+  padding: 8px 16px;
+  background: #04072E;
+  color: #fff;
+  text-align: center;
+  font-family: var(--heading-font);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  border-bottom: 3px solid #DD131A;
+}
+.demo-banner a {
+  color: #fff;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+/* Explainer stays narrow so the step rail still starts above a 1280×800 fold. */
+.explainer {
+  max-width: 640px;
+  margin: 4px 0 10px;
+}
+.explainer h2 {
+  margin: 0 0 8px;
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+.explainer-player {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #04072E;
+  border-radius: 8px;
+}
+.explainer-note {
+  margin: 8px 0 0;
+  color: var(--heading-color);
+  font-size: 0.95rem;
+}
+.disclaimer-page { max-width: 44rem; }
+.disclaimer-page h2 {
+  margin: 18px 0 6px;
+  font-size: 1.45rem;
+}
+.footer-disclaimer {
+  margin: 0 0 12px;
+  font-family: var(--heading-font);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.footer-disclaimer a {
+  color: #fff;
+  text-underline-offset: 3px;
+}
+
 /* Header — white bar, red active link, red uppercase CTA */
 .topbar.navbar-area {
   background: #fff;
@@ -1718,6 +1776,8 @@ select option.is-available { color: #04072E; }
   body[data-print-sheet="1"] .modal-back,
   body[data-print-sheet="1"] .home-hero,
   body[data-print-sheet="1"] .page-banner,
+  body[data-print-sheet="1"] .demo-banner,
   body[data-print-sheet="1"] .footer-area { display: none !important; }
+  .demo-banner, .demo-banner a { color: #000; background: #fff; }
   body[data-print-sheet="1"] #transcriptionSheet { display: block !important; }
 }

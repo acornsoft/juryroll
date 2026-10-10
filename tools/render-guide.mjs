@@ -96,6 +96,10 @@ function markdownToHtml(source) {
 }
 
 const body = markdownToHtml(md);
+const copySrc = fs.readFileSync(path.join(root, 'shared/src/content/copy.ts'), 'utf8');
+const bannerMatch = /export const DEMO_BANNER = '([^']*)'/.exec(copySrc);
+if (!bannerMatch) throw new Error('DEMO_BANNER missing from copy.ts');
+const demoBanner = bannerMatch[1];
 const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,9 +111,11 @@ const html = `<!DOCTYPE html>
   <link rel="stylesheet" href="./guide.css">
 </head>
 <body>
+  <p class="demo-banner" role="region" aria-label="Site status">${demoBanner} <a href="./index.html#/disclaimer">Disclaimer</a></p>
   <main>
 ${body}
   </main>
+  <p class="guide-disclaimer" id="footerDisclaimer"><a href="./index.html#/disclaimer">Disclaimer</a></p>
 </body>
 </html>
 `;

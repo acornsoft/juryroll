@@ -46,6 +46,8 @@ async function openPage(browser, options = {}) {
   page.on('requestfailed', (request) => {
     const url = request.url();
     if (url.includes('/fonts/') || url.startsWith('blob:') || url.startsWith('data:')) return;
+    // Chrome cancels the first media request when it starts a range read. The file still loads.
+    if (request.failure()?.errorText === 'net::ERR_ABORTED' && url.includes('juryroll-explainer.mp4')) return;
     errors.push(`failed ${url}`);
   });
   page.on('request', (request) => {
@@ -266,6 +268,9 @@ function readAuditDownload(file) {
   assert.ok(built.includes('/fonts/roboto-400.woff2'), 'fonts use an absolute /fonts/ URL');
   assert.ok(!/url\(\s*['"]?(?:\.\.\/)?fonts\//.test(built), 'font URLs must not be relative');
   assert.ok(built.includes("font-src 'self'"), 'CSP font-src');
+  assert.ok(built.includes("media-src 'self'"), 'CSP media-src');
+  assert.ok(fs.existsSync(path.join(root, 'app/dist/media/juryroll-explainer.mp4')), 'explainer video');
+  assert.ok(fs.existsSync(path.join(root, 'app/dist/media/juryroll-explainer-poster.jpg')), 'explainer poster');
   assert.ok(!/<script[^>]+src=/.test(built), 'scripts must be inlined');
   assert.ok(!built.includes('"type":"Topology"'), 'county geometry stays out of the inline page');
   assert.ok(fs.existsSync(path.join(root, 'app/dist/assets/us-map.js')), 'map chunk');
@@ -1483,6 +1488,47 @@ function readAuditDownload(file) {
   pass('AT-47');
   assert.deepStrictEqual(ga.requests, [], 'GA network: ' + ga.requests.join('; '));
   await ga.context.close();
+
+  const notice = await openPage(browser);
+  const bannerText = await notice.page.locator('#demoBanner').innerText();
+  assert.match(bannerText, /Demo tool, still in development/);
+  assert.match(bannerText, /Not a government website/);
+  assert.match(bannerText, /Not official/);
+  assert.match(bannerText, /may be incomplete or change/);
+  const video = notice.page.locator('#explainerVideo');
+  assert.strictEqual(await video.getAttribute('preload'), 'metadata');
+  assert.strictEqual(await video.evaluate((node) => node.hasAttribute('controls')), true);
+  assert.strictEqual(await video.evaluate((node) => node.hasAttribute('autoplay')), false);
+  assert.strictEqual(await video.evaluate((node) => node.hasAttribute('playsinline')), true);
+  assert.strictEqual(await video.getAttribute('aria-label'), 'JuryRoll explainer, 47 seconds');
+  const poster = await video.getAttribute('poster');
+  assert.ok(poster && poster.endsWith('juryroll-explainer-poster.jpg'), poster);
+  const source = await video.locator('source').getAttribute('src');
+  assert.ok(source && source.endsWith('juryroll-explainer.mp4'), source);
+  assert.match(await notice.page.locator('#explainerDisclaimer').innerText(), /still in development/);
+  assert.match(await notice.page.locator('#explainerDisclaimer').innerText(), /may be incomplete or change/);
+  await notice.page.locator('#footerDisclaimer a').click();
+  await notice.page.waitForSelector('#disclaimerPage');
+  const disclaimer = await notice.page.locator('#disclaimerPage').innerText();
+  assert.match(disclaimer, /not affiliated with, endorsed by, or operated by/i);
+  assert.match(disclaimer, /general public and educational use only/);
+  assert.match(disclaimer, /official determination, legal advice, or proof of citizenship/);
+  assert.match(disclaimer, /provided as is, with no warranty/i);
+  assert.match(disclaimer, /No data is sent anywhere/);
+  assert.match(disclaimer, /still in development/i);
+  assert.match(disclaimer, /may be incomplete or change/);
+  assert.ok(await notice.page.locator('#demoBanner').isVisible());
+  assert.ok(await notice.page.locator('#footerDisclaimer').isVisible());
+  await notice.page.goto(notice.page.url().split('#')[0] + '#/run');
+  await selectState(notice.page, 'NC');
+  await openStep(notice.page, 'sign');
+  assert.match(await notice.page.locator('#demoSignNote').innerText(), /demonstration tool still in development/);
+  assert.match(await notice.page.locator('#demoSignNote').innerText(), /not a government website/i);
+  const noticeRail = await notice.page.locator('#stepper').boundingBox();
+  assert.ok(noticeRail && noticeRail.y < 800, `stepper starts at ${noticeRail && noticeRail.y}`);
+  assert.deepStrictEqual(notice.requests, [], 'disclaimer page network: ' + notice.requests.join('; '));
+  assert.deepStrictEqual(notice.errors, [], 'disclaimer page errors: ' + notice.errors.join('; '));
+  await notice.context.close();
 
   // LOGIC-CHANGES L.2 (REQ-NOTE 68): names-only notice, same-name label, and no match rate anywhere.
   const namesOnlyNotice = 'This list has names only. Many people share a name. A name-only match is not a lead and is never exported. If you copied the list by hand, check it against the original.';

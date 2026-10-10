@@ -51,3 +51,7 @@ export const ATTEST_LINES = [
 ];
 
 export const APP_VERSION = '2.0.0';
+
+export const DEMO_BANNER = 'Demo tool, still in development. Not a government website. Not official. Features, coverage, and results may be incomplete or change.';
+
+export const DEMO_SIGN_NOTE = 'JuryRoll is a demonstration tool still in development. It is not a government website, and it is not official.';
