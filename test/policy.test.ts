@@ -7,7 +7,7 @@ import { ATTEST_LINES } from '../shared/src/content/copy.ts';
 import { CANNOT_COMPARE_PHRASE, EXCLUDE_PHRASE, SAVE_EXPORT_LINE, SAVE_LINE, UI_DATE_STRICTNESS, applyDateRule, type PolicyResult } from '../shared/src/policy/apply.ts';
 import { appendEntry, auditLogFile, canonicalJson, verifyChain } from '../shared/src/policy/audit.ts';
 import { screenColumns } from '../shared/src/policy/blocked.ts';
-import { guessExtra, resultDateOnly, safeDeclIndex, sanitizeExtra, unusedColumns, MARKER_HEADERS } from '../shared/src/policy/columns.ts';
+import { guessExtra, resultDateOnly, safeDeclIndex, sanitizeExtra, unusedColumns, MARKER_HEADERS, namesOnly } from '../shared/src/policy/columns.ts';
 import { exportCell, toCSV } from '../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, effective, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type RulesFile } from '../shared/src/policy/gates.ts';
 import { allCancelledRefusal, filterCancelledVoters } from '../shared/src/policy/cancelled.ts';
@@ -940,5 +940,34 @@ for (const juror of [resultJ, { ...resultJ, extra: { ...resultJ.extra, declDate:
 }
 assert.strictEqual(shipped.NC.gates.allow_jury_list, true);
 pass('AT-57-policy');
+// LOGIC-CHANGES L.2 (REQ-NOTE 68): names-only juror lists and no match rate.
+const RATIO_RE = /%|\b1\s+in\s+\d+|\bmatch(?:ing)?\s+rate\b|\bper\s?cent\b/i;
+const paNamesJ = table('juror', fs.readFileSync(path.join(root, 'test/fixtures/juror_pa_names_only.csv'), 'utf8'));
+const paNamesV = table('voter', fs.readFileSync(path.join(root, 'test/fixtures/voter_pa_names_only.csv'), 'utf8'));
+assert.strictEqual(namesOnly(paNamesJ.map), true);
+assert.strictEqual(namesOnly(table('juror', fs.readFileSync(path.join(root, 'shared/samples/sample_juror_disqualifications.csv'), 'utf8')).map), false);
+assert.strictEqual(namesOnly({ last: 0, first: 1, dob: -1, street: -1, house_no: -1, zip: 2 }), true, 'a ZIP code alone does not lift a pair above Weak');
+assert.strictEqual(namesOnly({ last: 0, first: 1, dob: 2, street: -1, house_no: -1 }), false);
+assert.strictEqual(namesOnly({ last: 0, first: 1, dob: -1, street: 2, house_no: -1 }), false);
+const paNamesRun = runMatch(paNamesJ, paNamesV, shipped.PA, { place: { countyName: 'Adams County', countyFips: '42001' } });
+assert.strictEqual(paNamesRun.coreResult.counts.Strong + paNamesRun.coreResult.counts.Probable, 0);
+assert.strictEqual(paNamesRun.coreResult.counts.Weak, 3);
+assert.strictEqual(paNamesRun.policy.counts.Strong + paNamesRun.policy.counts.Probable, 0);
+assert.strictEqual(paNamesRun.policy.counts.Weak + paNamesRun.policy.cannotCompareCount, 3, 'no declaration date: B.4 bucket');
+assert.strictEqual(paNamesRun.notes.countyChecked, true);
+const paNamesCsv = toCSV({ allowNamedExport: true, result: paNamesRun.policy, rules: shipped.PA, targets: referralTargets(shipped.PA, shipped.DEFAULT), county: 'Adams County', fips: '42001', dateStr: '2026-10-09' });
+assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(paNamesCsv), 'zero exported rows');
+for (const name of ['Sample Juror 31', 'Sample Juror 32']) assert.ok(!paNamesCsv.includes(name), name);
+assert.ok(!RATIO_RE.test(paNamesCsv), 'PA export has no ratio');
+assert.strictEqual(shipped.PA.gates.allow_jury_list, true);
+pass('AT-58-policy');
+for (const [code, rules] of [['TX', shipped.TX], ['PA', shipped.PA], ['NC', shipped.NC]] as const) {
+  const text = auditLetter(rules, referralTargets(rules, shipped.DEFAULT), {
+    periodFrom: '2026-01-01', periodTo: '2026-06-01', juryCount: '40', jurySource: 'clerk summary', removals: '10', removalSource: 'county report', county: 'Sample',
+  });
+  assert.ok(!RATIO_RE.test(text), `${code} audit letter has no ratio`);
+}
+assert.ok(!RATIO_RE.test(JSON.stringify(paNamesRun.policy.counts)));
+pass('AT-59-policy');
 
 console.log('ALL POLICY TESTS PASSED');

@@ -36,6 +36,12 @@ export function unusedColumnsLine(headers: readonly string[]): string {
   return `Columns JuryRoll does not use in this file: ${headers.join(', ')}. Check that none of them is a name, date of birth, address, or excusal date.`;
 }
 
+// LOGIC-CHANGES L.2 (REQ-NOTE 68). Shown before the run when the juror file has no DOB, birth-year or address column.
+export const NAMES_ONLY_NOTICE = 'This list has names only. Many people share a name. A name-only match is not a lead and is never exported. If you copied the list by hand, check it against the original.';
+
+// LOGIC-CHANGES L.2: the Weak count's label on the counts screen. No screen, download or letter shows it as a share of the juror list.
+export const SAME_NAME_LABEL = 'Same-name pairs (not leads)';
+
 export const ATTEST_LINES = [
   'I got each file from an official source, and I obey its use rules.',
   'I will send leads only to the offices in the referral list.',
