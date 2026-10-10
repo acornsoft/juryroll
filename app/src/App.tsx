@@ -31,14 +31,14 @@ import jurorTemplateUrl from '../../shared/templates/juror-template.csv?url';
 import voterTemplateUrl from '../../shared/templates/voter-template.csv?url';
 import jurorTemplateXlsxUrl from '../../shared/templates/juror-template.xlsx?url';
 import voterTemplateXlsxUrl from '../../shared/templates/voter-template.xlsx?url';
-import { ATTEST_LINES, CAVEATS, NAMES_ONLY_NOTICE, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, SAME_NAME_LABEL, TIER_RULES, WEAK_CAUTION, APP_VERSION } from '../../shared/src/content/copy.ts';
+import { ATTEST_LINES, CAVEATS, NC_LIST_NOTE, PA_NAMES_ONLY_NOTE, PRIVACY_BODY, PRIVACY_LEAD, RESULT_DATE_MESSAGE, TIER_RULES, WEAK_CAUTION, APP_VERSION, unusedColumnsLine, NAMES_ONLY_NOTICE, SAME_NAME_LABEL } from '../../shared/src/content/copy.ts';
 import { analyzeText, readUpload, type AnalyzedFile } from './analyze.ts';
 import { chainStatus, clearAudit, openAuditDb, readAudit, writeAudit } from './auditStore.ts';
 import { COUNTIES } from '../../shared/src/counties.ts';
 import { STATES } from './states.ts';
 import rulesBundle from '../../shared/src/rulesBundle.json';
 import { appendEntry, auditLogFile, userAgentFamily, type AuditEntry, type AuditType } from '../../shared/src/policy/audit.ts';
-import { namesOnly, type ExtraColumns } from '../../shared/src/policy/columns.ts';
+import { MARKER_HEADERS, isNeverDecl, resultDateOnly, safeDeclIndex, unusedColumns, type ExtraColumns, namesOnly } from '../../shared/src/policy/columns.ts';
 import { exportableRows, flagLabel, type PolicyResult, type PolicyRow } from '../../shared/src/policy/apply.ts';
 import { referralFileName, toCSV } from '../../shared/src/policy/exportCsv.ts';
 import { ND_REGISTRATION_NOTE, NON_SIGNAL, NON_SIGNAL_LABEL, referralTargets, resolveRules, strict, uiGates, useLimitApplies, type ResolvedRules, type RulesFile } from '../../shared/src/policy/gates.ts';
@@ -799,6 +799,8 @@ export function App() {
   const weakRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'weak') : [];
   const removedRows = named ? policy!.rows.filter((row) => rowDestination(row.section) === 'removed') : [];
   const columnNote = [juror?.note, voter?.note].filter(Boolean).join(' ');
+  const resultDateHeader = juror ? resultDateOnly(juror.headers, juror.extra) : null;
+  const unusedJuror = juror ? unusedColumns(juror.headers, juror.map, juror.extra, MARKER_HEADERS) : [];
   const jurorNamesOnly = Boolean(juror && namesOnly(juror.map));
   const voterHistory = voter
     ? historyByVoterId(voter.text, voter.delim, voter.hasHeader, voter.headers, voter.map.voter_id ?? -1)
@@ -1050,6 +1052,8 @@ export function App() {
                   </p>
                   {(juror || voter) && <p className="small" id="purgeLogNote">Purge also deletes the audit log. Download the log first.</p>}
                   {columnNote && <p className="note" id="columnNote">{columnNote}</p>}
+                  {resultDateHeader && <p className="note" id="resultDateNote" role="status">{RESULT_DATE_MESSAGE}</p>}
+                  {unusedJuror.length > 0 && <p className="note" id="unusedJuror">{unusedColumnsLine(unusedJuror)}</p>}
                   {jurorNamesOnly && <p className="banner" id="namesOnlyNotice" role="status">{NAMES_ONLY_NOTICE}</p>}
                   <p className="local-note"><b>Runs only in your browser.</b> Nothing is uploaded.</p>
                 </fieldset>
@@ -1088,9 +1092,12 @@ export function App() {
                             fields={core.JUROR_FIELDS}
                             extra={juror.extra}
                             onChange={(field, index) => patch('juror', (held) => ({ ...held, map: { ...held.map, [field]: index } }))}
-                            onExtra={(field, index) => patch('juror', (held) => ({ ...held, extra: { ...held.extra, [field]: index } }))}
+                            onExtra={(field, index) => patch('juror', (held) => ({ ...held, extra: { ...held.extra, [field]: field === 'declDate' ? safeDeclIndex(held.headers, index) : index } }))}
+                            blockResultDate
                           />
                         )}
+                        {resultDateHeader && <p className="note" id="resultDateNoteMap">{RESULT_DATE_MESSAGE}</p>}
+                        {unusedJuror.length > 0 && <p className="note" id="unusedJurorMap">{unusedColumnsLine(unusedJuror)}</p>}
                       </div>
                       <div>
                         <h3>Voter columns</h3>
@@ -1376,7 +1383,7 @@ const DATE_ROWS: readonly { field: DateField; label: string }[] = [
   { field: 'regDate', label: 'Registration date' },
 ];
 
-function MapTable({ id, headers, map, fields, extra, onChange, onExtra }: {
+function MapTable({ id, headers, map, fields, extra, onChange, onExtra, blockResultDate = false }: {
   id: string;
   headers: string[];
   map: Record<string, number>;
@@ -1384,6 +1391,7 @@ function MapTable({ id, headers, map, fields, extra, onChange, onExtra }: {
   extra: ExtraColumns;
   onChange: (field: string, index: number) => void;
   onExtra: (field: DateField, index: number) => void;
+  blockResultDate?: boolean;
 }) {
   return (
     <table className="maptable" id={id}>
@@ -1408,7 +1416,10 @@ function MapTable({ id, headers, map, fields, extra, onChange, onExtra }: {
             <td>
               <select id={`${id}-${row.field}`} aria-label={row.label} value={extra[row.field]} onChange={(event) => onExtra(row.field, Number(event.target.value))}>
                 <option value={-1}>Not in this file</option>
-                {headers.map((header, index) => <option key={`${header}-${index}`} value={index}>{header}</option>)}
+                {headers.map((header, index) => {
+                  const blocked = blockResultDate && row.field === 'declDate' && isNeverDecl(header);
+                  return <option key={`${header}-${index}`} value={index} disabled={blocked}>{blocked ? `${header} (not used: meaning unknown)` : header}</option>;
+                })}
               </select>
             </td>
           </tr>

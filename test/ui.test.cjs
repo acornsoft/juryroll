@@ -761,6 +761,88 @@ function readAuditDownload(file) {
   pass('AT-40');
   await blankDecl.context.close();
 
+  // LOGIC-CHANGES L.1 (REQ-NOTE 67): NC header variants and "Result Date/Time".
+  const headerFixtures = path.join(fixtures, 'headers');
+  const resultDateMessage = "This file's date column is 'Result Date/Time'. The State Board does not say what it means. JuryRoll will not use it as the excusal date.";
+  async function loadNcPair(page, jurorPath, voterName) {
+    await selectState(page, 'NC');
+    await attest(page);
+    await pickCounty(page);
+    await openStep(page, 'files');
+    await page.setInputFiles('#fileJuror', jurorPath);
+    await page.waitForSelector('#infoJuror');
+    await page.setInputFiles('#fileVoter', path.join(fixtures, voterName));
+    await page.waitForSelector('#infoVoter');
+  }
+  async function mappedHeader(page, label) {
+    const select = page.locator(`#mapJuror select[aria-label="${label}"]`);
+    const value = await select.inputValue();
+    if (value === '-1') return null;
+    return (await select.locator(`option[value="${value}"]`).innerText()).trim();
+  }
+
+  const variants = await openPage(browser);
+  await loadNcPair(variants.page, path.join(headerFixtures, 'juror_nc_header_variants.csv'), 'voter_nc_header_variants.csv');
+  assert.strictEqual(await variants.page.locator('#resultDateNote').count(), 0);
+  assert.strictEqual(await variants.page.locator('#unusedJuror').innerText(), 'Columns JuryRoll does not use in this file: Address 2, City. Check that none of them is a name, date of birth, address, or excusal date.');
+  await openStep(variants.page, 'run');
+  assert.strictEqual(await mappedHeader(variants.page, 'First name'), 'First Name');
+  assert.strictEqual(await mappedHeader(variants.page, 'Last name'), 'Last Name');
+  assert.strictEqual(await mappedHeader(variants.page, 'Middle name / initial'), 'Middle Name');
+  assert.strictEqual(await mappedHeader(variants.page, 'Street address'), 'Adrress 1');
+  assert.strictEqual(await mappedHeader(variants.page, 'Date of birth (or birth year)'), 'Date of Birth');
+  assert.strictEqual(await mappedHeader(variants.page, 'Declaration date'), 'Date of Excusal');
+  await variants.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await variants.page.click('#runBtn');
+  await variants.page.waitForSelector('#cannotCompareLine');
+  assert.ok((await variants.page.locator('#matcherCounts').innerText()).includes('Strong 2'));
+  assert.ok((await variants.page.locator('#cannotCompareLine').innerText()).includes('0 matches cannot compare: no registration date'));
+  const variantsResults = await variants.page.locator('#results').innerText();
+  assert.ok(variantsResults.includes('Sample Juror 21') && variantsResults.includes('Sample Juror 22'));
+  assert.deepStrictEqual(variants.errors, [], 'AT-56 page errors: ' + variants.errors.join('; '));
+  pass('AT-56');
+  await variants.context.close();
+
+  const resultDate = await openPage(browser);
+  await loadNcPair(resultDate.page, path.join(headerFixtures, 'juror_nc_result_date.csv'), 'voter_nc_result_date.csv');
+  assert.strictEqual(await resultDate.page.locator('#resultDateNote').innerText(), resultDateMessage);
+  assert.strictEqual(await resultDate.page.locator('#unusedJuror').innerText(), 'Columns JuryRoll does not use in this file: City, Result Date/Time. Check that none of them is a name, date of birth, address, or excusal date.');
+  await resultDate.page.locator('#resultDateNote').scrollIntoViewIfNeeded();
+  await resultDate.page.screenshot({ path: path.join(shots, 'req67-result-date-note.png') });
+  await openStep(resultDate.page, 'run');
+  assert.strictEqual(await resultDate.page.locator('#resultDateNoteMap').innerText(), resultDateMessage);
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Declaration date'), null);
+  assert.strictEqual(await mappedHeader(resultDate.page, 'First name'), 'First Name');
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Middle name / initial'), 'Middle Name');
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Last name'), 'Last Name');
+  assert.strictEqual(await mappedHeader(resultDate.page, 'Date of birth (or birth year)'), 'DOB');
+  const blockedOption = resultDate.page.locator('#mapJuror-declDate option', { hasText: 'Result Date/Time' });
+  assert.strictEqual(await blockedOption.count(), 1);
+  assert.strictEqual(await blockedOption.isDisabled(), true, 'Result Date/Time cannot be chosen by hand');
+  await resultDate.page.locator('#resultDateNoteMap').scrollIntoViewIfNeeded();
+  await resultDate.page.screenshot({ path: path.join(shots, 'req67-mapping.png') });
+  await resultDate.page.waitForFunction(() => !document.getElementById('runBtn').disabled);
+  await resultDate.page.click('#runBtn');
+  await resultDate.page.waitForSelector('#cannotCompareLine');
+  assert.ok((await resultDate.page.locator('#matcherCounts').innerText()).includes('Strong 3'), 'last and middle names are not swapped');
+  assert.ok((await resultDate.page.locator('#cannotCompareLine').innerText()).includes('3 matches cannot compare: no registration date'));
+  assert.strictEqual(await resultDate.page.locator('#results tbody tr').count(), 0);
+  await openStep(resultDate.page, 'export');
+  const [resultDateDownload] = await Promise.all([
+    resultDate.page.waitForEvent('download'),
+    resultDate.page.click('#exportBtn'),
+  ]);
+  const resultDatePath = path.join(shots, 'result-date.csv');
+  await resultDateDownload.saveAs(resultDatePath);
+  const resultDateCsv = fs.readFileSync(resultDatePath, 'utf8');
+  assert.ok(resultDateCsv.includes('3 matches cannot compare: no registration date'));
+  assert.ok(!/^Strong,|^Probable,|^Weak,/m.test(resultDateCsv), 'named export has zero rows');
+  for (const name of ['Sample Juror 21', 'Sample Juror 22', 'Sample Juror 23']) assert.ok(!resultDateCsv.includes(name), name);
+  assert.deepStrictEqual(resultDate.errors, [], 'AT-57 page errors: ' + resultDate.errors.join('; '));
+  assert.deepStrictEqual(resultDate.requests, [], 'AT-57 network: ' + resultDate.requests.join('; '));
+  pass('AT-57');
+  await resultDate.context.close();
+
   const dc = await openPage(browser);
   await selectState(dc.page, 'DC');
   await openStateNotices(dc.page);

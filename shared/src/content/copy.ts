@@ -29,6 +29,13 @@ export const PA_NAMES_ONLY_NOTE = 'Pennsylvania county lists usually hold only n
 
 export const NC_LIST_NOTE = 'The North Carolina State Board\'s posted list has no date of birth, so matches stay Weak and you will mostly see counts. Leads go to the county board of elections, the State Board of Elections, or the Attorney General.';
 
+// LOGIC-CHANGES L.1 (REQ-NOTE 67). Shown when "Result Date/Time" is the juror file's only date column.
+export const RESULT_DATE_MESSAGE = "This file's date column is 'Result Date/Time'. The State Board does not say what it means. JuryRoll will not use it as the excusal date.";
+
+export function unusedColumnsLine(headers: readonly string[]): string {
+  return `Columns JuryRoll does not use in this file: ${headers.join(', ')}. Check that none of them is a name, date of birth, address, or excusal date.`;
+}
+
 // LOGIC-CHANGES L.2 (REQ-NOTE 68). Shown before the run when the juror file has no DOB, birth-year or address column.
 export const NAMES_ONLY_NOTICE = 'This list has names only. Many people share a name. A name-only match is not a lead and is never exported. If you copied the list by hand, check it against the original.';
 
