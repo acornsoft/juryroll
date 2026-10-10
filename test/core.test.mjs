@@ -78,11 +78,16 @@ const ALLOWED_NAME = /^(SAMPLE|JUROR|JURORS|VOTER|PAT|EXAMPLE|P|S|Q|R|A|B|C|D|E|
 function nameTokens(value) {
   return String(value || '').toUpperCase().replace(/['’`]/g, '').split(/[^A-Z0-9]+/).filter(Boolean);
 }
-function assertFictionalFile(text, label) {
+function assertFictionalFile(text, label, options = {}) {
   const parsed = [];
   core.iterCSV(text, core.detectDelimiter(text), (row) => parsed.push(row.map((cell) => cell.trim())));
   const headers = parsed[0];
-  const marker = headers.findIndex((header) => ['note', 'data_note', 'sample_note'].includes(header.toLowerCase()));
+  let marker = headers.findIndex((header) => ['note', 'data_note', 'sample_note'].includes(header.toLowerCase()));
+  // Header-variant fixtures keep a real file's exact header (LOGIC-CHANGES L.3), so the marker sits in an unused column.
+  if (marker < 0 && options.markerInAnyColumn) {
+    const data = parsed.slice(1).filter((row) => !row.every((cell) => cell === ''));
+    marker = headers.findIndex((_, index) => data.length > 0 && data.every((row) => row[index] === 'FICTIONAL SAMPLE DATA'));
+  }
   assert.ok(marker >= 0, `${label} marker column`);
   const nameCols = [];
   const dobCols = [];
@@ -91,8 +96,9 @@ function assertFictionalFile(text, label) {
   headers.forEach((header, index) => {
     const key = header.toLowerCase();
     if (/^(last|first|mi|sfx|name_last|name_first|name_middle|name_suffix)$/.test(key)) nameCols.push(index);
-    if (key === 'birth date' || key === 'date_of_birth') dobCols.push(index);
-    if (key === 'address' || key === 'res_street') streetCols.push(index);
+    if (/^(first name|last name|middle name)$/.test(key)) nameCols.push(index);
+    if (key === 'birth date' || key === 'date_of_birth' || key === 'date of birth' || key === 'dob') dobCols.push(index);
+    if (key === 'address' || key === 'res_street' || key === 'adrress 1') streetCols.push(index);
     if (key === 'zip' || key === 'res_zip') zipCols.push(index);
   });
   for (const row of parsed.slice(1)) {
@@ -119,6 +125,9 @@ assertFictionalFile(jt, 'juror sample');
 assertFictionalFile(vt, 'voter sample');
 for (const name of fs.readdirSync(path.join(root, 'test/fixtures')).filter((name) => name.endsWith('.csv'))) {
   assertFictionalFile(fs.readFileSync(path.join(root, 'test/fixtures', name), 'utf8'), name);
+}
+for (const name of fs.readdirSync(path.join(root, 'test/fixtures/headers')).filter((name) => name.endsWith('.csv'))) {
+  assertFictionalFile(fs.readFileSync(path.join(root, 'test/fixtures/headers', name), 'utf8'), `headers/${name}`, { markerInAnyColumn: true });
 }
 
 const csvDefault = core.toCSV(res.pairs, false, '2026-10-07');
