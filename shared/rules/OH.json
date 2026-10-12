@@ -11,7 +11,7 @@
     "official_pipeline": "No jury-to-election pipeline found in R.C. Chapter 2313. The Secretary of State reviews the statewide database 'on at least a monthly basis' against BMV data and SAVE (3503.152(A)), sends each board a report of persons shown as non-citizens, and the board 'promptly shall cancel the person's voter registration' (3503.152(B)(1); 3503.21(A)(9)). The SOS also directs the election integrity unit to investigate each person (3503.152(B)(2)) and reports violations 'to the attorney general or prosecuting attorney, or both, for prosecution' (3501.05(N)(1)).",
     "use_restriction": null,
     "source_url": "https://www.supremecourt.ohio.gov/rod/docs/pdf/0/2002/2002-Ohio-7117.pdf",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "R.C. 2313.01(A) (commissioners of jurors are officers of the court of common pleas)",
@@ -28,19 +28,19 @@
       {
         "cite": "R.C. 2313.09 (annual jury list records residence, date of birth and citizenship)",
         "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.09",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
         "cite": "R.C. 2313.14(A), (G) (excuse grounds; record of each excuse and its reasons; citizenship is not an excuse ground)",
         "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.14",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
         "cite": "R.C. 2313.17(A) (juror must be 'an elector or would be an elector if the person were registered to vote')",
         "url": "https://codes.ohio.gov/ohio-revised-code/section-2313.17",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -58,7 +58,7 @@
       {
         "cite": "State ex rel. Beacon Journal Publishing Co. v. Bond, 2002-Ohio-7117, syllabus: 'Juror names, addresses, and questionnaire responses are not \"public records\" as contemplated by R.C. 149.43'; qualified First Amendment access applies",
         "url": "https://www.supremecourt.ohio.gov/rod/docs/pdf/0/2002/2002-Ohio-7117.pdf",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "court_order"
       },
       {
@@ -76,7 +76,7 @@
       {
         "cite": "R.C. 3503.152 (monthly SOS non-citizen review using BMV and SAVE; report to boards; referral to the election integrity unit), eff. 2026-03-20",
         "url": "https://codes.ohio.gov/ohio-revised-code/section-3503.152",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -97,7 +97,7 @@
     "registration_date_in_public_file": true,
     "attestation_required": null,
     "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.13",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "Ohio SOS Voter Files Download Page (weekly; comma-delimited; county files dated 03-OCT-26) and Voter File Layout (last updated April 12, 2018): 'Date Of Birth' (YYYY-MM-DD) and 'Registration Date' ('Date voter registered')",
@@ -125,7 +125,7 @@
     "juryroll_lead_sufficient": false,
     "false_statement_penalty": "R.C. 3599.36: 'Whoever violates this section is guilty of election falsification, a felony of the fifth degree.' Form 257 repeats: 'WHOEVER COMMITS ELECTION FALSIFICATION IS GUILTY OF A FELONY OF THE FIFTH DEGREE.'",
     "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "Ohio SOS Form 257 (03-19), Challenge of Right to Vote and Correction of Registration List",
@@ -152,7 +152,7 @@
         "effect": "No challenge may be filed after the 30th day before the election.",
         "statute": "R.C. 3503.24(A)",
         "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
-        "verified_on": "2026-10-07"
+        "verified_on": "2026-10-09"
       }
     ],
     "source_url": "https://codes.ohio.gov/ohio-revised-code/section-3503.24",
@@ -194,6 +194,7 @@
     "basis": "allow_jury_list false: jury_list.public is false. Ohio law creates no non-citizen jury list. Juror names and addresses 'are not \"public records\"' under R.C. 149.43 (Beacon Journal v. Bond, 2002-Ohio-7117), and 149.43 does not reach jury commissioners' records (Parisi, 2019-Ohio-5157). aggregate_only true and allow_named_export false follow. show_challenge_guidance false: no jury list, the 3503.24 deadline for Nov 3, 2026 passed on Oct 4, 2026, and the federal 90-day window is open. Unchanged from the box file; no gate was loosened. Optimus-reviewed 2026-10-07."
   },
   "notes": [
+    "RE-VERIFIED 2026-10-09 (review/OH.reverify-2026-10-09.md): Bond syllabus, R.C. 2313.09, 2313.14(G), 2313.17, 3503.13 (eff. 2026-03-20, S.B. 293), 3503.152 (eff. 2026-03-20) and 3503.24 read on official sites. No text change affecting JuryRoll. The 3503.24 deadline for Nov 3, 2026 (Oct 4) has passed. No gate change.",
     "CHANGED 2026-10-07 (Optimus-reviewed): gates unchanged (strict). jury_list.public set to false: no statutory non-citizen jury list; juror records not public (Bond, 2002-Ohio-7117); Parisi (2019-Ohio-5157): 149.43 doesn't reach jury commissioners. juryroll_lead_sufficient set to false. audit_path added (R.C. 3503.26(B); 52 U.S.C. 20507(i)). Also filled or corrected: jury_list.holder, official_pipeline (adds 3503.21(A)(9) and 3501.05(N)(1)), form_url (Form 257 PDF), evidence_standard (form text), false_statement_penalty (3599.36, fifth-degree felony), federal_source_url (govinfo). New sources: Bond, Parisi, Sup.R. 11.09-11.16, 2313.01/.09/.14/.17, Ohio Const. art. V sec. 1, 4501.27.",
     "Sup.R. renumbering. Sup.R. 44-47 were renumbered Sup.R. 11.09-11.16 in the July 1, 2026 restructuring (commentary to each rule). The text is unchanged. Court decisions still cite 44-47.",
     "Public records answer. R.C. 149.43 does not reach court records: 'the Rules of Superintendence are the sole vehicle by which a party may seek to obtain such records' (Parisi, 2019-Ohio-5157). Administrative documents are covered 'regardless of when the documents were created' (State ex rel. Parker Bey v. Byrd, 2020-Ohio-2766). Juror names, addresses and questionnaire responses 'are not \"public records\"' under 149.43 (Bond, 2002-Ohio-7117, syllabus). Bond found a qualified First Amendment right of access to juror names, addresses and questionnaires in a criminal trial; it did not address a list of disqualified non-citizens. jury_list.public is false (Optimus 2026-10-07).",
