@@ -11,12 +11,12 @@
     "official_pipeline": null,
     "use_restriction": "Right of public inspection only (42 Pa.C.S. 4523(a)). No statute or court rule found gives a right to copies, sets a fee, or prescribes a procedure; whether a visitor may hand-copy, photograph, or receive e-mailed copies is at each county's discretion (not verified per county). The Right-to-Know Law adds no copy right for courts: 'A judicial agency shall provide financial records in accordance with this act' (65 P.S. 67.304(a)); 'Judicial agency' = 'A court of the Commonwealth or any other entity or office of the unified judicial system' (67.102); and 'Nothing in this act shall supersede or modify the public or nonpublic nature of a record or document established in Federal or State law' (67.306). There is no common-law route: Commonwealth v. Long, 922 A.2d 892 (Pa. 2007), held juror name/address lists are not public judicial records under Fenstermaker, so the right rests on 4523 alone. 4523 states no limit on use of the list; the voter-file use limits (25 Pa.C.S. 1404(b)(3), (c)(2); 1207(b); 4 Pa. Code 183.14) govern the voter side of any match. Use only rows whose reason is non-citizenship: 4523(b) also places homicide-victim relatives on the list.",
     "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/42/00.045.023.000..HTM",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "42 Pa.C.S. Ch. 45 full text: 4502(a) (citizen qualification); 4521(b) master list 'shall be open to the public for inspection'; 4522 qualified list 'shall be open for public inspection'; 4523 (disqualified list with reasons, open for public inspection); 4524 array list 'made available for public inspection'; 4526(d) records 'not made public under this subchapter shall not be disclosed' until the wheel is refilled; 4521.1(e)(4),(6) Statewide jury information system data: no rerelease, not a public document 'Except as provided in section 4521(b)'",
         "url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/42/00.045..HTM",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -28,7 +28,7 @@
       {
         "cite": "Pa.R.Crim.P. 625(A)(2)-(3) and Comment (qualification form confidential, not a public record; 'The information on the qualification forms is not to be disclosed except as provided by this rule or by statute'; suspends only 42 Pa.C.S. 4526(a))",
         "url": "https://www.pacodeandbulletin.gov/secure/pacode/data/234/chapter6/s625.html",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "court_rule"
       },
       {
@@ -61,12 +61,12 @@
     "registration_date_in_public_file": true,
     "attestation_required": "Department of State form: 'I affirm that any information obtained from the records requested from the Department of State will not be used for commercial or other purposes, except purposes related to elections, political activities and law enforcement, as required by 25 Pa.C.S. §§ 1207(b) & 1404(c)(2). I further affirm that I will not publish any of the above lists on the Internet, as such publication is prohibited by 4 Pa. Code §§ 183.13 (g) & 183.14 (k).' Regulations: 'The list may not be published on the Internet' (4 Pa. Code 183.14(k); street list: 183.13(g)).",
     "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.014..HTM",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "Pennsylvania Department of State - Request for Voter Lists (affirmation; Internet ban; 18 Pa.C.S. 4904; Full Voter Export fields include date of birth and date registered)",
         "url": "https://www.pa.gov/content/dam/copapwp-pagov/en/dos/programs/voting-and-elections/documents/requestvoterlists.pdf",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "official_form"
       },
       {
@@ -90,7 +90,7 @@
       {
         "cite": "25 Pa.C.S. 1707, 1714 (official documents and records; Crimes Code perjury, false swearing and unsworn falsification apply)",
         "url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.017..HTM",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       }
     ]
@@ -107,12 +107,12 @@
     "juryroll_lead_sufficient": null,
     "false_statement_penalty": "25 Pa.C.S. 1714: 'The provisions of 18 Pa.C.S. §§ 4902 (relating to perjury), 4903 (relating to false swearing) and 4904 (relating to unsworn falsification to authorities) apply to violations of this part.' 25 Pa.C.S. 1707(a)(1),(b): intentionally inserting a material entry in an affidavit not in accordance with Part IV is a misdemeanor of the first degree.",
     "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.013..HTM",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "Pennsylvania Department of State, 2026 General Election Calendar (registration challenges due 8 days before; hearing 5 days before; listed October 29, 2026)",
         "url": "https://www.pa.gov/content/dam/copapwp-pagov/en/dos/programs/voting-and-elections/running-for-office/2026/2026-general-election-calendar.pdf",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "official_page"
       },
       {
@@ -124,7 +124,7 @@
       {
         "cite": "25 Pa.C.S. 1707, 1714 (false entries; perjury, false swearing, unsworn falsification)",
         "url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.017..HTM",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -160,7 +160,7 @@
         "effect": "Department of State calendar: challenges due 8 days before the election; hearing must be held 5 days before.",
         "statute": "25 Pa.C.S. 1329 (deadline per Department of State 2026 General Election Calendar; statutory basis not located)",
         "source_url": "https://www.pa.gov/content/dam/copapwp-pagov/en/dos/programs/voting-and-elections/running-for-office/2026/2026-general-election-calendar.pdf",
-        "verified_on": "2026-10-07"
+        "verified_on": "2026-10-09"
       }
     ],
     "source_url": "https://www.legis.state.pa.us/WU01/LI/LI/CT/HTM/25/00.015..HTM",
@@ -192,13 +192,15 @@
     "basis": "The list of disqualified jurors with reasons 'shall be open for public inspection' (42 Pa.C.S. 4523(a)); Pa.R.Crim.P. 625 covers only the qualification form. So the jury file may be loaded, and named rows may go in a confidential referral to election officials, which is an election and law-enforcement use under 25 Pa.C.S. 1404(b)(3). The statute requires only names and reasons; the Department of State says county lists have no address or date of birth. A names-only list yields Weak pairs, which are never exported, and a list with no disqualification date sends every pair to 'cannot compare' (B.4). In practice PA gives counts only unless a county list carries a DOB or address and a date. Challenge guidance is held off (stricter than derived): a names-only list cannot identify the registrant the 1329 affidavit must name; 1329(c)-(d) puts the burden on the voter; the user would swear under 25 Pa.C.S. 1714; and the federal 90-day window is open. Refer leads instead. The voter file may not be posted online (4 Pa. Code 183.13(g), 183.14(k))."
   },
   "notes": [
+    "RE-VERIFIED 2026-10-09 (review/PA.reverify-2026-10-09.md): 42 Pa.C.S. 4502(a), 4521-4526 (4523 text unchanged, last amended 2002), Pa.R.Crim.P. 625, 25 Pa.C.S. 1329, 1404, 1707, 1714, the DOS voter-list form and the 2026 election calendar. No text change found. No gate change. Not re-checked today: 2121-2124, Rule 632, RTKL, 204 Pa. Code 213, 4 Pa. Code 183.13-183.14, 25 Pa.C.S. 1207, 1509, 25 P.S. 3050(d), referral URLs.",
+    "CHANGED 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (copied from permitted_uses); the app shows it and requires the user's attestation before the voter file loads.",
     "CORRECTION 2026-10-07 (reconciled with JuryRoll's PA re-check): the PR 1 file said the jury list was not public under Pa.R.Crim.P. 625(A)(2)-(3). That rule covers the juror qualification form. 42 Pa.C.S. 4523(a) (Act 2002-128) separately opens the commission's list of disqualified jurors and reasons for public inspection. Nothing found suspends 4523; the Rule 625 Comment suspends only 4526(a).",
     "Inspection only. 4523 does not say how counties must allow inspection, and it gives no right to copies and no fee schedule. Hand-copying or photographing during inspection, and e-mailed copies, are at county discretion (not verified per county). The RTKL does not fill the gap (65 P.S. 67.304(a), 67.306). Commonwealth v. Long, 922 A.2d 892 (Pa. 2007): juror name/address lists are not public judicial records under the common law (Fenstermaker); the First Amendment covers names of impaneled criminal jurors, not addresses. So the right is statutory only.",
     "Context only, not relied on as law: WESA (2026-08-03) reports that Chester County e-mailed its list (2021 to June 2026) and that activists viewed lists in person in Philadelphia, and planned to in Allegheny and Butler. A Department of State spokesperson said non-juror lists 'contain only names and reasons for disqualification - not addresses, dates of birth'. WESA (2026-08-14) reports an in-person review at the Allegheny County Courthouse. No official county page on inspecting the 4523 list was found for Bucks, Allegheny, Montgomery or Philadelphia. Montgomery's official jury FAQ confirms that non-citizens are disqualified.",
     "Reason codes are county practice, not law. 'Code 47 = non-citizen' in Bucks is an unverified claim from social media. Users must read each county's code key on the list itself and load only non-citizen rows.",
     "Data limits drive the outcome. 4523(a) requires only names and reasons. No address, DOB or disqualification date is required. With names only, every pair is Weak and nothing is exported; with no date, every pair is 'cannot compare'. Noncitizens can lawfully appear on jury source lists (PennDOT, Revenue, DHS feed the Statewide jury information system under 4521.1(a)), so a name on the non-citizen list says nothing about registration until it is matched with identifiers.",
     "4521.1(e)(4),(6) bars rerelease of Statewide jury information system data except as provided in 4521(b). Do not load the master list or any SJIS-derived file. Only the 4523 list is in scope.",
-    "Pending legislation, not law: SB 1429 (PN 1896, introduced Aug 10, 2026, referred to State Government) would require the jury selection commission to send each month a list of people excused or removed for non-citizenship under 4523 to the Secretary and the county director of elections, and would let commissions cancel registrations on that basis. If enacted, official_pipeline would change. Status after referral was not checked.",
+    "Pending legislation, not law: SB 1429 (PN 1896, introduced Aug 10, 2026, referred to State Government) would require the jury selection commission to send each month a list of people excused or removed for non-citizenship under 4523 to the Secretary and the county director of elections, and would let commissions cancel registrations on that basis. If enacted, official_pipeline would change. Checked 2026-10-09 on palegis.us: still in Senate State Government; last action Aug 10, 2026; no votes.",
     "Private challenge. 1329 exists, but challenge guidance is held off for now (see gates.basis). The CLC letter reports Department of State guidance that bulk spreadsheet challenges without individual affidavits must be rejected, and the DOJ position that the 90-day bar covers challenges from large computerized matching. Both are secondary sources and are not relied on; one_per_affidavit stays null, which means strict.",
     "A 1509 petition requires personal notice to the voter. JuryRoll guidance forbids contacting voters, so 1509 is never a JuryRoll path. Poll-day citizenship challenges are not permitted (1210(d); Department of State poll guidance).",
     "Internet ban litigation: Voter Reference Foundation v. Schmidt. M.D. Pa. No. 1:24-cv-294 (Saporito, J.) upheld the ban against NVRA-preemption and First Amendment claims (memorandum dated Apr 23, 2026). The appeal is pending in the Third Circuit (No. 26-2280, docketed May 26, 2026; EPIC amicus Sept 23, 2026). The 10th Circuit (Torrez, 2025) and 1st Circuit (Bellows, 2024) found similar bans preempted, so the outcome is uncertain. Keep no_online_posting true until a final ruling.",
