@@ -18,18 +18,18 @@
     "official_pipeline": "9-6.2(b): clerks send 'the person's name, address, date of birth, and other personal information from the master jury list, along with the reasons for the person's disqualification and the date of disqualification' to the State Board, on the State Board's schedule (next transmission 2026-12-04 for 2026-03-01 to 2026-10-31). 163-82.14(c1)(1): within 30 days the State Board reviews registration and citizenship 'including the matching of available information in State and federal databases', leaves out anyone who 'became a citizen of the United States after the date of that person's jury disqualification', and reports to county boards. 163-82.14(c1)(2): the county board gives 30 days' written notice; an objection triggers a 163-85(c)(7) challenge with a rebuttable presumption.",
     "use_restriction": null,
     "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-6.2.html",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "N.C.G.S. 163-82.14(c1) (noncitizen list maintenance; (c1)(3) public records)",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-82.14.html",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
         "cite": "N.C.G.S. 163-82.10(a1) (dates of birth, SSN, drivers license numbers, email, registration agency, ID photos confidential)",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-82.10.html",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -41,7 +41,7 @@
       {
         "cite": "N.C.G.S. 9-4(b) ('Public access to juror information shall be limited to the alphabetized list of the names. The addresses and dates of birth of prospective jurors are confidential')",
         "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_9/GS_9-4.html",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -69,9 +69,9 @@
         "kind": "statute"
       },
       {
-        "cite": "NCSBE public file library, Legal/Jury List Program (posted county 'NotUSCitizenReport' files; columns First Name, Last Name, Middle Name, Address 1, Address 2, City, Date Of Birth, Date Of Excusal; Date Of Birth blank in all 451 rows of the 111 posted CSV files)",
+        "cite": "NCSBE public file library, Legal/Jury List Program (posted county 'NotUSCitizenReport' files; columns First Name, Last Name, Middle Name, Address 1, Address 2, City, Date Of Birth, Date Of Excusal (header spelling and case vary; the two Mecklenburg files from 2025-07-11 and 2026-04-02 use First Name, Middle Name, Last Name, Address, City, DOB, Result Date/Time); Date Of Birth blank in all 451 rows of the 111 posted CSV files)",
         "url": "https://s3.amazonaws.com/dl.ncsbe.gov?prefix=Legal/Jury%20List%20Program/",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "official_page"
       },
       {
@@ -92,18 +92,18 @@
     "registration_date_in_public_file": true,
     "attestation_required": null,
     "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-82.10.html",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "NCSBE Voter Registration Data page ('Voter birthdate, Social Security number, and driver's license number are confidential under state law and are not included')",
         "url": "https://www.ncsbe.gov/results-data/voter-registration-data",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "official_page"
       },
       {
         "cite": "NCSBE voter file layout (updated 02/02/2026): registr_dt, birth_year, age_at_year_end; no birth date; registr_dt 'xx/xx/xxxx' marks records under county review",
         "url": "https://s3.amazonaws.com/dl.ncsbe.gov/data/layout_ncvoter.txt",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "official_page"
       }
     ]
@@ -120,7 +120,7 @@
     "juryroll_lead_sufficient": false,
     "false_statement_penalty": "163-90.3: 'Any person who shall knowingly make any false affidavit or shall knowingly swear or affirm falsely to any matter or thing required by the terms of this Article to be sworn or affirmed shall be guilty of a Class I felony.' The State Board form repeats this.",
     "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-85.html",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "NCSBE Voter Challenge Form (oath; individualized-evidence certification; 'Database matches do not constitute individualized evidence')",
@@ -177,7 +177,7 @@
         "effect": "No challenge may be made after the 25th day before the election.",
         "statute": "N.C.G.S. 163-85(a)",
         "source_url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-85.html",
-        "verified_on": "2026-10-07"
+        "verified_on": "2026-10-09"
       },
       {
         "days_before_election": 90,
@@ -218,9 +218,10 @@
     "basis": "allow_jury_list: the State Board's list is a public record by statute (9-6.2(b); 163-82.14(c1)(3)). aggregate_only false and allow_named_export: named rows may go only in a confidential referral to the county board, the State Board, or the AG. In practice the posted list has no date of birth (163-82.10(a1)), so every pair is Weak and the export has no rows. show_challenge_guidance is false, stricter than derived (flag for Optimus): the 163-85 deadline for Nov 3, 2026 is Oct 9, 2026; inside the federal 90-day window the State Board says 'Database matches do not constitute individualized evidence'; 163-90.1(b) needs 'affirmative proof'; and a false oath is a Class I felony (163-90.3). Refer leads instead."
   },
   "notes": [
+    "RE-VERIFIED 2026-10-09 (review/NC.reverify-2026-10-09.md): G.S. 9-6.2, 9-4, 163-82.10, 163-82.14(c1), 163-85 unchanged (S.L. 2025-25 s. 29(1) only changed 'e-mail' to 'email' in 163-82.10). No batch after 2026-04-02 in Legal/Jury List Program; next clerk transmission due 12/4/26. Voter layout (updated 02/02/2026) unchanged: registr_dt and birth_year, no DOB. The 163-85 challenge deadline for Nov 3, 2026 is today, Oct 9, 2026. 'Result Date/Time' in the Mecklenburg files is not defined by any source; it is not treated as an excusal date (REQ-NOTE 67). No gate change.",
     "CHANGED 2026-10-07 (re-verify, Optimus-reviewed 2026-10-07): show_challenge_guidance true -> false and juryroll_lead_sufficient null -> false. Both are stricter; no gate was loosened. Optimus confirmed both.",
     "Matching limit (corrects the old 'cap at Probable' note). The posted county reports carry a 'Date Of Birth' column, but it was blank in all 451 rows of the 111 posted CSV files (4 batches, 2024-08-05 to 2026-04-02; xlsx and pdf files not checked; counts only, no names viewed). With no juror DOB or birth year, no pair can reach Strong or Probable under the current tiers. Every pair is Weak, and Weak is never exported. NC named export is empty in practice.",
-    "Fill rates in the posted rows (counts only): address present in 374 of 451; 'Date Of Excusal' present in 383 of 451. There is no reason column; every row is a non-citizen excusal by definition.",
+    "Fill rates in the posted rows (counts only; recounted 2026-10-09 with header variants matched): 451 rows in 111 CSV files. An address is present in 451 of 451. A date is present in 451 of 451: 383 under 'Date Of Excusal' (any case) and 68 under 'Result Date/Time' (the two Mecklenburg files). DOB blank in 451 of 451. The 2026-10-07 counts (374 and 383) missed header variants. There is no reason column; every row is a non-citizen excusal by definition.",
     "B.4 effect. The juror date column is named 'Date Of Excusal'. Its normalized key 'dateofexcusal' is not in the decl_date aliases (LOGIC-CHANGES B.1), so users must map it by hand. Rows without it, and voter rows with registr_dt 'xx/xx/xxxx', go to 'cannot compare: no registration date'. Requirement for Kyle: add the alias.",
     "Duplication. The State Board already gets the same list with dates of birth, checks it against State and federal databases (SAVE per the NCSBE page) within 30 days, and reports to county boards (163-82.14(c1)). A referral should ask whether that review happened, not re-assert a match.",
     "The State Board leaves out people who became citizens after the disqualification date (163-82.14(c1)(1)b). JuryRoll's registration-date rule (LOGIC-CHANGES B) mirrors this.",
