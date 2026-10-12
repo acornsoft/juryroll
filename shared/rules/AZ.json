@@ -16,12 +16,12 @@
     "official_pipeline": "A.R.S. 21-314(F) (as amended by Laws 2022, ch. 370 (HB 2243)): the jury commissioner sends the Secretary of State and the county recorder a summary report of persons who say they are not U.S. citizens or do not live in the county. A.R.S. 16-165(A)(10): the recorder sends a forwardable notice; with no satisfactory evidence of citizenship within 35 days, the recorder cancels and notifies the county attorney and the attorney general. Federal court: cancellation under 16-165(A)(10) is enjoined within 90 days before a federal election (Mi Familia Vota v. Fontes, D. Ariz. final judgment May 2, 2024; aff'd 9th Cir. Feb. 25, 2025; cert. granted June 29, 2026, No. 25-1017).",
     "use_restriction": null,
     "source_url": "https://www.azleg.gov/ars/21/00312.htm",
-    "verified_on": "2026-10-07",
+    "verified_on": "2026-10-09",
     "sources": [
       {
         "cite": "A.R.S. 21-314 (jury commissioner reports non-citizens to SoS and county recorder)",
         "url": "https://www.azleg.gov/ars/21/00314.htm",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "statute"
       },
       {
@@ -57,7 +57,7 @@
       {
         "cite": "RNC v. Mi Familia Vota, No. 25-1017 (U.S.), cert. granted June 29, 2026; argument Dec. 8, 2026",
         "url": "https://www.supremecourt.gov/docket/docketfiles/html/public/25-1017.html",
-        "verified_on": "2026-10-07",
+        "verified_on": "2026-10-09",
         "kind": "court_order"
       }
     ]
@@ -152,6 +152,7 @@
     "basis": "Juror records are closed (A.R.S. 21-312; Ariz. R. Sup. Ct. 123(e)(10)), so jury_list.public is false: no jury list, counts only. The only private challenge is oral, at the polls (A.R.S. 16-591), and the presumption of valid registration yields only to clear and convincing evidence (16-121.01(B)). allowed stays null. Gates F/T/F/F."
   },
   "notes": [
+    "RE-VERIFIED 2026-10-09 (review/AZ.reverify-2026-10-09.md): A.R.S. 21-312, 21-314 and 16-168(E) text unchanged. RNC v. Mi Familia Vota, No. 25-1017: set for argument Dec. 8, 2026 (docket, read 2026-10-09). Not re-checked today: 16-165, 16-591, 16-121.01, Rule 123. No gate change.",
     "CHANGED 2026-10-07: applied under Optimus standing rule (no gate loosens). Strict choices: dob_in_public_file false; openness of the 21-314(F) report null; a jury-report cancellation under 16-165(A)(10) is treated as inside the 90-day ban; private_challenge.allowed null. RNC v. Mi Familia Vota, No. 25-1017 (cert. granted June 29, 2026; argument Dec. 8, 2026) is pending. Open questions are in review/NULLS-SUMMARY.md. 2026-10-07 (Optimus final rulings, REQ-NOTE 65): voter_file.use_restriction added with the exact statutory text (filled from the statute); the app shows it and requires the user's attestation before the voter file loads.",
     "allowed is null: Arizona law lets an elector challenge at the polls (A.R.S. 16-591). No written pre-election challenge by a private person was found. The app treats null as no challenge guidance.",
     "Duplication: the official pipeline already exists (A.R.S. 21-314(F) and 16-165(A)(10)). Aggregate referral should ask whether it ran.",
