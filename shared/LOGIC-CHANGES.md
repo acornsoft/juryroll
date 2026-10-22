@@ -1,6 +1,6 @@
 # JuryRoll logic changes: spec for Kyle
 
-Version 1.3.6, 2026-10-08 (K updated per Optimus ruling: practice mode shows invented names on screen in every state; counts-only states keep counts-only downloads; David chose yes. 1.3.5: K, planned learn-by-doing sandbox, a note for a later build, not for this change; AT-48 to AT-55 parked in K. 1.3.4, 2026-10-07: G.1 and AT-45 to AT-47: voter-file use attestation where `voter_file.use_restriction` is non-null, per Optimus; REQ-NOTE 65. 1.3.3: AT-42 to AT-44: canceled-voter rows skipped before matching in every state, per Optimus; REQ-NOTE 27. 1.3.2: PA referral only per Optimus: show_challenge_guidance false, AT-41 expects no challenge panel. 1.3.1: PA re-check: PA jury list open for inspection under 42 Pa.C.S. 4523(a), so PA gates now match NC; AT-41 added. 1.3.0: B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
+Version 1.3.7, 2026-10-09 (L added: NC header variants and "Result Date/Time" never mapped to `decl_date` (REQ-NOTE 67); name-only notice and no match-rate display (REQ-NOTE 68); AT-56 to AT-59. No gate loosens. 1.3.6, 2026-10-08: K updated per Optimus ruling: practice mode shows invented names on screen in every state; counts-only states keep counts-only downloads; David chose yes. 1.3.5: K, planned learn-by-doing sandbox, a note for a later build, not for this change; AT-48 to AT-55 parked in K. 1.3.4, 2026-10-07: G.1 and AT-45 to AT-47: voter-file use attestation where `voter_file.use_restriction` is non-null, per Optimus; REQ-NOTE 65. 1.3.3: AT-42 to AT-44: canceled-voter rows skipped before matching in every state, per Optimus; REQ-NOTE 27. 1.3.2: PA referral only per Optimus: show_challenge_guidance false, AT-41 expects no challenge panel. 1.3.1: PA re-check: PA jury list open for inspection under 42 Pa.C.S. 4523(a), so PA gates now match NC; AT-41 added. 1.3.0: B.4 decided by Optimus: named output excludes missing or equal dates; counts get a "cannot compare: no registration date" bucket. Earlier: B changed to EXCLUDE; hostname added; H.5-H.7 and AT-03 updated after all 51 rules files were delivered). Owner of code and Azure deploy: Kyle. Rules content: JuryRoll.
 Source of the requirements: `LEGAL-REVIEW.md` (Optimus, 2026-10-07), "Required changes (ranked)".
 Rules data: `rules/schema.json`, `rules/default.json`, `rules/<XX>.json`. Validator: `rules/validate.py`.
 
@@ -492,3 +492,41 @@ It shows no challenge form and no steps for filing a challenge.
 | AT-53 | TX practice mode; try every export and print control | No referral CSV, no audit letter, no county name; any download is counts only (no name from the samples appears in the file) and its header carries "FICTIONAL PRACTICE RUN. Not a referral." |
 | AT-54 | TX practice mode; open the challenge step; then read the audit log | Challenge step shows the K.6 text with TX `gates.basis`, no challenge form; audit log has no `match_run` entry and at most one `practice_run` entry with the state code only |
 | AT-55 | Core, run for every code in the bundle; plus a sample-file lint | Practice mode is offered for exactly the codes where `allow_jury_list` is not true, the real-data path for exactly PA and NC, and DEFAULT gets practice mode. The K.4 header and download block apply exactly where `allow_jury_list` or `allow_named_export` is not true. Every practice sample row matches the K.7 reserved name, address and DOB patterns, and every practice file's SHA-256 is in the app's list |
+
+---
+
+## L. File headers and name-only counts (1.3.7, 2026-10-09)
+
+Source: review/NC.reverify-2026-10-09.md and review/VOLUNTEER-ACTIVITY-2026-10-09.md. REQ-NOTES 67 and 68. Nothing here loosens a gate.
+
+### L.1 Header normalization and "Result Date/Time" (REQ-NOTE 67)
+
+**Problem.** NC State Board files use several headers. Two Mecklenburg files use "DOB" and "Result Date/Time" and put Middle Name before Last Name. No source defines "Result Date/Time".
+**User.** A volunteer loading NC State Board files.
+**State gate.** None new. NC `allow_jury_list` and `allow_named_export` are true today. The rule is core and runs for every state.
+**Behavior.**
+1. Headers are normalized before matching (main 9c79c0b: `normHeader` folds case and strips non-alphanumerics). Keep this.
+2. Juror aliases: `dateofexcusal` (in main), `dob` and `address1` (in main). Add `adrress1` to the street patterns.
+3. Never map `resultdatetime` to `decl_date`, automatically or by manual choice (Optimus ruled 2026-10-09: treat "Result Date/Time" as unknown; never use it as the excusal date.) If it is the only date-like column, show: "This file's date column is 'Result Date/Time'. The State Board does not say what it means. JuryRoll will not use it as the excusal date."
+4. Rows with no `decl_date` go to the B.4 bucket "cannot compare: no registration date". Nothing is dropped silently.
+5. Map columns by header name, never by position.
+
+### L.2 Name-only notice and no match rate (REQ-NOTE 68)
+
+**Problem.** Volunteers report name-only matches as a rate ("1 in 4"). A same-name count is not evidence. The app never exports Weak pairs, but it does not say why.
+**User.** A volunteer with a names-only juror list (PA 4523 lists; hand-transcribed copies).
+**State gate.** Every state. In PA and NC it sits beside `allow_named_export` true. In counts-only states it applies to the counts screen.
+**Behavior.**
+1. If the juror file has no DOB, birth-year or address column, show before the run: "This list has names only. Many people share a name. A name-only match is not a lead and is never exported. If you copied the list by hand, check it against the original."
+2. The counts screen labels the Weak count "Same-name pairs (not leads)".
+3. No screen, download or audit letter shows a ratio or percent of pairs to juror rows.
+4. Weak rows stay out of every export (A.4).
+
+### L.3 Acceptance tests
+
+| ID | Test | Expected |
+|---|---|---|
+| AT-56 | NC; juror fixture with header "First Name ,Last Name,Middle Name ,Adrress 1,Address 2,City ,Date of Birth ,Date of Excusal" | Headers map to first, last, middle, address, DOB and `decl_date`; no manual mapping needed |
+| AT-57 | NC; juror fixture with header "First Name,Middle Name,Last Name,Address,City,DOB,Result Date/Time" and filled Result Date/Time | `decl_date` is unmapped; the L.1 message shows; every pair is in "cannot compare: no registration date"; named export has zero rows; last and middle names are not swapped |
+| AT-58 | PA; juror fixture with name and reason columns only | The L.2 notice shows before the run; the counts screen shows "Same-name pairs (not leads)"; zero exported rows |
+| AT-59 | Run AT-58 and a TX counts-only run; inspect DOM text, every download and the audit letter | No "%" or "1 in N" ratio of pairs to juror rows appears anywhere |

@@ -155,3 +155,11 @@ This section describes a planned feature. It is not on the site yet.
 - Practice runs use invented names, such as "Sample Juror 01", to teach the steps.
 - In a counts-only state, the names show on screen only. Practice downloads hold counts only.
 - In a counts-only state, real use stops at counts. A challenge needs your own knowledge of the voter, not this tool.
+
+## 9. Name-only matches and file headers (added 2026-10-09)
+
+- A list with names only cannot show who someone is. Many people share a name.
+- JuryRoll calls these "Same-name pairs (not leads)". It never exports them.
+- JuryRoll never shows a "match rate". A share of same-name pairs proves nothing.
+- If you copied a list by hand, check your copy against the original.
+- North Carolina files: some use a column called "Result Date/Time". The State Board does not say what it means. JuryRoll does not treat it as the excusal date. Those rows show as "cannot compare".
